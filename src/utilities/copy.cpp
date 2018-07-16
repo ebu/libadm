@@ -16,4 +16,10 @@ namespace adm {
     addElements(copiedElements, dest);
   }
 
+  void deepCopyTo(std::shared_ptr<const Document> src,
+                  std::shared_ptr<Frame> dest) {
+    auto copiedElements = copyAllElements(src);
+    addElements(copiedElements, dest);
+  }
+
 }  // namespace adm

@@ -195,5 +195,18 @@ namespace adm {
       }
     };
 
+    struct FrameTypeValueValidator {
+      static void validate(const std::string& value) {
+        for (auto& validString : {"header", "full", "intermediate", "all"}) {
+          if (value == validString) {
+            return;
+          }
+        }
+        std::stringstream msg;
+        msg << "illegal FrameType: '" << value << "'";
+        throw InvalidStringError(msg.str());
+      }
+    };
+
   }  // namespace detail
 }  // namespace adm

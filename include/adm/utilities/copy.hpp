@@ -1,6 +1,7 @@
 #pragma once
 
 #include "adm/document.hpp"
+#include "adm/frame.hpp"
 
 namespace adm {
 
@@ -9,5 +10,8 @@ namespace adm {
 
   LIBADM_EXPORT void deepCopyTo(std::shared_ptr<const Document> src,
                                 std::shared_ptr<Document> dest);
+
+  LIBADM_EXPORT void deepCopyTo(std::shared_ptr<const Document> src,
+                                std::shared_ptr<Frame> dest);
 
 }  // namespace adm

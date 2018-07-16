@@ -15,6 +15,9 @@ BOOST_AUTO_TEST_CASE(audio_block_format_objects,
     BOOST_TEST(blockFormat.has<AudioBlockFormatId>() == true);
     BOOST_TEST(blockFormat.has<Rtime>() == true);
     BOOST_TEST(blockFormat.has<Duration>() == false);
+    BOOST_TEST(blockFormat.has<Lstart>() == false);
+    BOOST_TEST(blockFormat.has<Lduration>() == false);
+    BOOST_TEST(blockFormat.has<InitializeBlock>() == false);
     BOOST_TEST(blockFormat.has<Cartesian>() == true);
     BOOST_TEST(blockFormat.has<Width>() == true);
     BOOST_TEST(blockFormat.has<Height>() == true);
@@ -30,6 +33,9 @@ BOOST_AUTO_TEST_CASE(audio_block_format_objects,
     BOOST_TEST(blockFormat.isDefault<AudioBlockFormatId>() == false);
     BOOST_TEST(blockFormat.isDefault<Rtime>() == true);
     BOOST_TEST(blockFormat.isDefault<Duration>() == false);
+    BOOST_TEST(blockFormat.isDefault<Lstart>() == false);
+    BOOST_TEST(blockFormat.isDefault<Lduration>() == false);
+    BOOST_TEST(blockFormat.isDefault<InitializeBlock>() == false);
     BOOST_TEST(blockFormat.isDefault<Cartesian>() == true);
     BOOST_TEST(blockFormat.isDefault<Width>() == true);
     BOOST_TEST(blockFormat.isDefault<Height>() == true);
@@ -60,6 +66,9 @@ BOOST_AUTO_TEST_CASE(audio_block_format_objects,
 
     blockFormat.set(Rtime(std::chrono::seconds(2)));
     blockFormat.set(Duration(std::chrono::seconds(10)));
+    blockFormat.set(Lstart(std::chrono::seconds(0)));
+    blockFormat.set(Lduration(std::chrono::seconds(10)));
+    blockFormat.set(InitializeBlock(true));
     blockFormat.set(Cartesian(false));
     blockFormat.set(Width(45.f));
     blockFormat.set(Height(20.f));
@@ -76,6 +85,9 @@ BOOST_AUTO_TEST_CASE(audio_block_format_objects,
 
     BOOST_CHECK(blockFormat.get<Rtime>() == std::chrono::seconds(2));
     BOOST_CHECK(blockFormat.get<Duration>() == std::chrono::seconds(10));
+    BOOST_CHECK(blockFormat.get<Lstart>() == std::chrono::seconds(0));
+    BOOST_CHECK(blockFormat.get<Lduration>() == std::chrono::seconds(10));
+    BOOST_CHECK(blockFormat.get<InitializeBlock>() == true);
     BOOST_TEST(blockFormat.get<Cartesian>() == false);
     BOOST_TEST(blockFormat.get<Width>() == 45.f);
     BOOST_TEST(blockFormat.get<Height>() == 20.f);
@@ -94,6 +106,9 @@ BOOST_AUTO_TEST_CASE(audio_block_format_objects,
     BOOST_TEST(blockFormat.isDefault<AudioBlockFormatId>() == false);
     BOOST_TEST(blockFormat.isDefault<Rtime>() == false);
     BOOST_TEST(blockFormat.isDefault<Duration>() == false);
+    BOOST_TEST(blockFormat.isDefault<Lstart>() == false);
+    BOOST_TEST(blockFormat.isDefault<Lduration>() == false);
+    BOOST_TEST(blockFormat.isDefault<InitializeBlock>() == false);
     BOOST_TEST(blockFormat.isDefault<Cartesian>() == false);
     BOOST_TEST(blockFormat.isDefault<Width>() == false);
     BOOST_TEST(blockFormat.isDefault<Height>() == false);
@@ -108,6 +123,9 @@ BOOST_AUTO_TEST_CASE(audio_block_format_objects,
 
     blockFormat.unset<Rtime>();
     blockFormat.unset<Duration>();
+    blockFormat.unset<Lstart>();
+    blockFormat.unset<Lduration>();
+    blockFormat.unset<InitializeBlock>();
     blockFormat.unset<Cartesian>();
     blockFormat.unset<Width>();
     blockFormat.unset<Height>();
@@ -123,6 +141,9 @@ BOOST_AUTO_TEST_CASE(audio_block_format_objects,
     BOOST_TEST(blockFormat.isDefault<AudioBlockFormatId>() == false);
     BOOST_TEST(blockFormat.isDefault<Rtime>() == true);
     BOOST_TEST(blockFormat.isDefault<Duration>() == false);
+    BOOST_TEST(blockFormat.isDefault<Lstart>() == false);
+    BOOST_TEST(blockFormat.isDefault<Lduration>() == false);
+    BOOST_TEST(blockFormat.isDefault<InitializeBlock>() == false);
     BOOST_TEST(blockFormat.isDefault<Cartesian>() == true);
     BOOST_TEST(blockFormat.isDefault<Width>() == true);
     BOOST_TEST(blockFormat.isDefault<Height>() == true);

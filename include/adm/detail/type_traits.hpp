@@ -2,6 +2,7 @@
 
 #include "adm/detail/named_type.hpp"
 #include "adm/elements_fwd.hpp"
+#include "adm/serialized_fwd.hpp"
 
 namespace adm {
 

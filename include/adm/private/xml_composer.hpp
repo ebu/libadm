@@ -7,6 +7,7 @@
 
 namespace adm {
   class Document;
+  class Frame;
   namespace xml {
 
     using NodePtr = rapidxml::xml_node<>*;
@@ -16,6 +17,7 @@ namespace adm {
       XmlComposer(WriterOptions options);
 
       void compose(std::shared_ptr<const Document> document);
+      void compose(std::shared_ptr<const Frame> frame);
       std::ostream& writeXmlTo(std::ostream& stream);
 
      private:

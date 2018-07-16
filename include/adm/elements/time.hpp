@@ -24,6 +24,23 @@ namespace adm {
   struct RtimeTag {};
   /// @brief NamedType for the rtime attribute
   using Rtime = detail::NamedType<std::chrono::nanoseconds, RtimeTag>;
+  /// @brief Tag for NamedType ::Start
+  struct LstartTag {};
+  /// @brief NamedType for the lstart attribute
+  using Lstart = detail::NamedType<std::chrono::nanoseconds, LstartTag>;
+  /// @brief Tag for NamedType ::Lduration
+  struct LdurationTag {};
+  /// @brief NamedType for the lduration attribute
+  using Lduration = detail::NamedType<std::chrono::nanoseconds, LdurationTag>;
+  /// @brief Tag for NamedType ::FrameStart
+  struct FrameStartTag {};
+  /// @brief NamedType for the sadm start attribute
+  using FrameStart = detail::NamedType<std::chrono::nanoseconds, FrameStartTag>;
+  /// @brief Tag for NamedType ::FrameDuration
+  struct FrameDurationTag {};
+  /// @brief NamedType for the sadm duration attribute
+  using FrameDuration =
+      detail::NamedType<std::chrono::nanoseconds, FrameDurationTag>;
 
   /// @brief Parse an adm timecode and convert it to a std::chrono::duration
   LIBADM_EXPORT std::chrono::nanoseconds parseTimecode(

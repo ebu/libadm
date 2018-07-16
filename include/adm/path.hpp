@@ -2,6 +2,7 @@
 
 #include "adm/elements_fwd.hpp"
 #include "adm/element_variant.hpp"
+#include "adm/frame.hpp"
 #include <boost/functional/hash.hpp>
 #include <vector>
 #include <memory>
@@ -113,6 +114,20 @@ namespace adm {
     } else {
       return false;
     }
+  }
+
+  template <typename Element>
+  std::shared_ptr<const Element> getLastOf(const Path& path,
+                                           const Frame& frame) {
+    using ElementId = typename Element::id_type;
+    return frame.lookup(path.getLastOf<ElementId>());
+  }
+
+  template <typename Element>
+  std::shared_ptr<const Element> getFirstOf(const Path& path,
+                                            const Frame& frame) {
+    using ElementId = typename Element::id_type;
+    return frame.lookup(path.getFirstOf<ElementId>());
   }
 
   inline bool operator==(const Path& lhs, const Path& rhs) {

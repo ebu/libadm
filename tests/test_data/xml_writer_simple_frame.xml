@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<frame>
+	<frameHeader>
+		<frameFormat frameFormatId="FF_0000" frameStart="00:00:00.000000000" frameDuration="00:00:00.000000001" frameType="full"/>
+		<transportTrackFormat transportId="TP_0000" numTracks="1" numIds="1">
+			<audioTrack trackId="1">
+				<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+			</audioTrack>
+		</transportTrackFormat>
+	</frameHeader>
+	<audioFormatExtended>
+		<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="Main" start="00:00:00.000000000" end="00:00:10.000000000">
+			<audioContentIDRef>ACO_1001</audioContentIDRef>
+		</audioProgramme>
+		<audioContent audioContentID="ACO_1001" audioContentName="Main">
+			<audioObjectIDRef>AO_1001</audioObjectIDRef>
+		</audioContent>
+		<audioObject audioObjectID="AO_1001" audioObjectName="MainObject">
+			<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+			<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+		</audioObject>
+		<audioPackFormat audioPackFormatID="AP_00031001" audioPackFormatName="MainObject" typeLabel="0003" typeDefinition="Objects">
+			<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
+		</audioPackFormat>
+		<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="MainObject" typeLabel="0003" typeDefinition="Objects">
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" rtime="00:00:00.000000000">
+				<position coordinate="azimuth">30.000000</position>
+				<position coordinate="elevation">0.000000</position>
+				<jumpPosition>1</jumpPosition>
+			</audioBlockFormat>
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000002" rtime="00:00:03.000000000">
+				<position coordinate="azimuth">-30.000000</position>
+				<position coordinate="elevation">0.000000</position>
+				<jumpPosition interpolationLength="1.00000">1</jumpPosition>
+			</audioBlockFormat>
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000003" rtime="00:00:06.000000000">
+				<position coordinate="azimuth">0.000000</position>
+				<position coordinate="elevation">0.000000</position>
+			</audioBlockFormat>
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000004" rtime="00:00:09.000000000">
+				<position coordinate="azimuth">30.000000</position>
+				<position coordinate="elevation">0.000000</position>
+			</audioBlockFormat>
+		</audioChannelFormat>
+		<audioStreamFormat audioStreamFormatID="AS_00031001" audioStreamFormatName="MainObject" formatLabel="0001" formatDefinition="PCM">
+			<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
+			<audioTrackFormatIDRef>AT_00031001_01</audioTrackFormatIDRef>
+		</audioStreamFormat>
+		<audioTrackFormat audioTrackFormatID="AT_00031001_01" audioTrackFormatName="MainObject" formatLabel="0001" formatDefinition="PCM">
+			<audioStreamFormatIDRef>AS_00031001</audioStreamFormatIDRef>
+		</audioTrackFormat>
+		<audioTrackUID UID="ATU_00000001">
+			<audioTrackFormatIDRef>AT_00031001_01</audioTrackFormatIDRef>
+			<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+		</audioTrackUID>
+	</audioFormatExtended>
+</frame>
+

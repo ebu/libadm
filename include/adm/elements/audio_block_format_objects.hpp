@@ -9,6 +9,7 @@
 #include "adm/elements/jump_position.hpp"
 #include "adm/elements/object_divergence.hpp"
 #include "adm/elements/position.hpp"
+#include "adm/elements/initialize_block.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
@@ -112,7 +113,12 @@ namespace adm {
     LIBADM_EXPORT void set(Rtime rtime);
     /// @brief Duration setter
     LIBADM_EXPORT void set(Duration duration);
-
+    /// @brief lstart setter
+    LIBADM_EXPORT void set(Lstart lstart);
+    /// @brief Lduration setter
+    LIBADM_EXPORT void set(Lduration lduration);
+    /// @brief InitializeBlock setter
+    LIBADM_EXPORT void set(InitializeBlock initializeBlock);
     /**
      * @brief Cartesian setter
      *
@@ -183,6 +189,10 @@ namespace adm {
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     LIBADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
     LIBADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
+    LIBADM_EXPORT Lstart get(detail::ParameterTraits<Lstart>::tag) const;
+    LIBADM_EXPORT Lduration get(detail::ParameterTraits<Lduration>::tag) const;
+    LIBADM_EXPORT InitializeBlock
+        get(detail::ParameterTraits<InitializeBlock>::tag) const;
     LIBADM_EXPORT Cartesian get(detail::ParameterTraits<Cartesian>::tag) const;
     LIBADM_EXPORT Position get(detail::ParameterTraits<Position>::tag) const;
     LIBADM_EXPORT SphericalPosition
@@ -210,6 +220,9 @@ namespace adm {
         detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     LIBADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
     LIBADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
+    LIBADM_EXPORT bool has(detail::ParameterTraits<Lstart>::tag) const;
+    LIBADM_EXPORT bool has(detail::ParameterTraits<Lduration>::tag) const;
+    LIBADM_EXPORT bool has(detail::ParameterTraits<InitializeBlock>::tag) const;
     LIBADM_EXPORT bool has(detail::ParameterTraits<Cartesian>::tag) const;
     LIBADM_EXPORT bool has(detail::ParameterTraits<Position>::tag) const;
     LIBADM_EXPORT bool has(
@@ -252,6 +265,9 @@ namespace adm {
 
     LIBADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     LIBADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
+    LIBADM_EXPORT void unset(detail::ParameterTraits<Lstart>::tag);
+    LIBADM_EXPORT void unset(detail::ParameterTraits<Lduration>::tag);
+    LIBADM_EXPORT void unset(detail::ParameterTraits<InitializeBlock>::tag);
     LIBADM_EXPORT void unset(detail::ParameterTraits<Cartesian>::tag);
     LIBADM_EXPORT void unset(detail::ParameterTraits<Position>::tag);
     LIBADM_EXPORT void unset(detail::ParameterTraits<SphericalPosition>::tag);
@@ -271,6 +287,9 @@ namespace adm {
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;
     boost::optional<Duration> duration_;
+    boost::optional<Lstart> lstart_;
+    boost::optional<Lduration> lduration_;
+    boost::optional<InitializeBlock> initializeBlock_;
     boost::optional<Cartesian> cartesian_;
     boost::optional<SphericalPosition> sphericalPosition_;
     boost::optional<CartesianPosition> cartesianPosition_;

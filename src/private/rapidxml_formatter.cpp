@@ -27,6 +27,8 @@ namespace adm {
         return formatId(id);
       }
       std::string toString(const AudioTrackUidId &id) { return formatId(id); }
+      std::string toString(const FrameFormatId &id) { return formatId(id); }
+      std::string toString(const TransportId &id) { return formatId(id); }
 
       struct MultiElementAttributeFormatter {
         MultiElementAttributeFormatter(const std::string &a,
@@ -433,5 +435,43 @@ namespace adm {
           trackUid, "audioPackFormatIDRef");
     }
 
+    void formatFrameHeader(XmlNode &node, const FrameHeader &header) {
+      node.addElement(header.frameFormat(), "frameFormat", &formatFrameFormat);
+      for (const auto &transportTrack : header.transportTrackFormats()) {
+        node.addElement(transportTrack, "transportTrackFormat",
+                        &formatTransportTrackFormat);
+      }
+    }
+
+    void formatFrameFormat(XmlNode &node, const FrameFormat &format) {
+      node.addAttribute<FrameFormatId>(&format, "frameFormatId");
+      node.addAttribute<FrameStart>(&format, "frameStart");
+      node.addAttribute<FrameDuration>(&format, "frameDuration");
+      node.addAttribute<FrameType>(&format, "frameType");
+      node.addOptionalAttribute<TimeReference>(&format, "timeReference");
+      node.addOptionalAttribute<CountToFull>(&format, "countToFull");
+      node.addOptionalAttribute<NumSubFrame>(&format, "numSubFrame");
+      node.addOptionalAttribute<FrameSkip>(&format, "frameSkip");
+      node.addOptionalAttribute<FrameShift>(&format, "frameShift");
+    }
+
+    void formatTransportTrackFormat(XmlNode &node,
+                                    const TransportTrackFormat &format) {
+      node.addAttribute<TransportId>(&format, "transportId");
+      node.addOptionalAttribute<TransportName>(&format, "transportName");
+      node.addOptionalAttribute<NumTracks>(&format, "numTracks");
+      node.addOptionalAttribute<NumIds>(&format, "numIds");
+      for (const auto &audioTrack : format.audioTracks()) {
+        auto trackNode = node.addNode("audioTrack");
+        trackNode.addAttribute<TrackId>(&audioTrack, "trackId");
+        trackNode.addOptionalAttribute<FormatDescriptor>(
+            &audioTrack, "formatLabel", &formatFormatLabel);
+        trackNode.addOptionalAttribute<FormatDescriptor>(
+            &audioTrack, "formatDefinition", &formatFormatDefinition);
+        for (const auto &uidId : audioTrack.audioTrackUidIds()) {
+          trackNode.addElement("audioTrackUIDRef", formatId(uidId));
+        }
+      }
+    }
   }  // namespace xml
 }  // namespace adm

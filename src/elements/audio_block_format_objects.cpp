@@ -30,6 +30,18 @@ namespace adm {
       detail::ParameterTraits<Duration>::tag) const {
     return duration_.get();
   }
+  Lstart AudioBlockFormatObjects::get(
+      detail::ParameterTraits<Lstart>::tag) const {
+    return lstart_.get();
+  }
+  Lduration AudioBlockFormatObjects::get(
+      detail::ParameterTraits<Lduration>::tag) const {
+    return lduration_.get();
+  }
+  InitializeBlock AudioBlockFormatObjects::get(
+      detail::ParameterTraits<InitializeBlock>::tag) const {
+    return initializeBlock_.get();
+  }
   Cartesian AudioBlockFormatObjects::get(
       detail::ParameterTraits<Cartesian>::tag) const {
     if (cartesian_ != boost::none) {
@@ -114,6 +126,18 @@ namespace adm {
   bool AudioBlockFormatObjects::has(
       detail::ParameterTraits<Duration>::tag) const {
     return duration_ != boost::none;
+  }
+  bool AudioBlockFormatObjects::has(
+      detail::ParameterTraits<Lstart>::tag) const {
+    return lstart_ != boost::none;
+  }
+  bool AudioBlockFormatObjects::has(
+      detail::ParameterTraits<Lduration>::tag) const {
+    return lduration_ != boost::none;
+  }
+  bool AudioBlockFormatObjects::has(
+      detail::ParameterTraits<InitializeBlock>::tag) const {
+    return initializeBlock_ != boost::none;
   }
   bool AudioBlockFormatObjects::has(
       detail::ParameterTraits<Cartesian>::tag) const {
@@ -228,6 +252,13 @@ namespace adm {
   void AudioBlockFormatObjects::set(AudioBlockFormatId id) { id_ = id; }
   void AudioBlockFormatObjects::set(Rtime rtime) { rtime_ = rtime; }
   void AudioBlockFormatObjects::set(Duration duration) { duration_ = duration; }
+  void AudioBlockFormatObjects::set(Lstart lstart) { lstart_ = lstart; }
+  void AudioBlockFormatObjects::set(Lduration lduration) {
+    lduration_ = lduration;
+  }
+  void AudioBlockFormatObjects::set(InitializeBlock initializeBlock) {
+    initializeBlock_ = initializeBlock;
+  }
   void AudioBlockFormatObjects::set(Cartesian cartesian) {
     if (isDefault<Cartesian>() || get<Cartesian>() != cartesian) {
       cartesian_ = cartesian;
@@ -287,6 +318,16 @@ namespace adm {
   }
   void AudioBlockFormatObjects::unset(detail::ParameterTraits<Duration>::tag) {
     duration_ = boost::none;
+  }
+  void AudioBlockFormatObjects::unset(detail::ParameterTraits<Lstart>::tag) {
+    lstart_ = boost::none;
+  }
+  void AudioBlockFormatObjects::unset(detail::ParameterTraits<Lduration>::tag) {
+    lduration_ = boost::none;
+  }
+  void AudioBlockFormatObjects::unset(
+      detail::ParameterTraits<InitializeBlock>::tag) {
+    initializeBlock_ = boost::none;
   }
   void AudioBlockFormatObjects::unset(detail::ParameterTraits<Cartesian>::tag) {
     cartesian_ = boost::none;

@@ -7,6 +7,7 @@
 namespace adm {
 
   std::chrono::nanoseconds parseTimecode(const std::string& timecode) {
+    const std::regex frameFormat("(\\d{2}):(\\d{2}):(\\d{2}):(\\d{2})");
     const std::regex commonFormat("(\\d{2}):(\\d{2}):(\\d{2}).(\\d{1,9})");
     std::smatch timecodeMatch;
     if (std::regex_match(timecode, timecodeMatch, commonFormat)) {
@@ -19,6 +20,8 @@ namespace adm {
              std::chrono::minutes(stoi(timecodeMatch[2])) +
              std::chrono::seconds(stoi(timecodeMatch[3])) +
              std::chrono::nanoseconds(stoi(nanoseconds));
+    } else if (std::regex_match(timecode, timecodeMatch, frameFormat)) {
+      throw std::runtime_error("frame based timecodes not supported");
     } else {
       std::stringstream errorString;
       errorString << "invalid timecode: " << timecode;
