@@ -1,0 +1,5 @@
+-I.
+-I./include
+-I./build/src
+-I./build
+-I./submodules

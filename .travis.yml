@@ -1,0 +1,81 @@
+sudo: false
+language: cpp
+
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      services: docker
+      env: DOCKER_IMAGE=debian:9
+    - os: linux
+      sudo: required
+      services: docker
+      env: DOCKER_IMAGE=ubuntu:17.10
+    - os: linux
+      sudo: required
+      services: docker
+      env: DOCKER_IMAGE=ubuntu:18.04
+    - os: linux
+      sudo: required
+      services: docker
+      env: DOCKER_IMAGE=ubuntu:18.10
+    - os: linux
+      sudo: required
+      services: docker
+      env: DOCKER_IMAGE=fedora:26
+    - os: linux
+      sudo: required
+      services: docker
+      env: DOCKER_IMAGE=fedora:27
+    - os: linux
+      sudo: required
+      services: docker
+      env: DOCKER_IMAGE=fedora:28
+    - os: osx
+      osx_image: xcode7.3
+    - os: osx
+      osx_image: xcode8.3
+    - os: osx
+      osx_image: xcode9.4
+
+before_install:
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      docker run -d --name linux -v $(pwd):/travis $DOCKER_IMAGE tail -f /dev/null;
+      docker ps
+    fi
+
+install:
+  # install dependencies in debian like systems
+  - |
+    if [[ "$DOCKER_IMAGE" == *"ubuntu"* || "$DOCKER_IMAGE" == *"debian"* ]]; then
+      docker exec -t linux bash -c "apt-get update &&
+      apt-get install -y build-essential cmake ninja-build libboost-dev"
+    fi
+  # install dependencies in red hat like systems
+  - |
+    if [[ "$DOCKER_IMAGE" == *"fedora"* ]]; then
+      docker exec -t linux bash -c "dnf -y group install \"Development Tools\" \"C Development Tools and Libraries\" &&
+      dnf -y install cmake ninja-build boost-devel"
+    fi
+  # install dependencies for macOS
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      brew install cmake || brew upgrade cmake
+      brew install ninja boost@1.59
+      brew unlink boost && brew link --force boost@1.59
+    fi
+
+script:
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      docker exec -t linux bash -c "cd /travis;
+      mkdir build && cd build && cmake -G Ninja .. &&
+      ninja && ninja test"
+    fi
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      cd "${TRAVIS_BUILD_DIR}"
+      mkdir build && cd build && cmake -G Ninja .. &&
+      ninja && ninja test
+    fi

@@ -1,0 +1,57 @@
+platform:
+  - x86
+  - x64
+configuration:
+  - Debug
+  - Release
+environment:
+  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  matrix:
+    - MSVC_VERSION: Visual Studio 14 2015
+      BOOST_VERSION: 1_65_1
+    - MSVC_VERSION: Visual Studio 15 2017
+      BOOST_VERSION: 1_65_1
+
+init:
+  - set BOOST_ROOT="C:/Libraries/boost_"%BOOST_VERSION%
+
+install:
+  ############################################################################
+  # All external dependencies are installed in C:\projects\deps
+  ############################################################################
+  - mkdir C:\projects\deps
+  - cd C:\projects\deps
+
+  ############################################################################
+  # Install Ninja
+  ############################################################################
+  - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip"
+  - appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
+  - 7z x ninja.zip -oC:\projects\deps\ninja > nul
+  - set PATH=C:\projects\deps\ninja;%PATH%
+  - ninja --version
+
+  ############################################################################
+  # Install a recent CMake
+  ############################################################################
+  - set CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.0-win64-x64.zip"
+  - appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
+  - 7z x cmake.zip -oC:\projects\deps > nul
+  - move C:\projects\deps\cmake-* C:\projects\deps\cmake # Move to a version-agnostic directory
+  - set PATH=C:\projects\deps\cmake\bin;%PATH%
+  - cmake --version
+
+build_script:
+  - cd C:\projects\libadm
+  - mkdir build
+  - cd build
+  - if "%platform%" == "x86" if "%MSVC_VERSION%" == "Visual Studio 14 2015" call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
+  - if "%platform%" == "x64" if "%MSVC_VERSION%" == "Visual Studio 14 2015" call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
+  - if "%platform%" == "x86" if "%MSVC_VERSION%" == "Visual Studio 15 2017" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+  - if "%platform%" == "x64" if "%MSVC_VERSION%" == "Visual Studio 15 2017" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmake .. -G Ninja -DBOOST_ROOT="%BOOST_ROOT%"
+  - ninja
+
+test_script:
+  - cd C:\projects\libadm\build
+  - ninja test
