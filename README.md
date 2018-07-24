@@ -1,5 +1,9 @@
 # libadm - ITU-R BS.2076 Library
 
+[![Build Status](https://travis-ci.org/IRT-Open-Source/libadm.svg?branch=master)](https://travis-ci.org/IRT-Open-Source/libadm)
+[![Build status](https://ci.appveyor.com/api/projects/status/jcjsk0d2h12br5qc/branch/master?svg=true)](https://ci.appveyor.com/project/opensourceirt/libadm/branch/master)
+[![Documentation Status](https://readthedocs.org/projects/libadm/badge/?version=latest)](https://libadm.readthedocs.io/en/latest/?badge=latest)
+
 ## Introduction
 
 The `libadm` library is a modern C++11 library to parse, modify, create and
