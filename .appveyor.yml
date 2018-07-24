@@ -2,7 +2,6 @@ platform:
   - x86
   - x64
 configuration:
-  - Debug
   - Release
 environment:
   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
@@ -30,16 +29,6 @@ install:
   - 7z x ninja.zip -oC:\projects\deps\ninja > nul
   - set PATH=C:\projects\deps\ninja;%PATH%
   - ninja --version
-
-  ############################################################################
-  # Install a recent CMake
-  ############################################################################
-  - set CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.0-win64-x64.zip"
-  - appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
-  - 7z x cmake.zip -oC:\projects\deps > nul
-  - move C:\projects\deps\cmake-* C:\projects\deps\cmake # Move to a version-agnostic directory
-  - set PATH=C:\projects\deps\cmake\bin;%PATH%
-  - cmake --version
 
 build_script:
   - cd C:\projects\libadm
