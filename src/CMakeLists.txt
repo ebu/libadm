@@ -48,6 +48,7 @@ add_library(libadm
   elements/speaker_position.cpp
   elements/type_descriptor.cpp
   elements/format_descriptor.cpp
+  utilities/block_duration_assignment.cpp
   utilities/copy.cpp
   utilities/id_assignment.cpp
   utilities/object_creation.cpp
