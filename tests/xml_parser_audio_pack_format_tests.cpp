@@ -1,16 +1,12 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+#include <catch2/catch.hpp>
 #include <sstream>
 #include "adm/document.hpp"
 #include "adm/elements/audio_pack_format.hpp"
 #include "adm/xml_reader.hpp"
 #include "adm/errors.hpp"
 
-#define BOOST_TEST_MODULE XmlParserAudioPackFormat
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(xml_parser_audio_pack_format) {
+TEST_CASE("xml_parser_audio_pack_format") {
   using namespace adm;
   // Minimal
   {
@@ -28,19 +24,18 @@ BOOST_AUTO_TEST_CASE(xml_parser_audio_pack_format) {
     auto audioPackFormats = document->getElements<AudioPackFormat>();
     auto audioPackFormat = *audioPackFormats.begin();
 
-    BOOST_TEST(audioPackFormat->has<AudioPackFormatId>() == true);
-    BOOST_TEST(audioPackFormat->has<AudioPackFormatName>() == true);
+    REQUIRE(audioPackFormat->has<AudioPackFormatId>() == true);
+    REQUIRE(audioPackFormat->has<AudioPackFormatName>() == true);
 
-    BOOST_TEST(audioPackFormat->get<AudioPackFormatId>()
-                   .get<AudioPackFormatIdValue>() == 0x0001u);
-    BOOST_TEST(
-        audioPackFormat->get<AudioPackFormatId>().get<TypeDescriptor>() ==
-        TypeDefinition::DIRECT_SPEAKERS);
-    BOOST_TEST(audioPackFormat->get<AudioPackFormatName>() == "MyPackFormat");
+    REQUIRE(audioPackFormat->get<AudioPackFormatId>()
+                .get<AudioPackFormatIdValue>() == 0x0001u);
+    REQUIRE(audioPackFormat->get<AudioPackFormatId>().get<TypeDescriptor>() ==
+            TypeDefinition::DIRECT_SPEAKERS);
+    REQUIRE(audioPackFormat->get<AudioPackFormatName>() == "MyPackFormat");
   }
 }
 
-BOOST_AUTO_TEST_CASE(duplicate_id) {
+TEST_CASE("duplicate_id") {
   std::istringstream admStream(
       "<audioFormatExtended>"
       "<audioPackFormat "
@@ -58,6 +53,6 @@ BOOST_AUTO_TEST_CASE(duplicate_id) {
       ">"
       "</audioPackFormat>"
       "</audioFormatExtended>");
-  BOOST_CHECK_THROW(adm::parseXml(admStream),
+  REQUIRE_THROWS_AS(adm::parseXml(admStream),
                     adm::error::XmlParsingDuplicateId);
 }

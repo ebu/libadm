@@ -1,16 +1,11 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <catch2/catch.hpp>
 #include <sstream>
 #include "adm/document.hpp"
 #include "adm/elements/audio_channel_format.hpp"
 #include "adm/elements/frequency.hpp"
 #include "adm/xml_reader.hpp"
 
-#define BOOST_TEST_MODULE XmlParserAudioBlockFormatObjects
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(xml_parser_audio_block_format_objects) {
+TEST_CASE("xml_parser_audio_block_format_objects") {
   using namespace adm;
   {
     std::istringstream admStream(
@@ -42,40 +37,40 @@ BOOST_AUTO_TEST_CASE(xml_parser_audio_block_format_objects) {
         "</audioFormatExtended>");
     auto document = parseXml(admStream);
     auto channelFormats = document->getElements<AudioChannelFormat>();
-    BOOST_TEST(channelFormats[0]
-                   ->get<AudioChannelFormatId>()
-                   .get<AudioChannelFormatIdValue>() == 0x0001u);
-    BOOST_TEST(
+    REQUIRE(channelFormats[0]
+                ->get<AudioChannelFormatId>()
+                .get<AudioChannelFormatIdValue>() == 0x0001u);
+    REQUIRE(
         channelFormats[0]->get<AudioChannelFormatId>().get<TypeDescriptor>() ==
         TypeDefinition::OBJECTS);
-    BOOST_TEST(channelFormats[0]->get<AudioChannelFormatName>() ==
-               "MyChannelFormat");
-    BOOST_TEST(channelFormats[0]->get<TypeDescriptor>() ==
-               TypeDefinition::OBJECTS);
+    REQUIRE(channelFormats[0]->get<AudioChannelFormatName>() ==
+            "MyChannelFormat");
+    REQUIRE(channelFormats[0]->get<TypeDescriptor>() ==
+            TypeDefinition::OBJECTS);
 
     auto firstBlockFormat =
         *(channelFormats[0]->getElements<AudioBlockFormatObjects>().begin());
-    BOOST_TEST(firstBlockFormat.get<Width>().get() == 45.0f);
-    BOOST_TEST(firstBlockFormat.get<Height>() == 20.0f);
-    BOOST_TEST(firstBlockFormat.get<Depth>() == 0.2f);
-    BOOST_TEST(firstBlockFormat.get<Gain>() == 0.8f);
-    BOOST_TEST(firstBlockFormat.get<Diffuse>() == 0.5f);
-    BOOST_TEST(firstBlockFormat.get<ChannelLock>().get<ChannelLockFlag>() ==
-               true);
-    BOOST_TEST(firstBlockFormat.get<ChannelLock>().get<MaxDistance>() == 1.f);
-    BOOST_TEST(firstBlockFormat.get<ObjectDivergence>().get<Divergence>() ==
-               0.5f);
-    BOOST_TEST(firstBlockFormat.get<ObjectDivergence>().get<AzimuthRange>() ==
-               60.f);
-    BOOST_TEST(firstBlockFormat.get<ObjectDivergence>().get<PositionRange>() ==
-               0.25f);
-    BOOST_TEST(firstBlockFormat.get<JumpPosition>().get<JumpPositionFlag>() ==
-               true);
-    BOOST_CHECK(
-        firstBlockFormat.get<JumpPosition>().get<InterpolationLength>() ==
-        InterpolationLength(std::chrono::milliseconds(200)));
+    REQUIRE(firstBlockFormat.get<Width>().get() == Approx(45.0f));
+    REQUIRE(firstBlockFormat.get<Height>() == Approx(20.0f));
+    REQUIRE(firstBlockFormat.get<Depth>() == Approx(0.2f));
+    REQUIRE(firstBlockFormat.get<Gain>() == Approx(0.8f));
+    REQUIRE(firstBlockFormat.get<Diffuse>() == Approx(0.5f));
+    REQUIRE(firstBlockFormat.get<ChannelLock>().get<ChannelLockFlag>() == true);
+    REQUIRE(firstBlockFormat.get<ChannelLock>().get<MaxDistance>() ==
+            Approx(1.f));
+    REQUIRE(firstBlockFormat.get<ObjectDivergence>().get<Divergence>() ==
+            Approx(0.5f));
+    REQUIRE(firstBlockFormat.get<ObjectDivergence>().get<AzimuthRange>() ==
+            Approx(60.f));
+    REQUIRE(firstBlockFormat.get<ObjectDivergence>().get<PositionRange>() ==
+            Approx(0.25f));
+    REQUIRE(firstBlockFormat.get<JumpPosition>().get<JumpPositionFlag>() ==
+            true);
+    REQUIRE(
+        firstBlockFormat.get<JumpPosition>().get<InterpolationLength>().get() ==
+        std::chrono::milliseconds(200));
     // TODO: add zoneExclusion test
     // TODO: add screenRef test
-    BOOST_TEST(firstBlockFormat.get<Importance>() == 10);
+    REQUIRE(firstBlockFormat.get<Importance>() == 10);
   }
 }

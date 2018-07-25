@@ -1,16 +1,11 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <catch2/catch.hpp>
 #include "adm/document.hpp"
 #include "adm/elements.hpp"
 #include "adm/utilities/id_assignment.hpp"
 #include "adm/utilities/copy.hpp"
 #include "adm/utilities/object_creation.hpp"
 
-#define BOOST_TEST_MODULE CreateAdm
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(basic_document) {
+TEST_CASE("basic_document") {
   using namespace adm;
 
   // create a basic document
@@ -21,28 +16,28 @@ BOOST_AUTO_TEST_CASE(basic_document) {
   auto speechContentEn = AudioContent::create(AudioContentName("Speech"),
                                               AudioContentLanguage("en"));
 
-  BOOST_TEST(speechContentEn->has<AudioContentLanguage>());
-  BOOST_TEST(speechContentEn->get<AudioContentLanguage>() == "en");
+  REQUIRE(speechContentEn->has<AudioContentLanguage>());
+  REQUIRE(speechContentEn->get<AudioContentLanguage>() == "en");
 
   auto musicContent = AudioContent::create(AudioContentName("Music"));
-  BOOST_TEST(admDocument->add(speechContent));
-  BOOST_TEST(admDocument->add(musicContent));
+  REQUIRE(admDocument->add(speechContent));
+  REQUIRE(admDocument->add(musicContent));
   auto narratorObject = AudioObject::create(AudioObjectName("Narrator"));
-  BOOST_TEST(admDocument->add(narratorObject));
-  BOOST_TEST(speechContent->addReference(narratorObject));
+  REQUIRE(admDocument->add(narratorObject));
+  REQUIRE(speechContent->addReference(narratorObject));
 
   auto stereoPack =
       AudioPackFormat::create(AudioPackFormatName("stereo"), TypeDescriptor(0));
-  BOOST_TEST(admDocument->add(stereoPack));
+  REQUIRE(admDocument->add(stereoPack));
 
   auto admDocument_2 = Document::create();
-  BOOST_CHECK_THROW(admDocument_2->add(speechContent), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(musicContent), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(narratorObject), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(stereoPack), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(speechContent), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(musicContent), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(narratorObject), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(stereoPack), std::runtime_error);
 }
 
-BOOST_AUTO_TEST_CASE(single_document) {
+TEST_CASE("single_document") {
   using namespace adm;
   // check if Elements can only belong to one document
   auto admDocument = Document::create();
@@ -70,17 +65,17 @@ BOOST_AUTO_TEST_CASE(single_document) {
   admDocument->add(trackUid);
 
   auto admDocument_2 = Document::create();
-  BOOST_CHECK_THROW(admDocument_2->add(programme), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(content), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(object), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(packFormat), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(channelFormat), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(streamFormat), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(trackFormat), std::runtime_error);
-  BOOST_CHECK_THROW(admDocument_2->add(trackUid), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(programme), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(content), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(object), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(packFormat), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(channelFormat), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(streamFormat), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(trackFormat), std::runtime_error);
+  REQUIRE_THROWS_AS(admDocument_2->add(trackUid), std::runtime_error);
 }
 
-BOOST_AUTO_TEST_CASE(added_recursively) {
+TEST_CASE("added_recursively") {
   using namespace adm;
   // check if Elements are added recursively
 
@@ -114,39 +109,39 @@ BOOST_AUTO_TEST_CASE(added_recursively) {
   admDocument->add(programme);
 
   auto programmes = admDocument->getElements<AudioProgramme>();
-  BOOST_TEST(programmes.size() == 1);
-  BOOST_TEST(programmes[0] == programme);
+  REQUIRE(programmes.size() == 1);
+  REQUIRE(programmes[0] == programme);
 
   auto contents = admDocument->getElements<AudioContent>();
-  BOOST_TEST(contents.size() == 1);
-  BOOST_TEST(contents[0] == content);
+  REQUIRE(contents.size() == 1);
+  REQUIRE(contents[0] == content);
 
   auto objects = admDocument->getElements<AudioObject>();
-  BOOST_TEST(objects.size() == 1);
-  BOOST_TEST(objects[0] == object);
+  REQUIRE(objects.size() == 1);
+  REQUIRE(objects[0] == object);
 
   auto packFormats = admDocument->getElements<AudioPackFormat>();
-  BOOST_TEST(packFormats.size() == 1);
-  BOOST_TEST(packFormats[0] == packFormat);
+  REQUIRE(packFormats.size() == 1);
+  REQUIRE(packFormats[0] == packFormat);
 
   auto channelFormats = admDocument->getElements<AudioChannelFormat>();
-  BOOST_TEST(channelFormats.size() == 1);
-  BOOST_TEST(channelFormats[0] == channelFormat);
+  REQUIRE(channelFormats.size() == 1);
+  REQUIRE(channelFormats[0] == channelFormat);
 
   auto streamFormats = admDocument->getElements<AudioStreamFormat>();
-  BOOST_TEST(streamFormats.size() == 1);
-  BOOST_TEST(streamFormats[0] == streamFormat);
+  REQUIRE(streamFormats.size() == 1);
+  REQUIRE(streamFormats[0] == streamFormat);
 
   auto trackFormats = admDocument->getElements<AudioTrackFormat>();
-  BOOST_TEST(trackFormats.size() == 1);
-  BOOST_TEST(trackFormats[0] == trackFormat);
+  REQUIRE(trackFormats.size() == 1);
+  REQUIRE(trackFormats[0] == trackFormat);
 
   auto trackUids = admDocument->getElements<AudioTrackUid>();
-  BOOST_TEST(trackUids.size() == 1);
-  BOOST_TEST(trackUids[0] == trackUid);
+  REQUIRE(trackUids.size() == 1);
+  REQUIRE(trackUids[0] == trackUid);
 }
 
-BOOST_AUTO_TEST_CASE(added_recursively_stream_track) {
+TEST_CASE("added_recursively_stream_track") {
   // AudioStream / AudioTrackFormat reference each other,
   // so we need to test recursive addtion in both directions
   using namespace adm;
@@ -164,12 +159,12 @@ BOOST_AUTO_TEST_CASE(added_recursively_stream_track) {
 
     admDocument->add(trackFormat);
     auto streamFormats = admDocument->getElements<AudioStreamFormat>();
-    BOOST_TEST(streamFormats.size() == 1);
-    BOOST_TEST(streamFormats[0] == streamFormat);
+    REQUIRE(streamFormats.size() == 1);
+    REQUIRE(streamFormats[0] == streamFormat);
 
     auto trackFormats = admDocument->getElements<AudioTrackFormat>();
-    BOOST_TEST(trackFormats.size() == 1);
-    BOOST_TEST(trackFormats[0] == trackFormat);
+    REQUIRE(trackFormats.size() == 1);
+    REQUIRE(trackFormats[0] == trackFormat);
   }
   {
     auto admDocument = Document::create();
@@ -185,16 +180,16 @@ BOOST_AUTO_TEST_CASE(added_recursively_stream_track) {
     admDocument->add(streamFormat);
 
     auto streamFormats = admDocument->getElements<AudioStreamFormat>();
-    BOOST_TEST(streamFormats.size() == 1);
-    BOOST_TEST(streamFormats[0] == streamFormat);
+    REQUIRE(streamFormats.size() == 1);
+    REQUIRE(streamFormats[0] == streamFormat);
 
     auto trackFormats = admDocument->getElements<AudioTrackFormat>();
-    BOOST_TEST(trackFormats.size() == 1);
-    BOOST_TEST(trackFormats[0] == trackFormat);
+    REQUIRE(trackFormats.size() == 1);
+    REQUIRE(trackFormats[0] == trackFormat);
   }
 }
 
-BOOST_AUTO_TEST_CASE(add_multiple_times) {
+TEST_CASE("add_multiple_times") {
   using namespace adm;
   // add elements multiple times
   auto admDocument = Document::create();
@@ -215,31 +210,31 @@ BOOST_AUTO_TEST_CASE(add_multiple_times) {
 
   admDocument->add(audioProgramme);
   admDocument->add(audioProgramme);
-  BOOST_TEST(admDocument->getElements<AudioProgramme>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioProgramme>().size() == 1);
   admDocument->add(audioContent);
   admDocument->add(audioContent);
-  BOOST_TEST(admDocument->getElements<AudioContent>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioContent>().size() == 1);
   admDocument->add(audioObject);
   admDocument->add(audioObject);
-  BOOST_TEST(admDocument->getElements<AudioObject>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioObject>().size() == 1);
   admDocument->add(audioPackFormat);
   admDocument->add(audioPackFormat);
-  BOOST_TEST(admDocument->getElements<AudioPackFormat>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioPackFormat>().size() == 1);
   admDocument->add(audioTrackUid);
   admDocument->add(audioTrackUid);
-  BOOST_TEST(admDocument->getElements<AudioTrackUid>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioTrackUid>().size() == 1);
   admDocument->add(audioChannelFormat);
   admDocument->add(audioChannelFormat);
-  BOOST_TEST(admDocument->getElements<AudioChannelFormat>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioChannelFormat>().size() == 1);
   admDocument->add(audioStreamFormat);
   admDocument->add(audioStreamFormat);
-  BOOST_TEST(admDocument->getElements<AudioStreamFormat>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioStreamFormat>().size() == 1);
   admDocument->add(audioTrackFormat);
   admDocument->add(audioTrackFormat);
-  BOOST_TEST(admDocument->getElements<AudioTrackFormat>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioTrackFormat>().size() == 1);
 }
 
-BOOST_AUTO_TEST_CASE(copy_document_no_duplicates) {
+TEST_CASE("copy_document_no_duplicates") {
   using namespace adm;
 
   // create
@@ -260,20 +255,20 @@ BOOST_AUTO_TEST_CASE(copy_document_no_duplicates) {
 
   // copy
   auto copy = deepCopy(admDocument);
-  BOOST_TEST(copy->getElements<AudioProgramme>().size() == 2);
-  BOOST_TEST(copy->getElements<AudioContent>().size() == 1);
-  BOOST_TEST(copy->getElements<AudioProgramme>()[0]
-                 ->getReferences<AudioContent>()[0]
-                 ->get<AudioContentName>() == "MyContent");
-  BOOST_TEST(copy->getElements<AudioProgramme>()[1]
-                 ->getReferences<AudioContent>()[0]
-                 ->get<AudioContentName>() == "MyContent");
+  REQUIRE(copy->getElements<AudioProgramme>().size() == 2);
+  REQUIRE(copy->getElements<AudioContent>().size() == 1);
+  REQUIRE(copy->getElements<AudioProgramme>()[0]
+              ->getReferences<AudioContent>()[0]
+              ->get<AudioContentName>() == "MyContent");
+  REQUIRE(copy->getElements<AudioProgramme>()[1]
+              ->getReferences<AudioContent>()[0]
+              ->get<AudioContentName>() == "MyContent");
 
-  BOOST_TEST(copy->getElements<AudioProgramme>()[1]
-                 ->getReferences<AudioContent>()[0] != myContent);
+  REQUIRE(copy->getElements<AudioProgramme>()[1]
+              ->getReferences<AudioContent>()[0] != myContent);
 }
 
-BOOST_AUTO_TEST_CASE(copy_document_all_adm_elements) {
+TEST_CASE("copy_document_all_adm_elements") {
   using namespace adm;
 
   // create
@@ -289,69 +284,69 @@ BOOST_AUTO_TEST_CASE(copy_document_all_adm_elements) {
   admDocument->add(myProgramme);
   // reassignIds(admDocument);
 
-  BOOST_TEST(admDocument->getElements<AudioProgramme>().size() == 1);
-  BOOST_TEST(admDocument->getElements<AudioContent>().size() == 1);
-  BOOST_TEST(admDocument->getElements<AudioObject>().size() == 1);
-  BOOST_TEST(admDocument->getElements<AudioPackFormat>().size() == 1);
-  BOOST_TEST(admDocument->getElements<AudioChannelFormat>().size() == 1);
-  BOOST_TEST(admDocument->getElements<AudioTrackFormat>().size() == 1);
-  BOOST_TEST(admDocument->getElements<AudioStreamFormat>().size() == 1);
-  BOOST_TEST(admDocument->getElements<AudioChannelFormat>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioProgramme>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioContent>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioObject>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioPackFormat>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioChannelFormat>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioTrackFormat>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioStreamFormat>().size() == 1);
+  REQUIRE(admDocument->getElements<AudioChannelFormat>().size() == 1);
 
   auto copy = deepCopy(admDocument);
 
-  BOOST_TEST(copy->getElements<AudioProgramme>().size() == 1);
-  BOOST_TEST(copy->getElements<AudioContent>().size() == 1);
-  BOOST_TEST(copy->getElements<AudioObject>().size() == 1);
-  BOOST_TEST(copy->getElements<AudioPackFormat>().size() == 1);
-  BOOST_TEST(copy->getElements<AudioChannelFormat>().size() == 1);
-  BOOST_TEST(copy->getElements<AudioTrackFormat>().size() == 1);
-  BOOST_TEST(copy->getElements<AudioStreamFormat>().size() == 1);
-  BOOST_TEST(copy->getElements<AudioChannelFormat>().size() == 1);
+  REQUIRE(copy->getElements<AudioProgramme>().size() == 1);
+  REQUIRE(copy->getElements<AudioContent>().size() == 1);
+  REQUIRE(copy->getElements<AudioObject>().size() == 1);
+  REQUIRE(copy->getElements<AudioPackFormat>().size() == 1);
+  REQUIRE(copy->getElements<AudioChannelFormat>().size() == 1);
+  REQUIRE(copy->getElements<AudioTrackFormat>().size() == 1);
+  REQUIRE(copy->getElements<AudioStreamFormat>().size() == 1);
+  REQUIRE(copy->getElements<AudioChannelFormat>().size() == 1);
 
-  BOOST_TEST(admDocument->getElements<AudioProgramme>()[0] !=
-             copy->getElements<AudioProgramme>()[0]);
-  BOOST_TEST(admDocument->getElements<AudioContent>()[0] !=
-             copy->getElements<AudioContent>()[0]);
-  BOOST_TEST(admDocument->getElements<AudioObject>()[0] !=
-             copy->getElements<AudioObject>()[0]);
-  BOOST_TEST(admDocument->getElements<AudioPackFormat>()[0] !=
-             copy->getElements<AudioPackFormat>()[0]);
-  BOOST_TEST(admDocument->getElements<AudioChannelFormat>()[0] !=
-             copy->getElements<AudioChannelFormat>()[0]);
-  BOOST_TEST(admDocument->getElements<AudioTrackFormat>()[0] !=
-             copy->getElements<AudioTrackFormat>()[0]);
-  BOOST_TEST(admDocument->getElements<AudioStreamFormat>()[0] !=
-             copy->getElements<AudioStreamFormat>()[0]);
-  BOOST_TEST(admDocument->getElements<AudioChannelFormat>()[0] !=
-             copy->getElements<AudioChannelFormat>()[0]);
+  REQUIRE(admDocument->getElements<AudioProgramme>()[0] !=
+          copy->getElements<AudioProgramme>()[0]);
+  REQUIRE(admDocument->getElements<AudioContent>()[0] !=
+          copy->getElements<AudioContent>()[0]);
+  REQUIRE(admDocument->getElements<AudioObject>()[0] !=
+          copy->getElements<AudioObject>()[0]);
+  REQUIRE(admDocument->getElements<AudioPackFormat>()[0] !=
+          copy->getElements<AudioPackFormat>()[0]);
+  REQUIRE(admDocument->getElements<AudioChannelFormat>()[0] !=
+          copy->getElements<AudioChannelFormat>()[0]);
+  REQUIRE(admDocument->getElements<AudioTrackFormat>()[0] !=
+          copy->getElements<AudioTrackFormat>()[0]);
+  REQUIRE(admDocument->getElements<AudioStreamFormat>()[0] !=
+          copy->getElements<AudioStreamFormat>()[0]);
+  REQUIRE(admDocument->getElements<AudioChannelFormat>()[0] !=
+          copy->getElements<AudioChannelFormat>()[0]);
   // disabled until https://gitlab.irt.de/pa/libadm/issues/12 is resolved
   /*
     // copy to document2
     admDocument2->add(myProgramme->copy());
-    BOOST_TEST(admDocument2->resolveReferences(admDocument1) == true);
-    BOOST_TEST(admDocument2->getElements<AudioProgramme>().size() == 1);
-    BOOST_TEST(admDocument2->getElements<AudioContent>().size() == 1);
-    BOOST_TEST(admDocument2->getElements<AudioObject>().size() == 1);
-    BOOST_TEST(admDocument2->getElements<AudioTrackUid>().size() == 1);
-    BOOST_TEST(admDocument2->getElements<AudioStreamFormat>().size() == 1);
-    BOOST_TEST(admDocument2->getElements<AudioTrackFormat>().size() == 1);
-    BOOST_TEST(admDocument2->getElements<AudioPackFormat>().size() == 1);
-    BOOST_TEST(admDocument2->getElements<AudioChannelFormat>().size() == 1);
+    REQUIRE(admDocument2->resolveReferences(admDocument1) == true);
+    REQUIRE(admDocument2->getElements<AudioProgramme>().size() == 1);
+    REQUIRE(admDocument2->getElements<AudioContent>().size() == 1);
+    REQUIRE(admDocument2->getElements<AudioObject>().size() == 1);
+    REQUIRE(admDocument2->getElements<AudioTrackUid>().size() == 1);
+    REQUIRE(admDocument2->getElements<AudioStreamFormat>().size() == 1);
+    REQUIRE(admDocument2->getElements<AudioTrackFormat>().size() == 1);
+    REQUIRE(admDocument2->getElements<AudioPackFormat>().size() == 1);
+    REQUIRE(admDocument2->getElements<AudioChannelFormat>().size() == 1);
 
     // copy document in stages to document3
     auto myPackFormat = admDocument1->getElements<AudioPackFormat>()[0];
     admDocument3->add(myPackFormat->copy());
     admDocument3->add(myProgramme->copy());
     admDocument3->resolveReferences(admDocument1);
-    BOOST_TEST(admDocument3->getElements<AudioProgramme>().size() == 1);
-    BOOST_TEST(admDocument3->getElements<AudioContent>().size() == 1);
-    BOOST_TEST(admDocument3->getElements<AudioObject>().size() == 1);
-    BOOST_TEST(admDocument3->getElements<AudioTrackUid>().size() == 1);
-    BOOST_TEST(admDocument3->getElements<AudioStreamFormat>().size() == 1);
-    BOOST_TEST(admDocument3->getElements<AudioTrackFormat>().size() == 1);
-    BOOST_TEST(admDocument3->getElements<AudioPackFormat>().size() == 1);
-    BOOST_TEST(admDocument3->getElements<AudioChannelFormat>().size() == 1);
+    REQUIRE(admDocument3->getElements<AudioProgramme>().size() == 1);
+    REQUIRE(admDocument3->getElements<AudioContent>().size() == 1);
+    REQUIRE(admDocument3->getElements<AudioObject>().size() == 1);
+    REQUIRE(admDocument3->getElements<AudioTrackUid>().size() == 1);
+    REQUIRE(admDocument3->getElements<AudioStreamFormat>().size() == 1);
+    REQUIRE(admDocument3->getElements<AudioTrackFormat>().size() == 1);
+    REQUIRE(admDocument3->getElements<AudioPackFormat>().size() == 1);
+    REQUIRE(admDocument3->getElements<AudioChannelFormat>().size() == 1);
 */
 }
 
@@ -366,7 +361,7 @@ std::vector<T> asVector(std::initializer_list<T> l) {
  * The {add;set}Reference method should automatically add the object to the
  * document.
  */
-BOOST_AUTO_TEST_CASE(add_reference_without_parent) {
+TEST_CASE("add_reference_without_parent") {
   using namespace adm;
 
   auto programme = AudioProgramme::create(AudioProgrammeName("MyProgramme"));
@@ -396,44 +391,44 @@ BOOST_AUTO_TEST_CASE(add_reference_without_parent) {
   auto admDocument = Document::create();
   admDocument->add(programme);
   programme->addReference(content);
-  BOOST_TEST(admDocument->getElements<AudioContent>() == asVector({content}));
+  REQUIRE(admDocument->getElements<AudioContent>() == asVector({content}));
   content->addReference(object1);
-  BOOST_TEST(admDocument->getElements<AudioObject>() == asVector({object1}));
+  REQUIRE(admDocument->getElements<AudioObject>() == asVector({object1}));
   object1->addReference(trackUid);
-  BOOST_TEST(admDocument->getElements<AudioTrackUid>() == asVector({trackUid}));
+  REQUIRE(admDocument->getElements<AudioTrackUid>() == asVector({trackUid}));
   object1->addReference(packFormat1);
-  BOOST_TEST(admDocument->getElements<AudioPackFormat>() ==
-             asVector({packFormat1}));
+  REQUIRE(admDocument->getElements<AudioPackFormat>() ==
+          asVector({packFormat1}));
   object1->addReference(object2);
-  BOOST_TEST(admDocument->getElements<AudioObject>() ==
-             asVector({object1, object2}));
+  REQUIRE(admDocument->getElements<AudioObject>() ==
+          asVector({object1, object2}));
   trackUid->setReference(trackFormat1);
-  BOOST_TEST(admDocument->getElements<AudioTrackFormat>() ==
-             asVector({trackFormat1}));
+  REQUIRE(admDocument->getElements<AudioTrackFormat>() ==
+          asVector({trackFormat1}));
   trackUid->setReference(packFormat2);
-  BOOST_TEST(admDocument->getElements<AudioPackFormat>() ==
-             asVector({packFormat1, packFormat2}));
+  REQUIRE(admDocument->getElements<AudioPackFormat>() ==
+          asVector({packFormat1, packFormat2}));
   packFormat1->addReference(channelFormat1);
-  BOOST_TEST(admDocument->getElements<AudioChannelFormat>() ==
-             asVector({channelFormat1}));
+  REQUIRE(admDocument->getElements<AudioChannelFormat>() ==
+          asVector({channelFormat1}));
   packFormat1->addReference(packFormat3);
-  BOOST_TEST(admDocument->getElements<AudioPackFormat>() ==
-             asVector({packFormat1, packFormat2, packFormat3}));
+  REQUIRE(admDocument->getElements<AudioPackFormat>() ==
+          asVector({packFormat1, packFormat2, packFormat3}));
   trackFormat1->setReference(streamFormat);
-  BOOST_TEST(admDocument->getElements<AudioStreamFormat>() ==
-             asVector({streamFormat}));
+  REQUIRE(admDocument->getElements<AudioStreamFormat>() ==
+          asVector({streamFormat}));
   streamFormat->setReference(packFormat4);
-  BOOST_TEST(admDocument->getElements<AudioPackFormat>() ==
-             asVector({packFormat1, packFormat2, packFormat3, packFormat4}));
+  REQUIRE(admDocument->getElements<AudioPackFormat>() ==
+          asVector({packFormat1, packFormat2, packFormat3, packFormat4}));
   streamFormat->setReference(channelFormat2);
-  BOOST_TEST(admDocument->getElements<AudioChannelFormat>() ==
-             asVector({channelFormat1, channelFormat2}));
+  REQUIRE(admDocument->getElements<AudioChannelFormat>() ==
+          asVector({channelFormat1, channelFormat2}));
   streamFormat->addReference(std::weak_ptr<AudioTrackFormat>(trackFormat2));
-  BOOST_TEST(admDocument->getElements<AudioTrackFormat>() ==
-             asVector({trackFormat1, trackFormat2}));
+  REQUIRE(admDocument->getElements<AudioTrackFormat>() ==
+          asVector({trackFormat1, trackFormat2}));
 }
 
-BOOST_AUTO_TEST_CASE(remove_elements) {
+TEST_CASE("remove_elements") {
   using namespace adm;
   // add elements multiple times
   auto admDocument = Document::create();
@@ -467,42 +462,42 @@ BOOST_AUTO_TEST_CASE(remove_elements) {
 
   admDocument->add(audioProgramme);
   admDocument->add(audioProgramme2);
-  BOOST_TEST(admDocument->remove(audioProgramme) == true);
-  BOOST_TEST(admDocument->getElements<AudioProgramme>().size() == 1);
-  BOOST_TEST(admDocument->remove(audioProgramme) == false);
+  REQUIRE(admDocument->remove(audioProgramme) == true);
+  REQUIRE(admDocument->getElements<AudioProgramme>().size() == 1);
+  REQUIRE(admDocument->remove(audioProgramme) == false);
   admDocument->add(audioContent);
   admDocument->add(audioContent2);
-  BOOST_TEST(admDocument->remove(audioContent) == true);
-  BOOST_TEST(admDocument->getElements<AudioContent>().size() == 1);
-  BOOST_TEST(admDocument->remove(audioContent) == false);
+  REQUIRE(admDocument->remove(audioContent) == true);
+  REQUIRE(admDocument->getElements<AudioContent>().size() == 1);
+  REQUIRE(admDocument->remove(audioContent) == false);
   admDocument->add(audioObject);
   admDocument->add(audioObject2);
-  BOOST_TEST(admDocument->remove(audioObject) == true);
-  BOOST_TEST(admDocument->getElements<AudioObject>().size() == 1);
-  BOOST_TEST(admDocument->remove(audioObject) == false);
+  REQUIRE(admDocument->remove(audioObject) == true);
+  REQUIRE(admDocument->getElements<AudioObject>().size() == 1);
+  REQUIRE(admDocument->remove(audioObject) == false);
   admDocument->add(audioPackFormat);
   admDocument->add(audioPackFormat2);
-  BOOST_TEST(admDocument->remove(audioPackFormat) == true);
-  BOOST_TEST(admDocument->getElements<AudioPackFormat>().size() == 1);
-  BOOST_TEST(admDocument->remove(audioPackFormat) == false);
+  REQUIRE(admDocument->remove(audioPackFormat) == true);
+  REQUIRE(admDocument->getElements<AudioPackFormat>().size() == 1);
+  REQUIRE(admDocument->remove(audioPackFormat) == false);
   admDocument->add(audioTrackUid);
   admDocument->add(audioTrackUid2);
-  BOOST_TEST(admDocument->remove(audioTrackUid) == true);
-  BOOST_TEST(admDocument->getElements<AudioTrackUid>().size() == 1);
-  BOOST_TEST(admDocument->remove(audioTrackUid) == false);
+  REQUIRE(admDocument->remove(audioTrackUid) == true);
+  REQUIRE(admDocument->getElements<AudioTrackUid>().size() == 1);
+  REQUIRE(admDocument->remove(audioTrackUid) == false);
   admDocument->add(audioChannelFormat);
   admDocument->add(audioChannelFormat2);
-  BOOST_TEST(admDocument->remove(audioChannelFormat) == true);
-  BOOST_TEST(admDocument->getElements<AudioChannelFormat>().size() == 1);
-  BOOST_TEST(admDocument->remove(audioChannelFormat) == false);
+  REQUIRE(admDocument->remove(audioChannelFormat) == true);
+  REQUIRE(admDocument->getElements<AudioChannelFormat>().size() == 1);
+  REQUIRE(admDocument->remove(audioChannelFormat) == false);
   admDocument->add(audioStreamFormat);
   admDocument->add(audioStreamFormat2);
-  BOOST_TEST(admDocument->remove(audioStreamFormat) == true);
-  BOOST_TEST(admDocument->getElements<AudioStreamFormat>().size() == 1);
-  BOOST_TEST(admDocument->remove(audioStreamFormat) == false);
+  REQUIRE(admDocument->remove(audioStreamFormat) == true);
+  REQUIRE(admDocument->getElements<AudioStreamFormat>().size() == 1);
+  REQUIRE(admDocument->remove(audioStreamFormat) == false);
   admDocument->add(audioTrackFormat);
   admDocument->add(audioTrackFormat2);
-  BOOST_TEST(admDocument->remove(audioTrackFormat) == true);
-  BOOST_TEST(admDocument->getElements<AudioTrackFormat>().size() == 1);
-  BOOST_TEST(admDocument->remove(audioTrackFormat) == false);
+  REQUIRE(admDocument->remove(audioTrackFormat) == true);
+  REQUIRE(admDocument->getElements<AudioTrackFormat>().size() == 1);
+  REQUIRE(admDocument->remove(audioTrackFormat) == false);
 }

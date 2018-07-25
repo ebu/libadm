@@ -1,15 +1,9 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+#include <catch2/catch.hpp>
 #include "adm/elements/audio_channel_format.hpp"
 #include "adm/utilities/comparator.hpp"
 
-#define BOOST_TEST_MODULE AudioChannelFormat
-#include <boost/test/included/unit_test.hpp>
-
-#include <iostream>
-
-BOOST_AUTO_TEST_CASE(audio_channel_format) {
+TEST_CASE("audio_channel_format") {
   using namespace adm;
   // Basic tests
   {
@@ -22,25 +16,26 @@ BOOST_AUTO_TEST_CASE(audio_channel_format) {
     audioChannelFormat->set(AudioChannelFormatName("MyNewChannelFormat"));
     audioChannelFormat->set(Frequency(LowPass(120.f)));
 
-    BOOST_TEST(audioChannelFormat->has<AudioChannelFormatId>());
-    BOOST_TEST(audioChannelFormat->has<AudioChannelFormatName>());
-    BOOST_TEST(audioChannelFormat->has<TypeDescriptor>());
-    BOOST_TEST(audioChannelFormat->has<Frequency>());
+    REQUIRE(audioChannelFormat->has<AudioChannelFormatId>());
+    REQUIRE(audioChannelFormat->has<AudioChannelFormatName>());
+    REQUIRE(audioChannelFormat->has<TypeDescriptor>());
+    REQUIRE(audioChannelFormat->has<Frequency>());
 
-    BOOST_TEST(
+    REQUIRE(
         audioChannelFormat->get<AudioChannelFormatId>().get<TypeDescriptor>() ==
         TypeDefinition::DIRECT_SPEAKERS);
-    BOOST_TEST(audioChannelFormat->get<AudioChannelFormatId>()
-                   .get<AudioChannelFormatIdValue>() == 1u);
-    BOOST_TEST(audioChannelFormat->get<AudioChannelFormatName>() ==
-               "MyNewChannelFormat");
-    BOOST_TEST(audioChannelFormat->get<TypeDescriptor>() ==
-               TypeDefinition::DIRECT_SPEAKERS);
-    BOOST_TEST(audioChannelFormat->get<Frequency>().get<LowPass>() == 120.f);
+    REQUIRE(audioChannelFormat->get<AudioChannelFormatId>()
+                .get<AudioChannelFormatIdValue>() == 1u);
+    REQUIRE(audioChannelFormat->get<AudioChannelFormatName>() ==
+            "MyNewChannelFormat");
+    REQUIRE(audioChannelFormat->get<TypeDescriptor>() ==
+            TypeDefinition::DIRECT_SPEAKERS);
+    REQUIRE(audioChannelFormat->get<Frequency>().get<LowPass>().get() ==
+            Approx(120.f));
 
     audioChannelFormat->unset<Frequency>();
 
-    BOOST_TEST(audioChannelFormat->has<Frequency>() == false);
+    REQUIRE(audioChannelFormat->has<Frequency>() == false);
   }
   // Sorting tests
   {
@@ -64,10 +59,10 @@ BOOST_AUTO_TEST_CASE(audio_channel_format) {
 
     auto blockFormats =
         audioChannelFormat->getElements<AudioBlockFormatDirectSpeakers>();
-    BOOST_TEST(blockFormats.size() == 3);
+    REQUIRE(blockFormats.size() == 3);
     Rtime previousRtime(std::chrono::seconds(0));
     for (auto &blockFormat : blockFormats) {
-      BOOST_CHECK(previousRtime < blockFormat.get<Rtime>());
+      REQUIRE(previousRtime.get() < blockFormat.get<Rtime>().get());
       previousRtime = blockFormat.get<Rtime>();
     }
   }

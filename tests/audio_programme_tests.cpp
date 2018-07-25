@@ -1,12 +1,8 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+#include <catch2/catch.hpp>
 #include "adm/elements/audio_programme.hpp"
 
-#define BOOST_TEST_MODULE AudioProgramme
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(audio_programme) {
+TEST_CASE("audio_programme") {
   using namespace adm;
   // Attributes / Elements
   {
@@ -21,29 +17,29 @@ BOOST_AUTO_TEST_CASE(audio_programme) {
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // audioProgramme->set(AudioProgrammeReferenceScreen());
 
-    BOOST_TEST(audioProgramme->has<AudioProgrammeId>());
-    BOOST_TEST(audioProgramme->has<AudioProgrammeName>());
-    BOOST_TEST(audioProgramme->has<AudioProgrammeLanguage>());
-    BOOST_TEST(audioProgramme->has<Start>());
-    BOOST_TEST(audioProgramme->has<End>());
-    BOOST_TEST(audioProgramme->has<LoudnessMetadata>());
-    BOOST_TEST(audioProgramme->has<MaxDuckingDepth>());
+    REQUIRE(audioProgramme->has<AudioProgrammeId>());
+    REQUIRE(audioProgramme->has<AudioProgrammeName>());
+    REQUIRE(audioProgramme->has<AudioProgrammeLanguage>());
+    REQUIRE(audioProgramme->has<Start>());
+    REQUIRE(audioProgramme->has<End>());
+    REQUIRE(audioProgramme->has<LoudnessMetadata>());
+    REQUIRE(audioProgramme->has<MaxDuckingDepth>());
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
-    // BOOST_TEST(audioProgramme->has<AudioProgrammeReferenceScreen>());
+    // REQUIRE(audioProgramme->has<AudioProgrammeReferenceScreen>());
 
-    BOOST_TEST(
+    REQUIRE(
         audioProgramme->get<AudioProgrammeId>().get<AudioProgrammeIdValue>() ==
         1u);
-    BOOST_TEST(audioProgramme->get<AudioProgrammeName>() == "MyProgramme");
-    BOOST_TEST(audioProgramme->get<AudioProgrammeLanguage>() == "de");
-    BOOST_CHECK(audioProgramme->get<Start>() == std::chrono::seconds(0));
-    BOOST_CHECK(audioProgramme->get<End>() == std::chrono::seconds(10));
-    BOOST_TEST(audioProgramme->get<LoudnessMetadata>().method == "");
-    BOOST_TEST(audioProgramme->get<LoudnessMetadata>().recType == "");
-    BOOST_TEST(audioProgramme->get<LoudnessMetadata>().correctionType == "");
-    BOOST_TEST(audioProgramme->get<MaxDuckingDepth>() == -30);
+    REQUIRE(audioProgramme->get<AudioProgrammeName>() == "MyProgramme");
+    REQUIRE(audioProgramme->get<AudioProgrammeLanguage>() == "de");
+    REQUIRE(audioProgramme->get<Start>().get() == std::chrono::seconds(0));
+    REQUIRE(audioProgramme->get<End>().get() == std::chrono::seconds(10));
+    REQUIRE(audioProgramme->get<LoudnessMetadata>().method == "");
+    REQUIRE(audioProgramme->get<LoudnessMetadata>().recType == "");
+    REQUIRE(audioProgramme->get<LoudnessMetadata>().correctionType == "");
+    REQUIRE(audioProgramme->get<MaxDuckingDepth>() == -30);
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
-    // BOOST_TEST(audioProgramme->get<AudioProgrammeReferenceScreen>() == ???);
+    // REQUIRE(audioProgramme->get<AudioProgrammeReferenceScreen>() == ???);
 
     audioProgramme->unset<AudioProgrammeLanguage>();
     audioProgramme->unset<Start>();
@@ -53,13 +49,13 @@ BOOST_AUTO_TEST_CASE(audio_programme) {
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // audioProgramme->unset<AudioProgrammeReferenceScreen>();
 
-    BOOST_TEST(!audioProgramme->has<AudioProgrammeLanguage>());
-    BOOST_TEST(audioProgramme->has<Start>());
-    BOOST_TEST(!audioProgramme->has<End>());
-    BOOST_TEST(!audioProgramme->has<LoudnessMetadata>());
-    BOOST_TEST(!audioProgramme->has<MaxDuckingDepth>());
+    REQUIRE(!audioProgramme->has<AudioProgrammeLanguage>());
+    REQUIRE(audioProgramme->has<Start>());
+    REQUIRE(!audioProgramme->has<End>());
+    REQUIRE(!audioProgramme->has<LoudnessMetadata>());
+    REQUIRE(!audioProgramme->has<MaxDuckingDepth>());
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
-    // BOOST_TEST(!audioProgramme->has<AudioProgrammeReferenceScreen>());
+    // REQUIRE(!audioProgramme->has<AudioProgrammeReferenceScreen>());
   }
   // References
   {
@@ -72,15 +68,15 @@ BOOST_AUTO_TEST_CASE(audio_programme) {
     // add references
     audioProgramme->addReference(referencedAudioContent);
     audioProgramme->addReference(referencedAudioContent);
-    BOOST_TEST(audioProgramme->getReferences<AudioContent>().size() == 1);
+    REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 1);
 
     // remove references
     audioProgramme->removeReference(referencedAudioContent);
-    BOOST_TEST(audioProgramme->getReferences<AudioContent>().size() == 0);
+    REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 0);
 
     // clear references
     audioProgramme->addReference(referencedAudioContent);
     audioProgramme->clearReferences<AudioContent>();
-    BOOST_TEST(audioProgramme->getReferences<AudioContent>().size() == 0);
+    REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 0);
   }
 }

@@ -1,12 +1,7 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <catch2/catch.hpp>
 #include "adm/utilities/object_creation.hpp"
 
-#define BOOST_TEST_MODULE ObjectCreation
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(add_in_loop) {
+TEST_CASE("add_in_loop") {
   using namespace adm;
 
   auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
@@ -18,10 +13,10 @@ BOOST_AUTO_TEST_CASE(add_in_loop) {
   }
   auto document = Document::create();
   document->add(programme);
-  BOOST_TEST(document->getElements<AudioStreamFormat>().size() == 10);
+  REQUIRE(document->getElements<AudioStreamFormat>().size() == 10);
 }
 
-BOOST_AUTO_TEST_CASE(add_object_loop) {
+TEST_CASE("add_object_loop") {
   using namespace adm;
 
   auto object = AudioObject::create(AudioObjectName("Object"));
@@ -38,5 +33,5 @@ BOOST_AUTO_TEST_CASE(add_object_loop) {
   }
   auto document = Document::create();
   document->add(object);
-  BOOST_TEST(document->getElements<AudioStreamFormat>().size() == 10);
+  REQUIRE(document->getElements<AudioStreamFormat>().size() == 10);
 }

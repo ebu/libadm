@@ -1,19 +1,17 @@
+#include <catch2/catch.hpp>
+#include <sstream>
 #include "adm/detail/enum_bitmask.hpp"
 
-#define BOOST_TEST_MODULE AdmId
-#include <boost/test/included/unit_test.hpp>
+namespace adm {
 
+  enum class TestOptions : unsigned {
+    none = 0x0,
+    secure = 0x1,
+    relaxed = 0x2,
+    verbose = 0x4
+  };
 
-  namespace adm {
-
-    enum class TestOptions : unsigned {
-      none = 0x0,
-      secure = 0x1,
-      relaxed = 0x2,
-      verbose = 0x4
-    };
-
-  }  // namespace adm
+}  // namespace adm
 
 ENABLE_ENUM_BITMASK_OPERATORS(adm::TestOptions);
 
@@ -27,40 +25,39 @@ std::ostream& operator<<(std::ostream& stream, adm::TestOptions opt) {
   return stream;
 }
 
-BOOST_AUTO_TEST_CASE(bitmask_operators) {
+TEST_CASE("bitmask_operators") {
   using adm::TestOptions;
   {
     TestOptions opt = TestOptions::secure | TestOptions::verbose;
-    BOOST_CHECK_EQUAL(unsigned(opt), 0x1 | 0x4);
+    REQUIRE(unsigned(opt) == (0x1 | 0x4));
   }
   {
     TestOptions opt = TestOptions::secure;
     opt |= TestOptions::verbose;
-    BOOST_CHECK_EQUAL(unsigned(opt), 0x1 | 0x4);
+    REQUIRE(unsigned(opt) == (0x1 | 0x4));
   }
   {
     TestOptions opt =
         TestOptions::verbose & (TestOptions::secure | TestOptions::verbose);
-    BOOST_CHECK_EQUAL(unsigned(opt), 0x4 & (0x1 | 0x4));
+    REQUIRE(unsigned(opt) == (0x4 & (0x1 | 0x4)));
   }
   {
     TestOptions opt = (TestOptions::secure | TestOptions::verbose);
     opt &= TestOptions::verbose;
-    BOOST_CHECK_EQUAL(unsigned(opt), 0x4 & (0x1 | 0x4));
+    REQUIRE(unsigned(opt) == (0x4 & (0x1 | 0x4)));
   }
   {
     TestOptions opt = (TestOptions::secure | TestOptions::verbose);
     opt ^= TestOptions::verbose;
-    BOOST_CHECK_EQUAL(unsigned(opt), 0x4 ^ (0x1 | 0x4));
+    REQUIRE(unsigned(opt) == (0x4 ^ (0x1 | 0x4)));
   }
   {
     TestOptions opt = ~TestOptions::secure;
-    BOOST_CHECK_EQUAL(unsigned(opt), ~0x1);
+    REQUIRE(unsigned(opt) == (~0x1));
   }
 }
 
-std::string options_to_string(
-    adm::TestOptions opt = adm::TestOptions::none) {
+std::string options_to_string(adm::TestOptions opt = adm::TestOptions::none) {
   using adm::TestOptions;
   std::stringstream ss;
 
@@ -76,65 +73,55 @@ std::string options_to_string(
   return ss.str();
 }
 
-BOOST_AUTO_TEST_CASE(options_as_parameter) {
+TEST_CASE("options_as_parameter") {
   using adm::TestOptions;
   // this test case evaluates the primary use case these bitmask enum options:
   // pass a combination of enum values to a function and check which bits are
   // set
-  BOOST_CHECK_EQUAL(options_to_string(), "");
-  BOOST_CHECK_EQUAL(options_to_string(TestOptions::secure), "secure");
-  BOOST_CHECK_EQUAL(options_to_string(TestOptions::relaxed), "relaxed");
-  BOOST_CHECK_EQUAL(options_to_string(TestOptions::verbose), "verbose");
-  BOOST_CHECK_EQUAL(
-      options_to_string(TestOptions::relaxed | TestOptions::secure),
-      "securerelaxed");
-  BOOST_CHECK_EQUAL(
-      options_to_string(TestOptions::relaxed | TestOptions::secure |
-                        TestOptions::verbose),
-      "securerelaxedverbose");
+  REQUIRE(options_to_string() == "");
+  REQUIRE(options_to_string(TestOptions::secure) == "secure");
+  REQUIRE(options_to_string(TestOptions::relaxed) == "relaxed");
+  REQUIRE(options_to_string(TestOptions::verbose) == "verbose");
+  REQUIRE(options_to_string(TestOptions::relaxed | TestOptions::secure) ==
+          "securerelaxed");
+  REQUIRE(options_to_string(TestOptions::relaxed | TestOptions::secure |
+                            TestOptions::verbose) == "securerelaxedverbose");
 
-  BOOST_CHECK_EQUAL(
-      options_to_string(
-          (TestOptions::relaxed | TestOptions::secure | TestOptions::verbose) &
-          TestOptions::secure),
-      "secure");
+  REQUIRE(options_to_string((TestOptions::relaxed | TestOptions::secure |
+                             TestOptions::verbose) &
+                            TestOptions::secure) == "secure");
 
-  BOOST_CHECK_EQUAL(
-      options_to_string((TestOptions::relaxed | TestOptions::verbose) &
-                        TestOptions::secure),
-      "");
-  BOOST_CHECK_EQUAL(
-      options_to_string(~(TestOptions::relaxed | TestOptions::verbose)),
-      "secure");
-  BOOST_CHECK_EQUAL(
-      options_to_string(
-          (TestOptions::relaxed | TestOptions::secure | TestOptions::verbose) ^
-          TestOptions::secure),
-      "relaxedverbose");
+  REQUIRE(options_to_string((TestOptions::relaxed | TestOptions::verbose) &
+                            TestOptions::secure) == "");
+  REQUIRE(options_to_string(~(TestOptions::relaxed | TestOptions::verbose)) ==
+          "secure");
+  REQUIRE(options_to_string((TestOptions::relaxed | TestOptions::secure |
+                             TestOptions::verbose) ^
+                            TestOptions::secure) == "relaxedverbose");
 }
 
-BOOST_AUTO_TEST_CASE(options_manipulation) {
+TEST_CASE("options_manipulation") {
   using adm::TestOptions;
 
   TestOptions options = TestOptions::none;
 
   // check if a flag/option is set using bitwise AND
-  BOOST_TEST(!isSet(options, TestOptions::secure));
-  BOOST_TEST(!isSet(options, TestOptions::relaxed));
-  BOOST_TEST(!isSet(options, TestOptions::verbose));
+  REQUIRE(!isSet(options, TestOptions::secure));
+  REQUIRE(!isSet(options, TestOptions::relaxed));
+  REQUIRE(!isSet(options, TestOptions::verbose));
 
   // set a flag/option using bitwise OR
   options |= TestOptions::relaxed;
   options |= TestOptions::verbose;
 
-  BOOST_TEST(!isSet(options, TestOptions::secure));
-  BOOST_TEST(isSet(options, TestOptions::relaxed));
-  BOOST_TEST(isSet(options, TestOptions::verbose));
+  REQUIRE(!isSet(options, TestOptions::secure));
+  REQUIRE(isSet(options, TestOptions::relaxed));
+  REQUIRE(isSet(options, TestOptions::verbose));
 
   // unset a flag using bitwise NOT + AND
   options &= ~TestOptions::relaxed;
 
-  BOOST_TEST(!isSet(options, TestOptions::secure));
-  BOOST_TEST(!isSet(options, TestOptions::relaxed));
-  BOOST_TEST(isSet(options, TestOptions::verbose));
+  REQUIRE(!isSet(options, TestOptions::secure));
+  REQUIRE(!isSet(options, TestOptions::relaxed));
+  REQUIRE(isSet(options, TestOptions::verbose));
 }

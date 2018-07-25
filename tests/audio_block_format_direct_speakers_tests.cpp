@@ -1,59 +1,54 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+#include <catch2/catch.hpp>
 #include "adm/elements/audio_block_format_direct_speakers.hpp"
 
-#define BOOST_TEST_MODULE AudioBlockFormatDirectSpeakers
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(audio_block_format_direct_speakers,
-                     *boost::unit_test::tolerance(1e-6)) {
+TEST_CASE("audio_block_format_direct_speakers") {
   using namespace adm;
   {
     AudioBlockFormatDirectSpeakers blockFormat;
     auto speakerPosition = SpeakerPosition(Azimuth(30), Elevation(10));
 
-    BOOST_TEST(blockFormat.has<AudioBlockFormatId>() == true);
-    BOOST_TEST(blockFormat.has<Rtime>() == true);
-    BOOST_TEST(blockFormat.has<Duration>() == false);
-    BOOST_TEST(blockFormat.has<SpeakerLabels>() == false);
-    BOOST_TEST(blockFormat.has<SpeakerPosition>() == false);
+    REQUIRE(blockFormat.has<AudioBlockFormatId>() == true);
+    REQUIRE(blockFormat.has<Rtime>() == true);
+    REQUIRE(blockFormat.has<Duration>() == false);
+    REQUIRE(blockFormat.has<SpeakerLabels>() == false);
+    REQUIRE(blockFormat.has<SpeakerPosition>() == false);
 
-    BOOST_TEST(blockFormat.isDefault<Rtime>() == true);
-    BOOST_CHECK(blockFormat.get<Rtime>() == std::chrono::seconds(0));
+    REQUIRE(blockFormat.isDefault<Rtime>() == true);
+    REQUIRE(blockFormat.get<Rtime>().get() == std::chrono::seconds(0));
 
     blockFormat.set(Rtime(std::chrono::seconds(1)));
     blockFormat.set(Duration(std::chrono::seconds(10)));
     blockFormat.set(speakerPosition);
     blockFormat.add(SpeakerLabel("M+30"));
 
-    BOOST_TEST(blockFormat.has<AudioBlockFormatId>() == true);
-    BOOST_TEST(blockFormat.has<Rtime>() == true);
-    BOOST_TEST(blockFormat.has<Duration>() == true);
-    BOOST_TEST(blockFormat.has<SpeakerLabels>() == true);
-    BOOST_TEST(blockFormat.has<SpeakerPosition>() == true);
+    REQUIRE(blockFormat.has<AudioBlockFormatId>() == true);
+    REQUIRE(blockFormat.has<Rtime>() == true);
+    REQUIRE(blockFormat.has<Duration>() == true);
+    REQUIRE(blockFormat.has<SpeakerLabels>() == true);
+    REQUIRE(blockFormat.has<SpeakerPosition>() == true);
 
-    BOOST_TEST(blockFormat.isDefault<Rtime>() == false);
-    BOOST_TEST(blockFormat.isDefault<Duration>() == false);
+    REQUIRE(blockFormat.isDefault<Rtime>() == false);
+    REQUIRE(blockFormat.isDefault<Duration>() == false);
 
-    BOOST_CHECK(blockFormat.get<Rtime>() == std::chrono::seconds(1));
-    BOOST_CHECK(blockFormat.get<Duration>() == std::chrono::seconds(10));
-    BOOST_TEST(*blockFormat.get<SpeakerLabels>().begin() == "M+30");
-    BOOST_TEST(blockFormat.get<SpeakerPosition>().get<Azimuth>() == 30);
-    BOOST_TEST(blockFormat.get<SpeakerPosition>().get<Elevation>() == 10);
+    REQUIRE(blockFormat.get<Rtime>().get() == std::chrono::seconds(1));
+    REQUIRE(blockFormat.get<Duration>().get() == std::chrono::seconds(10));
+    REQUIRE(*blockFormat.get<SpeakerLabels>().begin() == "M+30");
+    REQUIRE(blockFormat.get<SpeakerPosition>().get<Azimuth>() == 30);
+    REQUIRE(blockFormat.get<SpeakerPosition>().get<Elevation>() == 10);
 
     blockFormat.unset<Rtime>();
     blockFormat.unset<Duration>();
     blockFormat.unset<SpeakerLabels>();
     blockFormat.unset<SpeakerPosition>();
 
-    BOOST_TEST(blockFormat.has<Rtime>() == true);
-    BOOST_TEST(blockFormat.has<Duration>() == false);
-    BOOST_TEST(blockFormat.has<SpeakerLabels>() == false);
-    BOOST_TEST(blockFormat.has<SpeakerPosition>() == false);
+    REQUIRE(blockFormat.has<Rtime>() == true);
+    REQUIRE(blockFormat.has<Duration>() == false);
+    REQUIRE(blockFormat.has<SpeakerLabels>() == false);
+    REQUIRE(blockFormat.has<SpeakerPosition>() == false);
 
-    BOOST_TEST(blockFormat.isDefault<Rtime>() == true);
+    REQUIRE(blockFormat.isDefault<Rtime>() == true);
 
-    BOOST_CHECK(blockFormat.get<Rtime>() == std::chrono::seconds(0));
+    REQUIRE(blockFormat.get<Rtime>().get() == std::chrono::seconds(0));
   }
 }
