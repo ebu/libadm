@@ -42,7 +42,7 @@ set(CMAKE_CXX_EXTENSIONS FALSE)
 ############################################################
 # find libraries
 ############################################################
-find_package(Boost REQUIRED)
+find_package(Boost 1.57 REQUIRED)
 
 ############################################################
 # configure files
