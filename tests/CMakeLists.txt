@@ -11,17 +11,9 @@ function(add_adm_test name)
   add_test(
     NAME ${name}
     COMMAND $<TARGET_FILE:${name}>
-    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test_data
   )
 endfunction()
-
-# copy test files so unit test can find them relative to their running location
-# when executed as "test" target
-if(CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-  file(COPY test_data DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-else()
-  file(COPY test_data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-endif()
 
 add_library(catch_main OBJECT main.cpp)
 target_include_directories(catch_main PRIVATE ${CMAKE_SOURCE_DIR}/submodules)
@@ -74,5 +66,5 @@ add_adm_test("xml_parser_audio_track_format_tests")
 add_adm_test("xml_parser_audio_track_uid_tests")
 add_adm_test("xml_parser_find_audio_format_extended_tests")
 add_adm_test("xml_parser_tests")
-# add_adm_test("xml_writer_tests")
-# add_adm_test("xml_writer_audio_object_interaction_tests")
+add_adm_test("xml_writer_tests")
+add_adm_test("xml_writer_audio_object_interaction_tests")

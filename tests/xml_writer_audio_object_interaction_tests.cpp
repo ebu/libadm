@@ -1,18 +1,12 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <catch2/catch.hpp>
 #include "adm/document.hpp"
 #include "adm/elements.hpp"
 #include "adm/utilities/id_assignment.hpp"
 #include "adm/utilities/object_creation.hpp"
 #include "adm/xml_writer.hpp"
-#include <iostream>
+#include "helper/file_comparator.hpp"
 
-#define BOOST_TEST_MODULE XmlWriter
-#include <boost/test/included/unit_test.hpp>
-#include <boost/test/output_test_stream.hpp>
-
-BOOST_AUTO_TEST_CASE(write_audio_object_interaction) {
+TEST_CASE("write_audio_object_interaction") {
   using namespace adm;
 
   auto audioObjectSpherical = AudioObject::create(AudioObjectName("Spherical"));
@@ -38,9 +32,8 @@ BOOST_AUTO_TEST_CASE(write_audio_object_interaction) {
   document->add(audioObjectSpherical);
   document->add(audioObjectCartesian);
 
-  boost::test_tools::output_test_stream output(
-      "test_data/xml_writer_audio_object_interaction.xml", true);
-  writeXml(output, document);
+  std::stringstream xml;
+  writeXml(xml, document);
 
-  BOOST_TEST(output.match_pattern(false));
+  CHECK_THAT(xml.str(), EqualsXmlFile("write_audio_object_interaction"));
 }
