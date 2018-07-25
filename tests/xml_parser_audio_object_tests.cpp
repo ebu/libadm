@@ -1,16 +1,12 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+#include <catch2/catch.hpp>
 #include <sstream>
 #include "adm/document.hpp"
 #include "adm/elements/audio_object.hpp"
 #include "adm/xml_reader.hpp"
 #include "adm/errors.hpp"
 
-#define BOOST_TEST_MODULE XmlParserAudioObject
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(xml_parser_audio_object) {
+TEST_CASE("xml_parser_audio_object") {
   using namespace adm;
   // Minimal
   {
@@ -26,12 +22,12 @@ BOOST_AUTO_TEST_CASE(xml_parser_audio_object) {
     auto audioObjects = document->getElements<AudioObject>();
     auto audioObject = *audioObjects.begin();
 
-    BOOST_TEST(audioObject->has<AudioObjectName>() == true);
-    BOOST_TEST(audioObject->has<AudioObjectId>() == true);
+    REQUIRE(audioObject->has<AudioObjectName>() == true);
+    REQUIRE(audioObject->has<AudioObjectId>() == true);
 
-    BOOST_TEST(audioObject->get<AudioObjectName>() == "MyObject");
-    BOOST_TEST(audioObject->get<AudioObjectId>().get<AudioObjectIdValue>() ==
-               0x1001u);
+    REQUIRE(audioObject->get<AudioObjectName>() == "MyObject");
+    REQUIRE(audioObject->get<AudioObjectId>().get<AudioObjectIdValue>() ==
+            0x1001u);
   }
 
   // Full
@@ -54,28 +50,28 @@ BOOST_AUTO_TEST_CASE(xml_parser_audio_object) {
     auto audioObjects = document->getElements<AudioObject>();
     auto audioObject = *audioObjects.begin();
 
-    BOOST_TEST(audioObject->has<AudioObjectName>() == true);
-    BOOST_TEST(audioObject->has<AudioObjectId>() == true);
-    BOOST_TEST(audioObject->has<Start>() == true);
-    BOOST_TEST(audioObject->has<Duration>() == true);
-    BOOST_TEST(audioObject->has<DialogueId>() == true);
-    BOOST_TEST(audioObject->has<Importance>() == true);
-    BOOST_TEST(audioObject->has<Interact>() == true);
-    BOOST_TEST(audioObject->has<DisableDucking>() == true);
+    REQUIRE(audioObject->has<AudioObjectName>() == true);
+    REQUIRE(audioObject->has<AudioObjectId>() == true);
+    REQUIRE(audioObject->has<Start>() == true);
+    REQUIRE(audioObject->has<Duration>() == true);
+    REQUIRE(audioObject->has<DialogueId>() == true);
+    REQUIRE(audioObject->has<Importance>() == true);
+    REQUIRE(audioObject->has<Interact>() == true);
+    REQUIRE(audioObject->has<DisableDucking>() == true);
 
-    BOOST_TEST(audioObject->get<AudioObjectName>() == "MyObject");
-    BOOST_TEST(audioObject->get<AudioObjectId>().get<AudioObjectIdValue>() ==
-               0x1001u);
-    BOOST_CHECK(audioObject->get<Start>() == std::chrono::seconds(0));
-    BOOST_CHECK(audioObject->get<Duration>() == std::chrono::seconds(10));
-    BOOST_TEST(audioObject->get<DialogueId>() == Dialogue::NON_DIALOGUE);
-    BOOST_TEST(audioObject->get<Importance>() == 10);
-    BOOST_TEST(audioObject->get<Interact>() == false);
-    BOOST_TEST(audioObject->get<DisableDucking>() == true);
+    REQUIRE(audioObject->get<AudioObjectName>() == "MyObject");
+    REQUIRE(audioObject->get<AudioObjectId>().get<AudioObjectIdValue>() ==
+            0x1001u);
+    REQUIRE(audioObject->get<Start>().get() == std::chrono::seconds(0));
+    REQUIRE(audioObject->get<Duration>().get() == std::chrono::seconds(10));
+    REQUIRE(audioObject->get<DialogueId>() == Dialogue::NON_DIALOGUE);
+    REQUIRE(audioObject->get<Importance>() == 10);
+    REQUIRE(audioObject->get<Interact>() == false);
+    REQUIRE(audioObject->get<DisableDucking>() == true);
   }
 }
 
-BOOST_AUTO_TEST_CASE(duplicate_id) {
+TEST_CASE("duplicate_id") {
   std::istringstream admStream(
       "<audioFormatExtended>"
 
@@ -105,6 +101,6 @@ BOOST_AUTO_TEST_CASE(duplicate_id) {
 
       "</audioFormatExtended>");
 
-  BOOST_CHECK_THROW(adm::parseXml(admStream),
+  REQUIRE_THROWS_AS(adm::parseXml(admStream),
                     adm::error::XmlParsingDuplicateId);
 }

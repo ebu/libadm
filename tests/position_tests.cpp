@@ -1,82 +1,77 @@
-#include <boost/mpl/bool.hpp>
-#include <boost/mpl/assert.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <catch2/catch.hpp>
 #include "adm/elements/position.hpp"
 
-#define BOOST_TEST_MODULE Position
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(position, *boost::unit_test::tolerance(1e-6)) {
+TEST_CASE("position") {
   using namespace adm;
   // Default contructor
   {
     SphericalPosition position;
-    BOOST_TEST(position.has<Azimuth>() == true);
-    BOOST_TEST(position.has<Elevation>() == true);
-    BOOST_TEST(position.has<Distance>() == true);
-    BOOST_TEST(position.has<ScreenEdgeLock>() == false);
+    REQUIRE(position.has<Azimuth>() == true);
+    REQUIRE(position.has<Elevation>() == true);
+    REQUIRE(position.has<Distance>() == true);
+    REQUIRE(position.has<ScreenEdgeLock>() == false);
 
-    BOOST_TEST(position.isDefault<Azimuth>() == false);
-    BOOST_TEST(position.isDefault<Elevation>() == false);
-    BOOST_TEST(position.isDefault<Distance>() == true);
-    BOOST_TEST(position.isDefault<ScreenEdgeLock>() == false);
+    REQUIRE(position.isDefault<Azimuth>() == false);
+    REQUIRE(position.isDefault<Elevation>() == false);
+    REQUIRE(position.isDefault<Distance>() == true);
+    REQUIRE(position.isDefault<ScreenEdgeLock>() == false);
 
-    BOOST_TEST(position.get<Azimuth>() == 0.f);
-    BOOST_TEST(position.get<Elevation>() == 0.f);
-    BOOST_TEST(position.get<Distance>() == 1.f);
+    REQUIRE(position.get<Azimuth>() == Approx(0.f));
+    REQUIRE(position.get<Elevation>() == Approx(0.f));
+    REQUIRE(position.get<Distance>() == Approx(1.f));
   }
   {
     CartesianPosition position;
-    BOOST_TEST(position.has<X>() == true);
-    BOOST_TEST(position.has<Y>() == true);
-    BOOST_TEST(position.has<Z>() == true);
-    BOOST_TEST(position.has<ScreenEdgeLock>() == false);
+    REQUIRE(position.has<X>() == true);
+    REQUIRE(position.has<Y>() == true);
+    REQUIRE(position.has<Z>() == true);
+    REQUIRE(position.has<ScreenEdgeLock>() == false);
 
-    BOOST_TEST(position.isDefault<X>() == false);
-    BOOST_TEST(position.isDefault<Y>() == false);
-    BOOST_TEST(position.isDefault<Z>() == true);
-    BOOST_TEST(position.isDefault<ScreenEdgeLock>() == false);
+    REQUIRE(position.isDefault<X>() == false);
+    REQUIRE(position.isDefault<Y>() == false);
+    REQUIRE(position.isDefault<Z>() == true);
+    REQUIRE(position.isDefault<ScreenEdgeLock>() == false);
 
-    BOOST_TEST(position.get<X>() == 0.f);
-    BOOST_TEST(position.get<Y>() == 1.f);
-    BOOST_TEST(position.get<Z>() == 0.f);
+    REQUIRE(position.get<X>() == Approx(0.f));
+    REQUIRE(position.get<Y>() == Approx(1.f));
+    REQUIRE(position.get<Z>() == Approx(0.f));
   }
   // Full specification
   {
     SphericalPosition position(Azimuth(30.f), Elevation(45.f), Distance(0.5f),
                                ScreenEdgeLock(ScreenEdge("left")));
-    BOOST_TEST(position.has<Azimuth>() == true);
-    BOOST_TEST(position.has<Elevation>() == true);
-    BOOST_TEST(position.has<Distance>() == true);
-    BOOST_TEST(position.has<ScreenEdgeLock>() == true);
+    REQUIRE(position.has<Azimuth>() == true);
+    REQUIRE(position.has<Elevation>() == true);
+    REQUIRE(position.has<Distance>() == true);
+    REQUIRE(position.has<ScreenEdgeLock>() == true);
 
-    BOOST_TEST(position.isDefault<Azimuth>() == false);
-    BOOST_TEST(position.isDefault<Elevation>() == false);
-    BOOST_TEST(position.isDefault<Distance>() == false);
-    BOOST_TEST(position.isDefault<ScreenEdgeLock>() == false);
+    REQUIRE(position.isDefault<Azimuth>() == false);
+    REQUIRE(position.isDefault<Elevation>() == false);
+    REQUIRE(position.isDefault<Distance>() == false);
+    REQUIRE(position.isDefault<ScreenEdgeLock>() == false);
 
-    BOOST_TEST(position.get<Azimuth>() == 30.f);
-    BOOST_TEST(position.get<Elevation>() == 45.f);
-    BOOST_TEST(position.get<Distance>() == 0.5f);
-    BOOST_TEST(position.get<ScreenEdgeLock>().get<HorizontalEdge>() == "left");
+    REQUIRE(position.get<Azimuth>() == Approx(30.f));
+    REQUIRE(position.get<Elevation>() == Approx(45.f));
+    REQUIRE(position.get<Distance>() == Approx(0.5f));
+    REQUIRE(position.get<ScreenEdgeLock>().get<HorizontalEdge>() == "left");
   }
   {
     CartesianPosition position(X(1.f), Y(-1.f), Z(0.f),
                                ScreenEdgeLock(ScreenEdge("left")));
-    BOOST_TEST(position.has<X>() == true);
-    BOOST_TEST(position.has<Y>() == true);
-    BOOST_TEST(position.has<Z>() == true);
-    BOOST_TEST(position.has<ScreenEdgeLock>() == true);
+    REQUIRE(position.has<X>() == true);
+    REQUIRE(position.has<Y>() == true);
+    REQUIRE(position.has<Z>() == true);
+    REQUIRE(position.has<ScreenEdgeLock>() == true);
 
-    BOOST_TEST(position.isDefault<X>() == false);
-    BOOST_TEST(position.isDefault<Y>() == false);
-    BOOST_TEST(position.isDefault<Z>() == false);
-    BOOST_TEST(position.isDefault<ScreenEdgeLock>() == false);
+    REQUIRE(position.isDefault<X>() == false);
+    REQUIRE(position.isDefault<Y>() == false);
+    REQUIRE(position.isDefault<Z>() == false);
+    REQUIRE(position.isDefault<ScreenEdgeLock>() == false);
 
-    BOOST_TEST(position.get<X>() == 1.f);
-    BOOST_TEST(position.get<Y>() == -1.f);
-    BOOST_TEST(position.get<Z>() == 0.f);
-    BOOST_TEST(position.get<ScreenEdgeLock>().get<HorizontalEdge>() == "left");
+    REQUIRE(position.get<X>() == Approx(1.f));
+    REQUIRE(position.get<Y>() == Approx(-1.f));
+    REQUIRE(position.get<Z>() == Approx(0.f));
+    REQUIRE(position.get<ScreenEdgeLock>().get<HorizontalEdge>() == "left");
   }
   // Position variant
   {

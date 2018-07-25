@@ -1,16 +1,11 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <catch2/catch.hpp>
 #include <sstream>
 #include "adm/document.hpp"
 #include "adm/elements/audio_content.hpp"
 #include "adm/xml_reader.hpp"
 #include "adm/errors.hpp"
 
-#define BOOST_TEST_MODULE XmlParserAudioContent
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(xml_parser_audio_content) {
+TEST_CASE("xml_parser_audio_content") {
   using namespace adm;
   // Minimal
   {
@@ -26,14 +21,14 @@ BOOST_AUTO_TEST_CASE(xml_parser_audio_content) {
     auto audioContents = document->getElements<AudioContent>();
     auto audioContent = *audioContents.begin();
 
-    BOOST_TEST(audioContent->has<AudioContentName>() == true);
-    BOOST_TEST(audioContent->has<AudioContentId>() == true);
-    BOOST_TEST(audioContent->has<LoudnessMetadata>() == false);
-    BOOST_TEST(audioContent->has<DialogueId>() == false);
+    REQUIRE(audioContent->has<AudioContentName>() == true);
+    REQUIRE(audioContent->has<AudioContentId>() == true);
+    REQUIRE(audioContent->has<LoudnessMetadata>() == false);
+    REQUIRE(audioContent->has<DialogueId>() == false);
 
-    BOOST_TEST(audioContent->get<AudioContentName>() == "MyContent");
-    BOOST_TEST(audioContent->get<AudioContentId>().get<AudioContentIdValue>() ==
-               0x1001u);
+    REQUIRE(audioContent->get<AudioContentName>() == "MyContent");
+    REQUIRE(audioContent->get<AudioContentId>().get<AudioContentIdValue>() ==
+            0x1001u);
   }
 
   // Full
@@ -64,23 +59,23 @@ BOOST_AUTO_TEST_CASE(xml_parser_audio_content) {
     auto audioContents = document->getElements<AudioContent>();
     auto audioContent = *audioContents.begin();
 
-    BOOST_TEST(audioContent->has<AudioContentName>() == true);
-    BOOST_TEST(audioContent->has<AudioContentId>() == true);
-    BOOST_TEST(audioContent->has<AudioContentLanguage>() == true);
-    BOOST_TEST(audioContent->has<LoudnessMetadata>() == true);
-    BOOST_TEST(audioContent->has<DialogueId>() == true);
+    REQUIRE(audioContent->has<AudioContentName>() == true);
+    REQUIRE(audioContent->has<AudioContentId>() == true);
+    REQUIRE(audioContent->has<AudioContentLanguage>() == true);
+    REQUIRE(audioContent->has<LoudnessMetadata>() == true);
+    REQUIRE(audioContent->has<DialogueId>() == true);
 
-    BOOST_TEST(audioContent->get<AudioContentName>() == "MyContent");
-    BOOST_TEST(audioContent->get<AudioContentId>().get<AudioContentIdValue>() ==
-               0x1001u);
-    BOOST_TEST(audioContent->get<AudioContentLanguage>() == "en");
-    BOOST_TEST(audioContent->get<DialogueId>() == Dialogue::DIALOGUE);
-    BOOST_TEST(audioContent->get<DialogueContentKind>() ==
-               DialogueContent::VOICEOVER);
+    REQUIRE(audioContent->get<AudioContentName>() == "MyContent");
+    REQUIRE(audioContent->get<AudioContentId>().get<AudioContentIdValue>() ==
+            0x1001u);
+    REQUIRE(audioContent->get<AudioContentLanguage>() == "en");
+    REQUIRE(audioContent->get<DialogueId>() == Dialogue::DIALOGUE);
+    REQUIRE(audioContent->get<DialogueContentKind>() ==
+            DialogueContent::VOICEOVER);
   }
 }
 
-BOOST_AUTO_TEST_CASE(duplicate_id) {
+TEST_CASE("duplicate_id") {
   std::istringstream admStream(
       "<audioFormatExtended>"
       "<audioContent "
@@ -96,6 +91,6 @@ BOOST_AUTO_TEST_CASE(duplicate_id) {
       ">"
       "</audioContent>"
       "</audioFormatExtended>");
-  BOOST_CHECK_THROW(adm::parseXml(admStream),
+  REQUIRE_THROWS_AS(adm::parseXml(admStream),
                     adm::error::XmlParsingDuplicateId);
 }

@@ -1,14 +1,10 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+#include <catch2/catch.hpp>
 #include "adm/elements/audio_channel_format.hpp"
 #include "adm/elements/audio_stream_format.hpp"
 #include "adm/elements/audio_track_format.hpp"
 
-#define BOOST_TEST_MODULE AudioStreamFormat
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(audio_stream_format) {
+TEST_CASE("audio_stream_format") {
   using namespace adm;
   // Attributes / Elements
   {
@@ -19,19 +15,19 @@ BOOST_AUTO_TEST_CASE(audio_stream_format) {
                                                AudioStreamFormatIdValue(1)));
     audioStreamFormat->set(AudioStreamFormatName("MyNewStreamFormat"));
 
-    BOOST_TEST(audioStreamFormat->has<AudioStreamFormatId>());
-    BOOST_TEST(audioStreamFormat->has<AudioStreamFormatName>());
-    BOOST_TEST(audioStreamFormat->has<FormatDescriptor>());
-    BOOST_TEST(
+    REQUIRE(audioStreamFormat->has<AudioStreamFormatId>());
+    REQUIRE(audioStreamFormat->has<AudioStreamFormatName>());
+    REQUIRE(audioStreamFormat->has<FormatDescriptor>());
+    REQUIRE(
         audioStreamFormat->get<AudioStreamFormatId>().get<TypeDescriptor>() ==
         TypeDefinition::OBJECTS);
 
-    BOOST_TEST(audioStreamFormat->get<AudioStreamFormatId>()
-                   .get<AudioStreamFormatIdValue>() == 1u);
-    BOOST_TEST(audioStreamFormat->get<AudioStreamFormatName>() ==
-               "MyNewStreamFormat");
-    BOOST_TEST(audioStreamFormat->get<FormatDescriptor>() ==
-               FormatDefinition::PCM);
+    REQUIRE(audioStreamFormat->get<AudioStreamFormatId>()
+                .get<AudioStreamFormatIdValue>() == 1u);
+    REQUIRE(audioStreamFormat->get<AudioStreamFormatName>() ==
+            "MyNewStreamFormat");
+    REQUIRE(audioStreamFormat->get<FormatDescriptor>() ==
+            FormatDefinition::PCM);
   }
   // References
   {
@@ -52,25 +48,24 @@ BOOST_AUTO_TEST_CASE(audio_stream_format) {
         std::weak_ptr<AudioTrackFormat>(audioTrackFormat));
     audioStreamFormat->addReference(
         std::weak_ptr<AudioTrackFormat>(audioTrackFormat));
-    BOOST_TEST(audioStreamFormat->getReference<AudioChannelFormat>() ==
-               audioChannelFormat);
-    BOOST_TEST(audioStreamFormat->getReference<AudioPackFormat>() ==
-               audioPackFormat);
-    BOOST_TEST(audioStreamFormat->getAudioTrackFormatReferences().size() == 1);
+    REQUIRE(audioStreamFormat->getReference<AudioChannelFormat>() ==
+            audioChannelFormat);
+    REQUIRE(audioStreamFormat->getReference<AudioPackFormat>() ==
+            audioPackFormat);
+    REQUIRE(audioStreamFormat->getAudioTrackFormatReferences().size() == 1);
 
     // remove references
     audioStreamFormat->removeReference<AudioChannelFormat>();
     audioStreamFormat->removeReference<AudioPackFormat>();
     audioStreamFormat->removeReference(audioTrackFormat);
-    BOOST_CHECK(audioStreamFormat->getReference<AudioChannelFormat>() ==
-                nullptr);
-    BOOST_CHECK(audioStreamFormat->getReference<AudioPackFormat>() == nullptr);
-    BOOST_TEST(audioStreamFormat->getAudioTrackFormatReferences().size() == 0);
+    REQUIRE(audioStreamFormat->getReference<AudioChannelFormat>() == nullptr);
+    REQUIRE(audioStreamFormat->getReference<AudioPackFormat>() == nullptr);
+    REQUIRE(audioStreamFormat->getAudioTrackFormatReferences().size() == 0);
 
     // clear references
     audioStreamFormat->addReference(
         std::weak_ptr<AudioTrackFormat>(audioTrackFormat));
     audioStreamFormat->clearReferences<AudioTrackFormat>();
-    BOOST_TEST(audioStreamFormat->getAudioTrackFormatReferences().size() == 0);
+    REQUIRE(audioStreamFormat->getAudioTrackFormatReferences().size() == 0);
   }
 }

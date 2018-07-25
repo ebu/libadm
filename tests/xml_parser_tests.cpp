@@ -1,11 +1,8 @@
+#include <catch2/catch.hpp>
 #include "adm/private/rapidxml_utils.hpp"
 #include "adm/private/rapidxml_wrapper.hpp"
-#define BOOST_TEST_MODULE XmlParser
-#include <boost/test/included/unit_test.hpp>
 
-#include <iostream>
-
-BOOST_AUTO_TEST_CASE(line_number_calculation) {
+TEST_CASE("line_number_calculation") {
   using namespace adm;
   {
     std::istringstream admStream(
@@ -25,8 +22,8 @@ BOOST_AUTO_TEST_CASE(line_number_calculation) {
     auto root = xmlDocument.first_node();
     auto freq = root->first_node()->first_node();
     auto p = adm::xml::getDocumentLine(freq);
-    BOOST_TEST(p == 2);
+    REQUIRE(p == 2);
     p = adm::xml::getDocumentLine(freq->first_attribute());
-    BOOST_TEST(p == 3);
+    REQUIRE(p == 3);
   }
 }

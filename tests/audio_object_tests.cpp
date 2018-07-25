@@ -1,15 +1,11 @@
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/is_same.hpp>
+#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+#include <catch2/catch.hpp>
 #include "adm/elements/audio_object.hpp"
 #include "adm/elements/audio_pack_format.hpp"
 #include "adm/elements/audio_track_uid.hpp"
 #include "adm/errors.hpp"
 
-#define BOOST_TEST_MODULE AudioObject
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(audio_object_basic) {
+TEST_CASE("audio_object_basic") {
   using namespace adm;
 
   auto audioObject = AudioObject::create(AudioObjectName("MyObject"));
@@ -24,26 +20,26 @@ BOOST_AUTO_TEST_CASE(audio_object_basic) {
   audioObject->set(DisableDucking(true));
   audioObject->set(AudioObjectInteraction(OnOffInteract(true)));
 
-  BOOST_TEST(audioObject->has<AudioObjectId>() == true);
-  BOOST_TEST(audioObject->has<AudioObjectName>() == true);
-  BOOST_TEST(audioObject->has<Start>() == true);
-  BOOST_TEST(audioObject->has<Duration>() == true);
-  BOOST_TEST(audioObject->has<DialogueId>() == true);
-  BOOST_TEST(audioObject->has<Importance>() == true);
-  BOOST_TEST(audioObject->has<Interact>() == true);
-  BOOST_TEST(audioObject->has<DisableDucking>() == true);
-  BOOST_TEST(audioObject->has<AudioObjectInteraction>() == true);
+  REQUIRE(audioObject->has<AudioObjectId>() == true);
+  REQUIRE(audioObject->has<AudioObjectName>() == true);
+  REQUIRE(audioObject->has<Start>() == true);
+  REQUIRE(audioObject->has<Duration>() == true);
+  REQUIRE(audioObject->has<DialogueId>() == true);
+  REQUIRE(audioObject->has<Importance>() == true);
+  REQUIRE(audioObject->has<Interact>() == true);
+  REQUIRE(audioObject->has<DisableDucking>() == true);
+  REQUIRE(audioObject->has<AudioObjectInteraction>() == true);
 
-  BOOST_TEST(audioObject->get<AudioObjectId>().get<AudioObjectIdValue>() == 1u);
-  BOOST_TEST(audioObject->get<AudioObjectName>() == "MyNewObject");
-  BOOST_CHECK(audioObject->get<Start>() == std::chrono::seconds(0));
-  BOOST_CHECK(audioObject->get<Duration>() == std::chrono::seconds(10));
-  BOOST_TEST(audioObject->get<DialogueId>() == Dialogue::NON_DIALOGUE);
-  BOOST_TEST(audioObject->get<Importance>() == 10);
-  BOOST_TEST(audioObject->get<Interact>() == false);
-  BOOST_TEST(audioObject->get<DisableDucking>() == true);
-  BOOST_TEST(audioObject->get<AudioObjectInteraction>().get<OnOffInteract>() ==
-             true);
+  REQUIRE(audioObject->get<AudioObjectId>().get<AudioObjectIdValue>() == 1u);
+  REQUIRE(audioObject->get<AudioObjectName>() == "MyNewObject");
+  REQUIRE(audioObject->get<Start>().get() == std::chrono::seconds(0));
+  REQUIRE(audioObject->get<Duration>().get() == std::chrono::seconds(10));
+  REQUIRE(audioObject->get<DialogueId>() == Dialogue::NON_DIALOGUE);
+  REQUIRE(audioObject->get<Importance>() == 10);
+  REQUIRE(audioObject->get<Interact>() == false);
+  REQUIRE(audioObject->get<DisableDucking>() == true);
+  REQUIRE(audioObject->get<AudioObjectInteraction>().get<OnOffInteract>() ==
+          true);
 
   audioObject->unset<Start>();
   audioObject->unset<Duration>();
@@ -53,16 +49,16 @@ BOOST_AUTO_TEST_CASE(audio_object_basic) {
   audioObject->unset<DisableDucking>();
   audioObject->unset<AudioObjectInteraction>();
 
-  BOOST_TEST(audioObject->has<Start>() == true);
-  BOOST_TEST(audioObject->has<Duration>() == false);
-  BOOST_TEST(audioObject->has<DialogueId>() == false);
-  BOOST_TEST(audioObject->has<Importance>() == false);
-  BOOST_TEST(audioObject->has<Interact>() == false);
-  BOOST_TEST(audioObject->has<DisableDucking>() == false);
-  BOOST_TEST(audioObject->has<AudioObjectInteraction>() == false);
+  REQUIRE(audioObject->has<Start>() == true);
+  REQUIRE(audioObject->has<Duration>() == false);
+  REQUIRE(audioObject->has<DialogueId>() == false);
+  REQUIRE(audioObject->has<Importance>() == false);
+  REQUIRE(audioObject->has<Interact>() == false);
+  REQUIRE(audioObject->has<DisableDucking>() == false);
+  REQUIRE(audioObject->has<AudioObjectInteraction>() == false);
 }
 
-BOOST_AUTO_TEST_CASE(audio_object_references) {
+TEST_CASE("audio_object_references") {
   using namespace adm;
 
   auto audioObject = AudioObject::create(AudioObjectName("MyObject"));
@@ -83,18 +79,18 @@ BOOST_AUTO_TEST_CASE(audio_object_references) {
   audioObject->addReference(referencedAudioTrackUid);
   audioObject->addReference(referencedAudioTrackUid);
 
-  BOOST_TEST(audioObject->getReferences<AudioObject>().size() == 1);
-  BOOST_TEST(audioObject->getReferences<AudioPackFormat>().size() == 1);
-  BOOST_TEST(audioObject->getReferences<AudioTrackUid>().size() == 1);
+  REQUIRE(audioObject->getReferences<AudioObject>().size() == 1);
+  REQUIRE(audioObject->getReferences<AudioPackFormat>().size() == 1);
+  REQUIRE(audioObject->getReferences<AudioTrackUid>().size() == 1);
 
   // remove references
   audioObject->removeReference(referencedAudioObject);
   audioObject->removeReference(referencedAudioPackFormat);
   audioObject->removeReference(referencedAudioTrackUid);
 
-  BOOST_TEST(audioObject->getReferences<AudioObject>().size() == 0);
-  BOOST_TEST(audioObject->getReferences<AudioPackFormat>().size() == 0);
-  BOOST_TEST(audioObject->getReferences<AudioTrackUid>().size() == 0);
+  REQUIRE(audioObject->getReferences<AudioObject>().size() == 0);
+  REQUIRE(audioObject->getReferences<AudioPackFormat>().size() == 0);
+  REQUIRE(audioObject->getReferences<AudioTrackUid>().size() == 0);
 
   // clear references
   audioObject->addReference(referencedAudioObject);
@@ -103,23 +99,23 @@ BOOST_AUTO_TEST_CASE(audio_object_references) {
   audioObject->clearReferences<AudioObject>();
   audioObject->clearReferences<AudioPackFormat>();
   audioObject->clearReferences<AudioTrackUid>();
-  BOOST_TEST(audioObject->getReferences<AudioObject>().size() == 0);
-  BOOST_TEST(audioObject->getReferences<AudioPackFormat>().size() == 0);
-  BOOST_TEST(audioObject->getReferences<AudioTrackUid>().size() == 0);
+  REQUIRE(audioObject->getReferences<AudioObject>().size() == 0);
+  REQUIRE(audioObject->getReferences<AudioPackFormat>().size() == 0);
+  REQUIRE(audioObject->getReferences<AudioTrackUid>().size() == 0);
 }
 
-BOOST_AUTO_TEST_CASE(audio_object_referenc_cycle_detection) {
+TEST_CASE("audio_object_referenc_cycle_detection") {
   using namespace adm;
   // reference cycles AudioObjects
   auto audioObject1 = AudioObject::create(AudioObjectName("First"));
   auto audioObject2 = AudioObject::create(AudioObjectName("Second"));
   auto audioObject3 = AudioObject::create(AudioObjectName("Third"));
 
-  BOOST_CHECK_THROW(audioObject1->addReference(audioObject1),
+  REQUIRE_THROWS_AS(audioObject1->addReference(audioObject1),
                     error::AudioObjectReferenceCycle);
   audioObject1->addReference(audioObject2);
   audioObject2->addReference(audioObject3);
-  BOOST_CHECK_THROW(audioObject3->addReference(audioObject1),
+  REQUIRE_THROWS_AS(audioObject3->addReference(audioObject1),
                     error::AudioObjectReferenceCycle);
 
   // reference cycles complementary AudioObjects
@@ -127,15 +123,15 @@ BOOST_AUTO_TEST_CASE(audio_object_referenc_cycle_detection) {
   auto audioObjectComp2 = AudioObject::create(AudioObjectName("Second"));
   auto audioObjectComp3 = AudioObject::create(AudioObjectName("Third"));
 
-  BOOST_CHECK_THROW(audioObjectComp1->addReference(audioObjectComp1),
+  REQUIRE_THROWS_AS(audioObjectComp1->addReference(audioObjectComp1),
                     error::AudioObjectReferenceCycle);
   audioObjectComp1->addReference(audioObjectComp2);
   audioObjectComp2->addReference(audioObjectComp3);
-  BOOST_CHECK_THROW(audioObjectComp3->addReference(audioObjectComp1),
+  REQUIRE_THROWS_AS(audioObjectComp3->addReference(audioObjectComp1),
                     error::AudioObjectReferenceCycle);
 }
 
-BOOST_AUTO_TEST_CASE(audio_object_complementary) {
+TEST_CASE("audio_object_complementary") {
   using namespace adm;
 
   auto audioObject = AudioObject::create(AudioObjectName("MyAudioObject"));
@@ -143,10 +139,10 @@ BOOST_AUTO_TEST_CASE(audio_object_complementary) {
       AudioObject::create(AudioObjectName("MyComplementaryAudioObject"));
   audioObject->addComplementary(compAudioObject);
   audioObject->addComplementary(compAudioObject);
-  BOOST_TEST(audioObject->getComplementaryObjects().size() == 1);
+  REQUIRE(audioObject->getComplementaryObjects().size() == 1);
   audioObject->removeComplementary(compAudioObject);
-  BOOST_TEST(audioObject->getComplementaryObjects().size() == 0);
+  REQUIRE(audioObject->getComplementaryObjects().size() == 0);
   audioObject->addComplementary(compAudioObject);
   audioObject->clearComplementaryObjects();
-  BOOST_TEST(audioObject->getComplementaryObjects().size() == 0);
+  REQUIRE(audioObject->getComplementaryObjects().size() == 0);
 }

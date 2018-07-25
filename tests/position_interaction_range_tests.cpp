@@ -1,29 +1,23 @@
-#include <boost/mpl/bool.hpp>
-#include <boost/mpl/assert.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <catch2/catch.hpp>
 #include "adm/elements/position_interaction_range.hpp"
 
-#define BOOST_TEST_MODULE PositionInteractionRange
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(positionRange_interaction_range,
-                     *boost::unit_test::tolerance(1e-6)) {
+TEST_CASE("positionRange_interaction_range") {
   using namespace adm;
   // Default contructor
   {
     PositionInteractionRange positionRange;
-    BOOST_TEST(positionRange.has<AzimuthInteractionMin>() == false);
-    BOOST_TEST(positionRange.has<ElevationInteractionMin>() == false);
-    BOOST_TEST(positionRange.has<DistanceInteractionMin>() == false);
-    BOOST_TEST(positionRange.has<AzimuthInteractionMax>() == false);
-    BOOST_TEST(positionRange.has<ElevationInteractionMax>() == false);
-    BOOST_TEST(positionRange.has<DistanceInteractionMax>() == false);
-    BOOST_TEST(positionRange.has<XInteractionMin>() == false);
-    BOOST_TEST(positionRange.has<YInteractionMin>() == false);
-    BOOST_TEST(positionRange.has<ZInteractionMin>() == false);
-    BOOST_TEST(positionRange.has<XInteractionMax>() == false);
-    BOOST_TEST(positionRange.has<YInteractionMax>() == false);
-    BOOST_TEST(positionRange.has<ZInteractionMax>() == false);
+    REQUIRE(positionRange.has<AzimuthInteractionMin>() == false);
+    REQUIRE(positionRange.has<ElevationInteractionMin>() == false);
+    REQUIRE(positionRange.has<DistanceInteractionMin>() == false);
+    REQUIRE(positionRange.has<AzimuthInteractionMax>() == false);
+    REQUIRE(positionRange.has<ElevationInteractionMax>() == false);
+    REQUIRE(positionRange.has<DistanceInteractionMax>() == false);
+    REQUIRE(positionRange.has<XInteractionMin>() == false);
+    REQUIRE(positionRange.has<YInteractionMin>() == false);
+    REQUIRE(positionRange.has<ZInteractionMin>() == false);
+    REQUIRE(positionRange.has<XInteractionMax>() == false);
+    REQUIRE(positionRange.has<YInteractionMax>() == false);
+    REQUIRE(positionRange.has<ZInteractionMax>() == false);
   }
   // Full specification
   {
@@ -31,50 +25,50 @@ BOOST_AUTO_TEST_CASE(positionRange_interaction_range,
         AzimuthInteractionMin{-30.f}, ElevationInteractionMin{-45.f},
         DistanceInteractionMin{0.5f}, AzimuthInteractionMax{30.f},
         ElevationInteractionMax{45.f}, DistanceInteractionMax{1.5f});
-    BOOST_TEST(positionRange.has<AzimuthInteractionMin>() == true);
-    BOOST_TEST(positionRange.has<ElevationInteractionMin>() == true);
-    BOOST_TEST(positionRange.has<DistanceInteractionMin>() == true);
-    BOOST_TEST(positionRange.has<AzimuthInteractionMax>() == true);
-    BOOST_TEST(positionRange.has<ElevationInteractionMax>() == true);
-    BOOST_TEST(positionRange.has<DistanceInteractionMax>() == true);
+    REQUIRE(positionRange.has<AzimuthInteractionMin>() == true);
+    REQUIRE(positionRange.has<ElevationInteractionMin>() == true);
+    REQUIRE(positionRange.has<DistanceInteractionMin>() == true);
+    REQUIRE(positionRange.has<AzimuthInteractionMax>() == true);
+    REQUIRE(positionRange.has<ElevationInteractionMax>() == true);
+    REQUIRE(positionRange.has<DistanceInteractionMax>() == true);
 
-    BOOST_TEST(positionRange.isDefault<AzimuthInteractionMin>() == false);
-    BOOST_TEST(positionRange.isDefault<ElevationInteractionMin>() == false);
-    BOOST_TEST(positionRange.isDefault<DistanceInteractionMin>() == false);
-    BOOST_TEST(positionRange.isDefault<AzimuthInteractionMax>() == false);
-    BOOST_TEST(positionRange.isDefault<ElevationInteractionMax>() == false);
-    BOOST_TEST(positionRange.isDefault<DistanceInteractionMax>() == false);
+    REQUIRE(positionRange.isDefault<AzimuthInteractionMin>() == false);
+    REQUIRE(positionRange.isDefault<ElevationInteractionMin>() == false);
+    REQUIRE(positionRange.isDefault<DistanceInteractionMin>() == false);
+    REQUIRE(positionRange.isDefault<AzimuthInteractionMax>() == false);
+    REQUIRE(positionRange.isDefault<ElevationInteractionMax>() == false);
+    REQUIRE(positionRange.isDefault<DistanceInteractionMax>() == false);
 
-    BOOST_TEST(positionRange.get<AzimuthInteractionMin>() == -30.f);
-    BOOST_TEST(positionRange.get<ElevationInteractionMin>() == -45.f);
-    BOOST_TEST(positionRange.get<DistanceInteractionMin>() == 0.5f);
-    BOOST_TEST(positionRange.get<AzimuthInteractionMax>() == 30.f);
-    BOOST_TEST(positionRange.get<ElevationInteractionMax>() == 45.f);
-    BOOST_TEST(positionRange.get<DistanceInteractionMax>() == 1.5f);
+    REQUIRE(positionRange.get<AzimuthInteractionMin>() == Approx(-30.f));
+    REQUIRE(positionRange.get<ElevationInteractionMin>() == Approx(-45.f));
+    REQUIRE(positionRange.get<DistanceInteractionMin>() == Approx(0.5f));
+    REQUIRE(positionRange.get<AzimuthInteractionMax>() == Approx(30.f));
+    REQUIRE(positionRange.get<ElevationInteractionMax>() == Approx(45.f));
+    REQUIRE(positionRange.get<DistanceInteractionMax>() == Approx(1.5f));
   }
   {
     PositionInteractionRange positionRange(
         XInteractionMin{-1.f}, YInteractionMin{-1.f}, ZInteractionMin{-1.f},
         XInteractionMax{1.f}, YInteractionMax{1.f}, ZInteractionMax{1.f});
-    BOOST_TEST(positionRange.has<XInteractionMin>() == true);
-    BOOST_TEST(positionRange.has<YInteractionMin>() == true);
-    BOOST_TEST(positionRange.has<ZInteractionMin>() == true);
-    BOOST_TEST(positionRange.has<XInteractionMax>() == true);
-    BOOST_TEST(positionRange.has<YInteractionMax>() == true);
-    BOOST_TEST(positionRange.has<ZInteractionMax>() == true);
+    REQUIRE(positionRange.has<XInteractionMin>() == true);
+    REQUIRE(positionRange.has<YInteractionMin>() == true);
+    REQUIRE(positionRange.has<ZInteractionMin>() == true);
+    REQUIRE(positionRange.has<XInteractionMax>() == true);
+    REQUIRE(positionRange.has<YInteractionMax>() == true);
+    REQUIRE(positionRange.has<ZInteractionMax>() == true);
 
-    BOOST_TEST(positionRange.isDefault<XInteractionMin>() == false);
-    BOOST_TEST(positionRange.isDefault<YInteractionMin>() == false);
-    BOOST_TEST(positionRange.isDefault<ZInteractionMin>() == false);
-    BOOST_TEST(positionRange.isDefault<XInteractionMax>() == false);
-    BOOST_TEST(positionRange.isDefault<YInteractionMax>() == false);
-    BOOST_TEST(positionRange.isDefault<ZInteractionMax>() == false);
+    REQUIRE(positionRange.isDefault<XInteractionMin>() == false);
+    REQUIRE(positionRange.isDefault<YInteractionMin>() == false);
+    REQUIRE(positionRange.isDefault<ZInteractionMin>() == false);
+    REQUIRE(positionRange.isDefault<XInteractionMax>() == false);
+    REQUIRE(positionRange.isDefault<YInteractionMax>() == false);
+    REQUIRE(positionRange.isDefault<ZInteractionMax>() == false);
 
-    BOOST_TEST(positionRange.get<XInteractionMin>() == -1.f);
-    BOOST_TEST(positionRange.get<YInteractionMin>() == -1.f);
-    BOOST_TEST(positionRange.get<ZInteractionMin>() == -1.f);
-    BOOST_TEST(positionRange.get<XInteractionMax>() == 1.f);
-    BOOST_TEST(positionRange.get<YInteractionMax>() == 1.f);
-    BOOST_TEST(positionRange.get<ZInteractionMax>() == 1.f);
+    REQUIRE(positionRange.get<XInteractionMin>() == Approx(-1.f));
+    REQUIRE(positionRange.get<YInteractionMin>() == Approx(-1.f));
+    REQUIRE(positionRange.get<ZInteractionMin>() == Approx(-1.f));
+    REQUIRE(positionRange.get<XInteractionMax>() == Approx(1.f));
+    REQUIRE(positionRange.get<YInteractionMax>() == Approx(1.f));
+    REQUIRE(positionRange.get<ZInteractionMax>() == Approx(1.f));
   }
 }
