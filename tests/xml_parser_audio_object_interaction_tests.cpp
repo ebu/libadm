@@ -10,7 +10,7 @@ TEST_CASE("write_audio_object_interaction") {
   using namespace adm;
 
   auto admDocument =
-      adm::parseXml("test_data/xml_writer_audio_object_interaction.xml");
+      adm::parseXml("write_audio_object_interaction.accepted.xml");
 
   auto audioObjects = admDocument->getElements<AudioObject>();
   REQUIRE(audioObjects.size() == 2);
