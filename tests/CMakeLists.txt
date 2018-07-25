@@ -18,7 +18,7 @@ endfunction()
 add_library(catch_main OBJECT main.cpp)
 target_include_directories(catch_main PRIVATE ${CMAKE_SOURCE_DIR}/submodules)
 
-# add_adm_test("adm_auto_parenting_tests")
+add_adm_test("adm_auto_parenting_tests")
 add_adm_test("adm_common_definitions_tests")
 add_adm_test("adm_document_tests")
 add_adm_test("adm_id_tests")
