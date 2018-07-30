@@ -22,17 +22,17 @@ namespace adm {
 
   /// BS.2076 type definitions
   namespace TypeDefinition {
-    extern const TypeDescriptor UNDEFINED;
+    LIBADM_EXPORT extern const TypeDescriptor UNDEFINED;
     /// TypeDefinition for Direct Speakers
-    extern const TypeDescriptor DIRECT_SPEAKERS;
+    LIBADM_EXPORT extern const TypeDescriptor DIRECT_SPEAKERS;
     /// TypeDefinition for Matrix
-    extern const TypeDescriptor MATRIX;
+    LIBADM_EXPORT extern const TypeDescriptor MATRIX;
     /// TypeDefinition for Objects
-    extern const TypeDescriptor OBJECTS;
+    LIBADM_EXPORT extern const TypeDescriptor OBJECTS;
     /// TypeDefinition for Higher Order Ambisonics
-    extern const TypeDescriptor HOA;
+    LIBADM_EXPORT extern const TypeDescriptor HOA;
     /// TypeDefinition for Binaural
-    extern const TypeDescriptor BINAURAL;
+    LIBADM_EXPORT extern const TypeDescriptor BINAURAL;
   }  // namespace TypeDefinition
 
   /// @brief Parse a typeLabel and convert it to a TypeDescriptor

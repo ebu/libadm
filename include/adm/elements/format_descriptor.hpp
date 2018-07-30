@@ -23,9 +23,9 @@ namespace adm {
 
   /// BS.2076 format definitions
   namespace FormatDefinition {
-    extern const FormatDescriptor UNDEFINED;
+    LIBADM_EXPORT extern const FormatDescriptor UNDEFINED;
     /// FormatDefinition for PCM
-    extern const FormatDescriptor PCM;
+    LIBADM_EXPORT extern const FormatDescriptor PCM;
   }  // namespace FormatDefinition
 
   /// @brief Parse a formatLabel and convert it to a FormatDescriptor
