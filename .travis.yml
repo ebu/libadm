@@ -6,37 +6,115 @@ matrix:
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=debian:9
+      env:
+        - DOCKER_IMAGE=debian:9
+        - BUILD_SHARED_LIBS=ON
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=ubuntu:17.10
+      env:
+        - DOCKER_IMAGE=debian:9
+        - BUILD_SHARED_LIBS=OFF
+
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=ubuntu:18.04
+      env:
+        - DOCKER_IMAGE=ubuntu:17.10
+        - BUILD_SHARED_LIBS=ON
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=ubuntu:18.10
+      env:
+        - DOCKER_IMAGE=ubuntu:17.10
+        - BUILD_SHARED_LIBS=OFF
+
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=fedora:26
+      env:
+        - DOCKER_IMAGE=ubuntu:18.04
+        - BUILD_SHARED_LIBS=ON
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=fedora:27
+      env:
+        - DOCKER_IMAGE=ubuntu:18.04
+        - BUILD_SHARED_LIBS=OFF
+
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=fedora:28
+      env:
+        - DOCKER_IMAGE=ubuntu:18.10
+        - BUILD_SHARED_LIBS=ON
+
+    - os: linux
+      sudo: required
+      services: docker
+      env:
+        - DOCKER_IMAGE=ubuntu:18.10
+        - BUILD_SHARED_LIBS=OFF
+
+    - os: linux
+      sudo: required
+      services: docker
+      env:
+        - DOCKER_IMAGE=fedora:26
+        - BUILD_SHARED_LIBS=ON
+    - os: linux
+      sudo: required
+      services: docker
+      env:
+        - DOCKER_IMAGE=fedora:26
+        - BUILD_SHARED_LIBS=OFF
+
+    - os: linux
+      sudo: required
+      services: docker
+      env:
+        - DOCKER_IMAGE=fedora:27
+        - BUILD_SHARED_LIBS=ON
+    - os: linux
+      sudo: required
+      services: docker
+      env:
+        - DOCKER_IMAGE=fedora:27
+        - BUILD_SHARED_LIBS=OFF
+
+    - os: linux
+      sudo: required
+      services: docker
+      env:
+        - DOCKER_IMAGE=fedora:28
+        - BUILD_SHARED_LIBS=ON
+    - os: linux
+      sudo: required
+      services: docker
+      env:
+        - DOCKER_IMAGE=fedora:28
+        - BUILD_SHARED_LIBS=OFF
+
     - os: osx
       osx_image: xcode7.3
+      env: BUILD_SHARED_LIBS=ON
+    - os: osx
+      osx_image: xcode7.3
+      env: BUILD_SHARED_LIBS=OFF
+
     - os: osx
       osx_image: xcode8.3
+      env: BUILD_SHARED_LIBS=ON
+    - os: osx
+      osx_image: xcode8.3
+      env: BUILD_SHARED_LIBS=OFF
+
     - os: osx
       osx_image: xcode9.4
+      env: BUILD_SHARED_LIBS=ON
+    - os: osx
+      osx_image: xcode9.4
+      env: BUILD_SHARED_LIBS=OFF
 
 before_install:
   - |
@@ -70,12 +148,12 @@ script:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       docker exec -t linux bash -c "cd /travis;
-      mkdir build && cd build && cmake -G Ninja .. &&
+      mkdir build && cd build && cmake -G Ninja -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} .. &&
       ninja && ninja test"
     fi
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       cd "${TRAVIS_BUILD_DIR}"
-      mkdir build && cd build && cmake -G Ninja .. &&
+      mkdir build && cd build && cmake -G Ninja -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} .. &&
       ninja && ninja test
     fi
