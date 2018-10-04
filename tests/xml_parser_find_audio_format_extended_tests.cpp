@@ -9,3 +9,7 @@ TEST_CASE("find_audio_format_extended_itu") {
 TEST_CASE("find_audio_format_extended_ebu") {
   adm::parseXml("find_audio_format_extended_ebu.xml");
 }
+
+TEST_CASE("find_audio_format_extended_ebu_with_other_metadata") {
+  adm::parseXml("find_audio_format_extended_ebu_with_other_metadata.xml");
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore" xml:lang="en">
+  <coreMetadata>
+    <title typeLabel="FileTitle">
+      <dc:title xml:lang="en">Mono ADM Test File</dc:title>
+    </title>
+    <creator>
+      <organisationDetails>
+        <organisationName>IRT</organisationName>
+      </organisationDetails>
+    </creator>
+    <date>
+      <created startDate="2018-10-02"/>
+    </date>
+    <format>
+      <audioFormatExtended/>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
