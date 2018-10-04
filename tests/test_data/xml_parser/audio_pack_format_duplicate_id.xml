@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioPackFormat audioPackFormatID="AP_00010001" audioPackFormatName="MyPackFormat" typeDefinition="DirectSpeakers"></audioPackFormat>
+        <audioPackFormat audioPackFormatID="AP_00010001" audioPackFormatName="MyPackFormat" typeDefinition="DirectSpeakers"></audioPackFormat>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

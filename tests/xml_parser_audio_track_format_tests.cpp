@@ -6,52 +6,25 @@
 #include "adm/xml_reader.hpp"
 #include "adm/errors.hpp"
 
-TEST_CASE("xml_parser_audio_track_format") {
+TEST_CASE("xml_parser/audio_track_format") {
   using namespace adm;
-  {
-    std::istringstream admStream(
-        "<audioFormatExtended>"
-        "<audioTrackFormat "
-        "audioTrackFormatID=\"AT_00030001_01\" "
-        "audioTrackFormatName=\"MyTrackFormat\" "
-        "formatLabel=\"0001\""
-        "formatDefinition=\"PCM\""
-        ">"
-        "</audioTrackFormat>"
-        "</audioFormatExtended>");
-    auto document = parseXml(admStream);
-    auto trackFormats = document->getElements<AudioTrackFormat>();
-    auto trackFormat = *trackFormats.begin();
-    REQUIRE(
-        trackFormat->get<AudioTrackFormatId>().get<AudioTrackFormatIdValue>() ==
-        0x0001u);
-    REQUIRE(trackFormat->get<AudioTrackFormatId>().get<TypeDescriptor>() ==
-            TypeDefinition::OBJECTS);
-    REQUIRE(trackFormat->get<AudioTrackFormatId>()
-                .get<AudioTrackFormatIdCounter>() == 0x01u);
-    REQUIRE(trackFormat->get<AudioTrackFormatName>() == "MyTrackFormat");
-    REQUIRE(trackFormat->get<FormatDescriptor>() == FormatDefinition::PCM);
-  }
+  auto document = parseXml("xml_parser/audio_track_format.xml");
+  auto trackFormats = document->getElements<AudioTrackFormat>();
+  auto trackFormat = *trackFormats.begin();
+  REQUIRE(
+      trackFormat->get<AudioTrackFormatId>().get<AudioTrackFormatIdValue>() ==
+      0x0001u);
+  REQUIRE(trackFormat->get<AudioTrackFormatId>().get<TypeDescriptor>() ==
+          TypeDefinition::OBJECTS);
+  REQUIRE(
+      trackFormat->get<AudioTrackFormatId>().get<AudioTrackFormatIdCounter>() ==
+      0x01u);
+  REQUIRE(trackFormat->get<AudioTrackFormatName>() == "MyTrackFormat");
+  REQUIRE(trackFormat->get<FormatDescriptor>() == FormatDefinition::PCM);
 }
 
-TEST_CASE("duplicate_id") {
-  std::istringstream admStream(
-      "<audioFormatExtended>"
-      "<audioTrackFormat "
-      "audioTrackFormatID=\"AT_00030001_01\" "
-      "audioTrackFormatName=\"MyTrackFormat\" "
-      "formatLabel=\"0001\""
-      "formatDefinition=\"PCM\""
-      ">"
-      "</audioTrackFormat>"
-      "<audioTrackFormat "
-      "audioTrackFormatID=\"AT_00030001_01\" "
-      "audioTrackFormatName=\"MyTrackFormat\" "
-      "formatLabel=\"0001\""
-      "formatDefinition=\"PCM\""
-      ">"
-      "</audioTrackFormat>"
-      "</audioFormatExtended>");
-  REQUIRE_THROWS_AS(adm::parseXml(admStream),
-                    adm::error::XmlParsingDuplicateId);
+TEST_CASE("xml_parser/audio_track_format_duplicate_id") {
+  REQUIRE_THROWS_AS(
+      adm::parseXml("xml_parser/audio_track_format_duplicate_id.xml"),
+      adm::error::XmlParsingDuplicateId);
 }

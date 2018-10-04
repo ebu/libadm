@@ -6,20 +6,10 @@
 #include "adm/xml_reader.hpp"
 #include "adm/errors.hpp"
 
-TEST_CASE("xml_parser_audio_channel_format") {
+TEST_CASE("xml_parser/audio_channel_format") {
   using namespace adm;
   {
-    std::istringstream admStream(
-        "<audioFormatExtended>"
-        "<audioChannelFormat "
-        "audioChannelFormatID=\"AC_00031002\" "
-        "audioChannelFormatName=\"MyChannelFormat\" "
-        "typeLabel=\"0003\""
-        ">"
-        "<frequency typeDefinition=\"lowPass\">120</frequency>"
-        "</audioChannelFormat>"
-        "</audioFormatExtended>");
-    auto document = parseXml(admStream);
+    auto document = parseXml("xml_parser/audio_channel_format.xml");
     auto channelFormats = document->getElements<AudioChannelFormat>();
     auto channelFormat = *channelFormats.begin();
     REQUIRE(channelFormat->get<AudioChannelFormatId>()
@@ -35,24 +25,8 @@ TEST_CASE("xml_parser_audio_channel_format") {
   }
 }
 
-TEST_CASE("duplicate_id") {
-  std::istringstream admStream(
-      "<audioFormatExtended>"
-      "<audioChannelFormat "
-      "audioChannelFormatID=\"AC_00031002\" "
-      "audioChannelFormatName=\"MyChannelFormat\" "
-      "typeLabel=\"0003\""
-      ">"
-      "<frequency typeDefinition=\"lowPass\">120</frequency>"
-      "</audioChannelFormat>"
-      "<audioChannelFormat "
-      "audioChannelFormatID=\"AC_00031002\" "
-      "audioChannelFormatName=\"MyChannelFormat\" "
-      "typeLabel=\"0003\""
-      ">"
-      "<frequency typeDefinition=\"lowPass\">120</frequency>"
-      "</audioChannelFormat>"
-      "</audioFormatExtended>");
-  REQUIRE_THROWS_AS(adm::parseXml(admStream),
-                    adm::error::XmlParsingDuplicateId);
+TEST_CASE("xml_parser/audio_channel_format_duplicate_id") {
+  REQUIRE_THROWS_AS(
+      adm::parseXml("xml_parser/audio_channel_format_duplicate_id.xml"),
+      adm::error::XmlParsingDuplicateId);
 }

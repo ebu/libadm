@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioTrackFormat audioTrackFormatID="AT_00030001_01" audioTrackFormatName="MyTrackFormat" formatLabel="0001" formatDefinition="PCM"></audioTrackFormat>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

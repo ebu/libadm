@@ -6,53 +6,26 @@
 #include "adm/xml_reader.hpp"
 #include "adm/errors.hpp"
 
-TEST_CASE("xml_parser_audio_pack_format") {
+TEST_CASE("xml_parser/audio_pack_format") {
   using namespace adm;
-  // Minimal
-  {
-    std::istringstream admStream(
-        "<audioFormatExtended>"
-        "<audioPackFormat "
-        "audioPackFormatID=\"AP_00010001\" "
-        "audioPackFormatName=\"MyPackFormat\" "
-        "typeDefinition=\"DirectSpeakers\""
-        "bitDepth=\"24\" "
-        ">"
-        "</audioPackFormat>"
-        "</audioFormatExtended>");
-    auto document = adm::parseXml(admStream);
-    auto audioPackFormats = document->getElements<AudioPackFormat>();
-    auto audioPackFormat = *audioPackFormats.begin();
+  auto document = parseXml("xml_parser/audio_pack_format.xml");
+  auto audioPackFormats = document->getElements<AudioPackFormat>();
+  auto audioPackFormat = *audioPackFormats.begin();
 
-    REQUIRE(audioPackFormat->has<AudioPackFormatId>() == true);
-    REQUIRE(audioPackFormat->has<AudioPackFormatName>() == true);
+  REQUIRE(audioPackFormat->has<AudioPackFormatId>() == true);
+  REQUIRE(audioPackFormat->has<AudioPackFormatName>() == true);
 
-    REQUIRE(audioPackFormat->get<AudioPackFormatId>()
-                .get<AudioPackFormatIdValue>() == 0x0001u);
-    REQUIRE(audioPackFormat->get<AudioPackFormatId>().get<TypeDescriptor>() ==
-            TypeDefinition::DIRECT_SPEAKERS);
-    REQUIRE(audioPackFormat->get<AudioPackFormatName>() == "MyPackFormat");
-  }
+  REQUIRE(
+      audioPackFormat->get<AudioPackFormatId>().get<AudioPackFormatIdValue>() ==
+      0x0001u);
+  REQUIRE(audioPackFormat->get<AudioPackFormatId>().get<TypeDescriptor>() ==
+          TypeDefinition::DIRECT_SPEAKERS);
+  REQUIRE(audioPackFormat->get<AudioPackFormatName>() == "MyPackFormat");
+  REQUIRE(audioPackFormat->get<Importance>() == 10);
 }
 
-TEST_CASE("duplicate_id") {
-  std::istringstream admStream(
-      "<audioFormatExtended>"
-      "<audioPackFormat "
-      "audioPackFormatID=\"AP_00010001\" "
-      "audioPackFormatName=\"MyPackFormat\" "
-      "typeDefinition=\"DirectSpeakers\""
-      "bitDepth=\"24\" "
-      ">"
-      "</audioPackFormat>"
-      "<audioPackFormat "
-      "audioPackFormatID=\"AP_00010001\" "
-      "audioPackFormatName=\"MyPackFormat\" "
-      "typeDefinition=\"DirectSpeakers\""
-      "bitDepth=\"24\" "
-      ">"
-      "</audioPackFormat>"
-      "</audioFormatExtended>");
-  REQUIRE_THROWS_AS(adm::parseXml(admStream),
-                    adm::error::XmlParsingDuplicateId);
+TEST_CASE("xml_parser/audio_pack_format_duplicate_id") {
+  REQUIRE_THROWS_AS(
+      adm::parseXml("xml_parser/audio_pack_format_duplicate_id.xml"),
+      adm::error::XmlParsingDuplicateId);
 }

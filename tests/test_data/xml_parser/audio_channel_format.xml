@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioChannelFormat audioChannelFormatID="AC_00031002" audioChannelFormatName="MyChannelFormat" typeLabel="0003">
+          <frequency typeDefinition="lowPass">120</frequency>
+        </audioChannelFormat>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
