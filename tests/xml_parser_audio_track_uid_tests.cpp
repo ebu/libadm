@@ -5,48 +5,24 @@
 #include "adm/xml_reader.hpp"
 #include "adm/errors.hpp"
 
-TEST_CASE("xml_parser_audio_track_uid") {
+TEST_CASE("xml_parser/audio_track_uid") {
   using namespace adm;
-  // Minimal
-  {
-    std::istringstream admStream(
-        "<audioFormatExtended>"
-        "<audioTrackUID "
-        "UID=\"ATU_00000001\" "
-        "sampleRate=\"48000\" "
-        "bitDepth=\"24\" "
-        "/>"
-        "</audioFormatExtended>");
-    auto document = adm::parseXml(admStream);
-    auto audioTrackUids = document->getElements<AudioTrackUid>();
-    auto audioTrackUid = *audioTrackUids.begin();
+  auto document = parseXml("xml_parser/audio_track_uid.xml");
+  auto audioTrackUids = document->getElements<AudioTrackUid>();
+  auto audioTrackUid = *audioTrackUids.begin();
 
-    REQUIRE(audioTrackUid->has<AudioTrackUidId>() == true);
-    REQUIRE(audioTrackUid->has<SampleRate>() == true);
-    REQUIRE(audioTrackUid->has<BitDepth>() == true);
+  REQUIRE(audioTrackUid->has<AudioTrackUidId>() == true);
+  REQUIRE(audioTrackUid->has<SampleRate>() == true);
+  REQUIRE(audioTrackUid->has<BitDepth>() == true);
 
-    REQUIRE(audioTrackUid->get<AudioTrackUidId>().get<AudioTrackUidIdValue>() ==
-            0x00000001u);
-    REQUIRE(audioTrackUid->get<SampleRate>() == 48000u);
-    REQUIRE(audioTrackUid->get<BitDepth>() == 24u);
-  }
+  REQUIRE(audioTrackUid->get<AudioTrackUidId>().get<AudioTrackUidIdValue>() ==
+          0x00000001u);
+  REQUIRE(audioTrackUid->get<SampleRate>() == 48000u);
+  REQUIRE(audioTrackUid->get<BitDepth>() == 24u);
 }
 
-TEST_CASE("duplicate_id") {
-  std::istringstream admStream(
-      "<audioFormatExtended>"
-      "<audioTrackUID "
-      "UID=\"ATU_00000001\" "
-      "sampleRate=\"48000\" "
-      "bitDepth=\"24\" "
-      "/>"
-      "<audioTrackUID "
-      "UID=\"ATU_00000001\" "
-      "sampleRate=\"48000\" "
-      "bitDepth=\"24\" "
-      "/>"
-      "</audioFormatExtended>");
-
-  REQUIRE_THROWS_AS(adm::parseXml(admStream),
-                    adm::error::XmlParsingDuplicateId);
+TEST_CASE("xml_parser/audio_track_uid_duplicate_id") {
+  REQUIRE_THROWS_AS(
+      adm::parseXml("xml_parser/audio_track_uid_duplicate_id.xml"),
+      adm::error::XmlParsingDuplicateId);
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioObject audioObjectID="AO_1001" audioObjectName="Spherical" interact="1">
+					<audioObjectInteraction onOffInteract="1" gainInteract="1" positionInteract="1">
+						<gainInteractionRange bound="min">0.500000</gainInteractionRange>
+						<gainInteractionRange bound="max">1.500000</gainInteractionRange>
+						<positionInteractionRange coordinate="azimuth" bound="min">-30.000000</positionInteractionRange>
+						<positionInteractionRange coordinate="elevation" bound="min">-45.000000</positionInteractionRange>
+						<positionInteractionRange coordinate="distance" bound="min">0.500000</positionInteractionRange>
+						<positionInteractionRange coordinate="azimuth" bound="max">30.000000</positionInteractionRange>
+						<positionInteractionRange coordinate="elevation" bound="max">45.000000</positionInteractionRange>
+						<positionInteractionRange coordinate="distance" bound="max">1.500000</positionInteractionRange>
+					</audioObjectInteraction>
+				</audioObject>
+				<audioObject audioObjectID="AO_1002" audioObjectName="Cartesian" interact="1">
+					<audioObjectInteraction onOffInteract="1" gainInteract="1" positionInteract="1">
+						<gainInteractionRange bound="min">0.500000</gainInteractionRange>
+						<gainInteractionRange bound="max">1.500000</gainInteractionRange>
+						<positionInteractionRange coordinate="X" bound="min">-1.000000</positionInteractionRange>
+						<positionInteractionRange coordinate="Y" bound="min">-1.000000</positionInteractionRange>
+						<positionInteractionRange coordinate="Z" bound="min">-1.000000</positionInteractionRange>
+						<positionInteractionRange coordinate="X" bound="max">1.000000</positionInteractionRange>
+						<positionInteractionRange coordinate="Y" bound="max">1.000000</positionInteractionRange>
+						<positionInteractionRange coordinate="Z" bound="max">1.000000</positionInteractionRange>
+					</audioObjectInteraction>
+				</audioObject>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+

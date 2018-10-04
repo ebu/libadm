@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme"></audioProgramme>
+        <audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme"></audioProgramme>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

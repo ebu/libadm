@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioTrackUID UID="ATU_00000001" sampleRate="48000" bitDepth="24"/>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
