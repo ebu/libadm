@@ -82,7 +82,8 @@ namespace adm {
   std::shared_ptr<Document> getCommonDefinitions() {
     std::stringstream commonDefinitions;
     getEmbeddedFile("common_definitions.xml", commonDefinitions);
-    return parseXml(commonDefinitions);
+    return parseXml(commonDefinitions,
+                    xml::ReaderOptions::recursive_node_search);
   }
 
 }  // namespace adm

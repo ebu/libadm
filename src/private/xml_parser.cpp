@@ -6,16 +6,34 @@
 namespace adm {
   namespace xml {
 
-    XmlParser::XmlParser(const std::string& filename)
-        : xmlFile_(filename.c_str()) {}
+    /// Check if a option/flag is set
+    /**
+     * Checks if the option @a flag is set within @a options.
+     *
+     * This is equivalent to an bitwise AND followed by a conversion to bool,
+     * but should improve readability.
+     */
+    inline bool isSet(ReaderOptions options, ReaderOptions flag) {
+      return static_cast<bool>(options & flag);
+    }
 
-    XmlParser::XmlParser(std::istream& stream) : xmlFile_(stream) {}
+    XmlParser::XmlParser(const std::string& filename, ReaderOptions options)
+        : xmlFile_(filename.c_str()), options_(options) {}
+
+    XmlParser::XmlParser(std::istream& stream, ReaderOptions options)
+        : xmlFile_(stream), options_(options) {}
 
     std::shared_ptr<Document> XmlParser::parse() {
       rapidxml::xml_document<> xmlDocument;
       xmlDocument.parse<0>(xmlFile_.data());
       document_ = Document::create();
-      auto root = findAudioFormatExtendedNode(xmlDocument.first_node());
+      NodePtr root = nullptr;
+      if (isSet(options_, ReaderOptions::recursive_node_search)) {
+        root =
+            findAudioFormatExtendedNodeFullRecursive(xmlDocument.first_node());
+      } else {
+        root = findAudioFormatExtendedNodeEbuCore(xmlDocument.first_node());
+      }
       if (root) {
         // add ADM elements to ADM document
         for (NodePtr node = root->first_node(); node;
@@ -61,21 +79,53 @@ namespace adm {
      * @brief Find the top level element 'audioFormatExtended'
      *
      * This function recursively tries to find the audioFormatExtended node.
-     * It walks down the XML always checking the name of the first node. It
-     * returns a nullptr if no audioFormatExtended node could be found.
+     * It walks down the XML always checking the names of the nodes. It returns
+     * a nullptr if no audioFormatExtended node could be found.
      *
      * @note: Only the first audioFormatExtended node will be found!
      */
-    NodePtr XmlParser::findAudioFormatExtendedNode(NodePtr root) {
-      if (std::string(root->name()) == "audioFormatExtended") {
-        return root;
-      } else {
-        if (root->first_node()) {
-          return findAudioFormatExtendedNode(root->first_node());
-        } else {
-          return nullptr;
+    NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr node) {
+      if (std::string(node->name()) != "ebuCoreMain") {
+        return nullptr;
+      }
+      auto coreMetadataNodes = detail::findElements(node, "coreMetadata");
+      if (coreMetadataNodes.size() != 1) {
+        return nullptr;
+      }
+      auto formatNodes =
+          detail::findElements(coreMetadataNodes.at(0), "format");
+      if (formatNodes.size() != 1) {
+        return nullptr;
+      }
+      auto audioFormatExtendedNodes =
+          detail::findElements(formatNodes.at(0), "audioFormatExtended");
+      if (audioFormatExtendedNodes.size() != 1) {
+        return nullptr;
+      }
+      return audioFormatExtendedNodes.at(0);
+    }
+
+    /**
+     * @brief Find the top level element 'audioFormatExtended'
+     *
+     * This function recursively tries to find the audioFormatExtended node.
+     * It walks down the XML always checking the names of the nodes. It returns
+     * a nullptr if no audioFormatExtended node could be found.
+     *
+     * @note: Only the first audioFormatExtended node will be found!
+     */
+    NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr node) {
+      if (std::string(node->name()) == "audioFormatExtended") {
+        return node;
+      }
+      for (NodePtr childnode = node->first_node(); childnode;
+           childnode = childnode->next_sibling()) {
+        auto rtnNode = findAudioFormatExtendedNodeFullRecursive(childnode);
+        if (rtnNode) {
+          return rtnNode;
         }
       }
+      return nullptr;
     }
 
     std::shared_ptr<AudioProgramme> XmlParser::parseAudioProgramme(
