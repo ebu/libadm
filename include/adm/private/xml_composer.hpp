@@ -13,14 +13,14 @@ namespace adm {
 
     class XmlComposer {
      public:
-      XmlComposer(WriterOptions options);
+      XmlComposer(WriterOptions options = WriterOptions::none);
 
       void compose(std::shared_ptr<const Document> document);
       std::ostream& writeXmlTo(std::ostream& stream);
 
      private:
       XmlDocument xmlDocument_;
-      WriterOptions options_ = WriterOptions::none;
+      WriterOptions options_;
     };
 
   }  // namespace xml

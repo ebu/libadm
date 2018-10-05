@@ -6,6 +6,7 @@
 #include <vector>
 #include "adm/document.hpp"
 #include "adm/elements.hpp"
+#include "adm/xml_reader.hpp"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
 
@@ -44,18 +45,21 @@ namespace adm {
     SpeakerPosition parseSpeakerPosition(std::vector<NodePtr> node);
     SpeakerLabel parseSpeakerLabel(NodePtr node);
 
+    NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr root);
+    NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
+
     class XmlParser {
      public:
-      XmlParser(const std::string& filename);
-      XmlParser(std::istream& stream);
+      XmlParser(const std::string& filename,
+                ReaderOptions options = ReaderOptions::none);
+      XmlParser(std::istream& stream,
+                ReaderOptions options = ReaderOptions::none);
 
       std::shared_ptr<Document> parse();
 
       bool hasUnresolvedReferences();
 
      private:
-      NodePtr findAudioFormatExtendedNode(NodePtr root);
-
       std::shared_ptr<AudioProgramme> parseAudioProgramme(NodePtr node);
       std::shared_ptr<AudioContent> parseAudioContent(NodePtr node);
       std::shared_ptr<AudioObject> parseAudioObject(NodePtr node);
@@ -67,6 +71,7 @@ namespace adm {
 
       rapidxml::file<> xmlFile_;
       std::shared_ptr<Document> document_;
+      ReaderOptions options_;
 
       // clang-format off
       std::map<std::shared_ptr<AudioProgramme>, std::vector<AudioContentId>> programmeContentRefs_;

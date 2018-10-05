@@ -15,7 +15,7 @@ namespace adm {
      * @brief Representation of available options to influence the behaviour
      * of the XML parser.
      *
-     * `ParserOptions` satisfies the requirements of
+     * `ReaderOptions` satisfies the requirements of
      * [BitmaskType](http://en.cppreference.com/w/cpp/concept/BitmaskType).
      *
      * This means that the bitwise operators (e.g. `operator|` or `operator&`)
@@ -29,8 +29,10 @@ namespace adm {
      * for an example.
      * @ingroup xml
      */
-    enum class ParserOptions : unsigned {
-      none = 0x0  ///< default behaviour
+    enum class ReaderOptions : unsigned {
+      none = 0x0,  ///< default behaviour
+      recursive_node_search =
+          0x1,  ///< recursively search whole xml for audioFormatExtended node
     };
   }  // namespace xml
 
@@ -49,7 +51,7 @@ namespace adm {
    */
   LIBADM_EXPORT std::shared_ptr<Document> parseXml(
       const std::string& filename,
-      xml::ParserOptions options = xml::ParserOptions::none);
+      xml::ReaderOptions options = xml::ReaderOptions::none);
 
   /**
    * @brief Parse an XML representation of the Audio Definition Model
@@ -60,11 +62,11 @@ namespace adm {
    */
   LIBADM_EXPORT std::shared_ptr<Document> parseXml(
       std::istream& stream,
-      xml::ParserOptions options = xml::ParserOptions::none);
+      xml::ReaderOptions options = xml::ReaderOptions::none);
 
   /**
    * @}
    */
 }  // namespace adm
 
-ENABLE_ENUM_BITMASK_OPERATORS(adm::xml::ParserOptions);
+ENABLE_ENUM_BITMASK_OPERATORS(adm::xml::ReaderOptions);
