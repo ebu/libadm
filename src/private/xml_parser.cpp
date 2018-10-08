@@ -17,16 +17,17 @@ namespace adm {
       return static_cast<bool>(options & flag);
     }
 
-    XmlParser::XmlParser(const std::string& filename, ParserOptions options)
-        : xmlFile_(filename.c_str()), options_(options) {}
+    XmlParser::XmlParser(const std::string& filename, ParserOptions options,
+                         std::shared_ptr<Document> document)
+        : xmlFile_(filename.c_str()), options_(options), document_(document) {}
 
-    XmlParser::XmlParser(std::istream& stream, ParserOptions options)
-        : xmlFile_(stream), options_(options) {}
+    XmlParser::XmlParser(std::istream& stream, ParserOptions options,
+                         std::shared_ptr<Document> document)
+        : xmlFile_(stream), options_(options), document_(document) {}
 
     std::shared_ptr<Document> XmlParser::parse() {
       rapidxml::xml_document<> xmlDocument;
       xmlDocument.parse<0>(xmlFile_.data());
-      document_ = Document::create();
       NodePtr root = nullptr;
       if (isSet(options_, ParserOptions::recursive_node_search)) {
         root =
