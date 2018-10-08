@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore" xml:lang="en">
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioObject audioObjectID="AO_1001" audioObjectName="Main">
+          <audioPackFormatIDRef>AP_00010001</audioPackFormatIDRef>
+          <audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+        </audioObject>
+        <audioTrackUID UID="ATU_00000001" sampleRate="48000" bitDepth="24"/>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
