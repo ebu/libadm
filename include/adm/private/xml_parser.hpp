@@ -52,9 +52,11 @@ namespace adm {
     class XmlParser {
      public:
       XmlParser(const std::string& filename,
-                ParserOptions options = ParserOptions::none);
+                ParserOptions options = ParserOptions::none,
+                std::shared_ptr<Document> document = Document::create());
       XmlParser(std::istream& stream,
-                ParserOptions options = ParserOptions::none);
+                ParserOptions options = ParserOptions::none,
+                std::shared_ptr<Document> document = Document::create());
 
       std::shared_ptr<Document> parse();
 
@@ -71,8 +73,8 @@ namespace adm {
       std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(NodePtr node);
 
       rapidxml::file<> xmlFile_;
-      std::shared_ptr<Document> document_;
       ParserOptions options_;
+      std::shared_ptr<Document> document_;
 
       // clang-format off
       std::map<std::shared_ptr<AudioProgramme>, std::vector<AudioContentId>> programmeContentRefs_;
