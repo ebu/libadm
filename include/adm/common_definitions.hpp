@@ -10,6 +10,9 @@ namespace adm {
   /// @brief Load embedded common definitions file and create Document
   ADM_EXPORT std::shared_ptr<Document> getCommonDefinitions();
 
+  /// @brief Add embedded common definitions file to a Document
+  ADM_EXPORT void addCommonDefinitionsTo(std::shared_ptr<Document> document);
+
   /**
    * @brief Lookup table for AudioPackFormats
    *

@@ -243,14 +243,12 @@ definitions. The first thing we need to do is add them to our document.
 .. code-block:: cpp
 
     #include <adm/common_definitions.hpp>
-    #include <adm/utilities/copy.hpp>
     ...
-    auto commonDefDoc = adm::getCommonDefinitions(); // load common definitions
-    adm::deepCopyTo(commonDefDoc, admDocument);      // copy common definitions to our doc
+    auto admDocument = adm::Document::create();
+    addCommonDefinitionsTo(admDocument);    // add common definitions to our doc
 
-Using the function :cpp:func:`adm::deepCopyTo()` ensures, that all the
-references are preserved. Then we manually create our audioObject and the two
-audioTrackUIDs for the left and right channel.
+Then we manually create our audioObject and the two audioTrackUIDs for the left
+and right channel.
 
 .. code-block:: cpp
 

@@ -1,6 +1,7 @@
 #include "adm/common_definitions.hpp"
 #include "resources.hpp"
-#include "adm/parse.hpp"
+#include "adm/private/xml_parser.hpp"
+#include "adm/utilities/copy.hpp"
 
 namespace adm {
 
@@ -82,8 +83,13 @@ namespace adm {
   std::shared_ptr<Document> getCommonDefinitions() {
     std::stringstream commonDefinitions;
     getEmbeddedFile("common_definitions.xml", commonDefinitions);
-    return parseXml(commonDefinitions,
-                    xml::ParserOptions::recursive_node_search);
+    xml::XmlParser parser(commonDefinitions,
+                          xml::ParserOptions::recursive_node_search);
+    return parser.parse();
+  }
+
+  void addCommonDefinitionsTo(std::shared_ptr<Document> document) {
+    deepCopyTo(getCommonDefinitions(), document);
   }
 
 }  // namespace adm
