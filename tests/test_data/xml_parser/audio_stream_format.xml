@@ -3,7 +3,7 @@
   <coreMetadata>
     <format>
       <audioFormatExtended>
-        <audioStreamFormat audioStreamFormatID="AS_00030001" audioStreamFormatName="MyStreamFormat" formatLabel="0001" formatDefinition="PCM"></audioStreamFormat>
+        <audioStreamFormat audioStreamFormatID="AS_00031001" audioStreamFormatName="MyStreamFormat" formatLabel="0001" formatDefinition="PCM"></audioStreamFormat>
       </audioFormatExtended>
     </format>
   </coreMetadata>

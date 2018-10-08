@@ -8,10 +8,10 @@
 TEST_CASE("xml_parser/audio_block_format_direct_speakers") {
   using namespace adm;
   auto document = parseXml("xml_parser/audio_block_format_direct_speakers.xml");
-  auto channelFormats = document->getElements<AudioChannelFormat>();
-  auto channelFormat = *channelFormats.begin();
+  auto channelFormat =
+      document->lookup(parseAudioChannelFormatId("AC_00011001"));
   REQUIRE(channelFormat->get<AudioChannelFormatId>()
-              .get<AudioChannelFormatIdValue>() == 0x0001u);
+              .get<AudioChannelFormatIdValue>() == 0x1001u);
   REQUIRE(channelFormat->get<AudioChannelFormatId>().get<TypeDescriptor>() ==
           TypeDefinition::DIRECT_SPEAKERS);
   REQUIRE(channelFormat->get<AudioChannelFormatName>() == "FrontLeft");

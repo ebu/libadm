@@ -8,8 +8,7 @@
 TEST_CASE("xml_parser/audio_track_uid") {
   using namespace adm;
   auto document = parseXml("xml_parser/audio_track_uid.xml");
-  auto audioTrackUids = document->getElements<AudioTrackUid>();
-  auto audioTrackUid = *audioTrackUids.begin();
+  auto audioTrackUid = document->lookup(parseAudioTrackUidId("ATU_00000001"));
 
   REQUIRE(audioTrackUid->has<AudioTrackUidId>() == true);
   REQUIRE(audioTrackUid->has<SampleRate>() == true);
