@@ -3,8 +3,8 @@
   <coreMetadata>
     <format>
       <audioFormatExtended>
-        <audioChannelFormat audioChannelFormatID="AC_00030001" audioChannelFormatName="MyChannelFormat" typeLabel="0003" typeDefinition="Objects">
-          <audioBlockFormat audioBlockFormatID="AB_00010001_00000001">
+        <audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="MyChannelFormat" typeLabel="0003" typeDefinition="Objects">
+          <audioBlockFormat audioBlockFormatID="AB_00031001_00000001">
             <speakerLabel>M+30</speakerLabel>
             <position coordinate="azimuth">30.0</position>
             <position coordinate="elevation">0.0</position>

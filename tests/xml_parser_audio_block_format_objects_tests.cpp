@@ -9,20 +9,17 @@ TEST_CASE("xml_parser/audio_block_format_objects") {
   using namespace adm;
   {
     auto document = parseXml("xml_parser/audio_block_format_objects.xml");
-    auto channelFormats = document->getElements<AudioChannelFormat>();
-    REQUIRE(channelFormats[0]
-                ->get<AudioChannelFormatId>()
-                .get<AudioChannelFormatIdValue>() == 0x0001u);
-    REQUIRE(
-        channelFormats[0]->get<AudioChannelFormatId>().get<TypeDescriptor>() ==
-        TypeDefinition::OBJECTS);
-    REQUIRE(channelFormats[0]->get<AudioChannelFormatName>() ==
-            "MyChannelFormat");
-    REQUIRE(channelFormats[0]->get<TypeDescriptor>() ==
+    auto channelFormat =
+        document->lookup(parseAudioChannelFormatId("AC_00031001"));
+    REQUIRE(channelFormat->get<AudioChannelFormatId>()
+                .get<AudioChannelFormatIdValue>() == 0x1001u);
+    REQUIRE(channelFormat->get<AudioChannelFormatId>().get<TypeDescriptor>() ==
             TypeDefinition::OBJECTS);
+    REQUIRE(channelFormat->get<AudioChannelFormatName>() == "MyChannelFormat");
+    REQUIRE(channelFormat->get<TypeDescriptor>() == TypeDefinition::OBJECTS);
 
     auto firstBlockFormat =
-        *(channelFormats[0]->getElements<AudioBlockFormatObjects>().begin());
+        *(channelFormat->getElements<AudioBlockFormatObjects>().begin());
     REQUIRE(firstBlockFormat.get<Width>().get() == Approx(45.0f));
     REQUIRE(firstBlockFormat.get<Height>() == Approx(20.0f));
     REQUIRE(firstBlockFormat.get<Depth>() == Approx(0.2f));

@@ -3,7 +3,7 @@
   <coreMetadata>
     <format>
       <audioFormatExtended>
-        <audioPackFormat audioPackFormatID="AP_00010001" audioPackFormatName="MyPackFormat" typeDefinition="DirectSpeakers" importance="10"></audioPackFormat>
+        <audioPackFormat audioPackFormatID="AP_00011001" audioPackFormatName="MyPackFormat" typeDefinition="DirectSpeakers" importance="10"></audioPackFormat>
       </audioFormatExtended>
     </format>
   </coreMetadata>

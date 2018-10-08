@@ -9,8 +9,8 @@
 TEST_CASE("xml_parser/audio_track_format") {
   using namespace adm;
   auto document = parseXml("xml_parser/audio_track_format.xml");
-  auto trackFormats = document->getElements<AudioTrackFormat>();
-  auto trackFormat = *trackFormats.begin();
+  auto trackFormat =
+      document->lookup(parseAudioTrackFormatId("AT_00030001_01"));
   REQUIRE(
       trackFormat->get<AudioTrackFormatId>().get<AudioTrackFormatIdValue>() ==
       0x0001u);

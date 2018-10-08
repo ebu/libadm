@@ -9,15 +9,15 @@
 TEST_CASE("xml_parser/audio_pack_format") {
   using namespace adm;
   auto document = parseXml("xml_parser/audio_pack_format.xml");
-  auto audioPackFormats = document->getElements<AudioPackFormat>();
-  auto audioPackFormat = *audioPackFormats.begin();
+  auto audioPackFormat =
+      document->lookup(parseAudioPackFormatId("AP_00011001"));
 
   REQUIRE(audioPackFormat->has<AudioPackFormatId>() == true);
   REQUIRE(audioPackFormat->has<AudioPackFormatName>() == true);
 
   REQUIRE(
       audioPackFormat->get<AudioPackFormatId>().get<AudioPackFormatIdValue>() ==
-      0x0001u);
+      0x1001u);
   REQUIRE(audioPackFormat->get<AudioPackFormatId>().get<TypeDescriptor>() ==
           TypeDefinition::DIRECT_SPEAKERS);
   REQUIRE(audioPackFormat->get<AudioPackFormatName>() == "MyPackFormat");

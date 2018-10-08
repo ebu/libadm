@@ -9,10 +9,9 @@
 TEST_CASE("xml_parser/audio_stream_format") {
   using namespace adm;
   auto document = parseXml("xml_parser/audio_stream_format.xml");
-  auto streamFormats = document->getElements<AudioStreamFormat>();
-  auto streamFormat = *streamFormats.begin();
+  auto streamFormat = document->lookup(parseAudioStreamFormatId("AS_00031001"));
   REQUIRE(streamFormat->get<AudioStreamFormatId>()
-              .get<AudioStreamFormatIdValue>() == 0x0001u);
+              .get<AudioStreamFormatIdValue>() == 0x1001u);
   REQUIRE(streamFormat->get<AudioStreamFormatId>().get<TypeDescriptor>() ==
           TypeDefinition::OBJECTS);
   REQUIRE(streamFormat->get<AudioStreamFormatName>() == "MyStreamFormat");

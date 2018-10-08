@@ -10,8 +10,9 @@ TEST_CASE("xml_parser/audio_channel_format") {
   using namespace adm;
   {
     auto document = parseXml("xml_parser/audio_channel_format.xml");
-    auto channelFormats = document->getElements<AudioChannelFormat>();
-    auto channelFormat = *channelFormats.begin();
+    auto channelFormat =
+        document->lookup(parseAudioChannelFormatId("AC_00031002"));
+
     REQUIRE(channelFormat->get<AudioChannelFormatId>()
                 .get<AudioChannelFormatIdValue>() == 0x1002u);
     REQUIRE(channelFormat->get<AudioChannelFormatId>().get<TypeDescriptor>() ==

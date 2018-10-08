@@ -9,9 +9,7 @@ TEST_CASE("xml_parser/audio_programme") {
   {
     using namespace adm;
     auto document = parseXml("xml_parser/audio_programme.xml");
-    auto audioProgrammes = document->getElements<AudioProgramme>();
-    REQUIRE(audioProgrammes.size() == 1);
-    auto audioProgramme = *audioProgrammes.begin();
+    auto audioProgramme = document->lookup(parseAudioProgrammeId("APR_1001"));
 
     REQUIRE(audioProgramme->has<AudioProgrammeName>() == true);
     REQUIRE(audioProgramme->has<AudioProgrammeId>() == true);

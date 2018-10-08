@@ -8,8 +8,7 @@
 TEST_CASE("xml_parser/audio_content") {
   using namespace adm;
   auto document = parseXml("xml_parser/audio_content.xml");
-  auto audioContents = document->getElements<AudioContent>();
-  auto audioContent = *audioContents.begin();
+  auto audioContent = document->lookup(parseAudioContentId("ACO_1001"));
 
   REQUIRE(audioContent->has<AudioContentName>() == true);
   REQUIRE(audioContent->has<AudioContentId>() == true);
