@@ -28,7 +28,7 @@ namespace adm {
    * @brief `AudioObject` hierarchie creation for single
    * `TypeDefinition::OBJECTS`-type element
    *
-   * Create an `AudioObject` including refrenced `AudioPackFormat` and
+   * Creates an `AudioObject` including referenced `AudioPackFormat` and
    * `AudioChannelFormat` of type `TypeDefinition::OBJECTS`, as well an
    * `AudioTrackUid`, the referenced `AudioTrackFormat` and
    * `AudioStreamFormat` of type `FormatDefinition::PCM`.

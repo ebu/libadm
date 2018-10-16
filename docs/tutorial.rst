@@ -107,7 +107,7 @@ them to our document.
 
 Note that the IDs of the ADM elements are already properly set. This
 automatically happens when an ADM element is added to an
-:cpp:class:`adm::document`. This is usually very convenient. But in some cases
+:cpp:class:`adm::Document`. This is usually very convenient. But in some cases
 one might want to manually set the ID. If an ADM element already has an ID, the
 :cpp:class:`adm::IdAssigner` will use the ID if the ID is not already in use in
 the document. If it is, the :cpp:class:`adm::IdAssigner` will increase the ID
@@ -213,7 +213,7 @@ The output of our programme is now as follows:
 
 But wait, we only added the audioObject to our document and all the elements
 created by :cpp:func:`adm::createSimpleObject()` are now also part of the
-document. This is because the :cpp:func:`adm::document::add()` function
+document. This is because the :cpp:func:`adm::Document::add()` function
 automatically adds all referenced ADM elements too. Knowning this we can
 simplify our programme, while still getting the exact same output. We just add
 all our references first and only add the audioProgramme to the document.
