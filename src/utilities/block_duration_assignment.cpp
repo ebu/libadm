@@ -3,9 +3,33 @@
 #include <adm/document.hpp>
 #include <adm/route_tracer.hpp>
 #include <memory>
+#include <map>
 
 namespace adm {
-  std::chrono::nanoseconds calculateDurationOfChannel(
+
+  std::chrono::nanoseconds durationOfProgramme(
+      const AudioProgramme* programme,
+      boost::optional<std::chrono::nanoseconds> fileLength) {
+    if (programme->has<End>()) {
+      auto duration =
+          programme->get<End>().get() - programme->get<Start>().get();
+      // if a file length is given AND a programme end is set, both durations
+      // must match
+      if (fileLength && *fileLength != duration) {
+        throw std::runtime_error(
+            "Programme length does not match specified filelength");
+      }
+      return duration;
+    } else if (fileLength) {
+      return fileLength.get();
+    } else {
+      throw std::runtime_error(
+          "Cannot calculate duration from programme without End nor "
+          "filelength");
+    }
+  }
+
+  std::chrono::nanoseconds durationOfChannel(
       const Route& route, std::chrono::nanoseconds fileLength) {
     assert(
         isVariantType<std::shared_ptr<const AudioChannelFormat>>(route.back()));
@@ -68,22 +92,52 @@ namespace adm {
     }
   }
 
-  void updateBlockFormatDurations(std::shared_ptr<Document> document,
-                                  std::chrono::nanoseconds fileLength) {
+  bool isPresentWithDifferentValue(
+      AudioChannelFormatId channel, std::chrono::nanoseconds duration,
+      const std::map<AudioChannelFormatId, std::chrono::nanoseconds>&
+          durations) {
+    return durations.count(channel) > 0 && durations.at(channel) != duration;
+  }
+
+  std::map<AudioChannelFormatId, std::chrono::nanoseconds>
+  calculateDurationOfChannels(
+      std::shared_ptr<const AudioProgramme> programme,
+      boost::optional<std::chrono::nanoseconds> fileLength) {
+    auto programmeDuration = durationOfProgramme(programme.get(), fileLength);
     RouteTracer tracer;
-    auto result =
-        tracer.run(document->template getElements<AudioProgramme>()[0]);
+    auto result = tracer.run(programme);
     std::map<AudioChannelFormatId, std::chrono::nanoseconds> durations;
     for (const auto& route : result) {
-      auto duration = calculateDurationOfChannel(route, fileLength);
+      auto duration = durationOfChannel(route, programmeDuration);
       auto channel =
           route.getLastOf<AudioChannelFormat>()->get<AudioChannelFormatId>();
-      if (durations.count(channel) > 0 && durations.at(channel) != duration) {
+      if (isPresentWithDifferentValue(channel, duration, durations)) {
         throw std::runtime_error(
-            "AudioChannelFormat cannot have different effective durations");
+            "AudioChannelFormat with different effective durations detected");
       }
       durations.insert(std::make_pair(channel, duration));
     }
+    return durations;
+  }
+
+  void updateBlockFormatDurationsImpl(
+      std::shared_ptr<Document> document,
+      boost::optional<std::chrono::nanoseconds> fileLength) {
+    std::map<AudioChannelFormatId, std::chrono::nanoseconds> durations;
+    for (auto& programme : document->template getElements<AudioProgramme>()) {
+      auto durationsOfProgramme =
+          calculateDurationOfChannels(programme, fileLength);
+      for (const auto& duration : durationsOfProgramme) {
+        if (isPresentWithDifferentValue(duration.first, duration.second,
+                                        durations)) {
+          throw std::runtime_error(
+              "AudioChannelFormat referenced by multiple programmes with "
+              "different effective durations detected");
+        }
+        durations.insert(duration);
+      }
+    }
+
     for (auto& entry : durations) {
       auto channel = document->lookup(entry.first);
       auto duration = entry.second;
@@ -91,13 +145,17 @@ namespace adm {
     }
   }
 
-  void updateBlockFormatDurations(std::shared_ptr<Document> document) {
-    auto programme = document->getElements<AudioProgramme>()[0];
+  void updateBlockFormatDurations(std::shared_ptr<Document> document,
+                                  std::chrono::nanoseconds fileLength) {
+    updateBlockFormatDurationsImpl(document, fileLength);
+  }
 
-    if (programme->has<End>()) {
-      updateBlockFormatDurations(document, programme->get<End>().get() -
-                                               programme->get<Start>().get());
+  void updateBlockFormatDurations(std::shared_ptr<Document> document) {
+    if (document->getElements<AudioProgramme>().empty()) {
+      throw std::runtime_error(
+          "No audio programme present, cannot guess length");
     }
+    updateBlockFormatDurationsImpl(document, boost::none);
   }
 
 }  // namespace adm
