@@ -434,3 +434,63 @@ Now let us have a final look at the output.
 As the idea of the common definitons is, that those ADM elements don't need to
 be written, even though we added common definition ADM elements to our document
 the XML writer does not write them.
+
+Setting  block format durations
+-------------------------------
+
+According to ITU-R BS. 2076, multiple AudioBlockFormats in an :cpp:class:`adm::AudioChannelFormat`
+should all have a rtime and a duration.
+
+In practice, however, it can be very hard to determine the duration of an `adm::AudioBlockFormat`
+during its creation or setup.
+This is due to the fact that an :cpp:class:`adm::AudioChannelFormat`, and thus its blocks and their durations,
+is bound to the parent :cpp:class:`adm::AudioObject` duration. The lifetime of the :cpp:class:`adm::AudioObject`, if not given explictily, is 
+bound to the length of the :cpp:class:`adm::AudioProgramme` or, if that's not set either, to the length of the file.
+
+Thus, it's easy to imagine situations where not all informations are available during the setup of `adm::AudioBlockFormat` s.
+
+This library provides some utility functions that are supposed to postpone the duration setting to a later point in time when all information are available,
+and therefore should help in writing standard conforment ADM documents.
+
+Consider the following code:
+
+.. code-block:: cpp
+
+    using namespace adm;
+    auto document = Document::create();
+    auto programme = AudioProgramme::create(AudioProgrammeName{"main"});
+    auto content1 = AudioContent::create(AudioContentName{"main"});
+    programme->addReference(content1);
+    auto object1 = AudioObject::create(AudioObjectName{"object1"});
+    content1->addReference(object1);
+    auto pack1 = AudioPackFormat::create(AudioPackFormatName{"pack1"},
+                                    TypeDefinition::OBJECTS);
+    object1->addReference(pack1);
+    auto channel1 = AudioChannelFormat::create(AudioChannelFormatName{"channel1"},
+                                          TypeDefinition::OBJECTS);
+    channel1->add(AudioBlockFormatObjects(SphericalPosition{},
+                                          Rtime{std::chrono::milliseconds(0)}));
+    channel1->add(AudioBlockFormatObjects(SphericalPosition{},
+                                          Rtime{std::chrono::milliseconds(100)}));
+
+Neither the referencing :cpp:class:`adm::AudioObject` nor the main :cpp:class:`adm::AudioProgramme` might have a duration or an endtime.
+Thus, the duration of the second block added to the :cpp:class:`adm::AudioChannelFormat` `channel1` depends
+on the length of the audio signals, which might not be known at this point in time.
+
+When it is known, for example when writing a `BW64` file with the ADM document contained as an `axml` chunk,
+one might known the actual length of the file.
+Then, one can use the utility function :cpp:func:`adm::updateBlockFormatDurations()` to, well, update all block format durations
+with their correct values:
+
+.. code-block:: cpp
+
+    // ... somehow we know that our file will be 5 seconds long
+
+    updateBlockFormatDurations(document, std::chrono::seconds(5));
+
+    // now, continue with writing the xml chunk to disk or something similar
+
+
+Depending on the use case, the file length might not be nessecery or there might not even be a file with audio signals.
+Multiple variants of :cpp:func:`adm::updateBlockFormatDurations` are therefore provided to accomodate all use cases.
+
