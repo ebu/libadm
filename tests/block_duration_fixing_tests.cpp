@@ -4,7 +4,7 @@
 #include <adm/utilities/block_duration_assignment.hpp>
 #include <adm/elements.hpp>
 #include <adm/document.hpp>
-
+#include <adm/errors.hpp>
 #include <memory>
 
 struct BaseSceneFixture {
@@ -153,7 +153,7 @@ TEST_CASE_METHOD(BaseSceneFixture, "duration_from_programmes_shared_mismatch") {
   channel1->add(AudioBlockFormatObjects(SphericalPosition{},
                                         Rtime{std::chrono::milliseconds(100)}));
 
-  REQUIRE_THROWS_AS(updateBlockFormatDurations(document), std::runtime_error);
+  REQUIRE_THROWS_AS(updateBlockFormatDurations(document), error::AdmException);
 }
 
 TEST_CASE_METHOD(BaseSceneFixture, "duration_program_mismatch") {
@@ -168,7 +168,7 @@ TEST_CASE_METHOD(BaseSceneFixture, "duration_program_mismatch") {
 
   REQUIRE_THROWS_AS(
       updateBlockFormatDurations(document, std::chrono::nanoseconds{10}),
-      std::runtime_error);
+      error::AdmException);
 }
 
 TEST_CASE_METHOD(BaseSceneFixture, "duration_from_objects_independent") {
@@ -261,5 +261,5 @@ TEST_CASE_METHOD(BaseSceneFixture, "multiple_object_references_mismatch") {
 
   REQUIRE_THROWS_AS(
       updateBlockFormatDurations(document, std::chrono::nanoseconds{50}),
-      std::runtime_error);
+      error::AdmException);
 }

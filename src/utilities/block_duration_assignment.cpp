@@ -1,9 +1,11 @@
 #include <adm/utilities/block_duration_assignment.hpp>
 #include <adm/helper/get_optional_property.hpp>
 #include <adm/document.hpp>
+#include <adm/errors.hpp>
 #include <adm/route_tracer.hpp>
 #include <memory>
 #include <map>
+#include <stdexcept>
 
 namespace adm {
 
@@ -16,14 +18,16 @@ namespace adm {
       // if a file length is given AND a programme end is set, both durations
       // must match
       if (fileLength && *fileLength != duration) {
-        throw std::runtime_error(
+        throw error::detail::formatElementRuntimeError(
+            programme->get<AudioProgrammeId>(),
             "Programme length does not match specified filelength");
       }
       return duration;
     } else if (fileLength) {
       return fileLength.get();
     } else {
-      throw std::runtime_error(
+      throw error::detail::formatElementRuntimeError(
+          programme->get<AudioProgrammeId>(),
           "Cannot calculate duration from programme without End nor "
           "filelength");
     }
@@ -83,11 +87,11 @@ namespace adm {
     } else if (typedefinition == TypeDefinition::HOA) {
       updateBlockFormatDurationWithType<AudioBlockFormatHoa>(
           channel, channelFormatDuration);
-
     } else if (typedefinition == TypeDefinition::BINAURAL) {
       updateBlockFormatDurationWithType<AudioBlockFormatBinaural>(
           channel, channelFormatDuration);
     } else {
+      assert(0);
       throw std::logic_error("Unhandled type definition found");
     }
   }
@@ -112,7 +116,8 @@ namespace adm {
       auto channel =
           route.getLastOf<AudioChannelFormat>()->get<AudioChannelFormatId>();
       if (isPresentWithDifferentValue(channel, duration, durations)) {
-        throw std::runtime_error(
+        throw error::detail::formatElementRuntimeError(
+            channel,
             "AudioChannelFormat with different effective durations detected");
       }
       durations.insert(std::make_pair(channel, duration));
@@ -130,7 +135,8 @@ namespace adm {
       for (const auto& duration : durationsOfProgramme) {
         if (isPresentWithDifferentValue(duration.first, duration.second,
                                         durations)) {
-          throw std::runtime_error(
+          throw error::detail::formatElementRuntimeError(
+              duration.first,
               "AudioChannelFormat referenced by multiple programmes with "
               "different effective durations detected");
         }
@@ -152,7 +158,7 @@ namespace adm {
 
   void updateBlockFormatDurations(std::shared_ptr<Document> document) {
     if (document->getElements<AudioProgramme>().empty()) {
-      throw std::runtime_error(
+      throw error::AdmGenericRuntimeError(
           "No audio programme present, cannot guess length");
     }
     updateBlockFormatDurationsImpl(document, boost::none);
