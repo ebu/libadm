@@ -8,6 +8,16 @@ namespace adm {
 
     class LIBADM_EXPORT AdmException : public std::exception {};
 
+    class LIBADM_EXPORT AdmGenericRuntimeError : public AdmException {
+     public:
+      AdmGenericRuntimeError(const std::string& message) : msg_(message) {}
+
+      const char* what() const noexcept override { return msg_.c_str(); }
+
+     private:
+      std::string msg_;
+    };
+
     class LIBADM_EXPORT AudioObjectReferenceCycle : public AdmException {
      public:
       AudioObjectReferenceCycle(AudioObjectId referent, AudioObjectId reference)
@@ -51,6 +61,21 @@ namespace adm {
      public:
       XmlParsingDuplicateId(const std::string& id, int line = -1);
     };
+
+    namespace detail {
+
+      /**
+       * @brief Helper to construct an Exception with a formatted message
+       * that includes the Id of an ADM element that is related to the error at
+       * hand.
+       */
+      template <typename ElementId>
+      AdmGenericRuntimeError formatElementRuntimeError(
+          ElementId id, const std::string& message) {
+        return AdmGenericRuntimeError(formatId(id) + ": " + message);
+      }
+
+    }  // namespace detail
 
   }  // namespace error
 }  // namespace adm
