@@ -2,7 +2,7 @@
 #include <sstream>
 #include "adm/document.hpp"
 #include "adm/elements/audio_content.hpp"
-#include "adm/xml_reader.hpp"
+#include "adm/parse.hpp"
 #include "adm/errors.hpp"
 
 TEST_CASE("xml_parser/audio_content") {

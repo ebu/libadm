@@ -6,7 +6,7 @@
 #include <vector>
 #include "adm/document.hpp"
 #include "adm/elements.hpp"
-#include "adm/xml_reader.hpp"
+#include "adm/parse.hpp"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
 
@@ -51,9 +51,9 @@ namespace adm {
     class XmlParser {
      public:
       XmlParser(const std::string& filename,
-                ReaderOptions options = ReaderOptions::none);
+                ParserOptions options = ParserOptions::none);
       XmlParser(std::istream& stream,
-                ReaderOptions options = ReaderOptions::none);
+                ParserOptions options = ParserOptions::none);
 
       std::shared_ptr<Document> parse();
 
@@ -71,7 +71,7 @@ namespace adm {
 
       rapidxml::file<> xmlFile_;
       std::shared_ptr<Document> document_;
-      ReaderOptions options_;
+      ParserOptions options_;
 
       // clang-format off
       std::map<std::shared_ptr<AudioProgramme>, std::vector<AudioContentId>> programmeContentRefs_;

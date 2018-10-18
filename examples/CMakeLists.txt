@@ -6,8 +6,8 @@ target_link_libraries(create_from_scratch
   libadm
 )
 
-add_executable(read_xml read_xml.cpp)
-target_link_libraries(read_xml
+add_executable(parse_xml parse_xml.cpp)
+target_link_libraries(parse_xml
   PRIVATE
   libadm
 )

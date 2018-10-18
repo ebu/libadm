@@ -56,12 +56,12 @@ add_library(libadm
   private/copy.cpp
   private/rapidxml_wrapper.cpp
   private/rapidxml_formatter.cpp
-  private/xml_composer.cpp
+  private/xml_writer.cpp
   private/xml_parser.cpp
   detail/hex_values.cpp
   detail/id_assigner.cpp
-  xml_reader.cpp
-  xml_writer.cpp
+  read.cpp
+  write.cpp
   ${CMAKE_BINARY_DIR}/resources.hpp
 )
 

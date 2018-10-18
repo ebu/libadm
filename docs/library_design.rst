@@ -181,8 +181,8 @@ We can simply reorder :cpp:class:`adm::AudioContentName` and
 Reading/writing ADM data
 ------------------------
 
-Parsing ADM data is as easy as it gets. You just have to include the
-``xml_reader.hpp`` file and use one of the :cpp:func:`adm::parseXml()`
+Parsing ADM data is as easy as it gets. You just have to include the file
+``adm/parse.hpp`` and use one of the :cpp:func:`adm::parseXml()`
 functions. You can either pass an ``std::istream``
 
 .. code-block:: cpp
@@ -200,7 +200,7 @@ or use the convenience function and pass the name of the input file as a
     auto admDocument = adm::parseXml(myFilename);
 
 The same applies for writing an :cpp:class:`adm::Document` to a file or stream.
-You just have to include the ``xml_wrter.hpp`` file and use one of the
+You just have to include the file ``adm/write.hpp`` and use one of the
 :cpp:func:`adm::writeXml()` functions. You can either pass an ``std::ostream``
 
 .. code-block:: cpp
