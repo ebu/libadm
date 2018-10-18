@@ -52,4 +52,4 @@ build_script:
 
 test_script:
   - cd C:\projects\libadm\build
-  - ninja test
+  - ctest --output-on-failure 

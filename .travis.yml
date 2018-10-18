@@ -149,11 +149,11 @@ script:
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       docker exec -t linux bash -c "cd /travis;
       mkdir build && cd build && cmake -G Ninja -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} .. &&
-      ninja && ninja test"
+      ninja && ctest --output-on-failure"
     fi
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       cd "${TRAVIS_BUILD_DIR}"
       mkdir build && cd build && cmake -G Ninja -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} .. &&
-      ninja && ninja test
+      ninja && ctest --output-on-failure 
     fi
