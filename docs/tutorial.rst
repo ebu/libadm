@@ -19,7 +19,7 @@ Let us have a look at the following first example.
     #include <iostream>
     #include <sstream>
     #include <adm/adm.hpp>
-    #include <adm/xml_writer.hpp>
+    #include <adm/write.hpp>
 
     int main() {
       using namespace adm;
@@ -34,7 +34,7 @@ Let us have a look at the following first example.
 
 For most of the functionality of the library only the header ``adm/adm.hpp`` has
 to be included. As we simultaneously want to see how our ADM document takes
-shape we also included ``adm/xml_writer.hpp``. This header contains the
+shape we also included ``adm/write.hpp``. This header contains the
 declaration of the :cpp:func:`adm::writeXml()` functions. These functions can be
 used to write an ADM document to an ``std::ostream`` or a file. Apart from that
 not much is happening yet. We just create a :cpp:class:`adm::document`, which is
@@ -72,7 +72,7 @@ So let us fill our ADM document with some content.
     #include <iostream>
     #include <sstream>
     #include <adm/adm.hpp>
-    #include <adm/xml_writer.hpp>
+    #include <adm/write.hpp>
 
     int main() {
       using namespace adm;
@@ -118,7 +118,7 @@ value until it finds an ID which is not used yet.
     #include <iostream>
     #include <sstream>
     #include <adm/adm.hpp>
-    #include <adm/xml_writer.hpp>
+    #include <adm/write.hpp>
     #include <adm/utilities/object_creation.hpp>
 
     int main() {
@@ -223,7 +223,7 @@ all our references first and only add the audioProgramme to the document.
     #include <iostream>
     #include <sstream>
     #include <adm/adm.hpp>
-    #include <adm/xml_writer.hpp>
+    #include <adm/write.hpp>
     #include <adm/utilities/object_creation.hpp>
 
     int main() {
@@ -308,7 +308,7 @@ That's it. We are done.
     #include <iostream>
     #include <sstream>
     #include <adm/adm.hpp>
-    #include <adm/xml_writer.hpp>
+    #include <adm/write.hpp>
     #include <adm/utilities/object_creation.hpp>
     #include <adm/common_definitions.hpp>
     #include <adm/utilities/copy.hpp>

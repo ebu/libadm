@@ -3,7 +3,7 @@
 #include "adm/document.hpp"
 #include "adm/elements/audio_channel_format.hpp"
 #include "adm/elements/frequency.hpp"
-#include "adm/xml_reader.hpp"
+#include "adm/parse.hpp"
 
 TEST_CASE("xml_parser/audio_block_format_direct_speakers") {
   using namespace adm;

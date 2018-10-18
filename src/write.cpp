@@ -1,6 +1,6 @@
-#include "adm/xml_writer.hpp"
+#include "adm/write.hpp"
 #include <fstream>
-#include "adm/private/xml_composer.hpp"
+#include "adm/private/xml_writer.hpp"
 
 namespace adm {
 
@@ -14,10 +14,8 @@ namespace adm {
   std::ostream& writeXml(std::ostream& stream,
                          std::shared_ptr<const Document> admDocument,
                          xml::WriterOptions options) {
-    xml::XmlComposer composer(options);
-
-    composer.compose(admDocument);
-    return composer.writeXmlTo(stream);
+    xml::XmlWriter writer(options);
+    return writer.write(admDocument, stream);
   }
 
 }  // namespace adm

@@ -13,14 +13,14 @@ namespace adm {
      * This is equivalent to an bitwise AND followed by a conversion to bool,
      * but should improve readability.
      */
-    inline bool isSet(ReaderOptions options, ReaderOptions flag) {
+    inline bool isSet(ParserOptions options, ParserOptions flag) {
       return static_cast<bool>(options & flag);
     }
 
-    XmlParser::XmlParser(const std::string& filename, ReaderOptions options)
+    XmlParser::XmlParser(const std::string& filename, ParserOptions options)
         : xmlFile_(filename.c_str()), options_(options) {}
 
-    XmlParser::XmlParser(std::istream& stream, ReaderOptions options)
+    XmlParser::XmlParser(std::istream& stream, ParserOptions options)
         : xmlFile_(stream), options_(options) {}
 
     std::shared_ptr<Document> XmlParser::parse() {
@@ -28,7 +28,7 @@ namespace adm {
       xmlDocument.parse<0>(xmlFile_.data());
       document_ = Document::create();
       NodePtr root = nullptr;
-      if (isSet(options_, ReaderOptions::recursive_node_search)) {
+      if (isSet(options_, ParserOptions::recursive_node_search)) {
         root =
             findAudioFormatExtendedNodeFullRecursive(xmlDocument.first_node());
       } else {

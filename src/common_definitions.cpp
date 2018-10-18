@@ -1,6 +1,6 @@
 #include "adm/common_definitions.hpp"
 #include "resources.hpp"
-#include "adm/xml_reader.hpp"
+#include "adm/parse.hpp"
 
 namespace adm {
 
@@ -83,7 +83,7 @@ namespace adm {
     std::stringstream commonDefinitions;
     getEmbeddedFile("common_definitions.xml", commonDefinitions);
     return parseXml(commonDefinitions,
-                    xml::ReaderOptions::recursive_node_search);
+                    xml::ParserOptions::recursive_node_search);
   }
 
 }  // namespace adm

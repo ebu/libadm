@@ -3,7 +3,7 @@
 #include "adm/elements.hpp"
 #include "adm/utilities/id_assignment.hpp"
 #include "adm/utilities/object_creation.hpp"
-#include "adm/xml_writer.hpp"
+#include "adm/write.hpp"
 #include "helper/file_comparator.hpp"
 
 std::shared_ptr<const adm::Document> createSimpleScene();

@@ -52,7 +52,7 @@ from scratch using the `libadm` library. For more examples have a look at the
 #include <sstream>
 #include <adm/adm.hpp>
 #include <adm/utilities/object_creation.hpp>
-#include <adm/xml_writer.hpp>
+#include <adm/write.hpp>
 
 int main() {
   using namespace adm;

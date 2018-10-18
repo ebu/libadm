@@ -1,4 +1,4 @@
-/// @file xml_writer.hpp
+/// @file write.hpp
 #pragma once
 #include <string>
 #include <memory>

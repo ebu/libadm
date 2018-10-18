@@ -1,8 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include "adm/common_definitions.hpp"
-#include "adm/xml_reader.hpp"
-#include "adm/xml_writer.hpp"
+#include "adm/parse.hpp"
+#include "adm/write.hpp"
 
 int main(int argc, char const *argv[]) {
   if (argc != 2) {
