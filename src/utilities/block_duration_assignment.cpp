@@ -17,7 +17,7 @@ namespace adm {
           programme->get<End>().get() - programme->get<Start>().get();
       // if a file length is given AND a programme end is set, both durations
       // must match
-      if (fileLength && *fileLength != duration) {
+      if (fileLength && fileLength.get() != duration) {
         throw error::detail::formatElementRuntimeError(
             programme->get<AudioProgrammeId>(),
             "Programme length does not match specified filelength");
