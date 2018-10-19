@@ -10,8 +10,8 @@ namespace adm {
   /**
    * @brief Set or update durations of all `AudioBlockFormats`
    *
-   * According to ITU-R BS. 2076, multiple `AudioBlockFormats` in an
-   * `AudioChannelFormat` should all have a rtime and a duration.
+   * If an `AudioChannelFormat` has multiple `AudioBlockFormats`, all of them
+   * should have an `rtime` and a `duration`.
    *
    * As these durations might be linked to the duration of referencing
    * `AudioObject`s, the length of the parent `AudioProgramme` and/or the length
@@ -26,7 +26,8 @@ namespace adm {
    * duration, for example due to multiple `AudioObject`s with different
    * durations referencing the same `AudioChannelFormat`. Differences between
    * the duration of an `AudioProgramme` and `fileLength` will also be
-   * considered an error.
+   * considered an error. If one of those error conditions is met (and an
+   * exception is raised), the `adm::Document` will remain unchanged.
    *
    * @param document The document to update, durations will be adapted in-place.
    * @param fileLength The length of the BW64 audio file

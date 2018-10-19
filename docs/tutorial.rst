@@ -438,7 +438,7 @@ the XML writer does not write them.
 Setting  block format durations
 -------------------------------
 
-According to ITU-R BS. 2076, multiple AudioBlockFormats in an :cpp:class:`adm::AudioChannelFormat`
+Multiple `AudioBlockFormat`s in an :cpp:class:`adm::AudioChannelFormat`
 should all have a rtime and a duration.
 
 In practice, however, it can be very hard to determine the duration of an `adm::AudioBlockFormat`
@@ -447,9 +447,9 @@ This is due to the fact that an :cpp:class:`adm::AudioChannelFormat`, and thus i
 is bound to the parent :cpp:class:`adm::AudioObject` duration. The lifetime of the :cpp:class:`adm::AudioObject`, if not given explictily, is 
 bound to the length of the :cpp:class:`adm::AudioProgramme` or, if that's not set either, to the length of the file.
 
-Thus, it's easy to imagine situations where not all informations are available during the setup of `adm::AudioBlockFormat` s.
+Thus, it's easy to imagine situations where not all information is available during the setup of `adm::AudioBlockFormat` s.
 
-This library provides some utility functions that are supposed to postpone the duration setting to a later point in time when all information are available,
+This library provides some utility functions that are supposed to postpone the duration setting to a later point in time when all information is available,
 and therefore should help in writing standard conforment ADM documents.
 
 Consider the following code:
