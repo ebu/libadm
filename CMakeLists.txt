@@ -46,13 +46,6 @@ else()
 endif()
 
 ############################################################
-# enable C++11 support
-############################################################
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
-set(CMAKE_CXX_EXTENSIONS FALSE)
-
-############################################################
 # find libraries
 ############################################################
 find_package(Boost 1.57 REQUIRED)
