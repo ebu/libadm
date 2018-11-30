@@ -116,6 +116,13 @@ matrix:
       osx_image: xcode9.4
       env: BUILD_SHARED_LIBS=OFF
 
+    - os: osx
+      osx_image: xcode10.1
+      env: BUILD_SHARED_LIBS=ON
+    - os: osx
+      osx_image: xcode10.1
+      env: BUILD_SHARED_LIBS=OFF
+
 before_install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
@@ -136,13 +143,6 @@ install:
       docker exec -t linux bash -c "dnf -y group install \"Development Tools\" \"C Development Tools and Libraries\" &&
       dnf -y install cmake ninja-build boost-devel"
     fi
-  # install dependencies for macOS
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      brew install cmake || brew upgrade cmake
-      brew install ninja boost@1.59
-      brew unlink boost && brew link --force boost@1.59
-    fi
 
 script:
   - |
@@ -154,6 +154,6 @@ script:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       cd "${TRAVIS_BUILD_DIR}"
-      mkdir build && cd build && cmake -G Ninja -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} .. &&
-      ninja && ctest --output-on-failure 
+      mkdir build && cd build && cmake -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} .. &&
+      make -j2 && ctest --output-on-failure
     fi
