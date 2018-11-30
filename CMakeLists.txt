@@ -84,24 +84,24 @@ endif()
 add_feature_info(UNIT_TESTS ${UNIT_TESTS} "Build unit tests")
 feature_summary(WHAT ALL)
 
-if(ADM_PACKAGE_AND_INSTALL)
-#########################################################
-# very minimal cpack configuration
-#########################################################
-include(InstallRequiredSystemLibraries)
-set (CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
-set (CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
-set (CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
-set (CPACK_GENERATOR "TGZ;ZIP")
-include (CPack)
+  if(ADM_PACKAGE_AND_INSTALL)
+  #########################################################
+  # very minimal cpack configuration
+  #########################################################
+  include(InstallRequiredSystemLibraries)
+  set (CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
+  set (CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
+  set (CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
+  set (CPACK_GENERATOR "TGZ;ZIP")
+  include (CPack)
 
-#########################################################
-# custom uninstall target
-#########################################################
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/uninstall.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake"
-    IMMEDIATE @ONLY
-)
-add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake)
+  #########################################################
+  # custom uninstall target
+  #########################################################
+  configure_file(
+      "${CMAKE_CURRENT_SOURCE_DIR}/cmake/uninstall.cmake.in"
+      "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake"
+      IMMEDIATE @ONLY
+  )
+  add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake)
 endif()
