@@ -37,6 +37,7 @@ SET(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --cov
 ############################################################
 include(FeatureSummary)
 option(UNIT_TESTS "Build units tests" TRUE)
+option(ADM_EXAMPLES "Build examples" TRUE)
 option(ADM_PACKAGE_AND_INSTALL "Package and install libadm" ${IS_ROOT_PROJECT})
 set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
 set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
@@ -71,7 +72,9 @@ configure_file(
 ############################################################
 add_subdirectory(src)
 add_subdirectory(tools)
-add_subdirectory(examples)
+if(ADM_EXAMPLES)
+  add_subdirectory(examples)
+endif()
 
 if(UNIT_TESTS)
   enable_testing()
