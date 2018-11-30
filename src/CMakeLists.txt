@@ -94,63 +94,63 @@ generate_export_header(adm
 # export package
 ############################################################
 if(ADM_PACKAGE_AND_INSTALL)
-include(CMakePackageConfigHelpers)
+  include(CMakePackageConfigHelpers)
 
-configure_package_config_file(
-  ${PROJECT_SOURCE_DIR}/config/admConfig.cmake.in
-  ${PROJECT_BINARY_DIR}/admConfig.cmake
-  INSTALL_DESTINATION
-  ${INSTALL_CMAKE_DIR}
-  PATH_VARS INSTALL_INCLUDE_DIR INSTALL_LIB_DIR INSTALL_CMAKE_DIR
-)
-
-write_basic_package_version_file(
-  ${PROJECT_BINARY_DIR}/admConfigVersion.cmake
-  COMPATIBILITY SameMajorVersion
-)
-
-############################################################
-# install adm library
-############################################################
-set_target_properties(adm PROPERTIES
-  VERSION "${PROJECT_VERSION}"
-  SOVERSION "${PROJECT_VERSION_MAJOR}"
-)
-
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/
-        DESTINATION ${INSTALL_INCLUDE_DIR}
-        PATTERN "private*" EXCLUDE
-)
-install(FILES ${PROJECT_BINARY_DIR}/adm/version.hpp
-        DESTINATION ${INSTALL_INCLUDE_DIR}/adm
-)
-install(FILES ${PROJECT_BINARY_DIR}/adm/export.h
-        DESTINATION ${INSTALL_INCLUDE_DIR}/adm
-)
-
-install(FILES
-  ${PROJECT_BINARY_DIR}/admConfig.cmake
-  ${PROJECT_BINARY_DIR}/admConfigVersion.cmake
-  DESTINATION ${INSTALL_CMAKE_DIR}
-)
-
-if(${BUILD_SHARED_LIBS})
-  install(TARGETS adm
-    EXPORT admTargetsShared
-    LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-    RUNTIME DESTINATION "${INSTALL_LIB_DIR}"
-    ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
-    PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}"
+  configure_package_config_file(
+    ${PROJECT_SOURCE_DIR}/config/admConfig.cmake.in
+    ${PROJECT_BINARY_DIR}/admConfig.cmake
+    INSTALL_DESTINATION
+    ${INSTALL_CMAKE_DIR}
+    PATH_VARS INSTALL_INCLUDE_DIR INSTALL_LIB_DIR INSTALL_CMAKE_DIR
   )
-  install(EXPORT admTargetsShared DESTINATION ${INSTALL_CMAKE_DIR})
-else()
-  install(TARGETS adm
-    EXPORT admTargetsStatic
-    LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-    RUNTIME DESTINATION "${INSTALL_LIB_DIR}"
-    ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
-    PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}"
+
+  write_basic_package_version_file(
+    ${PROJECT_BINARY_DIR}/admConfigVersion.cmake
+    COMPATIBILITY SameMajorVersion
   )
-  install(EXPORT admTargetsStatic DESTINATION ${INSTALL_CMAKE_DIR})
-endif()
+
+  ############################################################
+  # install adm library
+  ############################################################
+  set_target_properties(adm PROPERTIES
+    VERSION "${PROJECT_VERSION}"
+    SOVERSION "${PROJECT_VERSION_MAJOR}"
+  )
+
+  install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/
+          DESTINATION ${INSTALL_INCLUDE_DIR}
+          PATTERN "private*" EXCLUDE
+  )
+  install(FILES ${PROJECT_BINARY_DIR}/adm/version.hpp
+          DESTINATION ${INSTALL_INCLUDE_DIR}/adm
+  )
+  install(FILES ${PROJECT_BINARY_DIR}/adm/export.h
+          DESTINATION ${INSTALL_INCLUDE_DIR}/adm
+  )
+
+  install(FILES
+    ${PROJECT_BINARY_DIR}/admConfig.cmake
+    ${PROJECT_BINARY_DIR}/admConfigVersion.cmake
+    DESTINATION ${INSTALL_CMAKE_DIR}
+  )
+
+  if(${BUILD_SHARED_LIBS})
+    install(TARGETS adm
+      EXPORT admTargetsShared
+      LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+      RUNTIME DESTINATION "${INSTALL_LIB_DIR}"
+      ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+      PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}"
+    )
+    install(EXPORT admTargetsShared DESTINATION ${INSTALL_CMAKE_DIR})
+  else()
+    install(TARGETS adm
+      EXPORT admTargetsStatic
+      LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+      RUNTIME DESTINATION "${INSTALL_LIB_DIR}"
+      ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+      PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}"
+    )
+    install(EXPORT admTargetsStatic DESTINATION ${INSTALL_CMAKE_DIR})
+  endif()
 endif()
