@@ -60,7 +60,7 @@ add_library(libadm
   private/xml_parser.cpp
   detail/hex_values.cpp
   detail/id_assigner.cpp
-  read.cpp
+  parse.cpp
   write.cpp
   ${CMAKE_BINARY_DIR}/resources.hpp
 )

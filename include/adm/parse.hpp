@@ -46,8 +46,8 @@ namespace adm {
    * @brief Parse an XML representation of the Audio Definition Model
    *
    * Convenience wrapper for files using `parseXml(std::istream&)`
-   * @param filename XML file to read
-   * @param options Options to influence the XML reader behaviour
+   * @param filename XML file to read and parse
+   * @param options Options to influence the XML parser behaviour
    */
   LIBADM_EXPORT std::shared_ptr<Document> parseXml(
       const std::string& filename,
@@ -56,9 +56,9 @@ namespace adm {
   /**
    * @brief Parse an XML representation of the Audio Definition Model
    *
-   * Read adm data from an `std::istream`.
-   * @param stream input stream to read XML data
-   * @param options Options to influence the XML reader behaviour
+   * Parse adm data from an `std::istream`.
+   * @param stream input stream to parse XML data
+   * @param options Options to influence the XML parser behaviour
    */
   LIBADM_EXPORT std::shared_ptr<Document> parseXml(
       std::istream& stream,
