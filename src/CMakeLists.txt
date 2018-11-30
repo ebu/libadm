@@ -1,10 +1,10 @@
 # --- adm library ---
 
 add_custom_command(
-  OUTPUT ${CMAKE_BINARY_DIR}/resources.hpp
-  COMMAND resource_embedder common_definitions.xml > ${CMAKE_BINARY_DIR}/resources.hpp
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/resources
-  DEPENDS resource_embedder ${CMAKE_SOURCE_DIR}/resources/common_definitions.xml
+  OUTPUT ${PROJECT_BINARY_DIR}/resources.hpp
+  COMMAND resource_embedder common_definitions.xml > ${PROJECT_BINARY_DIR}/resources.hpp
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources
+  DEPENDS resource_embedder ${PROJECT_SOURCE_DIR}/resources/common_definitions.xml
   COMMENT "Running resource embedder."
   VERBATIM
 )
@@ -62,7 +62,7 @@ add_library(adm
   detail/id_assigner.cpp
   parse.cpp
   write.cpp
-  ${CMAKE_BINARY_DIR}/resources.hpp
+  ${PROJECT_BINARY_DIR}/resources.hpp
 )
 
 target_include_directories(adm
@@ -87,7 +87,7 @@ endif()
 
 include(GenerateExportHeader)
 generate_export_header(adm
-  EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/adm/export.h
+  EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/adm/export.h
 )
 
 ############################################################
@@ -96,15 +96,15 @@ generate_export_header(adm
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
-  ${CMAKE_SOURCE_DIR}/config/admConfig.cmake.in
-  ${CMAKE_BINARY_DIR}/admConfig.cmake
+  ${PROJECT_SOURCE_DIR}/config/admConfig.cmake.in
+  ${PROJECT_BINARY_DIR}/admConfig.cmake
   INSTALL_DESTINATION
   ${INSTALL_CMAKE_DIR}
   PATH_VARS INSTALL_INCLUDE_DIR INSTALL_LIB_DIR INSTALL_CMAKE_DIR
 )
 
 write_basic_package_version_file(
-  ${CMAKE_BINARY_DIR}/admConfigVersion.cmake
+  ${PROJECT_BINARY_DIR}/admConfigVersion.cmake
   COMPATIBILITY SameMajorVersion
 )
 
@@ -129,8 +129,8 @@ install(FILES ${PROJECT_BINARY_DIR}/adm/export.h
 )
 
 install(FILES
-  ${CMAKE_BINARY_DIR}/admConfig.cmake
-  ${CMAKE_BINARY_DIR}/admConfigVersion.cmake
+  ${PROJECT_BINARY_DIR}/admConfig.cmake
+  ${PROJECT_BINARY_DIR}/admConfigVersion.cmake
   DESTINATION ${INSTALL_CMAKE_DIR}
 )
 
