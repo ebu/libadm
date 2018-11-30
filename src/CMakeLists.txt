@@ -93,6 +93,7 @@ generate_export_header(adm
 ############################################################
 # export package
 ############################################################
+if(ADM_PACKAGE_AND_INSTALL)
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
@@ -107,7 +108,6 @@ write_basic_package_version_file(
   ${PROJECT_BINARY_DIR}/admConfigVersion.cmake
   COMPATIBILITY SameMajorVersion
 )
-
 
 ############################################################
 # install adm library
@@ -152,4 +152,5 @@ else()
     PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}"
   )
   install(EXPORT admTargetsStatic DESTINATION ${INSTALL_CMAKE_DIR})
+endif()
 endif()
