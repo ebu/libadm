@@ -94,6 +94,12 @@ if(ADM_HIDE_INTERNAL_SYMBOLS)
     VISIBILITY_INLINES_HIDDEN TRUE)
 endif()
 
+############################################################
+# enable C++11 support
+############################################################
+target_compile_features(adm PUBLIC cxx_std_11)
+set_target_properties(adm PROPERTIES CXX_EXTENSIONS OFF)
+
 include(GenerateExportHeader)
 generate_export_header(adm
   EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/adm/export.h
