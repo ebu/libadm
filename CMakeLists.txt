@@ -9,7 +9,7 @@ include_directories(include)
 ############################################################
 # init project
 ############################################################
-project(libadm VERSION 0.9.0 LANGUAGES CXX)
+project(libadm VERSION 0.10.0 LANGUAGES CXX)
 string(TIMESTAMP PROJECT_BUILD_DATE)
 set(PROJECT_DESCRIPTION "ITU-R BS.2076 Library")
 
