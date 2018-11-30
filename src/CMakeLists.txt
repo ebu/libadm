@@ -85,6 +85,15 @@ if (UNIX)
   target_link_libraries(adm PUBLIC dl)
 endif()
 
+set_property(TARGET adm PROPERTY POSITION_INDEPENDENT_CODE ON)
+
+if(ADM_HIDE_INTERNAL_SYMBOLS)
+  set_target_properties(adm PROPERTIES
+    CXX_VISIBILITY_PRESET hidden
+    C_VISIBILITY_PRESET hidden
+    VISIBILITY_INLINES_HIDDEN TRUE)
+endif()
+
 include(GenerateExportHeader)
 generate_export_header(adm
   EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/adm/export.h

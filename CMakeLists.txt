@@ -20,10 +20,7 @@ endif()
 string(TIMESTAMP PROJECT_BUILD_DATE)
 set(PROJECT_DESCRIPTION "ITU-R BS.2076 Library")
 
-set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_C_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
+option(ADM_HIDE_INTERNAL_SYMBOLS ON)
 
 ############################################################
 # add new CMAKE_BUILD_TYPE coverage
