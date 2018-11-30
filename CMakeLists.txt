@@ -10,6 +10,13 @@ include_directories(include)
 # init project
 ############################################################
 project(libadm VERSION 0.10.0 LANGUAGES CXX)
+
+if(${PROJECT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+    set(IS_ROOT_PROJECT TRUE)
+else()
+    set(IS_ROOT_PROJECT FALSE)
+endif()
+
 string(TIMESTAMP PROJECT_BUILD_DATE)
 set(PROJECT_DESCRIPTION "ITU-R BS.2076 Library")
 
@@ -30,6 +37,7 @@ SET(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --cov
 ############################################################
 include(FeatureSummary)
 option(UNIT_TESTS "Build units tests" TRUE)
+option(ADM_PACKAGE_AND_INSTALL "Package and install libadm" ${IS_ROOT_PROJECT})
 set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
 set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
 set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
@@ -76,6 +84,7 @@ endif()
 add_feature_info(UNIT_TESTS ${UNIT_TESTS} "Build unit tests")
 feature_summary(WHAT ALL)
 
+if(ADM_PACKAGE_AND_INSTALL)
 #########################################################
 # very minimal cpack configuration
 #########################################################
@@ -95,3 +104,4 @@ configure_file(
     IMMEDIATE @ONLY
 )
 add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake)
+endif()
