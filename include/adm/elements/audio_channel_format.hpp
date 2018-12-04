@@ -17,7 +17,7 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/type_traits.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 #include <type_traits>
 
 namespace adm {
@@ -83,7 +83,7 @@ namespace adm {
      * AudioChannelFormat can only be created as a `std::shared_ptr`. Added
      * AudioBlockFormats will be copied too.
      */
-    LIBADM_EXPORT std::shared_ptr<AudioChannelFormat> copy() const;
+    ADM_EXPORT std::shared_ptr<AudioChannelFormat> copy() const;
 
     /**
      * @brief ADM parameter getter template
@@ -114,11 +114,11 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AudioChannelFormatId setter
-    LIBADM_EXPORT void set(AudioChannelFormatId id);
+    ADM_EXPORT void set(AudioChannelFormatId id);
     /// @brief AudioChannelFormatName setter
-    LIBADM_EXPORT void set(AudioChannelFormatName name);
+    ADM_EXPORT void set(AudioChannelFormatName name);
     /// @brief Frequency setter
-    LIBADM_EXPORT void set(Frequency frequency);
+    ADM_EXPORT void set(Frequency frequency);
 
     /**
      * @brief ADM parameter unset template
@@ -136,11 +136,11 @@ namespace adm {
      * The AudioBlockFormat has to be of the correct type. Otherwise an
      * exception is thrown.
      */
-    LIBADM_EXPORT void add(AudioBlockFormatDirectSpeakers blockFormat);
-    LIBADM_EXPORT void add(AudioBlockFormatMatrix blockFormat);
-    LIBADM_EXPORT void add(AudioBlockFormatObjects blockFormat);
-    LIBADM_EXPORT void add(AudioBlockFormatHoa blockFormat);
-    LIBADM_EXPORT void add(AudioBlockFormatBinaural blockFormat);
+    ADM_EXPORT void add(AudioBlockFormatDirectSpeakers blockFormat);
+    ADM_EXPORT void add(AudioBlockFormatMatrix blockFormat);
+    ADM_EXPORT void add(AudioBlockFormatObjects blockFormat);
+    ADM_EXPORT void add(AudioBlockFormatHoa blockFormat);
+    ADM_EXPORT void add(AudioBlockFormatBinaural blockFormat);
 
     /**
      * @brief AudioBlockFormat elements getter template
@@ -171,7 +171,7 @@ namespace adm {
      *
      * Removes all audioBlockFormats from the AudioChannelFormat
      */
-    LIBADM_EXPORT void clearAudioBlockFormats();
+    ADM_EXPORT void clearAudioBlockFormats();
 
     /**
      * @brief Print overview to ostream
@@ -179,52 +179,50 @@ namespace adm {
     void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
-    LIBADM_EXPORT std::weak_ptr<Document> getParent() const;
+    ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
    private:
     friend class AudioChannelFormatAttorney;
 
-    LIBADM_EXPORT AudioChannelFormat(AudioChannelFormatName name,
-                                     TypeDescriptor channelType);
-    LIBADM_EXPORT AudioChannelFormat(const AudioChannelFormat &) = default;
-    LIBADM_EXPORT AudioChannelFormat(AudioChannelFormat &&) = default;
+    ADM_EXPORT AudioChannelFormat(AudioChannelFormatName name,
+                                  TypeDescriptor channelType);
+    ADM_EXPORT AudioChannelFormat(const AudioChannelFormat &) = default;
+    ADM_EXPORT AudioChannelFormat(AudioChannelFormat &&) = default;
 
-    LIBADM_EXPORT AudioChannelFormatId
+    ADM_EXPORT AudioChannelFormatId
         get(detail::ParameterTraits<AudioChannelFormatId>::tag) const;
-    LIBADM_EXPORT AudioChannelFormatName
+    ADM_EXPORT AudioChannelFormatName
         get(detail::ParameterTraits<AudioChannelFormatName>::tag) const;
-    LIBADM_EXPORT TypeDescriptor
+    ADM_EXPORT TypeDescriptor
         get(detail::ParameterTraits<TypeDescriptor>::tag) const;
-    LIBADM_EXPORT Frequency get(detail::ParameterTraits<Frequency>::tag) const;
+    ADM_EXPORT Frequency get(detail::ParameterTraits<Frequency>::tag) const;
 
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioChannelFormatId>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioChannelFormatName>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<TypeDescriptor>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Frequency>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<TypeDescriptor>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Frequency>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Frequency>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Frequency>::tag);
 
     // ----- AudioBlockFormats ----- //
-    LIBADM_EXPORT bool add(
+    ADM_EXPORT bool add(
         detail::ParameterTraits<AudioBlockFormatDirectSpeakers>::tag,
         const AudioBlockFormatDirectSpeakers &blockFormat);
-    LIBADM_EXPORT bool add(detail::ParameterTraits<AudioBlockFormatMatrix>::tag,
-                           const AudioBlockFormatMatrix &blockFormat);
-    LIBADM_EXPORT bool add(
-        detail::ParameterTraits<AudioBlockFormatObjects>::tag,
-        const AudioBlockFormatObjects &blockFormat);
-    LIBADM_EXPORT bool add(detail::ParameterTraits<AudioBlockFormatHoa>::tag,
-                           const AudioBlockFormatHoa &blockFormat);
-    LIBADM_EXPORT bool add(
-        detail::ParameterTraits<AudioBlockFormatBinaural>::tag,
-        const AudioBlockFormatBinaural &blockFormat);
+    ADM_EXPORT bool add(detail::ParameterTraits<AudioBlockFormatMatrix>::tag,
+                        const AudioBlockFormatMatrix &blockFormat);
+    ADM_EXPORT bool add(detail::ParameterTraits<AudioBlockFormatObjects>::tag,
+                        const AudioBlockFormatObjects &blockFormat);
+    ADM_EXPORT bool add(detail::ParameterTraits<AudioBlockFormatHoa>::tag,
+                        const AudioBlockFormatHoa &blockFormat);
+    ADM_EXPORT bool add(detail::ParameterTraits<AudioBlockFormatBinaural>::tag,
+                        const AudioBlockFormatBinaural &blockFormat);
 
     template <typename BlockFormat>
     void assignId(BlockFormat &blockFormat);
@@ -235,40 +233,40 @@ namespace adm {
     template <typename BlockFormatProxy>
     void assignNewIdValue();
 
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsConstRange<AudioBlockFormatDirectSpeakers> get(
         detail::ParameterTraits<AudioBlockFormatDirectSpeakers>::tag) const;
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsConstRange<AudioBlockFormatMatrix> get(
         detail::ParameterTraits<AudioBlockFormatMatrix>::tag) const;
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsConstRange<AudioBlockFormatObjects> get(
         detail::ParameterTraits<AudioBlockFormatObjects>::tag) const;
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsConstRange<AudioBlockFormatHoa> get(
         detail::ParameterTraits<AudioBlockFormatHoa>::tag) const;
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsConstRange<AudioBlockFormatBinaural> get(
         detail::ParameterTraits<AudioBlockFormatBinaural>::tag) const;
 
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsRange<AudioBlockFormatDirectSpeakers> get(
         detail::ParameterTraits<AudioBlockFormatDirectSpeakers>::tag);
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsRange<AudioBlockFormatMatrix> get(
         detail::ParameterTraits<AudioBlockFormatMatrix>::tag);
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsRange<AudioBlockFormatObjects> get(
         detail::ParameterTraits<AudioBlockFormatObjects>::tag);
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsRange<AudioBlockFormatHoa> get(
         detail::ParameterTraits<AudioBlockFormatHoa>::tag);
-    LIBADM_EXPORT
+    ADM_EXPORT
     BlockFormatsRange<AudioBlockFormatBinaural> get(
         detail::ParameterTraits<AudioBlockFormatBinaural>::tag);
 
     // ----- Common ----- //
-    LIBADM_EXPORT void setParent(std::weak_ptr<Document> document);
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
     AudioChannelFormatName name_;

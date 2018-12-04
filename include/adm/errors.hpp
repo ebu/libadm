@@ -1,14 +1,14 @@
 #pragma once
 #include <stdexcept>
 #include <adm/elements/audio_object_id.hpp>
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
   namespace error {
 
-    class LIBADM_EXPORT AdmException : public std::exception {};
+    class ADM_EXPORT AdmException : public std::exception {};
 
-    class LIBADM_EXPORT AdmGenericRuntimeError : public AdmException {
+    class ADM_EXPORT AdmGenericRuntimeError : public AdmException {
      public:
       AdmGenericRuntimeError(const std::string& message) : msg_(message) {}
 
@@ -18,7 +18,7 @@ namespace adm {
       std::string msg_;
     };
 
-    class LIBADM_EXPORT AudioObjectReferenceCycle : public AdmException {
+    class ADM_EXPORT AudioObjectReferenceCycle : public AdmException {
      public:
       AudioObjectReferenceCycle(AudioObjectId referent, AudioObjectId reference)
           : referent_(referent), reference_(reference) {
@@ -36,7 +36,7 @@ namespace adm {
       std::string msg_;
     };
 
-    class LIBADM_EXPORT XmlParsingError : public AdmException {
+    class ADM_EXPORT XmlParsingError : public AdmException {
      public:
       XmlParsingError(const std::string& message, int line)
           : line_(line), msg_(formatMessageWithLine(message)) {}
@@ -57,7 +57,7 @@ namespace adm {
       std::string msg_;
     };
 
-    class LIBADM_EXPORT XmlParsingDuplicateId : public XmlParsingError {
+    class ADM_EXPORT XmlParsingDuplicateId : public XmlParsingError {
      public:
       XmlParsingDuplicateId(const std::string& id, int line = -1);
     };

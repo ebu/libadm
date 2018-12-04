@@ -2,7 +2,7 @@
 
 #include "adm/elements_fwd.hpp"
 #include <memory>
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -12,23 +12,22 @@ namespace adm {
 
     class IdAssigner {
      public:
-      LIBADM_EXPORT AudioProgrammeId assignId(AudioProgramme& programme);
-      LIBADM_EXPORT AudioContentId assignId(AudioContent& content);
-      LIBADM_EXPORT AudioObjectId assignId(AudioObject& object);
-      LIBADM_EXPORT AudioPackFormatId assignId(AudioPackFormat& packFormat);
-      LIBADM_EXPORT AudioChannelFormatId
+      ADM_EXPORT AudioProgrammeId assignId(AudioProgramme& programme);
+      ADM_EXPORT AudioContentId assignId(AudioContent& content);
+      ADM_EXPORT AudioObjectId assignId(AudioObject& object);
+      ADM_EXPORT AudioPackFormatId assignId(AudioPackFormat& packFormat);
+      ADM_EXPORT AudioChannelFormatId
       assignId(AudioChannelFormat& channelFormat);
-      LIBADM_EXPORT AudioStreamFormatId
-      assignId(AudioStreamFormat& streamFormat);
-      LIBADM_EXPORT AudioTrackFormatId assignId(AudioTrackFormat& trackFormat);
-      LIBADM_EXPORT AudioTrackUidId assignId(AudioTrackUid& trackUid);
+      ADM_EXPORT AudioStreamFormatId assignId(AudioStreamFormat& streamFormat);
+      ADM_EXPORT AudioTrackFormatId assignId(AudioTrackFormat& trackFormat);
+      ADM_EXPORT AudioTrackUidId assignId(AudioTrackUid& trackUid);
 
      protected:
       const Document& document() const;
 
      private:
       friend class adm::Document;
-      LIBADM_EXPORT void document(Document* document_);
+      ADM_EXPORT void document(Document* document_);
       Document* document_;
     };
 

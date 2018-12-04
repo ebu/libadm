@@ -4,7 +4,7 @@
 #include <boost/optional.hpp>
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/named_option_helper.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -83,11 +83,11 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief ScreenEdge setter
-    LIBADM_EXPORT void set(ScreenEdge screenEdge);
+    ADM_EXPORT void set(ScreenEdge screenEdge);
     /// @brief HorizontalEdge setter
-    LIBADM_EXPORT void set(HorizontalEdge horizontalEdge);
+    ADM_EXPORT void set(HorizontalEdge horizontalEdge);
     /// @brief VerticalEdge setter
-    LIBADM_EXPORT void set(VerticalEdge verticalEdge);
+    ADM_EXPORT void set(VerticalEdge verticalEdge);
 
     /**
      * @brief ADM parameter unset template
@@ -105,21 +105,21 @@ namespace adm {
     void print(std::ostream &os) const;
 
    private:
-    LIBADM_EXPORT HorizontalEdge
+    ADM_EXPORT HorizontalEdge
         get(detail::ParameterTraits<HorizontalEdge>::tag) const;
-    LIBADM_EXPORT VerticalEdge
+    ADM_EXPORT VerticalEdge
         get(detail::ParameterTraits<VerticalEdge>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<HorizontalEdge>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<VerticalEdge>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<HorizontalEdge>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<VerticalEdge>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<HorizontalEdge>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<VerticalEdge>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<HorizontalEdge>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<VerticalEdge>::tag);
 
     boost::optional<HorizontalEdge> horizontal_;
     boost::optional<VerticalEdge> vertical_;

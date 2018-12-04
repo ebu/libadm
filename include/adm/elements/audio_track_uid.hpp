@@ -9,7 +9,7 @@
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -61,7 +61,7 @@ namespace adm {
      * can only be created as a `std::shared_ptr`. This is not a deep copy! All
      * referenced objects will be disconnected.
      */
-    LIBADM_EXPORT std::shared_ptr<AudioTrackUid> copy() const;
+    ADM_EXPORT std::shared_ptr<AudioTrackUid> copy() const;
 
     /**
      * @brief ADM parameter getter template
@@ -92,11 +92,11 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AudioTrackUidId setter
-    LIBADM_EXPORT void set(AudioTrackUidId id);
+    ADM_EXPORT void set(AudioTrackUidId id);
     /// @brief SampleRate setter
-    LIBADM_EXPORT void set(SampleRate sampleRate);
+    ADM_EXPORT void set(SampleRate sampleRate);
     /// @brief BitDepth setter
-    LIBADM_EXPORT void set(BitDepth bitDepth);
+    ADM_EXPORT void set(BitDepth bitDepth);
 
     /**
      * @brief ADM parameter unset template
@@ -113,15 +113,13 @@ namespace adm {
      *
      * A pending unresolved reference will be removed.
      */
-    LIBADM_EXPORT void setReference(
-        std::shared_ptr<AudioTrackFormat> trackFormat);
+    ADM_EXPORT void setReference(std::shared_ptr<AudioTrackFormat> trackFormat);
     /**
      * @brief Set reference to an AudioPackFormat
      *
      * A pending unresolved reference will be removed.
      */
-    LIBADM_EXPORT void setReference(
-        std::shared_ptr<AudioPackFormat> packFormat);
+    ADM_EXPORT void setReference(std::shared_ptr<AudioPackFormat> packFormat);
 
     template <typename Element>
     std::shared_ptr<const Element> getReference() const;
@@ -152,50 +150,49 @@ namespace adm {
     void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
-    LIBADM_EXPORT std::weak_ptr<Document> getParent() const;
+    ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
    private:
     friend class AudioTrackUidAttorney;
 
-    LIBADM_EXPORT AudioTrackUid();
-    LIBADM_EXPORT AudioTrackUid(const AudioTrackUid &) = default;
-    LIBADM_EXPORT AudioTrackUid(AudioTrackUid &&) = default;
+    ADM_EXPORT AudioTrackUid();
+    ADM_EXPORT AudioTrackUid(const AudioTrackUid &) = default;
+    ADM_EXPORT AudioTrackUid(AudioTrackUid &&) = default;
 
-    LIBADM_EXPORT AudioTrackUidId
+    ADM_EXPORT AudioTrackUidId
         get(detail::ParameterTraits<AudioTrackUidId>::tag) const;
-    LIBADM_EXPORT BitDepth get(detail::ParameterTraits<BitDepth>::tag) const;
-    LIBADM_EXPORT SampleRate
-        get(detail::ParameterTraits<SampleRate>::tag) const;
+    ADM_EXPORT BitDepth get(detail::ParameterTraits<BitDepth>::tag) const;
+    ADM_EXPORT SampleRate get(detail::ParameterTraits<SampleRate>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<AudioTrackUidId>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<BitDepth>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<SampleRate>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioTrackUidId>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<BitDepth>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<SampleRate>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<BitDepth>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<SampleRate>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<BitDepth>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<SampleRate>::tag);
 
-    LIBADM_EXPORT std::shared_ptr<const AudioTrackFormat> getReference(
+    ADM_EXPORT std::shared_ptr<const AudioTrackFormat> getReference(
         detail::ParameterTraits<AudioTrackFormat>::tag) const;
-    LIBADM_EXPORT std::shared_ptr<const AudioPackFormat> getReference(
+    ADM_EXPORT std::shared_ptr<const AudioPackFormat> getReference(
         detail::ParameterTraits<AudioPackFormat>::tag) const;
-    LIBADM_EXPORT std::shared_ptr<AudioTrackFormat> getReference(
+    ADM_EXPORT std::shared_ptr<AudioTrackFormat> getReference(
         detail::ParameterTraits<AudioTrackFormat>::tag);
-    LIBADM_EXPORT std::shared_ptr<AudioPackFormat> getReference(
+    ADM_EXPORT std::shared_ptr<AudioPackFormat> getReference(
         detail::ParameterTraits<AudioPackFormat>::tag);
 
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         detail::ParameterTraits<AudioTrackFormat>::tag);
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         detail::ParameterTraits<AudioPackFormat>::tag);
 
-    LIBADM_EXPORT void disconnectReferences();
+    ADM_EXPORT void disconnectReferences();
 
-    LIBADM_EXPORT void setParent(std::weak_ptr<Document> document);
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
     AudioTrackUidId id_;

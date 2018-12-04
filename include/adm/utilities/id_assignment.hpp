@@ -2,7 +2,7 @@
 #pragma once
 
 #include "adm/document.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 #include <memory>
 
@@ -21,7 +21,7 @@ namespace adm {
    * will not get new Ids assigned, as they are considered to be common
    * definitions.
    */
-  LIBADM_EXPORT void reassignIds(std::shared_ptr<Document> document);
+  ADM_EXPORT void reassignIds(std::shared_ptr<Document> document);
 
   /** @name Check if id is a common definitions id
    */

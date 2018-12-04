@@ -11,7 +11,7 @@
 #include "adm/helper/element_range.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -103,7 +103,7 @@ namespace adm {
      *
 
      */
-    LIBADM_EXPORT std::shared_ptr<AudioStreamFormat> copy() const;
+    ADM_EXPORT std::shared_ptr<AudioStreamFormat> copy() const;
 
     /**
      * @brief ADM parameter getter template
@@ -134,9 +134,9 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AudioStreamFormatId setter
-    LIBADM_EXPORT void set(AudioStreamFormatId id);
+    ADM_EXPORT void set(AudioStreamFormatId id);
     /// @brief AudioStreamFormatName setter
-    LIBADM_EXPORT void set(AudioStreamFormatName name);
+    ADM_EXPORT void set(AudioStreamFormatName name);
 
     /**
      * @brief ADM parameter unset template
@@ -153,15 +153,14 @@ namespace adm {
      *
      * A pending unresolved reference will be removed.
      */
-    LIBADM_EXPORT void setReference(
+    ADM_EXPORT void setReference(
         std::shared_ptr<AudioChannelFormat> channelFormat);
     /**
      * @brief Set reference to an AudioPackFormat
      *
      * A pending unresolved reference will be removed.
      */
-    LIBADM_EXPORT void setReference(
-        std::shared_ptr<AudioPackFormat> packFormat);
+    ADM_EXPORT void setReference(std::shared_ptr<AudioPackFormat> packFormat);
     /**
      * @brief Add reference to an AudioTrackFormat
      *
@@ -169,7 +168,7 @@ namespace adm {
      * @param sync controls if *this* will be automatically added to
      *`trackFormat` as a reference as well.
      */
-    LIBADM_EXPORT bool addReference(
+    ADM_EXPORT bool addReference(
         std::weak_ptr<AudioTrackFormat> trackFormat,
         ReferenceSyncOption sync = ReferenceSyncOption::sync_with_track_format);
 
@@ -202,7 +201,7 @@ namespace adm {
      * Please read the class documentation of adm::AudioStreamFormat
      * for the rationale behind using std::weak_ptr.
      */
-    LIBADM_EXPORT ElementWeakRange<const AudioTrackFormat>
+    ADM_EXPORT ElementWeakRange<const AudioTrackFormat>
     getAudioTrackFormatReferences() const;
 
     /**
@@ -214,7 +213,7 @@ namespace adm {
      * Please read the class documentation of adm::AudioStreamFormat
      * for the rationale behind using std::weak_ptr.
      */
-    LIBADM_EXPORT ElementWeakRange<AudioTrackFormat>
+    ADM_EXPORT ElementWeakRange<AudioTrackFormat>
     getAudioTrackFormatReferences();
 
     /**
@@ -224,7 +223,7 @@ namespace adm {
      * @param sync controls if *this* will be automatically added to
      *`trackFormat` as a reference as well.
      */
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         std::weak_ptr<AudioTrackFormat> trackFormat,
         ReferenceSyncOption sync = ReferenceSyncOption::sync_with_track_format);
 
@@ -254,55 +253,54 @@ namespace adm {
     void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
-    LIBADM_EXPORT std::weak_ptr<Document> getParent() const;
+    ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
    private:
     friend class AudioStreamFormatAttorney;
 
-    LIBADM_EXPORT AudioStreamFormat(AudioStreamFormatName name,
-                                    FormatDescriptor format);
-    LIBADM_EXPORT AudioStreamFormat(const AudioStreamFormat &) = default;
-    LIBADM_EXPORT AudioStreamFormat(AudioStreamFormat &&) = default;
+    ADM_EXPORT AudioStreamFormat(AudioStreamFormatName name,
+                                 FormatDescriptor format);
+    ADM_EXPORT AudioStreamFormat(const AudioStreamFormat &) = default;
+    ADM_EXPORT AudioStreamFormat(AudioStreamFormat &&) = default;
 
-    LIBADM_EXPORT AudioStreamFormatId
+    ADM_EXPORT AudioStreamFormatId
         get(detail::ParameterTraits<AudioStreamFormatId>::tag) const;
-    LIBADM_EXPORT AudioStreamFormatName
+    ADM_EXPORT AudioStreamFormatName
         get(detail::ParameterTraits<AudioStreamFormatName>::tag) const;
-    LIBADM_EXPORT FormatDescriptor
+    ADM_EXPORT FormatDescriptor
         get(detail::ParameterTraits<FormatDescriptor>::tag) const;
 
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioStreamFormatId>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioStreamFormatName>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<FormatDescriptor>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<FormatDescriptor>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT std::shared_ptr<AudioChannelFormat> getReference(
+    ADM_EXPORT std::shared_ptr<AudioChannelFormat> getReference(
         detail::ParameterTraits<AudioChannelFormat>::tag);
-    LIBADM_EXPORT std::shared_ptr<AudioPackFormat> getReference(
+    ADM_EXPORT std::shared_ptr<AudioPackFormat> getReference(
         detail::ParameterTraits<AudioPackFormat>::tag);
-    LIBADM_EXPORT std::shared_ptr<const AudioChannelFormat> getReference(
+    ADM_EXPORT std::shared_ptr<const AudioChannelFormat> getReference(
         detail::ParameterTraits<AudioChannelFormat>::tag) const;
-    LIBADM_EXPORT std::shared_ptr<const AudioPackFormat> getReference(
+    ADM_EXPORT std::shared_ptr<const AudioPackFormat> getReference(
         detail::ParameterTraits<AudioPackFormat>::tag) const;
 
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         detail::ParameterTraits<AudioChannelFormat>::tag);
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         detail::ParameterTraits<AudioPackFormat>::tag);
 
-    LIBADM_EXPORT void clearReferences(
+    ADM_EXPORT void clearReferences(
         detail::ParameterTraits<AudioTrackFormat>::tag);
 
-    LIBADM_EXPORT void disconnectReferences();
+    ADM_EXPORT void disconnectReferences();
 
-    LIBADM_EXPORT void setParent(std::weak_ptr<Document> document);
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
     AudioStreamFormatName name_;

@@ -5,7 +5,7 @@
 #include "adm/detail/named_type.hpp"
 
 #include "adm/detail/named_option_helper.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -70,9 +70,9 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief ChannelLockFlag setter
-    LIBADM_EXPORT void set(ChannelLockFlag channelLockFlag);
+    ADM_EXPORT void set(ChannelLockFlag channelLockFlag);
     /// @brief MaxDistance setter
-    LIBADM_EXPORT void set(MaxDistance maxDistance);
+    ADM_EXPORT void set(MaxDistance maxDistance);
 
     /**
      * @brief ADM parameter unset template
@@ -90,23 +90,22 @@ namespace adm {
     void print(std::ostream &os) const;
 
    private:
-    LIBADM_EXPORT ChannelLockFlag
+    ADM_EXPORT ChannelLockFlag
         get(detail::ParameterTraits<ChannelLockFlag>::tag) const;
-    LIBADM_EXPORT MaxDistance
-        get(detail::ParameterTraits<MaxDistance>::tag) const;
+    ADM_EXPORT MaxDistance get(detail::ParameterTraits<MaxDistance>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ChannelLockFlag>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<MaxDistance>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ChannelLockFlag>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<MaxDistance>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<ChannelLockFlag>::tag) const;
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ChannelLockFlag>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<MaxDistance>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ChannelLockFlag>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<MaxDistance>::tag);
 
     boost::optional<ChannelLockFlag> channelLockFlag_;
     boost::optional<MaxDistance> maxDistance_;
@@ -118,13 +117,13 @@ namespace adm {
 
   /// @brief Helper function to check if the ::ChannelLockFlag of a
   /// ChannelLock is true
-  LIBADM_EXPORT bool isEnabled(ChannelLock &channelLock);
+  ADM_EXPORT bool isEnabled(ChannelLock &channelLock);
   /// @brief Helper function to set the ::ChannelLockFlag of a ChannelLock
   /// to true
-  LIBADM_EXPORT void enable(ChannelLock &channelLock);
+  ADM_EXPORT void enable(ChannelLock &channelLock);
   /// @brief Helper function to set the ::ChannelLockFlag of a ChannelLock
   /// to false
-  LIBADM_EXPORT void disable(ChannelLock &channelLock);
+  ADM_EXPORT void disable(ChannelLock &channelLock);
 
   // ---- Implementation ---- //
 

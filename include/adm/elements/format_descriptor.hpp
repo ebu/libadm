@@ -3,7 +3,7 @@
 
 #include <string>
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -23,19 +23,19 @@ namespace adm {
 
   /// BS.2076 format definitions
   namespace FormatDefinition {
-    LIBADM_EXPORT extern const FormatDescriptor UNDEFINED;
+    ADM_EXPORT extern const FormatDescriptor UNDEFINED;
     /// FormatDefinition for PCM
-    LIBADM_EXPORT extern const FormatDescriptor PCM;
+    ADM_EXPORT extern const FormatDescriptor PCM;
   }  // namespace FormatDefinition
 
   /// @brief Parse a formatLabel and convert it to a FormatDescriptor
-  LIBADM_EXPORT FormatDescriptor parseFormatLabel(const std::string& label);
+  ADM_EXPORT FormatDescriptor parseFormatLabel(const std::string& label);
   /// @brief Parse a formatDefinition and convert it to a FormatDescriptor
-  LIBADM_EXPORT FormatDescriptor
+  ADM_EXPORT FormatDescriptor
   parseFormatDefinition(const std::string& definition);
   /// @brief Format a FormatDescriptor object as a formatLabel string
-  LIBADM_EXPORT std::string formatFormatLabel(FormatDescriptor desc);
+  ADM_EXPORT std::string formatFormatLabel(FormatDescriptor desc);
   /// @brief Format a FormatDescriptor object as a formatDefinition string
-  LIBADM_EXPORT std::string formatFormatDefinition(FormatDescriptor desc);
+  ADM_EXPORT std::string formatFormatDefinition(FormatDescriptor desc);
 
 }  // namespace adm

@@ -7,7 +7,7 @@
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 #include <boost/optional.hpp>
 #include <memory>
 
@@ -76,7 +76,7 @@ namespace adm {
      *
 
      */
-    LIBADM_EXPORT std::shared_ptr<AudioTrackFormat> copy() const;
+    ADM_EXPORT std::shared_ptr<AudioTrackFormat> copy() const;
 
     /**
      * @brief ADM parameter getter template
@@ -107,9 +107,9 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AudioTrackFormatId setter
-    LIBADM_EXPORT void set(AudioTrackFormatId id);
+    ADM_EXPORT void set(AudioTrackFormatId id);
     /// @brief AudioTrackFormatName setter
-    LIBADM_EXPORT void set(AudioTrackFormatName name);
+    ADM_EXPORT void set(AudioTrackFormatName name);
 
     /**
      * @brief ADM parameter unset template
@@ -130,7 +130,7 @@ namespace adm {
      * @param sync controls if *this* will be automatically added to
      *`streamFormat` as a reference as well.
      */
-    LIBADM_EXPORT void setReference(
+    ADM_EXPORT void setReference(
         std::shared_ptr<AudioStreamFormat> streamFormat,
         ReferenceSyncOption sync =
             ReferenceSyncOption::sync_with_stream_format);
@@ -177,49 +177,47 @@ namespace adm {
     void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
-    LIBADM_EXPORT std::weak_ptr<Document> getParent() const;
+    ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
    private:
     friend class AudioTrackFormatAttorney;
 
-    LIBADM_EXPORT AudioTrackFormat(AudioTrackFormatName name,
-                                   FormatDescriptor channelType);
-    LIBADM_EXPORT AudioTrackFormat(const AudioTrackFormat &) = default;
-    LIBADM_EXPORT AudioTrackFormat(AudioTrackFormat &&) = default;
+    ADM_EXPORT AudioTrackFormat(AudioTrackFormatName name,
+                                FormatDescriptor channelType);
+    ADM_EXPORT AudioTrackFormat(const AudioTrackFormat &) = default;
+    ADM_EXPORT AudioTrackFormat(AudioTrackFormat &&) = default;
 
-    LIBADM_EXPORT AudioTrackFormatId
+    ADM_EXPORT AudioTrackFormatId
         get(detail::ParameterTraits<AudioTrackFormatId>::tag) const;
-    LIBADM_EXPORT AudioTrackFormatName
+    ADM_EXPORT AudioTrackFormatName
         get(detail::ParameterTraits<AudioTrackFormatName>::tag) const;
-    LIBADM_EXPORT FormatDescriptor
+    ADM_EXPORT FormatDescriptor
         get(detail::ParameterTraits<FormatDescriptor>::tag) const;
 
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AudioTrackFormatId>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioTrackFormatId>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioTrackFormatName>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<FormatDescriptor>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<FormatDescriptor>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT std::shared_ptr<const AudioStreamFormat> getReference(
+    ADM_EXPORT std::shared_ptr<const AudioStreamFormat> getReference(
         detail::ParameterTraits<AudioStreamFormat>::tag) const;
-    LIBADM_EXPORT std::shared_ptr<AudioStreamFormat> getReference(
+    ADM_EXPORT std::shared_ptr<AudioStreamFormat> getReference(
         detail::ParameterTraits<AudioStreamFormat>::tag);
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         detail::ParameterTraits<AudioStreamFormat>::tag,
         ReferenceSyncOption sync);
 
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         detail::ParameterTraits<AudioStreamFormatId>::tag);
 
-    LIBADM_EXPORT void disconnectReferences();
+    ADM_EXPORT void disconnectReferences();
 
-    LIBADM_EXPORT void setParent(std::weak_ptr<Document> document);
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
     AudioTrackFormatName name_;

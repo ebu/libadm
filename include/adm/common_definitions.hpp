@@ -3,12 +3,12 @@
 #include <map>
 #include "adm/elements/type_descriptor.hpp"
 #include "adm/document.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
   /// @brief Load embedded common definitions file and create Document
-  LIBADM_EXPORT std::shared_ptr<Document> getCommonDefinitions();
+  ADM_EXPORT std::shared_ptr<Document> getCommonDefinitions();
 
   /**
    * @brief Lookup table for AudioPackFormats

@@ -13,7 +13,7 @@
 #include "adm/helper/element_range.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -76,7 +76,7 @@ namespace adm {
      * can only be created as a `std::shared_ptr`. This is not a deep copy! All
      * referenced objects will be disconnected.
      */
-    LIBADM_EXPORT std::shared_ptr<AudioProgramme> copy() const;
+    ADM_EXPORT std::shared_ptr<AudioProgramme> copy() const;
 
     /**
      * @brief ADM parameter getter template
@@ -108,21 +108,21 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AudioProgrammeId setter
-    LIBADM_EXPORT void set(AudioProgrammeId id);
+    ADM_EXPORT void set(AudioProgrammeId id);
     /// @brief AudioProgrammeName setter
-    LIBADM_EXPORT void set(AudioProgrammeName name);
+    ADM_EXPORT void set(AudioProgrammeName name);
     /// @brief AudioProgrammeLanguage setter
-    LIBADM_EXPORT void set(AudioProgrammeLanguage language);
+    ADM_EXPORT void set(AudioProgrammeLanguage language);
     /// @brief Start setter
-    LIBADM_EXPORT void set(Start start);
+    ADM_EXPORT void set(Start start);
     /// @brief End setter
-    LIBADM_EXPORT void set(End end);
+    ADM_EXPORT void set(End end);
     /// @brief LoudnessMetadata setter
-    LIBADM_EXPORT void set(LoudnessMetadata loudnessMetadata);
+    ADM_EXPORT void set(LoudnessMetadata loudnessMetadata);
     /// @brief MaxDuckingDepth setter
-    LIBADM_EXPORT void set(MaxDuckingDepth depth);
+    ADM_EXPORT void set(MaxDuckingDepth depth);
     /// @brief AudioProgrammeReferenceScreen setter
-    LIBADM_EXPORT void set(AudioProgrammeReferenceScreen refScreen);
+    ADM_EXPORT void set(AudioProgrammeReferenceScreen refScreen);
 
     /**
      * @brief ADM parameter unset template
@@ -135,7 +135,7 @@ namespace adm {
     void unset();
 
     /// @brief Add reference to an AudioContent
-    LIBADM_EXPORT bool addReference(std::shared_ptr<AudioContent> content);
+    ADM_EXPORT bool addReference(std::shared_ptr<AudioContent> content);
 
     /**
      * @brief Get references to ADM elements template
@@ -158,7 +158,7 @@ namespace adm {
     ElementRange<const Element> getReferences() const;
 
     /// @brief Remove reference to an AudioContent
-    LIBADM_EXPORT void removeReference(std::shared_ptr<AudioContent> content);
+    ADM_EXPORT void removeReference(std::shared_ptr<AudioContent> content);
 
     /**
      * @brief Clear references to Elements template
@@ -176,42 +176,39 @@ namespace adm {
     void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
-    LIBADM_EXPORT std::weak_ptr<Document> getParent() const;
+    ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
    private:
     friend class AudioProgrammeAttorney;
 
-    LIBADM_EXPORT AudioProgramme(AudioProgrammeName name);
-    LIBADM_EXPORT AudioProgramme(const AudioProgramme &) = default;
-    LIBADM_EXPORT AudioProgramme(AudioProgramme &&) = default;
+    ADM_EXPORT AudioProgramme(AudioProgrammeName name);
+    ADM_EXPORT AudioProgramme(const AudioProgramme &) = default;
+    ADM_EXPORT AudioProgramme(AudioProgramme &&) = default;
 
-    LIBADM_EXPORT AudioProgrammeId
+    ADM_EXPORT AudioProgrammeId
         get(detail::ParameterTraits<AudioProgrammeId>::tag) const;
-    LIBADM_EXPORT AudioProgrammeName
+    ADM_EXPORT AudioProgrammeName
         get(detail::ParameterTraits<AudioProgrammeName>::tag) const;
-    LIBADM_EXPORT AudioProgrammeLanguage
+    ADM_EXPORT AudioProgrammeLanguage
         get(detail::ParameterTraits<AudioProgrammeLanguage>::tag) const;
-    LIBADM_EXPORT Start get(detail::ParameterTraits<Start>::tag) const;
-    LIBADM_EXPORT End get(detail::ParameterTraits<End>::tag) const;
-    LIBADM_EXPORT LoudnessMetadata
+    ADM_EXPORT Start get(detail::ParameterTraits<Start>::tag) const;
+    ADM_EXPORT End get(detail::ParameterTraits<End>::tag) const;
+    ADM_EXPORT LoudnessMetadata
         get(detail::ParameterTraits<LoudnessMetadata>::tag) const;
-    LIBADM_EXPORT MaxDuckingDepth
+    ADM_EXPORT MaxDuckingDepth
         get(detail::ParameterTraits<MaxDuckingDepth>::tag) const;
-    LIBADM_EXPORT AudioProgrammeReferenceScreen
+    ADM_EXPORT AudioProgrammeReferenceScreen
         get(detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag) const;
 
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AudioProgrammeId>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AudioProgrammeName>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioProgrammeId>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioProgrammeName>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioProgrammeLanguage>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Start>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<End>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<LoudnessMetadata>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<MaxDuckingDepth>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<Start>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<End>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<LoudnessMetadata>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<MaxDuckingDepth>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag) const;
 
     template <typename Tag>
@@ -219,27 +216,25 @@ namespace adm {
       return false;
     }
 
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Start>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Start>::tag) const;
 
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<AudioProgrammeLanguage>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Start>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<End>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<LoudnessMetadata>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<MaxDuckingDepth>::tag);
-    LIBADM_EXPORT void unset(
+    ADM_EXPORT void unset(detail::ParameterTraits<AudioProgrammeLanguage>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Start>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<End>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<LoudnessMetadata>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<MaxDuckingDepth>::tag);
+    ADM_EXPORT void unset(
         detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag);
 
-    LIBADM_EXPORT ElementRange<const AudioContent> getReferences(
+    ADM_EXPORT ElementRange<const AudioContent> getReferences(
         detail::ParameterTraits<AudioContent>::tag) const;
 
-    LIBADM_EXPORT ElementRange<AudioContent> getReferences(
+    ADM_EXPORT ElementRange<AudioContent> getReferences(
         detail::ParameterTraits<AudioContent>::tag);
 
-    LIBADM_EXPORT void clearReferences(
-        detail::ParameterTraits<AudioContent>::tag);
+    ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioContent>::tag);
 
-    LIBADM_EXPORT void disconnectReferences();
+    ADM_EXPORT void disconnectReferences();
 
     void setParent(std::weak_ptr<Document> document);
 

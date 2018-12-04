@@ -14,7 +14,7 @@
 #include "adm/helper/element_range.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -65,7 +65,7 @@ namespace adm {
      * can only be created as a `std::shared_ptr`. This is not a deep copy! All
      * referenced objects will be disconnected.
      */
-    LIBADM_EXPORT std::shared_ptr<AudioObject> copy() const;
+    ADM_EXPORT std::shared_ptr<AudioObject> copy() const;
 
     /**
      * @brief ADM parameter getter template
@@ -96,23 +96,23 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AudioObjectId setter
-    LIBADM_EXPORT void set(AudioObjectId id);
+    ADM_EXPORT void set(AudioObjectId id);
     /// @brief AudioObjectName setter
-    LIBADM_EXPORT void set(AudioObjectName name);
+    ADM_EXPORT void set(AudioObjectName name);
     /// @brief Start setter
-    LIBADM_EXPORT void set(Start start);
+    ADM_EXPORT void set(Start start);
     /// @brief Duration setter
-    LIBADM_EXPORT void set(Duration duration);
+    ADM_EXPORT void set(Duration duration);
     /// @brief DialogueId setter
-    LIBADM_EXPORT void set(DialogueId id);
+    ADM_EXPORT void set(DialogueId id);
     /// @brief Importance setter
-    LIBADM_EXPORT void set(Importance importance);
+    ADM_EXPORT void set(Importance importance);
     /// @brief Interact setter
-    LIBADM_EXPORT void set(Interact interact);
+    ADM_EXPORT void set(Interact interact);
     /// @brief DisableDucking setter
-    LIBADM_EXPORT void set(DisableDucking disableDucking);
+    ADM_EXPORT void set(DisableDucking disableDucking);
     /// @brief AudioObjectInteraction setter
-    LIBADM_EXPORT void set(AudioObjectInteraction objectInteraction);
+    ADM_EXPORT void set(AudioObjectInteraction objectInteraction);
 
     /**
      * @brief ADM parameter unset template
@@ -125,12 +125,11 @@ namespace adm {
     void unset();
 
     /// @brief Add reference to another AudioObject
-    LIBADM_EXPORT bool addReference(std::shared_ptr<AudioObject> object);
+    ADM_EXPORT bool addReference(std::shared_ptr<AudioObject> object);
     /// @brief Add reference to an AudioPackFormat
-    LIBADM_EXPORT bool addReference(
-        std::shared_ptr<AudioPackFormat> packFormat);
+    ADM_EXPORT bool addReference(std::shared_ptr<AudioPackFormat> packFormat);
     /// @brief Add reference to an AudioTrackUid
-    LIBADM_EXPORT bool addReference(std::shared_ptr<AudioTrackUid> trackUid);
+    ADM_EXPORT bool addReference(std::shared_ptr<AudioTrackUid> trackUid);
 
     /**
      * @brief Get references to ADM elements template
@@ -153,12 +152,12 @@ namespace adm {
     ElementRange<Element> getReferences();
 
     /// @brief Remove reference to an AudioObject
-    LIBADM_EXPORT void removeReference(std::shared_ptr<AudioObject> object);
+    ADM_EXPORT void removeReference(std::shared_ptr<AudioObject> object);
     /// @brief Remove reference to an AudioPackFormat
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         std::shared_ptr<AudioPackFormat> packFormat);
     /// @brief Remove reference to an AudioTrackUid
-    LIBADM_EXPORT void removeReference(std::shared_ptr<AudioTrackUid> trackUid);
+    ADM_EXPORT void removeReference(std::shared_ptr<AudioTrackUid> trackUid);
 
     /**
      * @brief Clear references to Elements template
@@ -171,14 +170,14 @@ namespace adm {
     void clearReferences();
 
     /// @brief Add reference to a complementary AudioObject
-    LIBADM_EXPORT bool addComplementary(std::shared_ptr<AudioObject> object);
+    ADM_EXPORT bool addComplementary(std::shared_ptr<AudioObject> object);
     /// @brief Get references to complementary AudioObjects
-    LIBADM_EXPORT const std::vector<std::shared_ptr<AudioObject>>
+    ADM_EXPORT const std::vector<std::shared_ptr<AudioObject>>
         &getComplementaryObjects() const;
     /// @brief Remove reference to a complementary AudioObject
-    LIBADM_EXPORT void removeComplementary(std::shared_ptr<AudioObject> object);
+    ADM_EXPORT void removeComplementary(std::shared_ptr<AudioObject> object);
     /// @brief Remove all references to complementary AudioObjects
-    LIBADM_EXPORT void clearComplementaryObjects();
+    ADM_EXPORT void clearComplementaryObjects();
 
     /**
      * @brief Print overview to ostream
@@ -186,40 +185,38 @@ namespace adm {
     void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
-    LIBADM_EXPORT std::weak_ptr<Document> getParent() const;
+    ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
    private:
     friend class AudioObjectAttorney;
 
-    LIBADM_EXPORT AudioObject(AudioObjectName name);
-    LIBADM_EXPORT AudioObject(const AudioObject &) = default;
-    LIBADM_EXPORT AudioObject(AudioObject &&) = default;
+    ADM_EXPORT AudioObject(AudioObjectName name);
+    ADM_EXPORT AudioObject(const AudioObject &) = default;
+    ADM_EXPORT AudioObject(AudioObject &&) = default;
 
-    LIBADM_EXPORT AudioObjectId
+    ADM_EXPORT AudioObjectId
         get(detail::ParameterTraits<AudioObjectId>::tag) const;
-    LIBADM_EXPORT AudioObjectName
+    ADM_EXPORT AudioObjectName
         get(detail::ParameterTraits<AudioObjectName>::tag) const;
-    LIBADM_EXPORT Start get(detail::ParameterTraits<Start>::tag) const;
-    LIBADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
-    LIBADM_EXPORT DialogueId
-        get(detail::ParameterTraits<DialogueId>::tag) const;
-    LIBADM_EXPORT Importance
-        get(detail::ParameterTraits<Importance>::tag) const;
-    LIBADM_EXPORT Interact get(detail::ParameterTraits<Interact>::tag) const;
-    LIBADM_EXPORT DisableDucking
+    ADM_EXPORT Start get(detail::ParameterTraits<Start>::tag) const;
+    ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT DialogueId get(detail::ParameterTraits<DialogueId>::tag) const;
+    ADM_EXPORT Importance get(detail::ParameterTraits<Importance>::tag) const;
+    ADM_EXPORT Interact get(detail::ParameterTraits<Interact>::tag) const;
+    ADM_EXPORT DisableDucking
         get(detail::ParameterTraits<DisableDucking>::tag) const;
-    LIBADM_EXPORT AudioObjectInteraction
+    ADM_EXPORT AudioObjectInteraction
         get(detail::ParameterTraits<AudioObjectInteraction>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<AudioObjectId>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<AudioObjectName>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Start>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<DialogueId>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Importance>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Interact>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<DisableDucking>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioObjectId>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioObjectName>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Start>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<DialogueId>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Importance>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Interact>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<DisableDucking>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioObjectInteraction>::tag) const;
 
     template <typename Tag>
@@ -227,16 +224,15 @@ namespace adm {
       return false;
     }
 
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Start>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Start>::tag) const;
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Start>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<DialogueId>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Importance>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Interact>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<DisableDucking>::tag);
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<AudioObjectInteraction>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Start>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<DialogueId>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Importance>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Interact>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<DisableDucking>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AudioObjectInteraction>::tag);
 
     bool isAudioObjectReferenceCycle(
         std::shared_ptr<AudioObject> destinationObject);
@@ -257,16 +253,15 @@ namespace adm {
     ElementRange<AudioTrackUid> getReferences(
         detail::ParameterTraits<AudioTrackUid>::tag);
 
-    LIBADM_EXPORT void clearReferences(
-        detail::ParameterTraits<AudioObject>::tag);
-    LIBADM_EXPORT void clearReferences(
+    ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioObject>::tag);
+    ADM_EXPORT void clearReferences(
         detail::ParameterTraits<AudioPackFormat>::tag);
-    LIBADM_EXPORT void clearReferences(
+    ADM_EXPORT void clearReferences(
         detail::ParameterTraits<AudioTrackUid>::tag);
 
-    LIBADM_EXPORT void disconnectReferences();
+    ADM_EXPORT void disconnectReferences();
 
-    LIBADM_EXPORT void setParent(std::weak_ptr<Document> document);
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
     AudioObjectId id_;

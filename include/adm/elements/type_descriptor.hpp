@@ -3,7 +3,7 @@
 
 #include <string>
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -22,27 +22,26 @@ namespace adm {
 
   /// BS.2076 type definitions
   namespace TypeDefinition {
-    LIBADM_EXPORT extern const TypeDescriptor UNDEFINED;
+    ADM_EXPORT extern const TypeDescriptor UNDEFINED;
     /// TypeDefinition for Direct Speakers
-    LIBADM_EXPORT extern const TypeDescriptor DIRECT_SPEAKERS;
+    ADM_EXPORT extern const TypeDescriptor DIRECT_SPEAKERS;
     /// TypeDefinition for Matrix
-    LIBADM_EXPORT extern const TypeDescriptor MATRIX;
+    ADM_EXPORT extern const TypeDescriptor MATRIX;
     /// TypeDefinition for Objects
-    LIBADM_EXPORT extern const TypeDescriptor OBJECTS;
+    ADM_EXPORT extern const TypeDescriptor OBJECTS;
     /// TypeDefinition for Higher Order Ambisonics
-    LIBADM_EXPORT extern const TypeDescriptor HOA;
+    ADM_EXPORT extern const TypeDescriptor HOA;
     /// TypeDefinition for Binaural
-    LIBADM_EXPORT extern const TypeDescriptor BINAURAL;
+    ADM_EXPORT extern const TypeDescriptor BINAURAL;
   }  // namespace TypeDefinition
 
   /// @brief Parse a typeLabel and convert it to a TypeDescriptor
-  LIBADM_EXPORT TypeDescriptor parseTypeLabel(const std::string& label);
+  ADM_EXPORT TypeDescriptor parseTypeLabel(const std::string& label);
   /// @brief Parse a typeDefinition and convert it to a TypeDescriptor
-  LIBADM_EXPORT TypeDescriptor
-  parseTypeDefinition(const std::string& definition);
+  ADM_EXPORT TypeDescriptor parseTypeDefinition(const std::string& definition);
   /// @brief Format a TypeDescriptor object as a typeLabel string
-  LIBADM_EXPORT std::string formatTypeLabel(TypeDescriptor desc);
+  ADM_EXPORT std::string formatTypeLabel(TypeDescriptor desc);
   /// @brief Format a TypeDescriptor object as a typeDefinition string
-  LIBADM_EXPORT std::string formatTypeDefinition(TypeDescriptor desc);
+  ADM_EXPORT std::string formatTypeDefinition(TypeDescriptor desc);
 
 }  // namespace adm

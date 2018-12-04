@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -52,8 +52,8 @@ namespace adm {
       add(id);
     }
 
-    LIBADM_EXPORT void add(ElementConstVariant elementVariant);
-    LIBADM_EXPORT void add(ElementIdVariant elementIdVariant);
+    ADM_EXPORT void add(ElementConstVariant elementVariant);
+    ADM_EXPORT void add(ElementIdVariant elementIdVariant);
 
     hash_type hash() const { return hash_; }
 

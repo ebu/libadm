@@ -8,7 +8,7 @@
 #include "adm/elements/position_types.hpp"
 #include "adm/elements/screen_edge_lock.hpp"
 #include "adm/detail/type_traits.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 #ifndef M_PI
 #define M_PI 3.14159265359f
 #endif
@@ -138,29 +138,29 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AzimuthInteractionMin setter
-    LIBADM_EXPORT void set(AzimuthInteractionMin);
+    ADM_EXPORT void set(AzimuthInteractionMin);
     /// @brief AzimuthInteractionMax setter
-    LIBADM_EXPORT void set(AzimuthInteractionMax);
+    ADM_EXPORT void set(AzimuthInteractionMax);
     /// @brief ElevationInteractionMin setter
-    LIBADM_EXPORT void set(ElevationInteractionMin);
+    ADM_EXPORT void set(ElevationInteractionMin);
     /// @brief ElevationInteractionMax setter
-    LIBADM_EXPORT void set(ElevationInteractionMax);
+    ADM_EXPORT void set(ElevationInteractionMax);
     /// @brief DistanceInteractionMin setter
-    LIBADM_EXPORT void set(DistanceInteractionMin);
+    ADM_EXPORT void set(DistanceInteractionMin);
     /// @brief DistanceInteractionMax setter
-    LIBADM_EXPORT void set(DistanceInteractionMax);
+    ADM_EXPORT void set(DistanceInteractionMax);
     /// @brief XInteractionMin setter
-    LIBADM_EXPORT void set(XInteractionMin);
+    ADM_EXPORT void set(XInteractionMin);
     /// @brief XInteractionMax setter
-    LIBADM_EXPORT void set(XInteractionMax);
+    ADM_EXPORT void set(XInteractionMax);
     /// @brief YInteractionMin setter
-    LIBADM_EXPORT void set(YInteractionMin);
+    ADM_EXPORT void set(YInteractionMin);
     /// @brief YInteractionMax setter
-    LIBADM_EXPORT void set(YInteractionMax);
+    ADM_EXPORT void set(YInteractionMax);
     /// @brief ZInteractionMin setter
-    LIBADM_EXPORT void set(ZInteractionMin);
+    ADM_EXPORT void set(ZInteractionMin);
     /// @brief ZInteractionMax setter
-    LIBADM_EXPORT void set(ZInteractionMax);
+    ADM_EXPORT void set(ZInteractionMax);
 
     /**
      * @brief ADM parameter unset template
@@ -178,98 +178,94 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    LIBADM_EXPORT AzimuthInteractionMin
+    ADM_EXPORT AzimuthInteractionMin
         get(detail::ParameterTraits<AzimuthInteractionMin>::tag) const;
-    LIBADM_EXPORT AzimuthInteractionMax
+    ADM_EXPORT AzimuthInteractionMax
         get(detail::ParameterTraits<AzimuthInteractionMax>::tag) const;
-    LIBADM_EXPORT ElevationInteractionMin
+    ADM_EXPORT ElevationInteractionMin
         get(detail::ParameterTraits<ElevationInteractionMin>::tag) const;
-    LIBADM_EXPORT ElevationInteractionMax
+    ADM_EXPORT ElevationInteractionMax
         get(detail::ParameterTraits<ElevationInteractionMax>::tag) const;
-    LIBADM_EXPORT DistanceInteractionMin
+    ADM_EXPORT DistanceInteractionMin
         get(detail::ParameterTraits<DistanceInteractionMin>::tag) const;
-    LIBADM_EXPORT DistanceInteractionMax
+    ADM_EXPORT DistanceInteractionMax
         get(detail::ParameterTraits<DistanceInteractionMax>::tag) const;
-    LIBADM_EXPORT XInteractionMin
+    ADM_EXPORT XInteractionMin
         get(detail::ParameterTraits<XInteractionMin>::tag) const;
-    LIBADM_EXPORT XInteractionMax
+    ADM_EXPORT XInteractionMax
         get(detail::ParameterTraits<XInteractionMax>::tag) const;
-    LIBADM_EXPORT YInteractionMin
+    ADM_EXPORT YInteractionMin
         get(detail::ParameterTraits<YInteractionMin>::tag) const;
-    LIBADM_EXPORT YInteractionMax
+    ADM_EXPORT YInteractionMax
         get(detail::ParameterTraits<YInteractionMax>::tag) const;
-    LIBADM_EXPORT ZInteractionMin
+    ADM_EXPORT ZInteractionMin
         get(detail::ParameterTraits<ZInteractionMin>::tag) const;
-    LIBADM_EXPORT ZInteractionMax
+    ADM_EXPORT ZInteractionMax
         get(detail::ParameterTraits<ZInteractionMax>::tag) const;
 
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AzimuthInteractionMin>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AzimuthInteractionMax>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<ElevationInteractionMin>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<ElevationInteractionMax>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<DistanceInteractionMin>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<DistanceInteractionMax>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<XInteractionMin>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<XInteractionMax>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<YInteractionMin>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<YInteractionMax>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ZInteractionMin>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ZInteractionMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<XInteractionMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<XInteractionMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<YInteractionMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<YInteractionMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ZInteractionMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ZInteractionMax>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<AzimuthInteractionMin>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<AzimuthInteractionMax>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<ElevationInteractionMin>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<ElevationInteractionMax>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<DistanceInteractionMin>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<DistanceInteractionMax>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<XInteractionMin>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<XInteractionMax>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<YInteractionMin>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<YInteractionMax>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<ZInteractionMin>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<ZInteractionMax>::tag) const;
 
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<AzimuthInteractionMin>::tag);
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<AzimuthInteractionMax>::tag);
-    LIBADM_EXPORT void unset(
+    ADM_EXPORT void unset(detail::ParameterTraits<AzimuthInteractionMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AzimuthInteractionMax>::tag);
+    ADM_EXPORT void unset(
         detail::ParameterTraits<ElevationInteractionMin>::tag);
-    LIBADM_EXPORT void unset(
+    ADM_EXPORT void unset(
         detail::ParameterTraits<ElevationInteractionMax>::tag);
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<DistanceInteractionMin>::tag);
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<DistanceInteractionMax>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<XInteractionMin>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<XInteractionMax>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<YInteractionMin>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<YInteractionMax>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ZInteractionMin>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ZInteractionMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<DistanceInteractionMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<DistanceInteractionMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<XInteractionMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<XInteractionMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<YInteractionMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<YInteractionMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ZInteractionMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ZInteractionMax>::tag);
 
     boost::optional<AzimuthInteractionMin> azimuthMin_;
     boost::optional<AzimuthInteractionMax> azimuthMax_;

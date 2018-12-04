@@ -8,7 +8,7 @@
 #include "adm/elements/position_types.hpp"
 #include "adm/elements/screen_edge_lock.hpp"
 #include "adm/detail/type_traits.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 #ifndef M_PI
 #define M_PI 3.14159265359f
 #endif
@@ -81,9 +81,9 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief GainInteractionMin setter
-    LIBADM_EXPORT void set(GainInteractionMin);
+    ADM_EXPORT void set(GainInteractionMin);
     /// @brief GainInteractionMax setter
-    LIBADM_EXPORT void set(GainInteractionMax);
+    ADM_EXPORT void set(GainInteractionMax);
 
     /**
      * @brief ADM parameter unset template
@@ -101,27 +101,25 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    LIBADM_EXPORT GainInteractionMin
+    ADM_EXPORT GainInteractionMin
         get(detail::ParameterTraits<GainInteractionMin>::tag) const;
-    LIBADM_EXPORT GainInteractionMax
+    ADM_EXPORT GainInteractionMax
         get(detail::ParameterTraits<GainInteractionMax>::tag) const;
 
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<GainInteractionMin>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<GainInteractionMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<GainInteractionMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<GainInteractionMax>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<GainInteractionMin>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<GainInteractionMax>::tag) const;
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<GainInteractionMin>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<GainInteractionMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<GainInteractionMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<GainInteractionMax>::tag);
 
     boost::optional<GainInteractionMin> gainMin_;
     boost::optional<GainInteractionMax> gainMax_;

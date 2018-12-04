@@ -4,10 +4,10 @@
 
 namespace adm {
 
-  LIBADM_EXPORT std::shared_ptr<Document> deepCopy(
+  ADM_EXPORT std::shared_ptr<Document> deepCopy(
       std::shared_ptr<const Document> document);
 
-  LIBADM_EXPORT void deepCopyTo(std::shared_ptr<const Document> src,
-                                std::shared_ptr<Document> dest);
+  ADM_EXPORT void deepCopyTo(std::shared_ptr<const Document> src,
+                             std::shared_ptr<Document> dest);
 
 }  // namespace adm

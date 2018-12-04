@@ -6,7 +6,7 @@
 #include "adm/elements/type_descriptor.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -61,7 +61,7 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief Set value
-    LIBADM_EXPORT void set(AudioObjectIdValue value);
+    ADM_EXPORT void set(AudioObjectIdValue value);
 
     /**
      * @brief ADM parameter unset template
@@ -79,9 +79,9 @@ namespace adm {
      *
      * Compares the string representation of the AudioObjectId.
      */
-    LIBADM_EXPORT bool operator==(const AudioObjectId& other) const;
-    LIBADM_EXPORT bool operator!=(const AudioObjectId& other) const;
-    LIBADM_EXPORT bool operator<(const AudioObjectId& other) const;
+    ADM_EXPORT bool operator==(const AudioObjectId& other) const;
+    ADM_EXPORT bool operator!=(const AudioObjectId& other) const;
+    ADM_EXPORT bool operator<(const AudioObjectId& other) const;
     ///@}
 
     /**
@@ -90,13 +90,12 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    LIBADM_EXPORT AudioObjectIdValue
+    ADM_EXPORT AudioObjectIdValue
         get(detail::ParameterTraits<AudioObjectIdValue>::tag) const;
 
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AudioObjectIdValue>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioObjectIdValue>::tag) const;
 
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<AudioObjectIdValue>::tag) const;
 
     template <typename Tag>
@@ -104,7 +103,7 @@ namespace adm {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<AudioObjectIdValue>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AudioObjectIdValue>::tag);
 
     boost::optional<AudioObjectIdValue> value_;
 
@@ -114,9 +113,9 @@ namespace adm {
   // ---- Free functions ---- //
 
   /// @brief Parse an AudioObjectId string and convert it into an object
-  LIBADM_EXPORT AudioObjectId parseAudioObjectId(const std::string& id);
+  ADM_EXPORT AudioObjectId parseAudioObjectId(const std::string& id);
   /// @brief Format an AudioObjectId object as string
-  LIBADM_EXPORT std::string formatId(AudioObjectId id);
+  ADM_EXPORT std::string formatId(AudioObjectId id);
 
   // ---- Implementation ---- //
   template <typename... Parameters>

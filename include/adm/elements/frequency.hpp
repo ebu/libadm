@@ -4,7 +4,7 @@
 #include <boost/optional.hpp>
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/named_option_helper.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -82,9 +82,9 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief HighPass setter
-    LIBADM_EXPORT void set(HighPass frequency);
+    ADM_EXPORT void set(HighPass frequency);
     /// @brief LowPass setter
-    LIBADM_EXPORT void set(LowPass frequency);
+    ADM_EXPORT void set(LowPass frequency);
 
     /**
      * @brief ADM parameter unset template
@@ -102,19 +102,19 @@ namespace adm {
     void print(std::ostream &os) const;
 
    private:
-    LIBADM_EXPORT HighPass get(detail::ParameterTraits<HighPass>::tag) const;
-    LIBADM_EXPORT LowPass get(detail::ParameterTraits<LowPass>::tag) const;
+    ADM_EXPORT HighPass get(detail::ParameterTraits<HighPass>::tag) const;
+    ADM_EXPORT LowPass get(detail::ParameterTraits<LowPass>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<HighPass>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<LowPass>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<HighPass>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<LowPass>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<HighPass>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<LowPass>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<HighPass>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<LowPass>::tag);
 
     boost::optional<HighPass> highPassFrequency_;
     boost::optional<LowPass> lowPassFrequency_;
@@ -123,11 +123,11 @@ namespace adm {
   // ---- Free functions ---- //
 
   /// @brief Helper function to check if Frequency is a low pass filter
-  LIBADM_EXPORT bool isLowPass(const Frequency &frequency);
+  ADM_EXPORT bool isLowPass(const Frequency &frequency);
   /// @brief Helper function to check if Frequency is a high pass filter
-  LIBADM_EXPORT bool isHighPass(const Frequency &frequency);
+  ADM_EXPORT bool isHighPass(const Frequency &frequency);
   /// @brief Helper function to check if Frequency is a band pass filter
-  LIBADM_EXPORT bool isBandPass(const Frequency &frequency);
+  ADM_EXPORT bool isBandPass(const Frequency &frequency);
 
   // ---- Implementation ---- //
 

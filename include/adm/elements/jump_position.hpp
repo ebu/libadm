@@ -5,7 +5,7 @@
 #include <chrono>
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -66,9 +66,9 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief JumpPositionFlag setter
-    LIBADM_EXPORT void set(JumpPositionFlag objectDivergenceFlag);
+    ADM_EXPORT void set(JumpPositionFlag objectDivergenceFlag);
     /// @brief InterpolationLength setter
-    LIBADM_EXPORT void set(InterpolationLength interpolationLength);
+    ADM_EXPORT void set(InterpolationLength interpolationLength);
 
     /**
      * @brief ADM parameter unset template
@@ -86,27 +86,26 @@ namespace adm {
     void print(std::ostream &os) const;
 
    private:
-    LIBADM_EXPORT JumpPositionFlag
+    ADM_EXPORT JumpPositionFlag
         get(detail::ParameterTraits<JumpPositionFlag>::tag) const;
-    LIBADM_EXPORT InterpolationLength
+    ADM_EXPORT InterpolationLength
         get(detail::ParameterTraits<InterpolationLength>::tag) const;
 
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<JumpPositionFlag>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<JumpPositionFlag>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<InterpolationLength>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<JumpPositionFlag>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<InterpolationLength>::tag) const;
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<JumpPositionFlag>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<InterpolationLength>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<JumpPositionFlag>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<InterpolationLength>::tag);
 
     boost::optional<JumpPositionFlag> jumpPositionFlag_;
     boost::optional<InterpolationLength> interpolationLength_;
@@ -119,19 +118,19 @@ namespace adm {
 
   /// @brief Helper function to check if the ::JumpPositionFlag of a
   /// JumpPosition is true
-  LIBADM_EXPORT bool isEnabled(JumpPosition &jumpPosition);
+  ADM_EXPORT bool isEnabled(JumpPosition &jumpPosition);
   /// @brief Helper function to set the ::JumpPositionFlag of a JumpPosition
   /// to true
-  LIBADM_EXPORT void enable(JumpPosition &jumpPosition);
+  ADM_EXPORT void enable(JumpPosition &jumpPosition);
   /// @brief Helper function to set the ::JumpPositionFlag of a JumpPosition
   /// to false
-  LIBADM_EXPORT void disable(JumpPosition &jumpPosition);
+  ADM_EXPORT void disable(JumpPosition &jumpPosition);
 
   /// @brief Parse interpolationLength
-  LIBADM_EXPORT InterpolationLength
+  ADM_EXPORT InterpolationLength
   parseInterpolationLength(const std::string &length);
   /// @brief Format interpolationLength
-  LIBADM_EXPORT std::string formatInterpolationLength(
+  ADM_EXPORT std::string formatInterpolationLength(
       const InterpolationLength length);
 
   // ---- Implementation ---- //

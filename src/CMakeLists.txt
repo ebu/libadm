@@ -87,7 +87,7 @@ endif()
 
 include(GenerateExportHeader)
 generate_export_header(adm
-  EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/adm/libadm_export.h
+  EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/adm/export.h
 )
 
 ############################################################
