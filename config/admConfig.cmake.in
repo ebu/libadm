@@ -1,0 +1,30 @@
+
+@PACKAGE_INIT@
+
+set_and_check(@PROJECT_NAME@_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/@INSTALL_INCLUDE_DIR@")
+set_and_check(@PROJECT_NAME@_LIBRARY_DIRS "${PACKAGE_PREFIX_DIR}/@INSTALL_LIB_DIR@")
+
+if(${adm_USE_STATIC_LIBS})
+  if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/admTargetsStatic.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/admTargetsStatic.cmake")
+  else()
+    message(FATAL_ERROR "Could not find static version of libadm." )
+  endif()
+elseif(${adm_USE_SHARED_LIBS})
+  if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/admTargetsShared.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/admTargetsShared.cmake")
+  else()
+    message(FATAL_ERROR "Could not find shared version of libadm." )
+  endif()
+else()
+  if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/admTargetsShared.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/admTargetsShared.cmake")
+  else()
+    include("${CMAKE_CURRENT_LIST_DIR}/admTargetsStatic.cmake")
+  endif()
+endif()
+
+check_required_components(adm)
+
+get_target_property(adm_LOCATION_ONLY_FOR_DISPLAY adm LOCATION)
+message(STATUS "Found adm library ${adm_VERSION}: ${adm_LOCATION_ONLY_FOR_DISPLAY}")

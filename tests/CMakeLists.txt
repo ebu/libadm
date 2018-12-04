@@ -3,7 +3,7 @@ function(add_adm_test name)
   add_executable(${name} ${name}.cpp $<TARGET_OBJECTS:catch_main>)
   target_link_libraries(${name}
     PRIVATE
-    libadm
+    adm
   )
   target_include_directories(${name} PRIVATE
     ${CMAKE_SOURCE_DIR}/submodules

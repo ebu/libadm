@@ -29,7 +29,7 @@ set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header fi
 if(WIN32 AND NOT CYGWIN)
   set(INSTALL_CMAKE_DIR CMake CACHE PATH "Installation directory for CMake files")
 else()
-  set(INSTALL_CMAKE_DIR share/cmake/libadm CACHE PATH "Installation directory for CMake files")
+  set(INSTALL_CMAKE_DIR share/cmake/adm CACHE PATH "Installation directory for CMake files")
 endif()
 
 ############################################################
