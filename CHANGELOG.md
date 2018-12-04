@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- Rename cmake rename library target name from `libadm` to `adm`
+
+
 ## 0.10.0 - 2018-11-30
 
 ### Added
