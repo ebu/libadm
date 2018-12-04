@@ -10,8 +10,8 @@ XML_PROGRAMLISTING     = YES
 
 MACRO_EXPANSION        = YES
 EXPAND_ONLY_PREDEF     = YES
-EXPAND_AS_DEFINED      = LIBADM_EXPORT
-PREDEFINED             = LIBADM_EXPORT=
+EXPAND_AS_DEFINED      = ADM_EXPORT
+PREDEFINED             = ADM_EXPORT=
 
 ALIASES                = "rst=\verbatim embed:rst"
 ALIASES               += "endrst=\endverbatim"

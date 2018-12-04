@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "adm/document.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -36,6 +36,6 @@ namespace adm {
    * @param name Name that will be used for the created
    * `Audio{Object,PackFormat,ChannelFormat}`.
    */
-  LIBADM_EXPORT SimpleObjectHolder createSimpleObject(const std::string& name);
+  ADM_EXPORT SimpleObjectHolder createSimpleObject(const std::string& name);
 
 }  // namespace adm

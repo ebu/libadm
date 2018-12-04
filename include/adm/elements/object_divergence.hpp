@@ -4,7 +4,7 @@
 #include <boost/optional.hpp>
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/named_option_helper.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -85,11 +85,11 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief Divergence setter
-    LIBADM_EXPORT void set(Divergence divergence);
+    ADM_EXPORT void set(Divergence divergence);
     /// @brief AzimuthRange setter
-    LIBADM_EXPORT void set(AzimuthRange azimuthRange);
+    ADM_EXPORT void set(AzimuthRange azimuthRange);
     /// @brief PositionRange setter
-    LIBADM_EXPORT void set(PositionRange positionRange);
+    ADM_EXPORT void set(PositionRange positionRange);
 
     /**
      * @brief ADM parameter unset template
@@ -107,31 +107,28 @@ namespace adm {
     void print(std::ostream &os) const;
 
    private:
-    LIBADM_EXPORT Divergence
-        get(detail::ParameterTraits<Divergence>::tag) const;
-    LIBADM_EXPORT AzimuthRange
+    ADM_EXPORT Divergence get(detail::ParameterTraits<Divergence>::tag) const;
+    ADM_EXPORT AzimuthRange
         get(detail::ParameterTraits<AzimuthRange>::tag) const;
-    LIBADM_EXPORT PositionRange
+    ADM_EXPORT PositionRange
         get(detail::ParameterTraits<PositionRange>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Divergence>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<AzimuthRange>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<PositionRange>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Divergence>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AzimuthRange>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<PositionRange>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-    LIBADM_EXPORT bool isDefault(
-        detail::ParameterTraits<Divergence>::tag) const;
-    LIBADM_EXPORT bool isDefault(
-        detail::ParameterTraits<AzimuthRange>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Divergence>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<AzimuthRange>::tag) const;
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<PositionRange>::tag) const;
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Divergence>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<AzimuthRange>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<PositionRange>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Divergence>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AzimuthRange>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<PositionRange>::tag);
 
     boost::optional<Divergence> divergence_;
     boost::optional<AzimuthRange> azimuthRange_;

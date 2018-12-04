@@ -11,7 +11,7 @@
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
 #include "adm/detail/named_option_helper.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -65,7 +65,7 @@ namespace adm {
      * This is not a deep copy! All referenced objects will be
      * disconnected.
      */
-    LIBADM_EXPORT std::shared_ptr<AudioContent> copy() const;
+    ADM_EXPORT std::shared_ptr<AudioContent> copy() const;
 
     /**
      * @brief ADM parameter getter template
@@ -99,13 +99,13 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AudioContentId setter
-    LIBADM_EXPORT void set(AudioContentId id);
+    ADM_EXPORT void set(AudioContentId id);
     /// @brief AudioContentName setter
-    LIBADM_EXPORT void set(AudioContentName name);
+    ADM_EXPORT void set(AudioContentName name);
     /// @brief AudioContentLanguage setter
-    LIBADM_EXPORT void set(AudioContentLanguage language);
+    ADM_EXPORT void set(AudioContentLanguage language);
     /// @brief LoudnessMetadata setter
-    LIBADM_EXPORT void set(LoudnessMetadata loudnessMetadata);
+    ADM_EXPORT void set(LoudnessMetadata loudnessMetadata);
     ///@{
 
     /**
@@ -117,11 +117,11 @@ namespace adm {
      * set to undefined. If one of the ContentKinds is set
      * ::DialogueId will be set accordingly.
      */
-    LIBADM_EXPORT void set(DialogueId kind);
-    LIBADM_EXPORT void set(ContentKind kind);
-    LIBADM_EXPORT void set(NonDialogueContentKind kind);
-    LIBADM_EXPORT void set(DialogueContentKind kind);
-    LIBADM_EXPORT void set(MixedContentKind kind);
+    ADM_EXPORT void set(DialogueId kind);
+    ADM_EXPORT void set(ContentKind kind);
+    ADM_EXPORT void set(NonDialogueContentKind kind);
+    ADM_EXPORT void set(DialogueContentKind kind);
+    ADM_EXPORT void set(MixedContentKind kind);
     ///@}
 
     /**
@@ -141,7 +141,7 @@ namespace adm {
     void unset();
 
     /// @brief Add reference to an AudioObject
-    LIBADM_EXPORT bool addReference(std::shared_ptr<AudioObject> object);
+    ADM_EXPORT bool addReference(std::shared_ptr<AudioObject> object);
 
     /**
      * @brief Get references to ADM elements template
@@ -168,7 +168,7 @@ namespace adm {
     // const;
 
     /// @brief Remove reference to an AudioObject
-    LIBADM_EXPORT void removeReference(std::shared_ptr<AudioObject> object);
+    ADM_EXPORT void removeReference(std::shared_ptr<AudioObject> object);
 
     /**
      * @brief Clear references to Elements template
@@ -186,75 +186,67 @@ namespace adm {
     void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
-    LIBADM_EXPORT std::weak_ptr<Document> getParent() const;
+    ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
    private:
     friend class AudioContentAttorney;
 
-    LIBADM_EXPORT AudioContent(AudioContentName name);
-    LIBADM_EXPORT AudioContent(const AudioContent &) = default;
-    LIBADM_EXPORT AudioContent(AudioContent &&) = default;
+    ADM_EXPORT AudioContent(AudioContentName name);
+    ADM_EXPORT AudioContent(const AudioContent &) = default;
+    ADM_EXPORT AudioContent(AudioContent &&) = default;
 
-    LIBADM_EXPORT AudioContentId
+    ADM_EXPORT AudioContentId
         get(detail::ParameterTraits<AudioContentId>::tag) const;
-    LIBADM_EXPORT AudioContentName
+    ADM_EXPORT AudioContentName
         get(detail::ParameterTraits<AudioContentName>::tag) const;
-    LIBADM_EXPORT AudioContentLanguage
+    ADM_EXPORT AudioContentLanguage
         get(detail::ParameterTraits<AudioContentLanguage>::tag) const;
-    LIBADM_EXPORT LoudnessMetadata
+    ADM_EXPORT LoudnessMetadata
         get(detail::ParameterTraits<LoudnessMetadata>::tag) const;
-    LIBADM_EXPORT DialogueId
-        get(detail::ParameterTraits<DialogueId>::tag) const;
-    LIBADM_EXPORT ContentKind
-        get(detail::ParameterTraits<ContentKind>::tag) const;
-    LIBADM_EXPORT NonDialogueContentKind
+    ADM_EXPORT DialogueId get(detail::ParameterTraits<DialogueId>::tag) const;
+    ADM_EXPORT ContentKind get(detail::ParameterTraits<ContentKind>::tag) const;
+    ADM_EXPORT NonDialogueContentKind
         get(detail::ParameterTraits<NonDialogueContentKind>::tag) const;
-    LIBADM_EXPORT DialogueContentKind
+    ADM_EXPORT DialogueContentKind
         get(detail::ParameterTraits<DialogueContentKind>::tag) const;
-    LIBADM_EXPORT MixedContentKind
+    ADM_EXPORT MixedContentKind
         get(detail::ParameterTraits<MixedContentKind>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<AudioContentId>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AudioContentName>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioContentId>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioContentName>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioContentLanguage>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<LoudnessMetadata>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<DialogueId>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ContentKind>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<LoudnessMetadata>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<DialogueId>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ContentKind>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<NonDialogueContentKind>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<DialogueContentKind>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<MixedContentKind>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<MixedContentKind>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<AudioContentLanguage>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<LoudnessMetadata>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<DialogueId>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ContentKind>::tag);
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<NonDialogueContentKind>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<DialogueContentKind>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<MixedContentKind>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AudioContentLanguage>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<LoudnessMetadata>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<DialogueId>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ContentKind>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<NonDialogueContentKind>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<DialogueContentKind>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<MixedContentKind>::tag);
 
-    LIBADM_EXPORT ElementRange<const AudioObject> getReferences(
+    ADM_EXPORT ElementRange<const AudioObject> getReferences(
         detail::ParameterTraits<AudioObject>::tag) const;
 
-    LIBADM_EXPORT ElementRange<AudioObject> getReferences(
+    ADM_EXPORT ElementRange<AudioObject> getReferences(
         detail::ParameterTraits<AudioObject>::tag);
 
-    LIBADM_EXPORT void clearReferences(
-        detail::ParameterTraits<AudioObject>::tag);
+    ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioObject>::tag);
 
-    LIBADM_EXPORT void disconnectReferences();
+    ADM_EXPORT void disconnectReferences();
 
     void setParent(std::weak_ptr<Document> document);
 

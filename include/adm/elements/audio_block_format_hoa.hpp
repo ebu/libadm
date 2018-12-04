@@ -7,7 +7,7 @@
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -36,19 +36,18 @@ namespace adm {
     template <typename... Parameters>
     AudioBlockFormatHoa(Parameters... optionalNamedArgs);
 
-    LIBADM_EXPORT AudioBlockFormatHoa(const AudioBlockFormatHoa&) = default;
-    LIBADM_EXPORT AudioBlockFormatHoa(AudioBlockFormatHoa&&) = default;
-    LIBADM_EXPORT AudioBlockFormatHoa& operator=(const AudioBlockFormatHoa&) =
+    ADM_EXPORT AudioBlockFormatHoa(const AudioBlockFormatHoa&) = default;
+    ADM_EXPORT AudioBlockFormatHoa(AudioBlockFormatHoa&&) = default;
+    ADM_EXPORT AudioBlockFormatHoa& operator=(const AudioBlockFormatHoa&) =
         default;
-    LIBADM_EXPORT AudioBlockFormatHoa& operator=(AudioBlockFormatHoa&&) =
-        default;
+    ADM_EXPORT AudioBlockFormatHoa& operator=(AudioBlockFormatHoa&&) = default;
     /**
      * @brief Copy AudioBlockFormatHoa
      *
      * The actual copy constructor is private to ensure that an
      * AudioBlockFormatHoa can only be created as a `std::shared_ptr`.
      */
-    LIBADM_EXPORT std::shared_ptr<AudioBlockFormatHoa> copy() const;
+    ADM_EXPORT std::shared_ptr<AudioBlockFormatHoa> copy() const;
 
     /**
      * @brief ADM parameter getter template
@@ -78,14 +77,14 @@ namespace adm {
     template <typename Parameter>
     bool isDefault() const;
 
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
 
     /// @brief AudioBlockFormatId setter
-    LIBADM_EXPORT void set(AudioBlockFormatId id);
+    ADM_EXPORT void set(AudioBlockFormatId id);
     /// @brief Rtime setter
-    LIBADM_EXPORT void set(Rtime rtime);
+    ADM_EXPORT void set(Rtime rtime);
     /// @brief Duration setter
-    LIBADM_EXPORT void set(Duration duration);
+    ADM_EXPORT void set(Duration duration);
 
     /**
      * @brief ADM parameter unset template
@@ -98,23 +97,22 @@ namespace adm {
     void unset();
 
    private:
-    LIBADM_EXPORT AudioBlockFormatId
+    ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    LIBADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
-    LIBADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
 
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
 
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;

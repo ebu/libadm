@@ -12,7 +12,7 @@
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -70,13 +70,13 @@ namespace adm {
     template <typename... Parameters>
     AudioBlockFormatObjects(SphericalPosition position,
                             Parameters... optionalNamedArgs);
-    LIBADM_EXPORT AudioBlockFormatObjects(const AudioBlockFormatObjects&) =
+    ADM_EXPORT AudioBlockFormatObjects(const AudioBlockFormatObjects&) =
         default;
-    LIBADM_EXPORT AudioBlockFormatObjects(AudioBlockFormatObjects&&) = default;
-    LIBADM_EXPORT AudioBlockFormatObjects& operator=(
+    ADM_EXPORT AudioBlockFormatObjects(AudioBlockFormatObjects&&) = default;
+    ADM_EXPORT AudioBlockFormatObjects& operator=(
         const AudioBlockFormatObjects&) = default;
-    LIBADM_EXPORT AudioBlockFormatObjects& operator=(
-        AudioBlockFormatObjects&&) = default;
+    ADM_EXPORT AudioBlockFormatObjects& operator=(AudioBlockFormatObjects&&) =
+        default;
 
     /**
      * @brief ADM parameter getter template
@@ -107,11 +107,11 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AudioBlockFormatId setter
-    LIBADM_EXPORT void set(AudioBlockFormatId id);
+    ADM_EXPORT void set(AudioBlockFormatId id);
     /// @brief Rtime setter
-    LIBADM_EXPORT void set(Rtime rtime);
+    ADM_EXPORT void set(Rtime rtime);
     /// @brief Duration setter
-    LIBADM_EXPORT void set(Duration duration);
+    ADM_EXPORT void set(Duration duration);
 
     /**
      * @brief Cartesian setter
@@ -119,7 +119,7 @@ namespace adm {
      * \note If setting the ADM parameter cartesian will change the coordinate
      * system the corresponding position will be set to a default value.
      */
-    LIBADM_EXPORT void set(Cartesian cartesian);
+    ADM_EXPORT void set(Cartesian cartesian);
     /**
      * @brief Position setter
      *
@@ -129,7 +129,7 @@ namespace adm {
      * the Cartesian flag will only be set if has already been set before
      * (either directly or automatically).
      */
-    LIBADM_EXPORT void set(Position position);
+    ADM_EXPORT void set(Position position);
     /**
      * @brief SphericalPosition setter
      *
@@ -137,36 +137,36 @@ namespace adm {
      * CartesianPosition. The Cartesian flag will only be set if it has
      * already been set before (either directly or automatically).
      */
-    LIBADM_EXPORT void set(SphericalPosition position);
+    ADM_EXPORT void set(SphericalPosition position);
     /**
      * @brief CartesianPosition setter
      *
      * \note Setting a CartesianPosition will automatically unset the
      * SphericalPosition. Also the Cartesian flag will be set automatically.
      */
-    LIBADM_EXPORT void set(CartesianPosition position);
+    ADM_EXPORT void set(CartesianPosition position);
     /// @brief Width setter
-    LIBADM_EXPORT void set(Width width);
+    ADM_EXPORT void set(Width width);
     /// @brief Height setter
-    LIBADM_EXPORT void set(Height height);
+    ADM_EXPORT void set(Height height);
     /// @brief Depth setter
-    LIBADM_EXPORT void set(Depth depth);
+    ADM_EXPORT void set(Depth depth);
     /// @brief ScreenEdgeLock setter
-    LIBADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
+    ADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
     /// @brief Gain setter
-    LIBADM_EXPORT void set(Gain gain);
+    ADM_EXPORT void set(Gain gain);
     /// @brief Diffuse setter
-    LIBADM_EXPORT void set(Diffuse diffuse);
+    ADM_EXPORT void set(Diffuse diffuse);
     /// @brief ChannelLock setter
-    LIBADM_EXPORT void set(ChannelLock channelLock);
+    ADM_EXPORT void set(ChannelLock channelLock);
     /// @brief ObjectDivergence setter
-    LIBADM_EXPORT void set(ObjectDivergence objectDivergence);
+    ADM_EXPORT void set(ObjectDivergence objectDivergence);
     /// @brief JumpPosition setter
-    LIBADM_EXPORT void set(JumpPosition jumpPosition);
+    ADM_EXPORT void set(JumpPosition jumpPosition);
     /// @brief ScreenRef setter
-    LIBADM_EXPORT void set(ScreenRef screenRef);
+    ADM_EXPORT void set(ScreenRef screenRef);
     /// @brief Importance setter
-    LIBADM_EXPORT void set(Importance importance);
+    ADM_EXPORT void set(Importance importance);
 
     /**
      * @brief ADM parameter unset template
@@ -179,94 +179,85 @@ namespace adm {
     void unset();
 
    private:
-    LIBADM_EXPORT AudioBlockFormatId
+    ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    LIBADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
-    LIBADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
-    LIBADM_EXPORT Cartesian get(detail::ParameterTraits<Cartesian>::tag) const;
-    LIBADM_EXPORT Position get(detail::ParameterTraits<Position>::tag) const;
-    LIBADM_EXPORT SphericalPosition
+    ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT Cartesian get(detail::ParameterTraits<Cartesian>::tag) const;
+    ADM_EXPORT Position get(detail::ParameterTraits<Position>::tag) const;
+    ADM_EXPORT SphericalPosition
         get(detail::ParameterTraits<SphericalPosition>::tag) const;
-    LIBADM_EXPORT CartesianPosition
+    ADM_EXPORT CartesianPosition
         get(detail::ParameterTraits<CartesianPosition>::tag) const;
-    LIBADM_EXPORT Width get(detail::ParameterTraits<Width>::tag) const;
-    LIBADM_EXPORT Height get(detail::ParameterTraits<Height>::tag) const;
-    LIBADM_EXPORT Depth get(detail::ParameterTraits<Depth>::tag) const;
-    LIBADM_EXPORT ScreenEdgeLock
+    ADM_EXPORT Width get(detail::ParameterTraits<Width>::tag) const;
+    ADM_EXPORT Height get(detail::ParameterTraits<Height>::tag) const;
+    ADM_EXPORT Depth get(detail::ParameterTraits<Depth>::tag) const;
+    ADM_EXPORT ScreenEdgeLock
         get(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
-    LIBADM_EXPORT Gain get(detail::ParameterTraits<Gain>::tag) const;
-    LIBADM_EXPORT Diffuse get(detail::ParameterTraits<Diffuse>::tag) const;
-    LIBADM_EXPORT ChannelLock
-        get(detail::ParameterTraits<ChannelLock>::tag) const;
-    LIBADM_EXPORT ObjectDivergence
+    ADM_EXPORT Gain get(detail::ParameterTraits<Gain>::tag) const;
+    ADM_EXPORT Diffuse get(detail::ParameterTraits<Diffuse>::tag) const;
+    ADM_EXPORT ChannelLock get(detail::ParameterTraits<ChannelLock>::tag) const;
+    ADM_EXPORT ObjectDivergence
         get(detail::ParameterTraits<ObjectDivergence>::tag) const;
-    LIBADM_EXPORT JumpPosition
+    ADM_EXPORT JumpPosition
         get(detail::ParameterTraits<JumpPosition>::tag) const;
-    LIBADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
-    LIBADM_EXPORT Importance
-        get(detail::ParameterTraits<Importance>::tag) const;
+    ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
+    ADM_EXPORT Importance get(detail::ParameterTraits<Importance>::tag) const;
 
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Cartesian>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Position>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<SphericalPosition>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<CartesianPosition>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Width>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Height>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Depth>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Gain>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Diffuse>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ChannelLock>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<ObjectDivergence>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<JumpPosition>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ScreenRef>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Importance>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Cartesian>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Position>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<SphericalPosition>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<CartesianPosition>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Width>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Height>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Depth>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Gain>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Diffuse>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ChannelLock>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ObjectDivergence>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<JumpPosition>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ScreenRef>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Importance>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Cartesian>::tag) const;
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Width>::tag) const;
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Height>::tag) const;
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Depth>::tag) const;
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Gain>::tag) const;
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Diffuse>::tag) const;
-    LIBADM_EXPORT bool isDefault(
-        detail::ParameterTraits<ChannelLock>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Cartesian>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Width>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Height>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Depth>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Gain>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Diffuse>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<ChannelLock>::tag) const;
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<ObjectDivergence>::tag) const;
-    LIBADM_EXPORT bool isDefault(
-        detail::ParameterTraits<JumpPosition>::tag) const;
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
-    LIBADM_EXPORT bool isDefault(
-        detail::ParameterTraits<Importance>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<JumpPosition>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Importance>::tag) const;
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Cartesian>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Position>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<SphericalPosition>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<CartesianPosition>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Width>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Height>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Depth>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Gain>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Diffuse>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ChannelLock>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ObjectDivergence>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<JumpPosition>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Importance>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Cartesian>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Position>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<SphericalPosition>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<CartesianPosition>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Width>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Height>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Depth>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Gain>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Diffuse>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ChannelLock>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ObjectDivergence>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<JumpPosition>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Importance>::tag);
 
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;

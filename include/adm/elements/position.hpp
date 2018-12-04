@@ -8,7 +8,7 @@
 #include "adm/elements/position_types.hpp"
 #include "adm/elements/screen_edge_lock.hpp"
 #include "adm/detail/type_traits.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 #ifndef M_PI
 #define M_PI 3.14159265359f
 #endif
@@ -25,8 +25,8 @@ namespace adm {
     typedef SphericalPositionTag tag;
 
     /// @brief Constructor without optional parameters
-    LIBADM_EXPORT SphericalPosition(Azimuth azimuth = Azimuth(0.f),
-                                    Elevation elevation = Elevation(0.f));
+    ADM_EXPORT SphericalPosition(Azimuth azimuth = Azimuth(0.f),
+                                 Elevation elevation = Elevation(0.f));
     /**
      * @brief Constructor template
      *
@@ -66,13 +66,13 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief Azimuth setter
-    LIBADM_EXPORT void set(Azimuth azimuth);
+    ADM_EXPORT void set(Azimuth azimuth);
     /// @brief Elevation setter
-    LIBADM_EXPORT void set(Elevation elevation);
+    ADM_EXPORT void set(Elevation elevation);
     /// @brief Distance setter
-    LIBADM_EXPORT void set(Distance distance);
+    ADM_EXPORT void set(Distance distance);
     /// @brief ScreenEdgeLock setter
-    LIBADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
+    ADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
 
     /**
      * @brief ADM parameter unset template
@@ -90,25 +90,25 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    LIBADM_EXPORT Azimuth get(detail::ParameterTraits<Azimuth>::tag) const;
-    LIBADM_EXPORT Elevation get(detail::ParameterTraits<Elevation>::tag) const;
-    LIBADM_EXPORT Distance get(detail::ParameterTraits<Distance>::tag) const;
-    LIBADM_EXPORT ScreenEdgeLock
+    ADM_EXPORT Azimuth get(detail::ParameterTraits<Azimuth>::tag) const;
+    ADM_EXPORT Elevation get(detail::ParameterTraits<Elevation>::tag) const;
+    ADM_EXPORT Distance get(detail::ParameterTraits<Distance>::tag) const;
+    ADM_EXPORT ScreenEdgeLock
         get(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Azimuth>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Elevation>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Distance>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Azimuth>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Elevation>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Distance>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Distance>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Distance>::tag) const;
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Distance>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Distance>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
 
     Azimuth azimuth_;
     Elevation elevation_;
@@ -126,7 +126,7 @@ namespace adm {
     typedef CartesianPositionTag tag;
 
     /// @brief Constructor without optional parameters
-    LIBADM_EXPORT CartesianPosition(X x = X(0.f), Y y = Y(1.f));
+    ADM_EXPORT CartesianPosition(X x = X(0.f), Y y = Y(1.f));
 
     /**
      * @brief Constructor template
@@ -166,13 +166,13 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief X setter
-    LIBADM_EXPORT void set(X x);
+    ADM_EXPORT void set(X x);
     /// @brief Y setter
-    LIBADM_EXPORT void set(Y y);
+    ADM_EXPORT void set(Y y);
     /// @brief Z setter
-    LIBADM_EXPORT void set(Z z);
+    ADM_EXPORT void set(Z z);
     /// @brief ScreenEdgeLock setter
-    LIBADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
+    ADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
 
     /**
      * @brief ADM parameter unset template
@@ -190,25 +190,25 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    LIBADM_EXPORT X get(detail::ParameterTraits<X>::tag) const;
-    LIBADM_EXPORT Y get(detail::ParameterTraits<Y>::tag) const;
-    LIBADM_EXPORT Z get(detail::ParameterTraits<Z>::tag) const;
-    LIBADM_EXPORT ScreenEdgeLock
+    ADM_EXPORT X get(detail::ParameterTraits<X>::tag) const;
+    ADM_EXPORT Y get(detail::ParameterTraits<Y>::tag) const;
+    ADM_EXPORT Z get(detail::ParameterTraits<Z>::tag) const;
+    ADM_EXPORT ScreenEdgeLock
         get(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<X>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Y>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Z>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<X>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Y>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Z>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Z>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Z>::tag) const;
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Z>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Z>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
 
     X x_;
     Y y_;
@@ -225,9 +225,9 @@ namespace adm {
   // ---- Free functions ---- //
 
   /// @brief Helper function to check if a ::Position is spherical
-  LIBADM_EXPORT bool isSpherical(const Position& position);
+  ADM_EXPORT bool isSpherical(const Position& position);
   /// @brief Helper function to check if a ::Position is cartesian
-  LIBADM_EXPORT bool isCartesian(const Position& position);
+  ADM_EXPORT bool isCartesian(const Position& position);
 
   // ---- Implementation ---- //
 

@@ -4,7 +4,7 @@
 #include <memory>
 #include <iosfwd>
 #include "adm/detail/enum_bitmask.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -49,7 +49,7 @@ namespace adm {
    * @param filename XML file to read and parse
    * @param options Options to influence the XML parser behaviour
    */
-  LIBADM_EXPORT std::shared_ptr<Document> parseXml(
+  ADM_EXPORT std::shared_ptr<Document> parseXml(
       const std::string& filename,
       xml::ParserOptions options = xml::ParserOptions::none);
 
@@ -60,7 +60,7 @@ namespace adm {
    * @param stream input stream to parse XML data
    * @param options Options to influence the XML parser behaviour
    */
-  LIBADM_EXPORT std::shared_ptr<Document> parseXml(
+  ADM_EXPORT std::shared_ptr<Document> parseXml(
       std::istream& stream,
       xml::ParserOptions options = xml::ParserOptions::none);
 

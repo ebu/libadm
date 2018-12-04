@@ -6,7 +6,7 @@
 #include "adm/elements/type_descriptor.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -61,9 +61,9 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief Set channel type
-    LIBADM_EXPORT void set(TypeDescriptor channelType);
+    ADM_EXPORT void set(TypeDescriptor channelType);
     /// @brief Set value
-    LIBADM_EXPORT void set(AudioChannelFormatIdValue value);
+    ADM_EXPORT void set(AudioChannelFormatIdValue value);
 
     /**
      * @brief ADM parameter unset template
@@ -81,9 +81,9 @@ namespace adm {
      *
      * Compares the string representation of the AudioChannelFormatId.
      */
-    LIBADM_EXPORT bool operator==(const AudioChannelFormatId& other) const;
-    LIBADM_EXPORT bool operator!=(const AudioChannelFormatId& other) const;
-    LIBADM_EXPORT bool operator<(const AudioChannelFormatId& other) const;
+    ADM_EXPORT bool operator==(const AudioChannelFormatId& other) const;
+    ADM_EXPORT bool operator!=(const AudioChannelFormatId& other) const;
+    ADM_EXPORT bool operator<(const AudioChannelFormatId& other) const;
     ///@}
 
     /**
@@ -92,18 +92,18 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    LIBADM_EXPORT TypeDescriptor
+    ADM_EXPORT TypeDescriptor
         get(detail::ParameterTraits<TypeDescriptor>::tag) const;
-    LIBADM_EXPORT AudioChannelFormatIdValue
+    ADM_EXPORT AudioChannelFormatIdValue
         get(detail::ParameterTraits<AudioChannelFormatIdValue>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<TypeDescriptor>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<TypeDescriptor>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioChannelFormatIdValue>::tag) const;
 
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<TypeDescriptor>::tag) const;
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<AudioChannelFormatIdValue>::tag) const;
 
     template <typename Tag>
@@ -111,8 +111,8 @@ namespace adm {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<TypeDescriptor>::tag);
-    LIBADM_EXPORT void unset(
+    ADM_EXPORT void unset(detail::ParameterTraits<TypeDescriptor>::tag);
+    ADM_EXPORT void unset(
         detail::ParameterTraits<AudioChannelFormatIdValue>::tag);
 
     boost::optional<TypeDescriptor> channelType_;
@@ -126,10 +126,10 @@ namespace adm {
 
   /// @brief Parse an AudioChannelFormatId string and convert it into an
   /// object
-  LIBADM_EXPORT AudioChannelFormatId
+  ADM_EXPORT AudioChannelFormatId
   parseAudioChannelFormatId(const std::string& id);
   /// @brief Format an AudioChannelFormatId object as string
-  LIBADM_EXPORT std::string formatId(AudioChannelFormatId id);
+  ADM_EXPORT std::string formatId(AudioChannelFormatId id);
 
   // ---- Implementation ---- //
   template <typename... Parameters>

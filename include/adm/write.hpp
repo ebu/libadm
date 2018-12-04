@@ -4,7 +4,7 @@
 #include <memory>
 #include <iosfwd>
 #include "adm/detail/enum_bitmask.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -59,7 +59,7 @@ namespace adm {
    * @param admDocument ADM document that should be transformed into XML
    * @param options Options to influence the XML generator behaviour
    */
-  LIBADM_EXPORT void writeXml(
+  ADM_EXPORT void writeXml(
       const std::string& filename, std::shared_ptr<const Document> admDocument,
       xml::WriterOptions options = xml::WriterOptions::none);
 
@@ -69,7 +69,7 @@ namespace adm {
    * @param admDocument ADM document that should be transformed into XML
    * @param options Options to influence the XML generator behaviour
    */
-  LIBADM_EXPORT std::ostream& writeXml(
+  ADM_EXPORT std::ostream& writeXml(
       std::ostream& stream, std::shared_ptr<const Document> admDocument,
       xml::WriterOptions options = xml::WriterOptions::none);
 

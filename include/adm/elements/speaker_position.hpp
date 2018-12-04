@@ -6,7 +6,7 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/elements/screen_edge_lock.hpp"
 #include "adm/elements/position_types.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -69,25 +69,25 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief Azimuth setter
-    LIBADM_EXPORT void set(Azimuth azimuth);
+    ADM_EXPORT void set(Azimuth azimuth);
     /// @brief AzimuthMin setter
-    LIBADM_EXPORT void set(AzimuthMin azimuthMin);
+    ADM_EXPORT void set(AzimuthMin azimuthMin);
     /// @brief AzimuthMax setter
-    LIBADM_EXPORT void set(AzimuthMax azimuthMax);
+    ADM_EXPORT void set(AzimuthMax azimuthMax);
     /// @brief Elevation setter
-    LIBADM_EXPORT void set(Elevation elevation);
+    ADM_EXPORT void set(Elevation elevation);
     /// @brief Elevation minimum setter
-    LIBADM_EXPORT void set(ElevationMin elevationMin);
+    ADM_EXPORT void set(ElevationMin elevationMin);
     /// @brief ElevationMax setter
-    LIBADM_EXPORT void set(ElevationMax elevationMax);
+    ADM_EXPORT void set(ElevationMax elevationMax);
     /// @brief Distance setter
-    LIBADM_EXPORT void set(Distance distance);
+    ADM_EXPORT void set(Distance distance);
     /// @brief DistanceMin setter
-    LIBADM_EXPORT void set(DistanceMin distanceMin);
+    ADM_EXPORT void set(DistanceMin distanceMin);
     /// @brief DistanceMax setter
-    LIBADM_EXPORT void set(DistanceMax distanceMax);
+    ADM_EXPORT void set(DistanceMax distanceMax);
     /// @brief ScreenEdgeLock setter
-    LIBADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
+    ADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
 
     /**
      * @brief ADM parameter unset template
@@ -105,48 +105,44 @@ namespace adm {
     void print(std::ostream &os) const;
 
    private:
-    LIBADM_EXPORT Azimuth get(detail::ParameterTraits<Azimuth>::tag) const;
-    LIBADM_EXPORT AzimuthMin
-        get(detail::ParameterTraits<AzimuthMin>::tag) const;
-    LIBADM_EXPORT AzimuthMax
-        get(detail::ParameterTraits<AzimuthMax>::tag) const;
-    LIBADM_EXPORT Elevation get(detail::ParameterTraits<Elevation>::tag) const;
-    LIBADM_EXPORT ElevationMin
+    ADM_EXPORT Azimuth get(detail::ParameterTraits<Azimuth>::tag) const;
+    ADM_EXPORT AzimuthMin get(detail::ParameterTraits<AzimuthMin>::tag) const;
+    ADM_EXPORT AzimuthMax get(detail::ParameterTraits<AzimuthMax>::tag) const;
+    ADM_EXPORT Elevation get(detail::ParameterTraits<Elevation>::tag) const;
+    ADM_EXPORT ElevationMin
         get(detail::ParameterTraits<ElevationMin>::tag) const;
-    LIBADM_EXPORT ElevationMax
+    ADM_EXPORT ElevationMax
         get(detail::ParameterTraits<ElevationMax>::tag) const;
-    LIBADM_EXPORT Distance get(detail::ParameterTraits<Distance>::tag) const;
-    LIBADM_EXPORT DistanceMin
-        get(detail::ParameterTraits<DistanceMin>::tag) const;
-    LIBADM_EXPORT DistanceMax
-        get(detail::ParameterTraits<DistanceMax>::tag) const;
-    LIBADM_EXPORT ScreenEdgeLock
+    ADM_EXPORT Distance get(detail::ParameterTraits<Distance>::tag) const;
+    ADM_EXPORT DistanceMin get(detail::ParameterTraits<DistanceMin>::tag) const;
+    ADM_EXPORT DistanceMax get(detail::ParameterTraits<DistanceMax>::tag) const;
+    ADM_EXPORT ScreenEdgeLock
         get(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Azimuth>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<AzimuthMin>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<AzimuthMax>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Elevation>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ElevationMin>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ElevationMax>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Distance>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<DistanceMin>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<DistanceMax>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Azimuth>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AzimuthMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AzimuthMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Elevation>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ElevationMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ElevationMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Distance>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<DistanceMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<DistanceMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<AzimuthMin>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<AzimuthMax>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ElevationMin>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ElevationMax>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Distance>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<DistanceMin>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<DistanceMax>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AzimuthMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AzimuthMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ElevationMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ElevationMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Distance>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<DistanceMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<DistanceMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
 
     Azimuth azimuth_;
     boost::optional<AzimuthMin> azimuthMin_;

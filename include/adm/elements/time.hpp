@@ -4,7 +4,7 @@
 #include <chrono>
 #include <string>
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -26,10 +26,9 @@ namespace adm {
   using Rtime = detail::NamedType<std::chrono::nanoseconds, RtimeTag>;
 
   /// @brief Parse an adm timecode and convert it to a std::chrono::duration
-  LIBADM_EXPORT std::chrono::nanoseconds parseTimecode(
+  ADM_EXPORT std::chrono::nanoseconds parseTimecode(
       const std::string& timecode);
   /// @brief Format a std::chrono::duration object as an adm timecode string
-  LIBADM_EXPORT std::string formatTimecode(
-      const std::chrono::nanoseconds& time);
+  ADM_EXPORT std::string formatTimecode(const std::chrono::nanoseconds& time);
 
 }  // namespace adm

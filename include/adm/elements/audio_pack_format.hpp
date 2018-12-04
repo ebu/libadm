@@ -10,7 +10,7 @@
 #include "adm/helper/element_range.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -60,7 +60,7 @@ namespace adm {
      * AudioPackFormat can only be created as a `std::shared_ptr`. This is not a
      * deep copy! All referenced objects will be disconnected.
      */
-    LIBADM_EXPORT std::shared_ptr<AudioPackFormat> copy() const;
+    ADM_EXPORT std::shared_ptr<AudioPackFormat> copy() const;
 
     /**
      * @brief ADM parameter getter template
@@ -91,13 +91,13 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief AudioPackFormatId setter
-    LIBADM_EXPORT void set(AudioPackFormatId id);
+    ADM_EXPORT void set(AudioPackFormatId id);
     /// @brief AudioPackFormatName setter
-    LIBADM_EXPORT void set(AudioPackFormatName name);
+    ADM_EXPORT void set(AudioPackFormatName name);
     /// @brief Importance setter
-    LIBADM_EXPORT void set(Importance importance);
+    ADM_EXPORT void set(Importance importance);
     /// @brief AbsoluteDistance setter
-    LIBADM_EXPORT void set(AbsoluteDistance distance);
+    ADM_EXPORT void set(AbsoluteDistance distance);
 
     /**
      * @brief ADM parameter unset template
@@ -110,11 +110,10 @@ namespace adm {
     void unset();
 
     /// @brief Add reference to an AudioChannelFormat
-    LIBADM_EXPORT bool addReference(
+    ADM_EXPORT bool addReference(
         std::shared_ptr<AudioChannelFormat> channelFormat);
     /// @brief Add reference to another AudioPackFormat
-    LIBADM_EXPORT bool addReference(
-        std::shared_ptr<AudioPackFormat> packFormat);
+    ADM_EXPORT bool addReference(std::shared_ptr<AudioPackFormat> packFormat);
 
     /**
      * @brief Get references to ADM elements template
@@ -137,10 +136,10 @@ namespace adm {
     ElementRange<Element> getReferences();
 
     /// @brief Remove reference to an AudioChannelFormat
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         std::shared_ptr<AudioChannelFormat> channelFormat);
     /// @brief Remove reference to an AudioPackFormat
-    LIBADM_EXPORT void removeReference(
+    ADM_EXPORT void removeReference(
         std::shared_ptr<AudioPackFormat> packFormat);
 
     /**
@@ -159,43 +158,40 @@ namespace adm {
     void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
-    LIBADM_EXPORT std::weak_ptr<Document> getParent() const;
+    ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
    private:
     friend class AudioPackFormatAttorney;
 
-    LIBADM_EXPORT AudioPackFormat(AudioPackFormatName name,
-                                  TypeDescriptor channelType);
-    LIBADM_EXPORT AudioPackFormat(const AudioPackFormat &) = default;
-    LIBADM_EXPORT AudioPackFormat(AudioPackFormat &&) = default;
+    ADM_EXPORT AudioPackFormat(AudioPackFormatName name,
+                               TypeDescriptor channelType);
+    ADM_EXPORT AudioPackFormat(const AudioPackFormat &) = default;
+    ADM_EXPORT AudioPackFormat(AudioPackFormat &&) = default;
 
-    LIBADM_EXPORT AudioPackFormatId
+    ADM_EXPORT AudioPackFormatId
         get(detail::ParameterTraits<AudioPackFormatId>::tag) const;
-    LIBADM_EXPORT AudioPackFormatName
+    ADM_EXPORT AudioPackFormatName
         get(detail::ParameterTraits<AudioPackFormatName>::tag) const;
-    LIBADM_EXPORT TypeDescriptor
+    ADM_EXPORT TypeDescriptor
         get(detail::ParameterTraits<TypeDescriptor>::tag) const;
-    LIBADM_EXPORT Importance
-        get(detail::ParameterTraits<Importance>::tag) const;
-    LIBADM_EXPORT AbsoluteDistance
+    ADM_EXPORT Importance get(detail::ParameterTraits<Importance>::tag) const;
+    ADM_EXPORT AbsoluteDistance
         get(detail::ParameterTraits<AbsoluteDistance>::tag) const;
 
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AudioPackFormatId>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioPackFormatId>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioPackFormatName>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<TypeDescriptor>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Importance>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AbsoluteDistance>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<TypeDescriptor>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Importance>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AbsoluteDistance>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Importance>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<AbsoluteDistance>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Importance>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AbsoluteDistance>::tag);
 
     bool isAudioPackFormatReferenceCycle(
         std::shared_ptr<AudioPackFormat> destinationPackFormat);
@@ -210,14 +206,14 @@ namespace adm {
     ElementRange<AudioPackFormat> getReferences(
         detail::ParameterTraits<AudioPackFormat>::tag);
 
-    LIBADM_EXPORT void clearReferences(
+    ADM_EXPORT void clearReferences(
         detail::ParameterTraits<AudioChannelFormat>::tag);
-    LIBADM_EXPORT void clearReferences(
+    ADM_EXPORT void clearReferences(
         detail::ParameterTraits<AudioPackFormat>::tag);
 
-    LIBADM_EXPORT void disconnectReferences();
+    ADM_EXPORT void disconnectReferences();
 
-    LIBADM_EXPORT void setParent(std::weak_ptr<Document> document);
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
     AudioPackFormatName name_;

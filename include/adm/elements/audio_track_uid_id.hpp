@@ -6,7 +6,7 @@
 #include "adm/elements/type_descriptor.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -61,7 +61,7 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief Set value
-    LIBADM_EXPORT void set(AudioTrackUidIdValue value);
+    ADM_EXPORT void set(AudioTrackUidIdValue value);
 
     /**
      * @brief ADM parameter unset template
@@ -79,9 +79,9 @@ namespace adm {
      *
      * Compares the string representation of the AudioTrackUidId.
      */
-    LIBADM_EXPORT bool operator==(const AudioTrackUidId& other) const;
-    LIBADM_EXPORT bool operator!=(const AudioTrackUidId& other) const;
-    LIBADM_EXPORT bool operator<(const AudioTrackUidId& other) const;
+    ADM_EXPORT bool operator==(const AudioTrackUidId& other) const;
+    ADM_EXPORT bool operator!=(const AudioTrackUidId& other) const;
+    ADM_EXPORT bool operator<(const AudioTrackUidId& other) const;
     ///@}
 
     /**
@@ -90,13 +90,13 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    LIBADM_EXPORT AudioTrackUidIdValue
+    ADM_EXPORT AudioTrackUidIdValue
         get(detail::ParameterTraits<AudioTrackUidIdValue>::tag) const;
 
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<AudioTrackUidIdValue>::tag) const;
 
-    LIBADM_EXPORT bool isDefault(
+    ADM_EXPORT bool isDefault(
         detail::ParameterTraits<AudioTrackUidIdValue>::tag) const;
 
     template <typename Tag>
@@ -104,8 +104,7 @@ namespace adm {
       return false;
     }
 
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<AudioTrackUidIdValue>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AudioTrackUidIdValue>::tag);
 
     boost::optional<AudioTrackUidIdValue> value_;
 
@@ -115,9 +114,9 @@ namespace adm {
   // ---- Free functions ---- //
 
   /// @brief Parse an AudioTrackUidId string and convert it into an object
-  LIBADM_EXPORT AudioTrackUidId parseAudioTrackUidId(const std::string& id);
+  ADM_EXPORT AudioTrackUidId parseAudioTrackUidId(const std::string& id);
   /// @brief Format an AudioTrackUidId object as string
-  LIBADM_EXPORT std::string formatId(AudioTrackUidId id);
+  ADM_EXPORT std::string formatId(AudioTrackUidId id);
 
   // ---- Implementation ---- //
   template <typename... Parameters>

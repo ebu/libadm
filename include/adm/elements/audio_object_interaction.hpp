@@ -7,7 +7,7 @@
 #include "adm/detail/named_option_helper.hpp"
 
 #include <boost/optional.hpp>
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -74,15 +74,15 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief OnOffInteract setter
-    LIBADM_EXPORT void set(OnOffInteract);
+    ADM_EXPORT void set(OnOffInteract);
     /// @brief GainInteract setter
-    LIBADM_EXPORT void set(GainInteract);
+    ADM_EXPORT void set(GainInteract);
     /// @brief PositionInteract setter
-    LIBADM_EXPORT void set(PositionInteract);
+    ADM_EXPORT void set(PositionInteract);
     /// @brief GainInteractionRange setter
-    LIBADM_EXPORT void set(GainInteractionRange);
+    ADM_EXPORT void set(GainInteractionRange);
     /// @brief PositionInteractionRange setter
-    LIBADM_EXPORT void set(PositionInteractionRange);
+    ADM_EXPORT void set(PositionInteractionRange);
 
     /**
      * @brief ADM parameter unset template
@@ -100,24 +100,23 @@ namespace adm {
     void print(std::ostream &os) const;
 
    private:
-    LIBADM_EXPORT OnOffInteract
+    ADM_EXPORT OnOffInteract
         get(detail::ParameterTraits<OnOffInteract>::tag) const;
-    LIBADM_EXPORT GainInteract
+    ADM_EXPORT GainInteract
         get(detail::ParameterTraits<GainInteract>::tag) const;
-    LIBADM_EXPORT PositionInteract
+    ADM_EXPORT PositionInteract
         get(detail::ParameterTraits<PositionInteract>::tag) const;
-    LIBADM_EXPORT GainInteractionRange
+    ADM_EXPORT GainInteractionRange
         get(detail::ParameterTraits<GainInteractionRange>::tag) const;
-    LIBADM_EXPORT PositionInteractionRange
+    ADM_EXPORT PositionInteractionRange
         get(detail::ParameterTraits<PositionInteractionRange>::tag) const;
 
-    LIBADM_EXPORT bool has(detail::ParameterTraits<OnOffInteract>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<GainInteract>::tag) const;
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<PositionInteract>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(detail::ParameterTraits<OnOffInteract>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<GainInteract>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<PositionInteract>::tag) const;
+    ADM_EXPORT bool has(
         detail::ParameterTraits<GainInteractionRange>::tag) const;
-    LIBADM_EXPORT bool has(
+    ADM_EXPORT bool has(
         detail::ParameterTraits<PositionInteractionRange>::tag) const;
 
     template <typename Tag>
@@ -125,11 +124,10 @@ namespace adm {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<GainInteract>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<PositionInteract>::tag);
-    LIBADM_EXPORT void unset(
-        detail::ParameterTraits<GainInteractionRange>::tag);
-    LIBADM_EXPORT void unset(
+    ADM_EXPORT void unset(detail::ParameterTraits<GainInteract>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<PositionInteract>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<GainInteractionRange>::tag);
+    ADM_EXPORT void unset(
         detail::ParameterTraits<PositionInteractionRange>::tag);
 
     OnOffInteract onOffInteract_;

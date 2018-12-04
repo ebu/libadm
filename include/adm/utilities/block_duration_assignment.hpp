@@ -3,7 +3,7 @@
 #include <adm/elements_fwd.hpp>
 #include <chrono>
 #include <memory>
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -33,7 +33,7 @@ namespace adm {
    * @param fileLength The length of the BW64 audio file
    * @sa void updateBlockFormatDurations(std::shared_ptr<Document>)
    */
-  LIBADM_EXPORT void updateBlockFormatDurations(
+  ADM_EXPORT void updateBlockFormatDurations(
       std::shared_ptr<Document> document, std::chrono::nanoseconds fileLength);
 
   /**
@@ -48,7 +48,7 @@ namespace adm {
    * @sa void updateBlockFormatDurations(std::shared_ptr<Document>,
    * std::chrono::nanoseconds)
    */
-  LIBADM_EXPORT void updateBlockFormatDurations(
+  ADM_EXPORT void updateBlockFormatDurations(
       std::shared_ptr<Document> document);
 
 }  // namespace adm

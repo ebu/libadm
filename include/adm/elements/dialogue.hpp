@@ -4,7 +4,7 @@
 #include <boost/variant.hpp>
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/type_traits.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 

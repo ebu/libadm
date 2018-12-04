@@ -9,7 +9,7 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/type_traits.hpp"
-#include "adm/libadm_export.h"
+#include "adm/export.h"
 
 namespace adm {
 
@@ -36,13 +36,13 @@ namespace adm {
     template <typename... Parameters>
     AudioBlockFormatDirectSpeakers(Parameters... optionalNamedArgs);
 
-    LIBADM_EXPORT AudioBlockFormatDirectSpeakers(
+    ADM_EXPORT AudioBlockFormatDirectSpeakers(
         const AudioBlockFormatDirectSpeakers&) = default;
-    LIBADM_EXPORT AudioBlockFormatDirectSpeakers(
+    ADM_EXPORT AudioBlockFormatDirectSpeakers(
         AudioBlockFormatDirectSpeakers&&) = default;
-    LIBADM_EXPORT AudioBlockFormatDirectSpeakers& operator=(
+    ADM_EXPORT AudioBlockFormatDirectSpeakers& operator=(
         const AudioBlockFormatDirectSpeakers&) = default;
-    LIBADM_EXPORT AudioBlockFormatDirectSpeakers& operator=(
+    ADM_EXPORT AudioBlockFormatDirectSpeakers& operator=(
         AudioBlockFormatDirectSpeakers&&) = default;
     /**
      * @brief ADM parameter getter template
@@ -72,16 +72,16 @@ namespace adm {
     template <typename Parameter>
     bool isDefault() const;
 
-    LIBADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
 
     /// @brief AudioBlockFormatId setter
-    LIBADM_EXPORT void set(AudioBlockFormatId id);
+    ADM_EXPORT void set(AudioBlockFormatId id);
     /// @brief Rtime setter
-    LIBADM_EXPORT void set(Rtime rtime);
+    ADM_EXPORT void set(Rtime rtime);
     /// @brief Duration setter
-    LIBADM_EXPORT void set(Duration duration);
+    ADM_EXPORT void set(Duration duration);
     /// @brief SpeakerPosition setter
-    LIBADM_EXPORT void set(SpeakerPosition speakerPosition);
+    ADM_EXPORT void set(SpeakerPosition speakerPosition);
 
     /**
      * @brief ADM parameter unset template
@@ -94,36 +94,35 @@ namespace adm {
     void unset();
 
     /// @brief Add a SpeakerLabel
-    LIBADM_EXPORT bool add(SpeakerLabel label);
+    ADM_EXPORT bool add(SpeakerLabel label);
     /// @brief remove a SpeakerLabel
-    LIBADM_EXPORT void remove(SpeakerLabel label);
+    ADM_EXPORT void remove(SpeakerLabel label);
 
    private:
-    LIBADM_EXPORT AudioBlockFormatId
+    ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    LIBADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
-    LIBADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
-    LIBADM_EXPORT SpeakerLabels
+    ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT SpeakerLabels
         get(detail::ParameterTraits<SpeakerLabels>::tag) const;
-    LIBADM_EXPORT SpeakerPosition
+    ADM_EXPORT SpeakerPosition
         get(detail::ParameterTraits<SpeakerPosition>::tag) const;
 
-    LIBADM_EXPORT bool has(
-        detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<SpeakerLabels>::tag) const;
-    LIBADM_EXPORT bool has(detail::ParameterTraits<SpeakerPosition>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<SpeakerLabels>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<SpeakerPosition>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<SpeakerLabels>::tag);
-    LIBADM_EXPORT void unset(detail::ParameterTraits<SpeakerPosition>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<SpeakerLabels>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<SpeakerPosition>::tag);
 
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;
