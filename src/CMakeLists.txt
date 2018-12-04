@@ -1,4 +1,4 @@
-# --- libadm ---
+# --- adm library ---
 
 add_custom_command(
   OUTPUT ${CMAKE_BINARY_DIR}/resources.hpp
@@ -9,7 +9,7 @@ add_custom_command(
   VERBATIM
 )
 
-add_library(libadm
+add_library(adm
   document.cpp
   errors.cpp
   common_definitions.cpp
@@ -65,28 +65,28 @@ add_library(libadm
   ${CMAKE_BINARY_DIR}/resources.hpp
 )
 
-target_include_directories(libadm
+target_include_directories(adm
   PUBLIC
   # Headers used from source/build location:
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>  # config.h / libadm_export.h
+    $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>  # config.h / export.h
   # Headers used from installed location:
     $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
 )
 
-target_include_directories(libadm SYSTEM
+target_include_directories(adm SYSTEM
   PRIVATE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/submodules>
 )
 
-target_link_libraries(libadm PUBLIC Boost::boost)
+target_link_libraries(adm PUBLIC Boost::boost)
 
 if (UNIX)
-  target_link_libraries(libadm PUBLIC dl)
+  target_link_libraries(adm PUBLIC dl)
 endif()
 
 include(GenerateExportHeader)
-generate_export_header(libadm
+generate_export_header(adm
   EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/adm/libadm_export.h
 )
 
@@ -96,23 +96,23 @@ generate_export_header(libadm
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
-  ${CMAKE_SOURCE_DIR}/config/libadmConfig.cmake.in
-  ${CMAKE_BINARY_DIR}/libadmConfig.cmake
+  ${CMAKE_SOURCE_DIR}/config/admConfig.cmake.in
+  ${CMAKE_BINARY_DIR}/admConfig.cmake
   INSTALL_DESTINATION
   ${INSTALL_CMAKE_DIR}
   PATH_VARS INSTALL_INCLUDE_DIR INSTALL_LIB_DIR INSTALL_CMAKE_DIR
 )
 
 write_basic_package_version_file(
-  ${CMAKE_BINARY_DIR}/libadmConfigVersion.cmake
+  ${CMAKE_BINARY_DIR}/admConfigVersion.cmake
   COMPATIBILITY SameMajorVersion
 )
 
 
 ############################################################
-# install libadm library
+# install adm library
 ############################################################
-set_target_properties(libadm PROPERTIES
+set_target_properties(adm PROPERTIES
   VERSION "${PROJECT_VERSION}"
   SOVERSION "${PROJECT_VERSION_MAJOR}"
 )
@@ -124,32 +124,32 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/
 install(FILES ${PROJECT_BINARY_DIR}/adm/version.hpp
         DESTINATION ${INSTALL_INCLUDE_DIR}/adm
 )
-install(FILES ${PROJECT_BINARY_DIR}/adm/libadm_export.h
+install(FILES ${PROJECT_BINARY_DIR}/adm/export.h
         DESTINATION ${INSTALL_INCLUDE_DIR}/adm
 )
 
 install(FILES
-  ${CMAKE_BINARY_DIR}/libadmConfig.cmake
-  ${CMAKE_BINARY_DIR}/libadmConfigVersion.cmake
+  ${CMAKE_BINARY_DIR}/admConfig.cmake
+  ${CMAKE_BINARY_DIR}/admConfigVersion.cmake
   DESTINATION ${INSTALL_CMAKE_DIR}
 )
 
 if(${BUILD_SHARED_LIBS})
-  install(TARGETS libadm
-    EXPORT libadmTargetsShared
+  install(TARGETS adm
+    EXPORT admTargetsShared
     LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
     RUNTIME DESTINATION "${INSTALL_LIB_DIR}"
     ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
     PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}"
   )
-  install(EXPORT libadmTargetsShared DESTINATION ${INSTALL_CMAKE_DIR})
+  install(EXPORT admTargetsShared DESTINATION ${INSTALL_CMAKE_DIR})
 else()
-  install(TARGETS libadm
-    EXPORT libadmTargetsStatic
+  install(TARGETS adm
+    EXPORT admTargetsStatic
     LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
     RUNTIME DESTINATION "${INSTALL_LIB_DIR}"
     ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
     PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}"
   )
-  install(EXPORT libadmTargetsStatic DESTINATION ${INSTALL_CMAKE_DIR})
+  install(EXPORT admTargetsStatic DESTINATION ${INSTALL_CMAKE_DIR})
 endif()
