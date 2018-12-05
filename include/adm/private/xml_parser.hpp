@@ -6,6 +6,7 @@
 #include <vector>
 #include "adm/document.hpp"
 #include "adm/elements.hpp"
+#include "adm/errors.hpp"
 #include "adm/parse.hpp"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
@@ -93,7 +94,11 @@ namespace adm {
       void resolveReferences(std::map<Src, std::vector<TargetId>> map) {
         for (auto entry : map) {
           for (auto id : entry.second) {
-            entry.first->addReference(document_->lookup(id));
+            if (auto element = document_->lookup(id)) {
+              entry.first->addReference(element);
+            } else {
+              throw error::XmlParsingUnresolvedReference(formatId(id));
+            }
           }
         }
       }
@@ -101,7 +106,12 @@ namespace adm {
       template <typename Src, typename Target>
       void resolveReference(std::map<Src, Target> map) {
         for (auto entry : map) {
-          entry.first->setReference(document_->lookup(entry.second));
+          auto id = entry.second;
+          if (auto element = document_->lookup(id)) {
+            entry.first->setReference(element);
+          } else {
+            throw error::XmlParsingUnresolvedReference(formatId(id));
+          }
         }
       }
     };
