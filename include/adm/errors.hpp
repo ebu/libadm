@@ -1,65 +1,85 @@
 #pragma once
 #include <stdexcept>
+#include <boost/format.hpp>
+#include <boost/optional.hpp>
 #include <adm/elements/audio_object_id.hpp>
 #include "adm/export.h"
 
 namespace adm {
   namespace error {
 
-    class ADM_EXPORT AdmException : public std::exception {};
-
-    class ADM_EXPORT AdmGenericRuntimeError : public AdmException {
+    class AdmException : public std::runtime_error {
      public:
-      AdmGenericRuntimeError(const std::string& message) : msg_(message) {}
-
-      const char* what() const noexcept override { return msg_.c_str(); }
-
-     private:
-      std::string msg_;
+      AdmException(const std::string& msg) : std::runtime_error(msg) {}
     };
 
-    class ADM_EXPORT AudioObjectReferenceCycle : public AdmException {
+    class AdmGenericRuntimeError : public AdmException {
+     public:
+      AdmGenericRuntimeError(const std::string& msg) : AdmException(msg) {}
+    };
+
+    class AudioObjectReferenceCycle : public AdmException {
      public:
       AudioObjectReferenceCycle(AudioObjectId referent, AudioObjectId reference)
-          : referent_(referent), reference_(reference) {
-        formatMessage();
-      }
+          : AdmException(formatMessage(referent, reference)),
+            referent_(referent),
+            reference_(reference) {}
       AudioObjectId reference() const { return reference_; }
       AudioObjectId referent() const { return referent_; }
 
-      const char* what() const noexcept override { return msg_.c_str(); }
-
      private:
-      void formatMessage();
+      std::string formatMessage(AudioObjectId referent,
+                                AudioObjectId reference) const {
+        return boost::str(
+            boost::format(
+                "Cyclic AudioObject reference detectet from %1% to %2%") %
+            formatId(referent_) % formatId(reference_));
+      };
       AudioObjectId referent_;
       AudioObjectId reference_;
-      std::string msg_;
     };
 
-    class ADM_EXPORT XmlParsingError : public AdmException {
+    class XmlParsingError : public AdmException {
      public:
-      XmlParsingError(const std::string& message, int line)
-          : line_(line), msg_(formatMessageWithLine(message)) {}
-      XmlParsingError(int line);
-
-      const char* what() const noexcept override { return msg_.c_str(); }
-
-     protected:
-      void message(const std::string& message) {
-        msg_ = formatMessageWithLine(message);
-      }
-      int line() const { return line_; }
+      XmlParsingError(const std::string& message,
+                      boost::optional<int> line = boost::none)
+          : AdmException(formatMessage(message, line)), line_(line) {}
+      XmlParsingError(int line)
+          : XmlParsingError(formatMessage("Error parsing XML", line)) {}
 
      private:
-      std::string formatMessageWithLine(const std::string& message);
+      std::string formatMessage(const std::string& message,
+                                boost::optional<int> line) const {
+        if (line) {
+          return boost::str(boost::format("%1% (:%2%)") % message % line.get());
+        } else {
+          return message;
+        }
+      }
 
-      int line_;
-      std::string msg_;
+      boost::optional<int> line_;
     };
 
-    class ADM_EXPORT XmlParsingDuplicateId : public XmlParsingError {
+    class XmlParsingDuplicateId : public XmlParsingError {
      public:
-      XmlParsingDuplicateId(const std::string& id, int line = -1);
+      XmlParsingDuplicateId(const std::string& id, boost::optional<int> line)
+          : XmlParsingError(formatMessage(id), line) {}
+
+     private:
+      std::string formatMessage(const std::string& id) {
+        return boost::str(boost::format("Duplicate Id %1% found") % id);
+      }
+    };
+
+    class XmlParsingUnresolvedReference : public XmlParsingError {
+     public:
+      XmlParsingUnresolvedReference(const std::string& id)
+          : XmlParsingError(formatMessage(id)) {}
+
+     private:
+      std::string formatMessage(const std::string& id) {
+        return boost::str(boost::format("Id %1% could not be resolved") % id);
+      }
     };
 
     namespace detail {
