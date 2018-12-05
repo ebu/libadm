@@ -33,7 +33,7 @@ namespace adm {
         return boost::str(
             boost::format(
                 "Cyclic AudioObject reference detectet from %1% to %2%") %
-            formatId(referent_) % formatId(reference_));
+            formatId(referent) % formatId(reference));
       };
       AudioObjectId referent_;
       AudioObjectId reference_;
