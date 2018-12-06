@@ -1,0 +1,6 @@
+ignore:
+  - "/usr/*"
+  - "examples/*"
+  - "submodules/*"
+  - "tests/*"
+  - "tools/*"

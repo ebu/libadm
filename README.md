@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/IRT-Open-Source/libadm.svg?branch=master)](https://travis-ci.org/IRT-Open-Source/libadm)
 [![Build status](https://ci.appveyor.com/api/projects/status/jcjsk0d2h12br5qc/branch/master?svg=true)](https://ci.appveyor.com/project/opensourceirt/libadm/branch/master)
 [![Documentation Status](https://readthedocs.org/projects/libadm/badge/?version=latest)](https://libadm.readthedocs.io/en/latest/?badge=latest)
+[![codecov](https://codecov.io/gh/IRT-Open-Source/libadm/branch/master/graph/badge.svg)](https://codecov.io/gh/IRT-Open-Source/libadm)
 
 ## Introduction
 
