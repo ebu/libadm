@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioContent audioContentID="ACO_1001" audioContentName="MyContent">
+          <audioObjectIDRef>AO_1001</audioObjectIDRef>
+        </audioContent>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
