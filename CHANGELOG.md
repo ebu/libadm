@@ -5,6 +5,8 @@
 ### Changed
 - Rename cmake rename library target name from `libadm` to `adm`
 
+### Fixed
+- An unresolvable reference will now result in an exception instead of a segfault when parsing XML.
 
 ## 0.10.0 - 2018-11-30
 
@@ -16,10 +18,10 @@
 ### Changed
 - Use `Catch2` instead of `Boost.Test` for unit testing
 - Refactored XmlParser tests to use separate files for test data
-- Improved search for `AudioFormatExtended` node when parsing XML 
+- Improved search for `AudioFormatExtended` node when parsing XML
 
 ### Fixed
-- Documentation fixes and clarifications 
+- Documentation fixes and clarifications
 - Fixed visibility issues of some methods that prevented linking with the shared library
 
 
