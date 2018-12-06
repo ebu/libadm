@@ -104,7 +104,7 @@ TEST_CASE("audio_object_references") {
   REQUIRE(audioObject->getReferences<AudioTrackUid>().size() == 0);
 }
 
-TEST_CASE("audio_object_referenc_cycle_detection") {
+TEST_CASE("audio_object_reference_cycle_detection") {
   using namespace adm;
   // reference cycles AudioObjects
   auto audioObject1 = AudioObject::create(AudioObjectName("First"));
