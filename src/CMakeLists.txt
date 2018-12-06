@@ -11,6 +11,7 @@ add_custom_command(
 
 add_library(adm
   document.cpp
+  errors.cpp
   common_definitions.cpp
   elements/audio_programme.cpp
   elements/audio_content.cpp
