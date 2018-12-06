@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioPackFormat audioPackFormatID="AP_00031001" audioPackFormatName="MyPackFormat">
+          <audioPackFormatIDRef>AP_00031002</audioPackFormatIDRef>
+        </audioPackFormat>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

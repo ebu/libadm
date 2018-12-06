@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioStreamFormat audioStreamFormatID="AS_00031001" audioStreamFormatName="MyTrackFormat" formatLabel="0001">
+          <audioTrackFormatIDRef>AT_00031001_01</audioTrackFormatIDRef>
+        </audioStreamFormat>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
