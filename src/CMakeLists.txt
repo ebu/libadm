@@ -96,7 +96,14 @@ endif()
 ############################################################
 # enable C++11 support
 ############################################################
-target_compile_features(adm PUBLIC cxx_std_11)
+if ({CMAKE_VERSION} VERSION_LESS "3.8.0")
+  # Note: this is not a complete list of c++ features required by libadm.
+  # What we want is C++11 support and this is a simple way to trigger
+  # this for CMake < 3.8
+  target_compile_features(adm PUBLIC cxx_auto_type cxx_nullptr cxx_range_for)
+else()
+  target_compile_features(adm PUBLIC cxx_std_11)
+endif()
 set_target_properties(adm PROPERTIES CXX_EXTENSIONS OFF)
 
 include(GenerateExportHeader)
