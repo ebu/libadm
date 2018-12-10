@@ -1,5 +1,7 @@
 # --- adm library ---
 
+include(${PROJECT_SOURCE_DIR}/submodules/rapidxml.cmake)
+
 add_custom_command(
   OUTPUT ${PROJECT_BINARY_DIR}/resources.hpp
   COMMAND resource_embedder common_definitions.xml > ${PROJECT_BINARY_DIR}/resources.hpp
@@ -74,12 +76,9 @@ target_include_directories(adm
     $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
 )
 
-target_include_directories(adm SYSTEM
-  PRIVATE
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/submodules>
-)
 
 target_link_libraries(adm PUBLIC Boost::boost)
+target_link_libraries(adm PRIVATE $<BUILD_INTERFACE:rapidxml>)
 
 if (UNIX)
   target_link_libraries(adm PUBLIC dl)

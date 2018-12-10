@@ -1,9 +1,12 @@
+include(${PROJECT_SOURCE_DIR}/submodules/catch2.cmake)
+
 # --- unit tests ---
 function(add_adm_test name)
-  add_executable(${name} ${name}.cpp $<TARGET_OBJECTS:catch_main>)
+  add_executable(${name} ${name}.cpp)
   target_link_libraries(${name}
     PRIVATE
     adm
+    catch2
   )
   target_include_directories(${name} PRIVATE
     ${PROJECT_SOURCE_DIR}/submodules
@@ -18,11 +21,6 @@ endfunction()
 # copy test files so unit test can find them relative to their running location
 # when executed as "test" target
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/test_data" DESTINATION ${PROJECT_BINARY_DIR})
-
-# this object library provides the main() function and is compiled only once and
-# then included into each test
-add_library(catch_main OBJECT main.cpp)
-target_include_directories(catch_main PRIVATE ${PROJECT_SOURCE_DIR}/submodules)
 
 add_adm_test("adm_auto_parenting_tests")
 add_adm_test("adm_common_definitions_tests")
