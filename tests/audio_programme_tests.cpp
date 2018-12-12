@@ -34,9 +34,6 @@ TEST_CASE("audio_programme") {
     REQUIRE(audioProgramme->get<AudioProgrammeLanguage>() == "de");
     REQUIRE(audioProgramme->get<Start>().get() == std::chrono::seconds(0));
     REQUIRE(audioProgramme->get<End>().get() == std::chrono::seconds(10));
-    REQUIRE(audioProgramme->get<LoudnessMetadata>().method == "");
-    REQUIRE(audioProgramme->get<LoudnessMetadata>().recType == "");
-    REQUIRE(audioProgramme->get<LoudnessMetadata>().correctionType == "");
     REQUIRE(audioProgramme->get<MaxDuckingDepth>() == -30);
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // REQUIRE(audioProgramme->get<AudioProgrammeReferenceScreen>() == ???);

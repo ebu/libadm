@@ -26,9 +26,6 @@ TEST_CASE("audio_content") {
             1u);
     REQUIRE(audioContent->get<AudioContentName>() == "MyNewContent");
     REQUIRE(audioContent->get<AudioContentLanguage>() == "de");
-    REQUIRE(audioContent->get<LoudnessMetadata>().method == "");
-    REQUIRE(audioContent->get<LoudnessMetadata>().recType == "");
-    REQUIRE(audioContent->get<LoudnessMetadata>().correctionType == "");
     REQUIRE(audioContent->get<DialogueId>() == Dialogue::NON_DIALOGUE);
 
     audioContent->unset<AudioContentLanguage>();
