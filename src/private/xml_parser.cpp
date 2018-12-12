@@ -565,8 +565,24 @@ namespace adm {
       return jumpPosition;
     }
 
-    LoudnessMetadata parseLoudnessMetadata(NodePtr /* node */) {
-      return LoudnessMetadata();
+    LoudnessMetadata parseLoudnessMetadata(NodePtr node) {
+      LoudnessMetadata loudnessMetadata;
+      setOptionalAttribute<LoudnessMethod>(node, "loudnessMethod",
+                                           loudnessMetadata);
+      setOptionalAttribute<LoudnessRecType>(node, "loudnessRecType",
+                                            loudnessMetadata);
+      setOptionalAttribute<LoudnessCorrectionType>(
+          node, "loudnessCorrectionType", loudnessMetadata);
+      setOptionalElement<IntegratedLoudness>(node, "integratedLoudness",
+                                             loudnessMetadata);
+      setOptionalElement<LoudnessRange>(node, "loudnessRange",
+                                        loudnessMetadata);
+      setOptionalElement<MaxTruePeak>(node, "maxTruePeak", loudnessMetadata);
+      setOptionalElement<MaxMomentary>(node, "maxMomentary", loudnessMetadata);
+      setOptionalElement<MaxShortTerm>(node, "maxShortTerm", loudnessMetadata);
+      setOptionalElement<DialogueLoudness>(node, "dialogueLoudness",
+                                           loudnessMetadata);
+      return loudnessMetadata;
     }
 
     DialogueId parseDialogueId(NodePtr node) {

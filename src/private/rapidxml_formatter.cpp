@@ -58,7 +58,27 @@ namespace adm {
       node.addOptionalAttribute<End>(programme, "end");
       node.addOptionalAttribute<MaxDuckingDepth>(programme, "maxDuckingDepth");
       node.addReferences<AudioContent, AudioContentId>(programme, "audioContentIDRef");
+      node.addOptionalElement<LoudnessMetadata>(programme, "loudnessMetadata", &formatLoudnessMetadata);
       // clang-format on
+    }
+
+    void formatLoudnessMetadata(XmlNode &node,
+                                const LoudnessMetadata loudnessMetadata) {
+      node.addOptionalAttribute<LoudnessMethod>(&loudnessMetadata,
+                                                "loudnessMethod");
+      node.addOptionalAttribute<LoudnessRecType>(&loudnessMetadata,
+                                                 "loudnessRecType");
+      node.addOptionalAttribute<LoudnessCorrectionType>(
+          &loudnessMetadata, "loudnessCorrectionType");
+      node.addOptionalElement<IntegratedLoudness>(&loudnessMetadata,
+                                                  "integratedLoudness");
+      node.addOptionalElement<LoudnessRange>(&loudnessMetadata,
+                                             "loudnessRange");
+      node.addOptionalElement<MaxTruePeak>(&loudnessMetadata, "maxTruePeak");
+      node.addOptionalElement<MaxMomentary>(&loudnessMetadata, "maxMomentary");
+      node.addOptionalElement<MaxShortTerm>(&loudnessMetadata, "maxShortTerm");
+      node.addOptionalElement<DialogueLoudness>(&loudnessMetadata,
+                                                "dialogueLoudness");
     }
 
     void formatAudioContent(XmlNode &node,
