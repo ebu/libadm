@@ -43,6 +43,7 @@ add_library(adm
   elements/frequency.cpp
   elements/gain_interaction_range.cpp
   elements/jump_position.cpp
+  elements/loudness_metadata.cpp
   elements/object_divergence.cpp
   elements/position.cpp
   elements/position_interaction_range.cpp
