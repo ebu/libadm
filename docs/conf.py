@@ -39,7 +39,7 @@ release = '0.9.0'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['breathe']
+extensions = ['breathe', 'm2r']
 breathe_projects = {'libadm': '.build/doxygenxml/'}
 breathe_default_project = 'libadm'
 breathe_default_members = ('members', 'undoc-members')
