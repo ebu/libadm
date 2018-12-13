@@ -25,9 +25,9 @@ copyright = '2018, Institut für Rundfunktechnik GmbH'
 author = 'Institut für Rundfunktechnik GmbH'
 
 # The short X.Y version
-version = '0.9'
+version = '0.10'
 # The full version, including alpha/beta/rc tags
-release = '0.9.0'
+release = '0.10.0'
 
 
 # -- General configuration ---------------------------------------------------
