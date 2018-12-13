@@ -17,18 +17,12 @@ Let us have a look at the following first example.
 .. code-block:: cpp
 
     #include <iostream>
-    #include <sstream>
     #include <adm/adm.hpp>
     #include <adm/write.hpp>
 
     int main() {
-      using namespace adm;
-
-      auto admDocument = Document::create();
-
-      std::stringstream xmlStream;
-      writeXml(xmlStream, admDocument);
-      std::cout << xmlStream.str();
+      auto admDocument = adm::Document::create();
+      adm::writeXml(std::cout, admDocument);
       return 0;
     }
 
@@ -37,7 +31,7 @@ to be included. As we simultaneously want to see how our ADM document takes
 shape we also included ``adm/write.hpp``. This header contains the
 declaration of the :cpp:func:`adm::writeXml()` functions. These functions can be
 used to write an ADM document to an ``std::ostream`` or a file. Apart from that
-not much is happening yet. We just create a :cpp:class:`adm::document`, which is
+not much is happening yet. We just create an :cpp:class:`adm::Document`, which is
 the class representation of a whole ADM file.
 
 .. code-block:: xml
@@ -70,27 +64,23 @@ So let us fill our ADM document with some content.
 .. code-block:: cpp
 
     #include <iostream>
-    #include <sstream>
     #include <adm/adm.hpp>
     #include <adm/write.hpp>
 
     int main() {
-      using namespace adm;
+      auto admDocument = adm::Document::create();
 
-      auto admDocument = Document::create();
-
-      auto admProgramme = AudioProgramme::create(
-          AudioProgrammeName("Alice and Bob talking in the forrest"));
-      auto speechContent = AudioContent::create(AudioContentName("Speech"));
-      auto atmoContent = AudioContent::create(AudioContentName("Atmo"));
+      auto admProgramme = adm::AudioProgramme::create(
+          adm::AudioProgrammeName("Alice and Bob talking in the forrest"));
+      auto speechContent = adm::AudioContent::create(adm::AudioContentName("Speech"));
+      auto atmoContent = adm::AudioContent::create(adm::AudioContentName("Atmo"));
 
       admDocument->add(admProgramme);
       admDocument->add(speechContent);
       admDocument->add(atmoContent);
 
-      std::stringstream xmlStream;
-      writeXml(xmlStream, admDocument);
-      std::cout << xmlStream.str();
+      adm::writeXml(std::cout, admDocument);
+
       return 0;
     }
 
@@ -116,22 +106,19 @@ value until it finds an ID which is not used yet.
 .. code-block:: cpp
 
     #include <iostream>
-    #include <sstream>
     #include <adm/adm.hpp>
     #include <adm/write.hpp>
     #include <adm/utilities/object_creation.hpp>
 
     int main() {
-      using namespace adm;
+      auto admDocument = adm::Document::create();
 
-      auto admDocument = Document::create();
-
-      auto admProgramme = AudioProgramme::create(
-          AudioProgrammeName("Alice and Bob talking in the forrest"));
-      auto speechContent = AudioContent::create(AudioContentName("Speech"));
-      auto atmoContent = AudioContent::create(AudioContentName("Atmo"));
-      auto aliceHolder = createSimpleObject("Alice");
-      auto bobHolder = createSimpleObject("Bob");
+      auto admProgramme = adm::AudioProgramme::create(
+          adm::AudioProgrammeName("Alice and Bob talking in the forrest"));
+      auto speechContent = adm::AudioContent::create(adm::AudioContentName("Speech"));
+      auto atmoContent = adm::AudioContent::create(adm::AudioContentName("Atmo"));
+      auto aliceHolder = adm::createSimpleObject("Alice");
+      auto bobHolder = adm::createSimpleObject("Bob");
 
       admDocument->add(admProgramme);
       admDocument->add(speechContent);
@@ -144,9 +131,8 @@ value until it finds an ID which is not used yet.
       speechContent->addReference(aliceHolder.audioObject);
       speechContent->addReference(bobHolder.audioObject);
 
-      std::stringstream xmlStream;
-      writeXml(xmlStream, admDocument);
-      std::cout << xmlStream.str();
+      adm::writeXml(std::cout, admDocument);
+
       return 0;
     }
 
@@ -221,22 +207,19 @@ all our references first and only add the audioProgramme to the document.
 .. code-block:: cpp
 
     #include <iostream>
-    #include <sstream>
     #include <adm/adm.hpp>
     #include <adm/write.hpp>
     #include <adm/utilities/object_creation.hpp>
 
     int main() {
-      using namespace adm;
+      auto admDocument = adm::Document::create();
 
-      auto admDocument = Document::create();
-
-      auto admProgramme = AudioProgramme::create(
-          AudioProgrammeName("Alice and Bob talking in the forrest"));
-      auto speechContent = AudioContent::create(AudioContentName("Speech"));
-      auto atmoContent = AudioContent::create(AudioContentName("Atmo"));
-      auto aliceHolder = createSimpleObject("Alice");
-      auto bobHolder = createSimpleObject("Bob");
+      auto admProgramme = adm::AudioProgramme::create(
+          adm::AudioProgrammeName("Alice and Bob talking in the forrest"));
+      auto speechContent = adm::AudioContent::create(adm::AudioContentName("Speech"));
+      auto atmoContent = adm::AudioContent::create(adm::AudioContentName("Atmo"));
+      auto aliceHolder = adm::createSimpleObject("Alice");
+      auto bobHolder = adm::createSimpleObject("Bob");
 
       admProgramme->addReference(speechContent);
       admProgramme->addReference(atmoContent);
@@ -245,9 +228,8 @@ all our references first and only add the audioProgramme to the document.
 
       admDocument->add(admProgramme);
 
-      std::stringstream xmlStream;
-      writeXml(xmlStream, admDocument);
-      std::cout << xmlStream.str();
+      adm::writeXml(std::cout, admDocument);
+
       return 0;
     }
 
@@ -263,8 +245,8 @@ definitions. The first thing we need to do is add them to our document.
     #include <adm/common_definitions.hpp>
     #include <adm/utilities/copy.hpp>
     ...
-    auto commonDefDoc = getCommonDefinitions(); // load common definitions
-    deepCopyTo(commonDefDoc, admDocument);      // copy common definitions to our doc
+    auto commonDefDoc = adm::getCommonDefinitions(); // load common definitions
+    adm::deepCopyTo(commonDefDoc, admDocument);      // copy common definitions to our doc
 
 Using the function :cpp:func:`adm::deepCopyTo()` ensures, that all the
 references are preserved. Then we manually create our audioObject and the two
@@ -272,9 +254,9 @@ audioTrackUIDs for the left and right channel.
 
 .. code-block:: cpp
 
-    auto atmoObject = AudioObject::create(AudioObjectName("Forrest Atmo"));
-    auto trackUidLeft = AudioTrackUid::create();
-    auto trackUidRight = AudioTrackUid::create();
+    auto atmoObject = adm::AudioObject::create(adm::AudioObjectName("Forrest Atmo"));
+    auto trackUidLeft = adm::AudioTrackUid::create();
+    auto trackUidRight = adm::AudioTrackUid::create();
 
 What is now missing is the connection between our object and the common
 definition ADM elements. To simplify the identification of the necessary ADM
@@ -285,8 +267,8 @@ the ADM document.
 
 .. code-block:: cpp
 
-    auto packFormatLookup = audioPackFormatLookupTable();
-    auto trackFormatLookup = audioTrackFormatLookupTable();
+    auto packFormatLookup = adm::audioPackFormatLookupTable();
+    auto trackFormatLookup = adm::audioTrackFormatLookupTable();
 
     auto packFormatStereo = admDocument->lookup(packFormatLookup.at("0+2+0"));
     auto trackFormatLeft = admDocument->lookup(trackFormatLookup.at("M+030"));
@@ -306,7 +288,6 @@ That's it. We are done.
 .. code-block:: cpp
 
     #include <iostream>
-    #include <sstream>
     #include <adm/adm.hpp>
     #include <adm/write.hpp>
     #include <adm/utilities/object_creation.hpp>
@@ -314,26 +295,24 @@ That's it. We are done.
     #include <adm/utilities/copy.hpp>
 
     int main() {
-      using namespace adm;
+      auto admDocument = adm::Document::create();
 
-      auto admDocument = Document::create();
+      auto admProgramme = adm::AudioProgramme::create(
+          adm::AudioProgrammeName("Alice and Bob talking in the forrest"));
+      auto speechContent = adm::AudioContent::create(adm::AudioContentName("Speech"));
+      auto atmoContent = adm::AudioContent::create(adm::AudioContentName("Atmo"));
+      auto aliceHolder = adm::createSimpleObject("Alice");
+      auto bobHolder = adm::createSimpleObject("Bob");
 
-      auto admProgramme = AudioProgramme::create(
-          AudioProgrammeName("Alice and Bob talking in the forrest"));
-      auto speechContent = AudioContent::create(AudioContentName("Speech"));
-      auto atmoContent = AudioContent::create(AudioContentName("Atmo"));
-      auto aliceHolder = createSimpleObject("Alice");
-      auto bobHolder = createSimpleObject("Bob");
+      auto commonDefDoc = adm::getCommonDefinitions();
+      adm::deepCopyTo(commonDefDoc, admDocument);
 
-      auto commonDefDoc = getCommonDefinitions();
-      deepCopyTo(commonDefDoc, admDocument);
+      auto atmoObject = adm::AudioObject::create(adm::AudioObjectName("Forrest Atmo"));
+      auto trackUidLeft = adm::AudioTrackUid::create();
+      auto trackUidRight = adm::AudioTrackUid::create();
 
-      auto atmoObject = AudioObject::create(AudioObjectName("Forrest Atmo"));
-      auto trackUidLeft = AudioTrackUid::create();
-      auto trackUidRight = AudioTrackUid::create();
-
-      auto packFormatLookup = audioPackFormatLookupTable();
-      auto trackFormatLookup = audioTrackFormatLookupTable();
+      auto packFormatLookup = adm::audioPackFormatLookupTable();
+      auto trackFormatLookup = adm::audioTrackFormatLookupTable();
 
       auto packFormatStereo = admDocument->lookup(packFormatLookup.at("0+2+0"));
       auto trackFormatLeft = admDocument->lookup(trackFormatLookup.at("M+030"));
@@ -356,9 +335,8 @@ That's it. We are done.
 
       admDocument->add(admProgramme);
 
-      std::stringstream xmlStream;
-      writeXml(xmlStream, admDocument);  // write XML data to stdout
-      std::cout << xmlStream.str();
+      adm::writeXml(std::cout, admDocument);  // write XML data to stdout
+
       return 0;
     }
 
@@ -431,56 +409,65 @@ Now let us have a final look at the output.
       </audioTrackUID>
     </audioFormatExtended>
 
-As the idea of the common definitons is, that those ADM elements don't need to
+As the idea of the common definitions is, that those ADM elements don't need to
 be written, even though we added common definition ADM elements to our document
 the XML writer does not write them.
 
 Setting  block format durations
 -------------------------------
 
-Multiple `AudioBlockFormat`s in an :cpp:class:`adm::AudioChannelFormat`
-should all have a rtime and a duration.
+Multiple ``AudioBlockFormat`` s in an :cpp:class:`adm::AudioChannelFormat`
+should all have an :cpp:class:`adm::Rtime` and a :cpp:class:`adm::Duration`.
 
-In practice, however, it can be very hard to determine the duration of an `adm::AudioBlockFormat`
-during its creation or setup.
-This is due to the fact that an :cpp:class:`adm::AudioChannelFormat`, and thus its blocks and their durations,
-is bound to the parent :cpp:class:`adm::AudioObject` duration. The lifetime of the :cpp:class:`adm::AudioObject`, if not given explictily, is 
-bound to the length of the :cpp:class:`adm::AudioProgramme` or, if that's not set either, to the length of the file.
+In practice, however, it can be very hard to determine the duration of an
+``adm::AudioBlockFormat`` during its creation or setup. This is due to the fact
+that an :cpp:class:`adm::AudioChannelFormat`, and thus its blocks and their
+durations, is bound to the parent :cpp:class:`adm::AudioObject` duration. The
+lifetime of the :cpp:class:`adm::AudioObject`, if not given explictily, is
+bound to the length of the :cpp:class:`adm::AudioProgramme` or, if that's not
+set either, to the length of the file.
 
-Thus, it's easy to imagine situations where not all information is available during the setup of `adm::AudioBlockFormat` s.
+Thus, it's easy to imagine situations where not all information is available
+during the setup of ``adm::AudioBlockFormat`` s.
 
-This library provides some utility functions that are supposed to postpone the duration setting to a later point in time when all information is available,
-and therefore should help in writing standard conforment ADM documents.
+This library provides some utility functions that are supposed to postpone the
+duration setting to a later point in time when all information is available,
+and therefore should help in writing standard conform ADM documents.
 
 Consider the following code:
 
 .. code-block:: cpp
 
-    using namespace adm;
-    auto document = Document::create();
-    auto programme = AudioProgramme::create(AudioProgrammeName{"main"});
-    auto content1 = AudioContent::create(AudioContentName{"main"});
+    auto document = adm::Document::create();
+    auto programme = adm::AudioProgramme::create(adm::AudioProgrammeName{"main"});
+    auto content1 = adm::AudioContent::create(adm::AudioContentName{"main"});
     programme->addReference(content1);
-    auto object1 = AudioObject::create(AudioObjectName{"object1"});
+    auto object1 = adm::AudioObject::create(adm::AudioObjectName{"object1"});
     content1->addReference(object1);
-    auto pack1 = AudioPackFormat::create(AudioPackFormatName{"pack1"},
-                                    TypeDefinition::OBJECTS);
+    auto pack1 = adm::AudioPackFormat::create(
+      adm::AudioPackFormatName{"pack1"},
+      adm::TypeDefinition::OBJECTS);
     object1->addReference(pack1);
-    auto channel1 = AudioChannelFormat::create(AudioChannelFormatName{"channel1"},
-                                          TypeDefinition::OBJECTS);
-    channel1->add(AudioBlockFormatObjects(SphericalPosition{},
-                                          Rtime{std::chrono::milliseconds(0)}));
-    channel1->add(AudioBlockFormatObjects(SphericalPosition{},
-                                          Rtime{std::chrono::milliseconds(100)}));
+    auto channel1 = adm::AudioChannelFormat::create(
+      adm::AudioChannelFormatName{"channel1"},
+      adm::TypeDefinition::OBJECTS);
+    channel1->add(adm::AudioBlockFormatObjects(
+      adm::SphericalPosition{},
+      adm::Rtime{std::chrono::milliseconds(0)}));
+    channel1->add(adm::AudioBlockFormatObjects(
+      adm::SphericalPosition{},
+      adm::Rtime{std::chrono::milliseconds(100)}));
 
-Neither the referencing :cpp:class:`adm::AudioObject` nor the main :cpp:class:`adm::AudioProgramme` might have a duration or an endtime.
-Thus, the duration of the second block added to the :cpp:class:`adm::AudioChannelFormat` `channel1` depends
-on the length of the audio signals, which might not be known at this point in time.
+Neither the referencing :cpp:class:`adm::AudioObject` nor the main
+:cpp:class:`adm::AudioProgramme` might have a duration or an endtime.
+Thus, the duration of the second block added to the :cpp:class:`adm::AudioChannelFormat`
+``channel1`` depends on the length of the audio signals, which might not be known at
+this point in time.
 
-When it is known, for example when writing a `BW64` file with the ADM document contained as an `axml` chunk,
-one might known the actual length of the file.
-Then, one can use the utility function :cpp:func:`adm::updateBlockFormatDurations()` to, well, update all block format durations
-with their correct values:
+When it is known, for example when writing a ``BW64`` file with the ADM document contained
+in an ``axml`` chunk, one might known the actual length of the file. Then, one can use the
+utility function :cpp:func:`adm::updateBlockFormatDurations()` to, well, update all block
+format durations with their correct values:
 
 .. code-block:: cpp
 
@@ -491,6 +478,6 @@ with their correct values:
     // now, continue with writing the xml chunk to disk or something similar
 
 
-Depending on the use case, the file length might not be nessecery or there might not even be a file with audio signals.
-Multiple variants of :cpp:func:`adm::updateBlockFormatDurations` are therefore provided to accomodate all use cases.
-
+Depending on the use case, the file length might not be necessary or there might not even be
+a file with audio signals. Multiple variants of :cpp:func:`adm::updateBlockFormatDurations`
+are therefore provided to accommodate all use cases.
