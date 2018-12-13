@@ -17,7 +17,7 @@
 - An unresolvable reference will now result in an exception instead of a segfault when parsing XML.
 - Always return true for values with default values in has<...>() methods.
 
-## 0.10.0 - 2018-11-30
+## 0.10.0 (November 30, 2018)
 
 ### Added
 - Added helper function to access optional properties from elements, return a supplied default value if it hasn't been set
@@ -34,6 +34,6 @@
 - Fixed visibility issues of some methods that prevented linking with the shared library
 
 
-## 0.9.0 - 2018-07-24
+## 0.9.0 (July 23, 2018)
 
 Initial release
