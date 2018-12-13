@@ -25,11 +25,11 @@ namespace adm {
   // ---- Has ---- //
   bool AudioChannelFormatId::has(
       detail::ParameterTraits<TypeDescriptor>::tag) const {
-    return channelType_ != boost::none;
+    return true;
   }
   bool AudioChannelFormatId::has(
       detail::ParameterTraits<AudioChannelFormatIdValue>::tag) const {
-    return value_ != boost::none;
+    return true;
   }
 
   // ---- isDefault ---- //

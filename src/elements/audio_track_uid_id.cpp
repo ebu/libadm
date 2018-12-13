@@ -19,7 +19,7 @@ namespace adm {
   // ---- Has ---- //
   bool AudioTrackUidId::has(
       detail::ParameterTraits<AudioTrackUidIdValue>::tag) const {
-    return value_ != boost::none;
+    return true;
   }
 
   // ---- isDefault ---- //

@@ -19,7 +19,7 @@ namespace adm {
   // ---- Has ---- //
   bool AudioProgrammeId::has(
       detail::ParameterTraits<AudioProgrammeIdValue>::tag) const {
-    return value_ != boost::none;
+    return true;
   }
 
   // ---- isDefault ---- //

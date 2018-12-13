@@ -31,15 +31,15 @@ namespace adm {
   // ---- Has ---- //
   bool AudioTrackFormatId::has(
       detail::ParameterTraits<TypeDescriptor>::tag) const {
-    return channelType_ != boost::none;
+    return true;
   }
   bool AudioTrackFormatId::has(
       detail::ParameterTraits<AudioTrackFormatIdValue>::tag) const {
-    return value_ != boost::none;
+    return true;
   }
   bool AudioTrackFormatId::has(
       detail::ParameterTraits<AudioTrackFormatIdCounter>::tag) const {
-    return counter_ != boost::none;
+    return true;
   }
 
   // ---- isDefault ---- //
