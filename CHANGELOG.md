@@ -11,6 +11,7 @@
 - Rename cmake rename library target name from `libadm` to `adm`
 - Renamed CMake option `UNIT_TESTS` to `ADM_UNIT_TESTS`
 - Renamed CMake option `EXAMPLES` to `ADM_EXAMPLES`
+- properly implemented the `LoudnessMetadata` class
 
 ### Fixed
 - An unresolvable reference will now result in an exception instead of a segfault when parsing XML.
