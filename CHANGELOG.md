@@ -8,7 +8,7 @@
 - new CMake option `ADM_PACKAGE_AND_INSTALL`
 
 ### Changed
-- Rename cmake rename library target name from `libadm` to `adm`
+- Renamed CMake library target name from `libadm` to `adm`
 - Renamed CMake option `UNIT_TESTS` to `ADM_UNIT_TESTS`
 - Renamed CMake option `EXAMPLES` to `ADM_EXAMPLES`
 - properly implemented the `LoudnessMetadata` class
