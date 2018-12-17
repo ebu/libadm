@@ -2,8 +2,15 @@
 
 ## Unreleased
 
+### Added
+- library can now also be used as a CMake subproject
+- new CMake option `ADM_HIDE_INTERNAL_SYMBOLS`
+- new CMake option `ADM_PACKAGE_AND_INSTALL`
+
 ### Changed
 - Rename cmake rename library target name from `libadm` to `adm`
+- Renamed CMake option `UNIT_TESTS` to `ADM_UNIT_TESTS`
+- Renamed CMake option `EXAMPLES` to `ADM_EXAMPLES`
 
 ### Fixed
 - An unresolvable reference will now result in an exception instead of a segfault when parsing XML.
