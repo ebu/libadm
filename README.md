@@ -73,9 +73,7 @@ int main() {
   admDocument->add(admProgramme);
 
   // write XML data to stdout
-  std::stringstream xmlStream;
-  writeXml(xmlStream, admDocument);
-  std::cout << xmlStream.str();
+  writeXml(std::cout, admDocument);
   return 0;
 }
 ```
