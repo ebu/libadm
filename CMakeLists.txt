@@ -20,8 +20,6 @@ endif()
 string(TIMESTAMP PROJECT_BUILD_DATE)
 set(PROJECT_DESCRIPTION "ITU-R BS.2076 Library")
 
-option(ADM_HIDE_INTERNAL_SYMBOLS ON)
-
 ############################################################
 # add new CMAKE_BUILD_TYPE coverage
 ############################################################
@@ -33,8 +31,9 @@ SET(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --cov
 # user config options
 ############################################################
 include(FeatureSummary)
-option(UNIT_TESTS "Build units tests" TRUE)
-option(ADM_EXAMPLES "Build examples" TRUE)
+option(ADM_HIDE_INTERNAL_SYMBOLS "Hide symbols by default" TRUE)
+option(ADM_UNIT_TESTS "Build units tests" ${IS_ROOT_PROJECT})
+option(ADM_EXAMPLES "Build examples" ${IS_ROOT_PROJECT})
 option(ADM_PACKAGE_AND_INSTALL "Package and install libadm" ${IS_ROOT_PROJECT})
 set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
 set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
@@ -66,7 +65,7 @@ if(ADM_EXAMPLES)
   add_subdirectory(examples)
 endif()
 
-if(UNIT_TESTS)
+if(ADM_UNIT_TESTS)
   enable_testing()
   add_subdirectory(tests)
 endif()
@@ -74,10 +73,13 @@ endif()
 ############################################################
 # FeatureSummary
 ############################################################
-add_feature_info(UNIT_TESTS ${UNIT_TESTS} "Build unit tests")
+add_feature_info(ADM_HIDE_INTERNAL_SYMBOLS ${ADM_HIDE_INTERNAL_SYMBOLS} "Hide symbols by default")
+add_feature_info(ADM_UNIT_TESTS ${ADM_UNIT_TESTS} "Build units tests")
+add_feature_info(ADM_EXAMPLES ${ADM_EXAMPLES} "Build examples")
+add_feature_info(ADM_PACKAGE_AND_INSTALL ${ADM_PACKAGE_AND_INSTALL} "Package and install libadm")
 feature_summary(WHAT ALL)
 
-  if(ADM_PACKAGE_AND_INSTALL)
+if(ADM_PACKAGE_AND_INSTALL)
   #########################################################
   # very minimal cpack configuration
   #########################################################
