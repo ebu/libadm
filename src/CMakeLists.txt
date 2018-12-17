@@ -76,7 +76,6 @@ target_include_directories(adm
     $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
 )
 
-
 target_link_libraries(adm PUBLIC Boost::boost)
 target_link_libraries(adm PRIVATE $<BUILD_INTERFACE:rapidxml>)
 
