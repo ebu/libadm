@@ -8,6 +8,28 @@
 
 namespace adm {
 
+  /**
+   * @brief Route along ADM elements within an ADM document
+   *
+   * Describes route along ADM elements within an ADM document, i.e.
+   * which references were followed to reach a certain element from a
+   * given start point.
+   *
+   * This is the same purpose (and basic interface) as `adm::Path`, but
+   * currently the implementation and constraints are different.
+   *
+   * Thus, the name `adm::Route` has been chosen to distinguish between those
+   * two.
+   *
+   * The main/essential difference is that the `adm::Route` stores pointers to
+   * the ADM elements, to make it easy to access the elements after a
+   * `adm::Route` has been created, while the `adm::Path` does not, as they
+   * might become invalid. Instead the `adm::Path` stores the (coded) element
+   * ids, which are also used to check if `adm::Path`s are equal or not.
+   *
+   * To easily create an `adm::Route` you may use the `adm::RouteTracer`.
+   */
+
   class Route {
    public:
     typedef std::size_t hash_type;
