@@ -3,7 +3,7 @@
 /**
  * @file elements.hpp
  *
- * Convenience header to inlcude all ADM element headers.
+ * Convenience header to include all ADM element headers.
  */
 
 /**
@@ -14,9 +14,8 @@
  * These classes can be directly mapped to the elements of the Audio Definition
  * Model.
  *
- * If you want to work (create/analyse/edit) with the bare-metal ADM model
- * these classes are a good starting point.
- *
+ * If you want to work (create/analyse/edit) with the bare-metal ADM model these
+ * classes are a good starting point.
  */
 
 #include "adm/elements/audio_programme.hpp"
