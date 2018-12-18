@@ -187,7 +187,7 @@ namespace adm {
   }  // namespace detail
 
   /**
-   * @brief Creates Routes
+   * @brief Creates `adm::Route`s
    *
    * This implementation traces the following route:
    *
@@ -200,8 +200,8 @@ namespace adm {
    * Complementary AudioObjects are not interpreted as such. Hence for
    * every complementary audioObject an Route will be returned.
    *
-   * @warning: If the ADM structure contains a reference cycle, trace
-   * will get stuck in an infinite loop.
+   * @warning If the ADM structure contains a reference cycle, trace will get
+   * stuck in an infinite loop.
    */
   using RouteTracer =
       detail::GenericRouteTracer<Route, detail::DefaultFullDepthStrategy>;
