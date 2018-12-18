@@ -15,6 +15,7 @@
 
 ### Fixed
 - An unresolvable reference will now result in an exception instead of a segfault when parsing XML.
+- Always return true for values with default values in has<...>() methods.
 
 ## 0.10.0 - 2018-11-30
 
