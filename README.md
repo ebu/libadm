@@ -33,6 +33,17 @@ related applications with minimal dependencies.
 
 ## Installation
 
+### macOS
+On macOS you can use homebrew to install the library. You just have to add the IRT’s NGA homebrew tap and can then use the usual install command.
+
+```
+brew tap irt-open-source/homebrew-nga
+brew install libadm
+```
+
+### Manual installation
+To manually install the library you have to clone the git repository and then use the CMake build system to build and install it.
+
 ```
 git clone git@github.com:irt-open-source/libadm.git
 cd libadm
