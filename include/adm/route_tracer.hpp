@@ -17,6 +17,10 @@ namespace adm {
                          std::shared_ptr<const AudioTrackUid>) {
         return false;
       }
+      bool shouldRecurse(std::shared_ptr<const AudioStreamFormat>,
+                         std::shared_ptr<const AudioChannelFormat>) {
+        return false;
+      }
       template <typename Element>
       bool shouldAdd(std::shared_ptr<Element>) {
         return true;
@@ -179,6 +183,11 @@ namespace adm {
           if (subtrack && this->shouldRecurse(audioStreamFormat, subtrack)) {
             trace(subpack, admRoute);
           }
+        }
+
+        auto subchannel = audioStreamFormat->getReference<AudioChannelFormat>();
+        if (subchannel && this->shouldRecurse(audioStreamFormat, subchannel)) {
+          trace(subchannel, admRoute);
         }
       }
 
