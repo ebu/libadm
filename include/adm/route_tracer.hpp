@@ -176,7 +176,7 @@ namespace adm {
         for (auto& weak_subtrack :
              audioStreamFormat->getAudioTrackFormatReferences()) {
           auto subtrack = weak_subtrack.lock();
-          if (this->shouldRecurse(audioStreamFormat, subtrack)) {
+          if (subtrack && this->shouldRecurse(audioStreamFormat, subtrack)) {
             trace(subpack, admRoute);
           }
         }
