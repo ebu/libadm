@@ -129,3 +129,71 @@ TEST_CASE("audio_block_format_objects") {
     REQUIRE(blockFormat.isDefault<Importance>() == true);
   }
 }
+
+TEST_CASE("audio_block_format_objects spherical") {
+  using namespace adm;
+
+  SphericalPosition pos(Azimuth(10.0f), Elevation(0.0f), Distance(1.0f));
+
+  // explicitly set cartesian to default -> no change to position
+  {
+    AudioBlockFormatObjects block_format(pos, Cartesian(false));
+    REQUIRE(block_format.get<SphericalPosition>().get<Azimuth>().get() ==
+            10.0f);
+    REQUIRE(block_format.has<CartesianPosition>() == false);
+    REQUIRE(block_format.get<Cartesian>().get() == false);
+    REQUIRE(block_format.isDefault<Cartesian>() == false);
+  }
+
+  // explicitly set cartesian to non-default -> default position of right type
+  {
+    AudioBlockFormatObjects block_format(pos, Cartesian(true));
+    REQUIRE(block_format.has<SphericalPosition>() == false);
+    REQUIRE(block_format.has<CartesianPosition>() == true);
+    REQUIRE(block_format.get<Cartesian>().get() == true);
+    REQUIRE(block_format.isDefault<Cartesian>() == false);
+  }
+
+  // no set of cartesian -> cartesian is default
+  {
+    AudioBlockFormatObjects block_format(pos);
+    REQUIRE(block_format.get<SphericalPosition>().get<Azimuth>().get() ==
+            10.0f);
+    REQUIRE(block_format.has<CartesianPosition>() == false);
+    REQUIRE(block_format.get<Cartesian>().get() == false);
+    REQUIRE(block_format.isDefault<Cartesian>() == true);
+  }
+}
+
+TEST_CASE("audio_block_format_objects cartesian") {
+  using namespace adm;
+
+  CartesianPosition pos(X(0.1f), Y(0.2f), Z(0.3f));
+
+  // explicitly set cartesian to default -> no change to position
+  {
+    AudioBlockFormatObjects block_format(pos, Cartesian(true));
+    REQUIRE(block_format.get<CartesianPosition>().get<X>().get() == 0.1f);
+    REQUIRE(block_format.has<SphericalPosition>() == false);
+    REQUIRE(block_format.get<Cartesian>().get() == true);
+    REQUIRE(block_format.isDefault<Cartesian>() == false);
+  }
+
+  // explicitly set cartesian to non-default -> default position of right type
+  {
+    AudioBlockFormatObjects block_format(pos, Cartesian(false));
+    REQUIRE(block_format.has<CartesianPosition>() == false);
+    REQUIRE(block_format.has<SphericalPosition>() == true);
+    REQUIRE(block_format.get<Cartesian>().get() == false);
+    REQUIRE(block_format.isDefault<Cartesian>() == false);
+  }
+
+  // no set of cartesian -> still not default
+  {
+    AudioBlockFormatObjects block_format(pos);
+    REQUIRE(block_format.get<CartesianPosition>().get<X>().get() == 0.1f);
+    REQUIRE(block_format.has<SphericalPosition>() == false);
+    REQUIRE(block_format.get<Cartesian>().get() == true);
+    REQUIRE(block_format.isDefault<Cartesian>() == false);
+  }
+}
