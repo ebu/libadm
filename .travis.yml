@@ -6,93 +6,35 @@ matrix:
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=debian:9 BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
+      env: DOCKER_IMAGE=debian:latest BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=debian:9 BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
+      env: DOCKER_IMAGE=debian:latest BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
 
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=ubuntu:17.10 BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
+      env: DOCKER_IMAGE=ubuntu:latest BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=ubuntu:17.10 BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
+      env: DOCKER_IMAGE=ubuntu:latest BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
 
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=ubuntu:18.04 BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
+      env: DOCKER_IMAGE=fedora:latest BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=ubuntu:18.04 BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
-
-    - os: linux
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=ubuntu:18.10 BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
-
-    - os: linux
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=ubuntu:18.10 BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
-
-    - os: linux
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=fedora:26 BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
-    - os: linux
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=fedora:26 BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
-
-    - os: linux
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=fedora:27 BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
-    - os: linux
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=fedora:27 BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
-
-    - os: linux
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=fedora:28 BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
-    - os: linux
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=fedora:28 BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
+      env: DOCKER_IMAGE=fedora:latest BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
 
     - os: osx
-      osx_image: xcode7.3
+      osx_image: xcode10.2
       env: BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
     - os: osx
-      osx_image: xcode7.3
-      env: BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode8.3
-      env: BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
-    - os: osx
-      osx_image: xcode8.3
-      env: BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9.4
-      env: BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
-    - os: osx
-      osx_image: xcode9.4
-      env: BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode10.1
-      env: BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
-    - os: osx
-      osx_image: xcode10.1
+      osx_image: xcode10.2
       env: BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
 
     - os: linux
