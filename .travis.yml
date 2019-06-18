@@ -15,15 +15,6 @@ matrix:
     - os: linux
       sudo: required
       services: docker
-      env: DOCKER_IMAGE=ubuntu:17.10 BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
-    - os: linux
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=ubuntu:17.10 BUILD_SHARED_LIBS=OFF CMAKE_BUILD_TYPE=Release
-
-    - os: linux
-      sudo: required
-      services: docker
       env: DOCKER_IMAGE=ubuntu:18.04 BUILD_SHARED_LIBS=ON CMAKE_BUILD_TYPE=Release
     - os: linux
       sudo: required
