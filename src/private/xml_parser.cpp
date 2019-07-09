@@ -18,12 +18,14 @@ namespace adm {
     }
 
     XmlParser::XmlParser(const std::string& filename, ParserOptions options,
-                         std::shared_ptr<Document> document)
-        : xmlFile_(filename.c_str()), options_(options), document_(document) {}
+                         std::shared_ptr<Document> destDocument)
+        : xmlFile_(filename.c_str()),
+          options_(options),
+          document_(destDocument) {}
 
     XmlParser::XmlParser(std::istream& stream, ParserOptions options,
-                         std::shared_ptr<Document> document)
-        : xmlFile_(stream), options_(options), document_(document) {}
+                         std::shared_ptr<Document> destDocument)
+        : xmlFile_(stream), options_(options), document_(destDocument) {}
 
     std::shared_ptr<Document> XmlParser::parse() {
       rapidxml::xml_document<> xmlDocument;
