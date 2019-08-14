@@ -58,7 +58,7 @@ namespace adm {
   }
 
   AudioProgrammeId parseAudioProgrammeId(const std::string& id) {
-    const std::regex r("APR_([0-9a-fA-F]{4})");
+    const static std::regex r("APR_([0-9a-fA-F]{4})");
     std::smatch idMatch;
     if (std::regex_match(id, idMatch, r)) {
       auto value = detail::parseHexValue(idMatch[1], 4);
