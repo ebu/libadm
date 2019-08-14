@@ -12,6 +12,10 @@ TEST_CASE("parseHexValue") {
   REQUIRE_THROWS_AS(detail::parseHexValue("ffff0"), std::runtime_error);
   REQUIRE_THROWS_AS(detail::parseHexValue("fff "), std::runtime_error);
   REQUIRE(detail::parseHexValue("ffff0", 8) == 1048560);
+
+  BENCHMARK("parse 4 digits") {
+    return detail::parseHexValue("FFFF");
+  };
 }
 
 TEST_CASE("formatHexValue") {
