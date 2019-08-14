@@ -79,7 +79,7 @@ namespace adm {
   }
 
   AudioPackFormatId parseAudioPackFormatId(const std::string& id) {
-    const std::regex r("AP_([0-9a-fA-F]{4})([0-9a-fA-F]{4})");
+    const static std::regex r("AP_([0-9a-fA-F]{4})([0-9a-fA-F]{4})");
     std::smatch idMatch;
     if (std::regex_match(id, idMatch, r)) {
       auto type = parseTypeLabel(idMatch[1]);
