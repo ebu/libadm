@@ -13,6 +13,7 @@
 - Renamed CMake option `EXAMPLES` to `ADM_EXAMPLES`
 - properly implemented the `LoudnessMetadata` class
 - improved common definitions handling
+- drastically improved performance by enhancing hex and ID parsing
 
 ### Fixed
 - An unresolvable reference will now result in an exception instead of a segfault when parsing XML.
