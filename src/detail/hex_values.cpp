@@ -2,21 +2,17 @@
 #include <iomanip>
 #include <regex>
 #include <sstream>
+#include <string>
 
 namespace adm {
   namespace detail {
 
     unsigned int parseHexValue(const std::string& value,
                                unsigned int nmbOfChars) {
-      std::stringstream regexString;
-      regexString << "[0-9a-fA-F]{1," << nmbOfChars << "}";
-      const std::regex r(regexString.str());
-      if (std::regex_match(value, r)) {
-        unsigned int ret;
-        std::stringstream ss;
-        ss << std::hex << value;
-        ss >> ret;
-        return static_cast<unsigned int>(ret);
+      const static std::regex r("[0-9a-fA-F]+");
+
+      if (std::regex_match(value, r) && value.size() <= nmbOfChars) {
+        return static_cast<unsigned int>(std::stol(value, nullptr, 16));
       } else {
         std::stringstream errorString;
         errorString << "failed to convert hex value to int: " << value;
