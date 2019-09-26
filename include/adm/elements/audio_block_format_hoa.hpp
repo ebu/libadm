@@ -15,6 +15,10 @@ namespace adm {
 
   /// @brief Tag for AudioBlockFormatHoa
   struct AudioBlockFormatHoaTag {};
+  /// @brief Tag for NamedType ::Order
+  struct OrderTag {};
+  /// @brief NamedType for order parameter
+  using Order = detail::NamedType<int, OrderTag>;
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "HOA"
@@ -85,6 +89,8 @@ namespace adm {
     ADM_EXPORT void set(Rtime rtime);
     /// @brief Duration setter
     ADM_EXPORT void set(Duration duration);
+    /// @brief Order setter
+    ADM_EXPORT void set(Order order);
 
     /**
      * @brief ADM parameter unset template
@@ -101,10 +107,12 @@ namespace adm {
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT Order get(detail::ParameterTraits<Order>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Order>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -113,10 +121,12 @@ namespace adm {
 
     ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Order>::tag);
 
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;
     boost::optional<Duration> duration_;
+    boost::optional<Order> order_;
   };
 
   // ---- Implementation ---- //

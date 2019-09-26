@@ -18,6 +18,10 @@ namespace adm {
       detail::ParameterTraits<Duration>::tag) const {
     return duration_.get();
   }
+  Order AudioBlockFormatHoa::get(
+      detail::ParameterTraits<Order>::tag) const {
+    return order_.get();
+  }
 
   // ---- Has ---- //
   bool AudioBlockFormatHoa::has(
@@ -30,6 +34,9 @@ namespace adm {
   bool AudioBlockFormatHoa::has(detail::ParameterTraits<Duration>::tag) const {
     return duration_ != boost::none;
   }
+  bool AudioBlockFormatHoa::has(detail::ParameterTraits<Order>::tag) const {
+    return order_ != boost::none;
+  }
 
   // ---- isDefault ---- //
   bool AudioBlockFormatHoa::isDefault(
@@ -41,6 +48,7 @@ namespace adm {
   void AudioBlockFormatHoa::set(AudioBlockFormatId id) { id_ = id; }
   void AudioBlockFormatHoa::set(Rtime rtime) { rtime_ = rtime; }
   void AudioBlockFormatHoa::set(Duration duration) { duration_ = duration; }
+  void AudioBlockFormatHoa::set(Order order) { order_ = order; }
 
   // ---- Unsetter ---- //
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Rtime>::tag) {
@@ -48,6 +56,9 @@ namespace adm {
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Duration>::tag) {
     duration_ = boost::none;
+  }
+  void AudioBlockFormatHoa::unset(detail::ParameterTraits<Order>::tag) {
+    order_ = boost::none;
   }
 
 }  // namespace adm
