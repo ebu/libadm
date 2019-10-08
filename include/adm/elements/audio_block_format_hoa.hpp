@@ -8,6 +8,7 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
+#include "adm/elements/screen_ref.hpp"
 
 namespace adm {
 
@@ -19,17 +20,26 @@ namespace adm {
   struct OrderTag {};
   /// @brief NamedType for order parameter
   using Order = detail::NamedType<int, OrderTag>;
+  /// @brief Tag for NamedType ::Degree
+  struct DegreeTag {};
+  /// @brief NamedType for degree parameter
+  using Degree = detail::NamedType<int, DegreeTag>;
+  /// @brief Tag for NamedType ::NfcRefDist
+  struct NfcRefDistTag {};
+  /// @brief NamedType for degree parameter
+  using NfcRefDist = detail::NamedType<float, NfcRefDistTag>;
+
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "HOA"
    *
    * @warning This class has unsupported parameters
    *   - Equation
-   *   - Order
-   *   - Degree
+   *   - ~Order~
+   *   - ~Degree~
    *   - Normalization
-   *   - NfcRefDist
-   *   - ScreenRef
+   *   - ~NfcRefDist~
+   *   - ~ScreenRef~
    */
   class AudioBlockFormatHoa {
    public:
@@ -81,8 +91,6 @@ namespace adm {
     template <typename Parameter>
     bool isDefault() const;
 
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
-
     /// @brief AudioBlockFormatId setter
     ADM_EXPORT void set(AudioBlockFormatId id);
     /// @brief Rtime setter
@@ -91,6 +99,12 @@ namespace adm {
     ADM_EXPORT void set(Duration duration);
     /// @brief Order setter
     ADM_EXPORT void set(Order order);
+    /// @brief Degree setter
+    ADM_EXPORT void set(Degree degree);
+    /// @brief NfcRefDist setter
+    ADM_EXPORT void set(NfcRefDist dist);
+    /// @brief ScreenRef setter
+    ADM_EXPORT void set(ScreenRef screenRef);
 
     /**
      * @brief ADM parameter unset template
@@ -108,25 +122,39 @@ namespace adm {
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
     ADM_EXPORT Order get(detail::ParameterTraits<Order>::tag) const;
+    ADM_EXPORT Degree get(detail::ParameterTraits<Degree>::tag) const;
+    ADM_EXPORT NfcRefDist get(detail::ParameterTraits<NfcRefDist>::tag) const;
+    ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Order>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Degree>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<NfcRefDist>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ScreenRef>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<NfcRefDist>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
 
     ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Order>::tag);
-
+    ADM_EXPORT void unset(detail::ParameterTraits<Degree>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<NfcRefDist>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;
     boost::optional<Duration> duration_;
     boost::optional<Order> order_;
+    boost::optional<Degree> degree_;
+    boost::optional<NfcRefDist> dist_;
+    boost::optional<ScreenRef> screenRef_;
   };
 
   // ---- Implementation ---- //

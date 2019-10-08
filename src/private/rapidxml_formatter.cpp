@@ -371,9 +371,9 @@ namespace adm {
       node.addOptionalElement<ChannelLock>(&audioBlock, "channelLock", &formatChannelLock);
       node.addOptionalElement<ObjectDivergence>(&audioBlock, "objectDivergence", &formatObjectDivergence);
       node.addOptionalElement<JumpPosition>(&audioBlock, "jumpPosition", &formatJumpPosition);
+      node.addOptionalElement<ScreenRef>(&audioBlock, "screenRef");
       // clang-format on
       // TODO: add zoneExclusion
-      // TODO: add screenRef
       node.addOptionalElement<Importance>(&audioBlock, "importance");
     }
 
@@ -431,7 +431,12 @@ namespace adm {
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
       node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
       node.addOptionalAttribute<Duration>(&audioBlock, "duration");
-      // TODO: add missing hoa attributes and elements
+      node.addOptionalElement<Order>(&audioBlock, "order");
+      node.addOptionalElement<Degree>(&audioBlock, "degree");
+      node.addOptionalElement<NfcRefDist>(&audioBlock, "nfcRefDist");
+      node.addOptionalElement<ScreenRef>(&audioBlock, "screenRef");
+      // TODO: add Equation
+      // TODO: add Normalization
       // clang-format on
     }
 

@@ -13,7 +13,7 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
-
+#include "adm/elements/screen_ref.hpp"
 namespace adm {
 
   class Document;
@@ -43,10 +43,6 @@ namespace adm {
   /// @brief NamedType for diffuse parameter
   using Diffuse =
       detail::NamedType<float, DiffuseTag, detail::RangeValidator<0, 1>>;
-  /// @brief Tag for NamedType ::ScreenRef
-  struct ScreenRefTag {};
-  /// @brief NamedType for screenref parameter
-  using ScreenRef = detail::NamedType<bool, ScreenRefTag>;
 
   /// @brief Tag for AudioBlockFormatObjects
   struct AudioBlockFormatObjectsTag {};

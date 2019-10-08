@@ -22,6 +22,18 @@ namespace adm {
       detail::ParameterTraits<Order>::tag) const {
     return order_.get();
   }
+  Degree AudioBlockFormatHoa::get(
+      detail::ParameterTraits<Degree>::tag) const {
+    return degree_.get();
+  }
+  NfcRefDist AudioBlockFormatHoa::get(
+          detail::ParameterTraits<NfcRefDist>::tag) const {
+      return dist_.get();
+  }
+  ScreenRef AudioBlockFormatHoa::get(
+          detail::ParameterTraits<ScreenRef>::tag) const {
+      return screenRef_.get();
+  }
 
   // ---- Has ---- //
   bool AudioBlockFormatHoa::has(
@@ -37,11 +49,28 @@ namespace adm {
   bool AudioBlockFormatHoa::has(detail::ParameterTraits<Order>::tag) const {
     return order_ != boost::none;
   }
+  bool AudioBlockFormatHoa::has(detail::ParameterTraits<Degree>::tag) const {
+    return degree_ != boost::none;
+  }
+  bool AudioBlockFormatHoa::has(detail::ParameterTraits<NfcRefDist>::tag) const {
+      return dist_ != boost::none;
+  }
+  bool AudioBlockFormatHoa::has(detail::ParameterTraits<ScreenRef>::tag) const {
+      return screenRef_ != boost::none;
+  }
 
   // ---- isDefault ---- //
   bool AudioBlockFormatHoa::isDefault(
       detail::ParameterTraits<Rtime>::tag) const {
     return duration_ == boost::none;
+  }
+  bool AudioBlockFormatHoa::isDefault(
+          detail::ParameterTraits<NfcRefDist>::tag) const {
+      return dist_ == boost::none;
+  }
+  bool AudioBlockFormatHoa::isDefault(
+      detail::ParameterTraits<ScreenRef>::tag) const {
+    return screenRef_ == boost::none;
   }
 
   // ---- Setter ---- //
@@ -49,6 +78,9 @@ namespace adm {
   void AudioBlockFormatHoa::set(Rtime rtime) { rtime_ = rtime; }
   void AudioBlockFormatHoa::set(Duration duration) { duration_ = duration; }
   void AudioBlockFormatHoa::set(Order order) { order_ = order; }
+  void AudioBlockFormatHoa::set(Degree degree) { degree_ = degree; }
+  void AudioBlockFormatHoa::set(NfcRefDist dist) { dist_ = dist; }
+  void AudioBlockFormatHoa::set(ScreenRef screenRef) { screenRef_ = screenRef; }
 
   // ---- Unsetter ---- //
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Rtime>::tag) {
@@ -59,6 +91,15 @@ namespace adm {
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Order>::tag) {
     order_ = boost::none;
+  }
+  void AudioBlockFormatHoa::unset(detail::ParameterTraits<Degree>::tag) {
+      degree_ = boost::none;
+  }
+  void AudioBlockFormatHoa::unset(detail::ParameterTraits<NfcRefDist>::tag) {
+      dist_ = boost::none;
+  }
+  void AudioBlockFormatHoa::unset(detail::ParameterTraits<ScreenRef>::tag) {
+      screenRef_ = boost::none;
   }
 
 }  // namespace adm
