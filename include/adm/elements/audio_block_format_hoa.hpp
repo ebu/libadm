@@ -153,7 +153,7 @@ namespace adm {
     boost::optional<Duration> duration_;
     boost::optional<Order> order_;
     boost::optional<Degree> degree_;
-    boost::optional<NfcRefDist> dist_;
+    boost::optional<NfcRefDist> nfcRefDist_;
     boost::optional<ScreenRef> screenRef_;
   };
 

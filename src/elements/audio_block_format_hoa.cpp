@@ -28,7 +28,7 @@ namespace adm {
   }
   NfcRefDist AudioBlockFormatHoa::get(
           detail::ParameterTraits<NfcRefDist>::tag) const {
-      return dist_.get();
+      return nfcRefDist_.get();
   }
   ScreenRef AudioBlockFormatHoa::get(
           detail::ParameterTraits<ScreenRef>::tag) const {
@@ -53,7 +53,7 @@ namespace adm {
     return degree_ != boost::none;
   }
   bool AudioBlockFormatHoa::has(detail::ParameterTraits<NfcRefDist>::tag) const {
-      return dist_ != boost::none;
+      return nfcRefDist_ != boost::none;
   }
   bool AudioBlockFormatHoa::has(detail::ParameterTraits<ScreenRef>::tag) const {
       return screenRef_ != boost::none;
@@ -66,7 +66,7 @@ namespace adm {
   }
   bool AudioBlockFormatHoa::isDefault(
           detail::ParameterTraits<NfcRefDist>::tag) const {
-      return dist_ == boost::none;
+      return nfcRefDist_ == boost::none;
   }
   bool AudioBlockFormatHoa::isDefault(
       detail::ParameterTraits<ScreenRef>::tag) const {
@@ -79,7 +79,7 @@ namespace adm {
   void AudioBlockFormatHoa::set(Duration duration) { duration_ = duration; }
   void AudioBlockFormatHoa::set(Order order) { order_ = order; }
   void AudioBlockFormatHoa::set(Degree degree) { degree_ = degree; }
-  void AudioBlockFormatHoa::set(NfcRefDist dist) { dist_ = dist; }
+  void AudioBlockFormatHoa::set(NfcRefDist nfcRefDist) { nfcRefDist_ = nfcRefDist; }
   void AudioBlockFormatHoa::set(ScreenRef screenRef) { screenRef_ = screenRef; }
 
   // ---- Unsetter ---- //
@@ -96,7 +96,7 @@ namespace adm {
       degree_ = boost::none;
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<NfcRefDist>::tag) {
-      dist_ = boost::none;
+      nfcRefDist_ = boost::none;
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<ScreenRef>::tag) {
       screenRef_ = boost::none;
