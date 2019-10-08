@@ -8,7 +8,7 @@
 TEST_CASE("xml_parser/audio_block_format_objects") {
   using namespace adm;
   {
-    auto document = parseXml("../test_data/xml_parser/audio_block_format_objects.xml");
+    auto document = parseXml("xml_parser/audio_block_format_objects.xml");
     auto channelFormat =
         document->lookup(parseAudioChannelFormatId("AC_00031001"));
     REQUIRE(channelFormat->get<AudioChannelFormatId>()
@@ -39,8 +39,11 @@ TEST_CASE("xml_parser/audio_block_format_objects") {
     REQUIRE(
         firstBlockFormat.get<JumpPosition>().get<InterpolationLength>().get() ==
         std::chrono::milliseconds(200));
-    REQUIRE(firstBlockFormat.get<ScreenRef>() == 0);
+    REQUIRE(firstBlockFormat.get<ScreenRef>() == true);
     // TODO: add zoneExclusion test
     REQUIRE(firstBlockFormat.get<Importance>() == 10);
+    auto secondBlockFormat = *(channelFormat->getElements<AudioBlockFormatObjects>().begin().operator++());
+    REQUIRE(secondBlockFormat.get<ScreenRef>() == false);
+    REQUIRE(secondBlockFormat.get<JumpPosition>().get<JumpPositionFlag>() == false);
   }
 }

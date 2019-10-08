@@ -7,7 +7,7 @@
 
 TEST_CASE("xml_parser/audio_block_format_hoa") {
   using namespace adm;
-  auto document = parseXml("../test_data/xml_parser/audio_block_format_hoa.xml");
+  auto document = parseXml("xml_parser/audio_block_format_hoa.xml");
   auto channelFormat =
       document->lookup(parseAudioChannelFormatId("AC_00041001"));
   REQUIRE(channelFormat->get<AudioChannelFormatId>()
@@ -23,7 +23,11 @@ TEST_CASE("xml_parser/audio_block_format_hoa") {
   REQUIRE(firstBlockFormat.get<Order>() == 1);
   REQUIRE(firstBlockFormat.get<Degree>() == -1);
   REQUIRE(firstBlockFormat.get<NfcRefDist>() == 2.0f);
+  REQUIRE(firstBlockFormat.get<ScreenRef>() == false);
 
+  auto secondBlockFormat =
+      *(channelFormat->getElements<AudioBlockFormatHoa>().begin().operator++());
+  REQUIRE(secondBlockFormat.get<ScreenRef>() == true);
 
   //TODO: Add invalid range test
 }
