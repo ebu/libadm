@@ -1,8 +1,11 @@
+include(CMakeFindDependencyMacro)
 
 @PACKAGE_INIT@
 
 set_and_check(@PROJECT_NAME@_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/@INSTALL_INCLUDE_DIR@")
 set_and_check(@PROJECT_NAME@_LIBRARY_DIRS "${PACKAGE_PREFIX_DIR}/@INSTALL_LIB_DIR@")
+
+find_dependency(Boost 1.57)
 
 if(${adm_USE_STATIC_LIBS})
   if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/admTargetsStatic.cmake")

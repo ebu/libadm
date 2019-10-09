@@ -60,7 +60,6 @@ As the library uses CMake as a build system it is really easy to set up and use 
 cmake_minimum_required(VERSION 3.5)
 project(libadm_example VERSION 1.0.0 LANGUAGES CXX)
 
-find_package(Boost 1.57 REQUIRED)
 find_package(adm REQUIRED)
 
 add_executable(examples example.cpp)
