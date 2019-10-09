@@ -11,6 +11,12 @@ namespace adm {
         XmlNode &node, const std::shared_ptr<const AudioProgramme> programme);
     void formatLoudnessMetadata(XmlNode &node,
                                 const LoudnessMetadata loudnessMetadata);
+    void formatNonDialogueContentKind(XmlNode &node,
+                                      const NonDialogueContentKind contentKind);
+    void formatDialogueContentKind(XmlNode &node,
+                                   const DialogueContentKind contentKind);
+    void formatMixedContentKind(XmlNode &node,
+                                const MixedContentKind contentKind);
     void formatAudioContent(XmlNode &node,
                             const std::shared_ptr<const AudioContent> content);
     void formatAudioObject(XmlNode &node,

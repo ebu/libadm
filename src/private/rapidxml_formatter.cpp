@@ -88,6 +88,34 @@ namespace adm {
       node.addOptionalAttribute<AudioContentName>(content, "audioContentName");
       node.addOptionalAttribute<AudioContentLanguage>(content, "audioContentLanguage");
       node.addReferences<AudioObject, AudioObjectId>(content, "audioObjectIDRef");
+      node.addOptionalElement<LoudnessMetadata>(content, "loudnessMetadata", &formatLoudnessMetadata);
+      node.addOptionalElement<NonDialogueContentKind>(content, "dialogue", &formatNonDialogueContentKind);
+      node.addOptionalElement<DialogueContentKind>(content, "dialogue", &formatDialogueContentKind);
+      node.addOptionalElement<MixedContentKind>(content, "dialogue", &formatMixedContentKind);
+      // clang-format on
+    }
+
+    void formatNonDialogueContentKind(
+        XmlNode &node, const NonDialogueContentKind contentKind) {
+      // clang-format off
+      node.addAttribute("nonDialogueContentKind", std::to_string(contentKind.get()));
+      node.setValue(std::string("0"));
+      // clang-format on
+    }
+
+    void formatDialogueContentKind(XmlNode &node,
+                                   const DialogueContentKind contentKind) {
+      // clang-format off
+      node.addAttribute("dialogueContentKind", std::to_string(contentKind.get()));
+      node.setValue(std::string("1"));
+      // clang-format on
+    }
+
+    void formatMixedContentKind(XmlNode &node,
+                                const MixedContentKind contentKind) {
+      // clang-format off
+      node.addAttribute("mixedContentKind", std::to_string(contentKind.get()));
+      node.setValue(std::string("2"));
       // clang-format on
     }
 
