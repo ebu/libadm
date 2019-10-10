@@ -46,7 +46,6 @@ namespace adm {
    * @brief Class representation of the audioProgramme ADM element
    *
    * @warning This class has unsupported parameters:
-   *   - LoudnessMetadata
    *   - AudioProgrammeReferenceScreen
    *
    * @headerfile audio_programme.hpp <adm/elements/audio_programme.hpp>
