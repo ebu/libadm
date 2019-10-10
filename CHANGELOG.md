@@ -6,6 +6,7 @@
 - library can now also be used as a CMake subproject
 - new CMake option `ADM_HIDE_INTERNAL_SYMBOLS`
 - new CMake option `ADM_PACKAGE_AND_INSTALL`
+- new CMake option `BUILD_SHARED_LIBS`
 
 ### Changed
 - Renamed CMake library target name from `libadm` to `adm`
@@ -14,10 +15,13 @@
 - properly implemented the `LoudnessMetadata` class
 - improved common definitions handling
 - drastically improved performance by enhancing hex and ID parsing
+- boost will automatically be found when finding libadm
+- hide symbols only is shared library is build
 
 ### Fixed
 - An unresolvable reference will now result in an exception instead of a segfault when parsing XML.
 - Always return true for values with default values in has<...>() methods.
+- The dialogue subelement will now be written by the xml writer
 
 ## 0.10.0 (November 30, 2018)
 
