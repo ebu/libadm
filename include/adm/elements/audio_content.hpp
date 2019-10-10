@@ -33,9 +33,6 @@ namespace adm {
   /**
    * @brief Class representation of the audioContent ADM element
    *
-   * @warning This class has unsupported parameters:
-   *   - LoudnessMetadata
-   *
    * @headerfile audio_content.hpp <adm/elements/audio_content.hpp>
    */
   class AudioContent : public std::enable_shared_from_this<AudioContent> {
