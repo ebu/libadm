@@ -24,10 +24,11 @@ TEST_CASE("xml_parser/audio_block_format_hoa") {
   REQUIRE(firstBlockFormat.get<Degree>() == -1);
   REQUIRE(firstBlockFormat.get<NfcRefDist>() == 2.0f);
   REQUIRE(firstBlockFormat.get<ScreenRef>() == false);
+  REQUIRE(firstBlockFormat.get<Normalization>() == "SN3D");
 
   auto secondBlockFormat =
       *(channelFormat->getElements<AudioBlockFormatHoa>().begin().operator++());
   REQUIRE(secondBlockFormat.get<ScreenRef>() == true);
-
+  REQUIRE(secondBlockFormat.get<Normalization>() == "N3D");
   //TODO: Add invalid range test
 }

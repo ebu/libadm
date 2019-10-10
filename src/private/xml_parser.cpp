@@ -626,6 +626,7 @@ namespace adm {
       setOptionalElement<Degree>(node, "degree", audioBlockFormat);
       setOptionalElement<NfcRefDist>(node, "nfcRefDist", audioBlockFormat);
       setOptionalElement<ScreenRef>(node, "screenRef", audioBlockFormat);
+      setOptionalElement<Normalization>(node, "normalization", audioBlockFormat);
       // clang-format on
       return audioBlockFormat;
     }

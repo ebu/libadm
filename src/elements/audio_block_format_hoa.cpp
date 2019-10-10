@@ -34,6 +34,10 @@ namespace adm {
           detail::ParameterTraits<ScreenRef>::tag) const {
       return screenRef_.get();
   }
+  Normalization AudioBlockFormatHoa::get(
+          detail::ParameterTraits<Normalization>::tag) const {
+      return normalization_.get();
+  }
 
   // ---- Has ---- //
   bool AudioBlockFormatHoa::has(
@@ -58,6 +62,9 @@ namespace adm {
   bool AudioBlockFormatHoa::has(detail::ParameterTraits<ScreenRef>::tag) const {
       return screenRef_ != boost::none;
   }
+  bool AudioBlockFormatHoa::has(detail::ParameterTraits<Normalization>::tag) const {
+      return normalization_ != boost::none;
+  }
 
   // ---- isDefault ---- //
   bool AudioBlockFormatHoa::isDefault(
@@ -66,11 +73,18 @@ namespace adm {
   }
   bool AudioBlockFormatHoa::isDefault(
           detail::ParameterTraits<NfcRefDist>::tag) const {
+      //TODO: Check default value
       return nfcRefDist_ == boost::none;
   }
   bool AudioBlockFormatHoa::isDefault(
       detail::ParameterTraits<ScreenRef>::tag) const {
+      //TODO: Check default value
     return screenRef_ == boost::none;
+  }
+  bool AudioBlockFormatHoa::isDefault(
+          detail::ParameterTraits<Normalization>::tag) const {
+      //TODO: Chcek default value
+      return screenRef_ == boost::none;
   }
 
   // ---- Setter ---- //
@@ -81,6 +95,7 @@ namespace adm {
   void AudioBlockFormatHoa::set(Degree degree) { degree_ = degree; }
   void AudioBlockFormatHoa::set(NfcRefDist nfcRefDist) { nfcRefDist_ = nfcRefDist; }
   void AudioBlockFormatHoa::set(ScreenRef screenRef) { screenRef_ = screenRef; }
+  void AudioBlockFormatHoa::set(Normalization normalization) { normalization_ = normalization; }
 
   // ---- Unsetter ---- //
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Rtime>::tag) {
@@ -100,6 +115,9 @@ namespace adm {
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<ScreenRef>::tag) {
       screenRef_ = boost::none;
+  }
+  void AudioBlockFormatHoa::unset(detail::ParameterTraits<Normalization>::tag) {
+      normalization_ = boost::none;
   }
 
 }  // namespace adm

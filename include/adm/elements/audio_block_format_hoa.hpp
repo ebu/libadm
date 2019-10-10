@@ -29,6 +29,11 @@ namespace adm {
   /// @brief NamedType for degree parameter
   using NfcRefDist = detail::NamedType<float, NfcRefDistTag>;
 
+  /// @brief Tag for NamedType ::Normalization
+  struct NormalizationTag {};
+  /// @brief NamedType for a normalization parameter
+  using Normalization = detail::NamedType<std::string, NormalizationTag>;
+
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "HOA"
@@ -105,6 +110,8 @@ namespace adm {
     ADM_EXPORT void set(NfcRefDist dist);
     /// @brief ScreenRef setter
     ADM_EXPORT void set(ScreenRef screenRef);
+    /// @brief Normalization setter
+    ADM_EXPORT void set(Normalization normalization);
 
     /**
      * @brief ADM parameter unset template
@@ -125,6 +132,7 @@ namespace adm {
     ADM_EXPORT Degree get(detail::ParameterTraits<Degree>::tag) const;
     ADM_EXPORT NfcRefDist get(detail::ParameterTraits<NfcRefDist>::tag) const;
     ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
+    ADM_EXPORT Normalization get(detail::ParameterTraits<Normalization>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
@@ -133,6 +141,7 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<Degree>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<NfcRefDist>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ScreenRef>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Normalization>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -141,6 +150,7 @@ namespace adm {
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<NfcRefDist>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Normalization>::tag) const;
 
     ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
@@ -148,6 +158,7 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<Degree>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<NfcRefDist>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Normalization>::tag);
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;
     boost::optional<Duration> duration_;
@@ -155,6 +166,7 @@ namespace adm {
     boost::optional<Degree> degree_;
     boost::optional<NfcRefDist> nfcRefDist_;
     boost::optional<ScreenRef> screenRef_;
+    boost::optional<Normalization> normalization_;
   };
 
   // ---- Implementation ---- //

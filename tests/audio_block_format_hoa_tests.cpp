@@ -67,5 +67,13 @@ TEST_CASE("audio_block_format_hoa") {
     blockFormat.unset<ScreenRef>();
     REQUIRE(blockFormat.isDefault<ScreenRef>() == true);
     REQUIRE(blockFormat.has<ScreenRef>() == false);
+
+    REQUIRE(blockFormat.has<Normalization>() == false);
+    blockFormat.set(Normalization("SN3D"));
+    REQUIRE(blockFormat.has<Normalization>() == true);
+    REQUIRE(blockFormat.get<Normalization>() == "SN3D");
+    blockFormat.unset<Normalization>();
+    REQUIRE(blockFormat.isDefault<Normalization>() == true);
+    REQUIRE(blockFormat.has<Normalization>() == false);
   }
 }
