@@ -51,4 +51,24 @@ namespace adm {
   const std::map<std::string, adm::AudioTrackFormatId>
   audioTrackFormatLookupTable();
 
+  /**
+   * @brief Lookup table for SpeakerLabels of loufspeaker setup
+   *
+   * Specified loudspeaker ids:
+   *
+   *  - 0+2+0
+   *  - 0+5+0
+   *  - 2+5+0
+   *  - 4+5+0
+   *  - 4+5+1
+   *  - 3+7+0
+   *  - 4+9+0
+   *  - 9+10+3
+   *
+   * @return Map with the speaker label specified in ITU-R BS.2051 as key and
+   * a vector of the corresponding speaker labels as value.
+   */
+  const std::map<std::string, std::vector<std::string>>
+  speakerLabelsLookupTable();
+
 }  // namespace adm
