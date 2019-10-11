@@ -21,6 +21,15 @@ AudioContent
 .. doxygenclass:: adm::AudioContentId
 .. doxygentypedef:: adm::AudioContentName
 .. doxygentypedef:: adm::AudioContentLanguage
+.. doxygentypedef:: adm::DialogueId
+.. doxygennamespace:: adm::Dialogue
+.. doxygentypedef:: adm::ContentKind
+.. doxygentypedef:: adm::NonDialogueContentKind
+.. doxygennamespace:: adm::NonDialogueContent
+.. doxygentypedef:: adm::DialogueContentKind
+.. doxygennamespace:: adm::DialogueContent
+.. doxygentypedef:: adm::MixedContentKind
+.. doxygennamespace:: adm::MixedContent
 
 AudioObject
 -----------
@@ -28,7 +37,6 @@ AudioObject
 .. doxygenclass:: adm::AudioObject
 .. doxygenclass:: adm::AudioObjectId
 .. doxygentypedef:: adm::AudioObjectName
-.. doxygentypedef:: adm::DialogueId
 .. doxygentypedef:: adm::Interact
 .. doxygentypedef:: adm::DisableDucking
 .. doxygenclass:: adm::AudioObjectInteraction
