@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.11.0 (Oktober 11, 2019)
 
 ### Added
 - library can now also be used as a CMake subproject
