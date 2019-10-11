@@ -1,7 +1,9 @@
 /// @file object_creation.hpp
 #pragma once
 
+#include <map>
 #include <memory>
+#include <string>
 #include "adm/document.hpp"
 #include "adm/export.h"
 
