@@ -28,7 +28,6 @@ namespace adm {
   struct NfcRefDistTag {};
   /// @brief NamedType for degree parameter
   using NfcRefDist = detail::NamedType<float, NfcRefDistTag>;
-
   /// @brief Tag for NamedType ::Normalization
   struct NormalizationTag {};
   /// @brief NamedType for a normalization parameter
@@ -38,13 +37,8 @@ namespace adm {
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "HOA"
    *
-   * @warning This class has unsupported parameters
+   * @warning This class has an unsupported parameter:
    *   - Equation
-   *   - ~Order~
-   *   - ~Degree~
-   *   - Normalization
-   *   - ~NfcRefDist~
-   *   - ~ScreenRef~
    */
   class AudioBlockFormatHoa {
    public:

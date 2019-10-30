@@ -14,6 +14,7 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 #include "adm/elements/screen_ref.hpp"
+
 namespace adm {
 
   class Document;

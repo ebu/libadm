@@ -30,5 +30,5 @@ TEST_CASE("xml_parser/audio_block_format_hoa") {
       *(channelFormat->getElements<AudioBlockFormatHoa>().begin().operator++());
   REQUIRE(secondBlockFormat.get<ScreenRef>() == true);
   REQUIRE(secondBlockFormat.get<Normalization>() == "N3D");
-  //TODO: Add invalid range test
+  //TODO: Add invalid range test?
 }
