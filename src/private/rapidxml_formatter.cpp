@@ -435,8 +435,8 @@ namespace adm {
       node.addOptionalElement<Degree>(&audioBlock, "degree");
       node.addOptionalElement<NfcRefDist>(&audioBlock, "nfcRefDist");
       node.addOptionalElement<ScreenRef>(&audioBlock, "screenRef");
+      node.addOptionalElement<Normalization>(&audioBlock, "normalizaiton");
       // TODO: add Equation
-      // TODO: add Normalization
       // clang-format on
     }
 
