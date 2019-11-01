@@ -10,6 +10,7 @@
             <normalization>SN3D</normalization>
             <nfcRefDist>2.0</nfcRefDist>
             <screenRef>0</screenRef>
+            <equation>cos(A)*sin(E)</equation>
           </audioBlockFormat>
           <audioBlockFormat audioBlockFormatID="AB_00041001_00000002">
             <order>1</order>

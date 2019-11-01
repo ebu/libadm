@@ -25,6 +25,7 @@ TEST_CASE("xml_parser/audio_block_format_hoa") {
   REQUIRE(firstBlockFormat.get<NfcRefDist>() == 2.0f);
   REQUIRE(firstBlockFormat.get<ScreenRef>() == false);
   REQUIRE(firstBlockFormat.get<Normalization>() == "SN3D");
+  REQUIRE(firstBlockFormat.get<Equation>() == "cos(A)*sin(E)");
 
   auto secondBlockFormat =
       *(channelFormat->getElements<AudioBlockFormatHoa>().begin().operator++());

@@ -5,7 +5,7 @@
 TEST_CASE("audio_block_format_hoa") {
   using namespace adm;
   {
-    AudioBlockFormatHoa blockFormat;
+    AudioBlockFormatHoa blockFormat{Order(), Degree()};
 
     REQUIRE(blockFormat.has<AudioBlockFormatId>() == true);
     REQUIRE(blockFormat.has<Rtime>() == true);
@@ -38,14 +38,14 @@ TEST_CASE("audio_block_format_hoa") {
 
     REQUIRE(blockFormat.get<Rtime>().get() == std::chrono::seconds(0));
 
-    REQUIRE(blockFormat.has<Order>() == false);
+    REQUIRE(blockFormat.has<Order>() == true);
     blockFormat.set(Order(1));
     REQUIRE(blockFormat.has<Order>() == true);
     REQUIRE(blockFormat.get<Order>() == 1);
     blockFormat.unset<Order>();
     REQUIRE(blockFormat.has<Order>() == false);
 
-    REQUIRE(blockFormat.has<Degree>() == false);
+    REQUIRE(blockFormat.has<Degree>() == true);
     blockFormat.set(Degree(-1));
     REQUIRE(blockFormat.has<Degree>() == true);
     REQUIRE(blockFormat.get<Degree>() == -1);
@@ -58,7 +58,6 @@ TEST_CASE("audio_block_format_hoa") {
     REQUIRE(blockFormat.get<NfcRefDist>() == 2);
     blockFormat.unset<NfcRefDist>();
     REQUIRE(blockFormat.has<NfcRefDist>() == false);
-
 
     REQUIRE(blockFormat.has<ScreenRef>() == false);
     blockFormat.set(ScreenRef(1));
@@ -75,5 +74,12 @@ TEST_CASE("audio_block_format_hoa") {
     blockFormat.unset<Normalization>();
     REQUIRE(blockFormat.isDefault<Normalization>() == true);
     REQUIRE(blockFormat.has<Normalization>() == false);
+
+    REQUIRE(blockFormat.has<Equation>() == false);
+    blockFormat.set(Equation("cos(A)*sin(E)"));
+    REQUIRE(blockFormat.has<Equation>() == true);
+    REQUIRE(blockFormat.get<Equation>() == "cos(A)*sin(E)");
+    blockFormat.unset<Equation>();
+    REQUIRE(blockFormat.has<Equation>() == false);
   }
 }
