@@ -617,7 +617,7 @@ namespace adm {
 
     AudioBlockFormatHoa parseAudioBlockFormatHoa(
         NodePtr node) {
-      AudioBlockFormatHoa audioBlockFormat;
+        AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
       setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
@@ -627,6 +627,7 @@ namespace adm {
       setOptionalElement<NfcRefDist>(node, "nfcRefDist", audioBlockFormat);
       setOptionalElement<ScreenRef>(node, "screenRef", audioBlockFormat);
       setOptionalElement<Normalization>(node, "normalization", audioBlockFormat);
+      setOptionalElement<Equation>(node, "equation", audioBlockFormat);
       // clang-format on
       return audioBlockFormat;
     }

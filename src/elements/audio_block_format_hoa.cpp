@@ -2,8 +2,13 @@
 
 namespace adm {
 
+  // ---- Defaults ---- //
   namespace {
     const Rtime rtimeDefault{std::chrono::seconds(0)};
+    const Normalization normalizationDefault{"SN3D"};
+    const NfcRefDist nfcRefDistDefault{0};
+    const ScreenRef screenRefDefualt{false};
+    const Equation equationDefault{""}; // Optional value which does not contain default
   }
 
   // ---- Getter ---- //
@@ -28,15 +33,19 @@ namespace adm {
   }
   NfcRefDist AudioBlockFormatHoa::get(
           detail::ParameterTraits<NfcRefDist>::tag) const {
-      return nfcRefDist_.get();
+      return boost::get_optional_value_or(nfcRefDist_, nfcRefDistDefault);
   }
   ScreenRef AudioBlockFormatHoa::get(
           detail::ParameterTraits<ScreenRef>::tag) const {
-      return screenRef_.get();
+      return boost::get_optional_value_or(screenRef_, screenRefDefualt);
   }
   Normalization AudioBlockFormatHoa::get(
           detail::ParameterTraits<Normalization>::tag) const {
-      return normalization_.get();
+      return boost::get_optional_value_or(normalization_, normalizationDefault);
+  }
+  Equation AudioBlockFormatHoa::get(
+          detail::ParameterTraits<Equation>::tag) const {
+      return boost::get_optional_value_or(equation_, equationDefault);
   }
 
   // ---- Has ---- //
@@ -65,6 +74,9 @@ namespace adm {
   bool AudioBlockFormatHoa::has(detail::ParameterTraits<Normalization>::tag) const {
       return normalization_ != boost::none;
   }
+  bool AudioBlockFormatHoa::has(detail::ParameterTraits<Equation>::tag) const {
+      return equation_ != boost::none;
+  }
 
   // ---- isDefault ---- //
   bool AudioBlockFormatHoa::isDefault(
@@ -72,19 +84,16 @@ namespace adm {
     return duration_ == boost::none;
   }
   bool AudioBlockFormatHoa::isDefault(
-          detail::ParameterTraits<NfcRefDist>::tag) const {
-      //TODO: Check default value
-      return nfcRefDist_ == boost::none;
+      detail::ParameterTraits<NfcRefDist>::tag) const {
+    return nfcRefDist_ == boost::none;
   }
   bool AudioBlockFormatHoa::isDefault(
       detail::ParameterTraits<ScreenRef>::tag) const {
-      //TODO: Check default value
     return screenRef_ == boost::none;
   }
   bool AudioBlockFormatHoa::isDefault(
-          detail::ParameterTraits<Normalization>::tag) const {
-      //TODO: Chcek default value
-      return screenRef_ == boost::none;
+      detail::ParameterTraits<Normalization>::tag) const {
+    return normalization_ == boost::none;
   }
 
   // ---- Setter ---- //
@@ -96,6 +105,7 @@ namespace adm {
   void AudioBlockFormatHoa::set(NfcRefDist nfcRefDist) { nfcRefDist_ = nfcRefDist; }
   void AudioBlockFormatHoa::set(ScreenRef screenRef) { screenRef_ = screenRef; }
   void AudioBlockFormatHoa::set(Normalization normalization) { normalization_ = normalization; }
+  void AudioBlockFormatHoa::set(Equation equation) { equation_ = equation; }
 
   // ---- Unsetter ---- //
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Rtime>::tag) {
@@ -118,6 +128,9 @@ namespace adm {
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Normalization>::tag) {
       normalization_ = boost::none;
+  }
+  void AudioBlockFormatHoa::unset(detail::ParameterTraits<Equation>::tag) {
+      equation_ = boost::none;
   }
 
 }  // namespace adm

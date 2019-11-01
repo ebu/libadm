@@ -32,13 +32,15 @@ namespace adm {
   struct NormalizationTag {};
   /// @brief NamedType for a normalization parameter
   using Normalization = detail::NamedType<std::string, NormalizationTag>;
+  /// @brief Tag for NamedType ::Equation
+  struct EquationTag {};
+  /// @brief NamedType for a equation parameter
+  using Equation = detail::NamedType<std::string, EquationTag>;
 
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "HOA"
    *
-   * @warning This class has an unsupported parameter:
-   *   - Equation
    */
   class AudioBlockFormatHoa {
    public:
@@ -47,7 +49,9 @@ namespace adm {
     typedef AudioBlockFormatId id_type;
 
     template <typename... Parameters>
-    AudioBlockFormatHoa(Parameters... optionalNamedArgs);
+    AudioBlockFormatHoa(Order order,
+                        Degree degree,
+                        Parameters... optionalNamedArgs);
 
     ADM_EXPORT AudioBlockFormatHoa(const AudioBlockFormatHoa&) = default;
     ADM_EXPORT AudioBlockFormatHoa(AudioBlockFormatHoa&&) = default;
@@ -106,6 +110,8 @@ namespace adm {
     ADM_EXPORT void set(ScreenRef screenRef);
     /// @brief Normalization setter
     ADM_EXPORT void set(Normalization normalization);
+    /// @brief Equation setter
+    ADM_EXPORT void set(Equation equation);
 
     /**
      * @brief ADM parameter unset template
@@ -127,6 +133,7 @@ namespace adm {
     ADM_EXPORT NfcRefDist get(detail::ParameterTraits<NfcRefDist>::tag) const;
     ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
     ADM_EXPORT Normalization get(detail::ParameterTraits<Normalization>::tag) const;
+    ADM_EXPORT Equation get(detail::ParameterTraits<Equation>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
@@ -136,6 +143,7 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<NfcRefDist>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ScreenRef>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Normalization>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Equation>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -153,6 +161,7 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<NfcRefDist>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Normalization>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Equation>::tag);
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;
     boost::optional<Duration> duration_;
@@ -161,12 +170,16 @@ namespace adm {
     boost::optional<NfcRefDist> nfcRefDist_;
     boost::optional<ScreenRef> screenRef_;
     boost::optional<Normalization> normalization_;
+    boost::optional<Equation> equation_;
   };
 
   // ---- Implementation ---- //
 
   template <typename... Parameters>
-  AudioBlockFormatHoa::AudioBlockFormatHoa(Parameters... optionalNamedArgs) {
+  AudioBlockFormatHoa::AudioBlockFormatHoa(Order order,
+      Degree degree, Parameters... optionalNamedArgs) {
+    set(order);
+    set(degree);
     detail::setNamedOptionHelper(
         this, std::forward<Parameters>(optionalNamedArgs)...);
   }

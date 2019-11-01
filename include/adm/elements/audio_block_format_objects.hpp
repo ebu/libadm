@@ -53,7 +53,6 @@ namespace adm {
    *
    * @warning This class has unsupported parameters
    *   - ZoneExclusion
-   *   - ScreenRef
    */
   class AudioBlockFormatObjects {
    public:
