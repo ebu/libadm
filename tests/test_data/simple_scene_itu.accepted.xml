@@ -80,7 +80,7 @@
 				<importance>10</importance>
 			</audioBlockFormat>
 		</audioChannelFormat>
-			<audioStreamFormat audioStreamFormatID="AS_00031001" audioStreamFormatName="MainObject" formatLabel="0001" formatDefinition="PCM">
+		<audioStreamFormat audioStreamFormatID="AS_00031001" audioStreamFormatName="MainObject" formatLabel="0001" formatDefinition="PCM">
 			<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
 			<audioTrackFormatIDRef>AT_00031001_01</audioTrackFormatIDRef>
 		</audioStreamFormat>
