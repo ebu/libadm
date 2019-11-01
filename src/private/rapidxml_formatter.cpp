@@ -431,12 +431,12 @@ namespace adm {
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
       node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
       node.addOptionalAttribute<Duration>(&audioBlock, "duration");
-      node.addOptionalElement<Order>(&audioBlock, "order");
-      node.addOptionalElement<Degree>(&audioBlock, "degree");
+      node.addElement<Order>(&audioBlock, "order");
+      node.addElement<Degree>(&audioBlock, "degree");
       node.addOptionalElement<NfcRefDist>(&audioBlock, "nfcRefDist");
       node.addOptionalElement<ScreenRef>(&audioBlock, "screenRef");
-      node.addOptionalElement<Normalization>(&audioBlock, "normalizaiton");
-      // TODO: add Equation
+      node.addOptionalElement<Normalization>(&audioBlock, "normalization");
+      node.addOptionalElement<Equation>(&audioBlock, "equation");
       // clang-format on
     }
 
