@@ -114,12 +114,6 @@ namespace adm {
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Duration>::tag) {
     duration_ = boost::none;
   }
-  void AudioBlockFormatHoa::unset(detail::ParameterTraits<Order>::tag) {
-    order_ = boost::none;
-  }
-  void AudioBlockFormatHoa::unset(detail::ParameterTraits<Degree>::tag) {
-      degree_ = boost::none;
-  }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<NfcRefDist>::tag) {
       nfcRefDist_ = boost::none;
   }

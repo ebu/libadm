@@ -41,6 +41,8 @@ namespace adm {
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "HOA"
    *
+   * @warning The parent element audioPackFormat does not yet support
+   * HOA parameters.
    */
   class AudioBlockFormatHoa {
    public:
@@ -156,8 +158,6 @@ namespace adm {
 
     ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Order>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Degree>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<NfcRefDist>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Normalization>::tag);
