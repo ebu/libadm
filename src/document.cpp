@@ -272,6 +272,11 @@ namespace adm {
           audioStreamFormat->removeReference<AudioPackFormat>();
         }
       }
+      for (auto& audioTrackUid : audioTrackUids_) {
+        if (audioTrackUid->getReference<AudioPackFormat>() == packFormat) {
+          audioTrackUid->removeReference<AudioPackFormat>();
+        }
+      }
       return true;
     }
     return false;
