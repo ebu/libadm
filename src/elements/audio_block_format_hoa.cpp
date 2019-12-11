@@ -8,7 +8,7 @@ namespace adm {
     const Normalization normalizationDefault{"SN3D"};
     const NfcRefDist nfcRefDistDefault{0};
     const ScreenRef screenRefDefualt{false};
-    const Equation equationDefault{""}; // Optional value which does not contain default
+    const Equation equationDefault{""}; // Optional value - does not contain default
   }
 
   // ---- Getter ---- //
