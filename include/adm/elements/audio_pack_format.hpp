@@ -116,7 +116,7 @@ namespace adm {
     ADM_EXPORT bool addReference(std::shared_ptr<AudioPackFormat> packFormat);
 
     /**
-     * @brief Get references to ADM elements template
+     * @brief Get references to ADM elements template
      *
      * Templated get method with the ADM parameter type as template
      * argument. Returns a set of all references to the ADM elements with the
@@ -126,7 +126,7 @@ namespace adm {
     ElementRange<const Element> getReferences() const;
 
     /**
-     * @brief Get references to ADM elements template
+     * @brief Get references to ADM elements template
      *
      * Templated get method with the ADM parameter type as template
      * argument. Returns a set of all references to the ADM elements with the
@@ -143,7 +143,7 @@ namespace adm {
         std::shared_ptr<AudioPackFormat> packFormat);
 
     /**
-     * @brief Clear references to Elements template
+     * @brief Clear references to Elements template
      *
      * Templated clear method with the ADM parameter type as template
      * argument. Removes all references to the ADM elements with the specified
@@ -160,7 +160,7 @@ namespace adm {
     /// Get adm::Document this element belongs to
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
-   private:
+   protected:
     friend class AudioPackFormatAttorney;
 
     ADM_EXPORT AudioPackFormat(AudioPackFormatName name,
@@ -214,7 +214,7 @@ namespace adm {
     ADM_EXPORT void disconnectReferences();
 
     ADM_EXPORT void setParent(std::weak_ptr<Document> document);
-
+   private:
     std::weak_ptr<Document> parent_;
     AudioPackFormatName name_;
     AudioPackFormatId id_;

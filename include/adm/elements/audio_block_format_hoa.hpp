@@ -9,6 +9,8 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 #include "adm/elements/screen_ref.hpp"
+#include "adm/elements/nfc_ref_dist.hpp"
+#include "adm/elements/normalization.hpp"
 
 namespace adm {
 
@@ -24,14 +26,6 @@ namespace adm {
   struct DegreeTag {};
   /// @brief NamedType for degree parameter
   using Degree = detail::NamedType<int, DegreeTag>;
-  /// @brief Tag for NamedType ::NfcRefDist
-  struct NfcRefDistTag {};
-  /// @brief NamedType for degree parameter
-  using NfcRefDist = detail::NamedType<float, NfcRefDistTag>;
-  /// @brief Tag for NamedType ::Normalization
-  struct NormalizationTag {};
-  /// @brief NamedType for a normalization parameter
-  using Normalization = detail::NamedType<std::string, NormalizationTag>;
   /// @brief Tag for NamedType ::Equation
   struct EquationTag {};
   /// @brief NamedType for a equation parameter
