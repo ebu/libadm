@@ -264,12 +264,20 @@ namespace adm {
                         packFormat);
     if (it != audioPackFormats_.end()) {
       audioPackFormats_.erase(it);
+      for (auto& audioPackFormat : audioPackFormats_) {
+        audioPackFormat->removeReference(packFormat);
+      }
       for (auto& audioObject : audioObjects_) {
         audioObject->removeReference(packFormat);
       }
       for (auto& audioStreamFormat : audioStreamFormats_) {
         if (audioStreamFormat->getReference<AudioPackFormat>() == packFormat) {
           audioStreamFormat->removeReference<AudioPackFormat>();
+        }
+      }
+      for (auto& audioTrackUid : audioTrackUids_) {
+        if (audioTrackUid->getReference<AudioPackFormat>() == packFormat) {
+          audioTrackUid->removeReference<AudioPackFormat>();
         }
       }
       return true;
