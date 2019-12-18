@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- new `addSimpleCommonDefinitionsObjectTo` function
+- new `addSimpleObjectTo` function
+
+### Changed
+
+### Fixed
+
+
+
 ## 0.11.0 (Oktober 11, 2019)
 
 ### Added
