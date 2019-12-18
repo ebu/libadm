@@ -28,14 +28,15 @@ namespace adm {
   };
 
   /**
-   * @brief Simple holder used as return type for `addChannelBedObjectTo()`.
+   * @brief Simple holder used as return type for
+   * `addSimpleCommonDefinitionsObjectTo()`.
    * @headerfile object_creation.hpp <adm/utilities/object_creation.hpp>
    *
-   * Gives access to all elements created by `addChannelBedObjectTo()`.
-   * This exists basically to give quick and convenient direct access to the
-   * elements after creation.
+   * Gives access to all elements created by
+   * `addSimpleCommonDefinitionsObjectTo()`. This exists basically to give quick
+   * and convenient direct access to the elements after creation.
    */
-  struct ChannelBedObjectHolder {
+  struct SimpleCommonDefinitionsObjectHolder {
     std::shared_ptr<AudioObject> audioObject;
     std::map<std::string, std::shared_ptr<AudioTrackUid>> audioTrackUids;
   };
@@ -65,8 +66,8 @@ namespace adm {
       std::shared_ptr<Document> document, const std::string& name);
 
   /**
-   * @brief Create and add `AudioObject` with common definitions channel bed to
-   * document
+   * @brief Create and add `AudioObject` with common definitions direct speakers
+   * channel bed to document
    *
    * Creates an `AudioObject` and corresponding `AudioTrackUids` and connects it
    * to the common definition ADM elements for the given speaker layout. The
@@ -81,8 +82,9 @@ namespace adm {
    * @param spakerLayout Speaker layout which will be created. For possible
    * values @see adm::audioPackFormatLookupTable
    */
-  ADM_EXPORT ChannelBedObjectHolder addChannelBedObjectTo(
-      std::shared_ptr<Document> document, const std::string& name,
-      const std::string& speakerLayout);
+  ADM_EXPORT SimpleCommonDefinitionsObjectHolder
+  addSimpleCommonDefinitionsObjectTo(std::shared_ptr<Document> document,
+                                     const std::string& name,
+                                     const std::string& speakerLayout);
 
 }  // namespace adm
