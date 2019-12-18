@@ -1,6 +1,7 @@
 #include "adm/utilities/object_creation.hpp"
 #include <sstream>
 #include "adm/common_definitions.hpp"
+#include "adm/errors.hpp"
 
 namespace adm {
 
@@ -43,10 +44,18 @@ namespace adm {
       const std::string& speakerLayout) {
     SimpleCommonDefinitionsObjectHolder holder;
     holder.audioObject = AudioObject::create(AudioObjectName(name));
+    if (audioPackFormatLookupTable().count(speakerLayout) == 0) {
+      std::stringstream ss;
+      ss << "Speaker Layout \"" << speakerLayout << "\" not supported.";
+      throw error::AdmException(ss.str());
+    }
     auto packFormat =
         document->lookup(audioPackFormatLookupTable().at(speakerLayout));
     if (!packFormat) {
-      return holder;
+      std::stringstream ss;
+      ss << "AudioPackFormat for Speaker Layout \"" << speakerLayout
+         << "\" not found. Are the common definitions added to the document?";
+      throw error::AdmException(ss.str());
     }
     holder.audioObject->addReference(packFormat);
 

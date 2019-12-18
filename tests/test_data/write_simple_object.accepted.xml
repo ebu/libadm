@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioObject audioObjectID="AO_1001" audioObjectName="My Simple Object">
+					<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+					<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+				</audioObject>
+				<audioPackFormat audioPackFormatID="AP_00031001" audioPackFormatName="My Simple Object" typeLabel="0003" typeDefinition="Objects">
+					<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
+				</audioPackFormat>
+				<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="My Simple Object" typeLabel="0003" typeDefinition="Objects"/>
+				<audioStreamFormat audioStreamFormatID="AS_00031001" audioStreamFormatName="My Simple Object" formatLabel="0001" formatDefinition="PCM">
+					<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
+					<audioTrackFormatIDRef>AT_00031001_01</audioTrackFormatIDRef>
+				</audioStreamFormat>
+				<audioTrackFormat audioTrackFormatID="AT_00031001_01" audioTrackFormatName="My Simple Object" formatLabel="0001" formatDefinition="PCM">
+					<audioStreamFormatIDRef>AS_00031001</audioStreamFormatIDRef>
+				</audioTrackFormat>
+				<audioTrackUID UID="ATU_00000001">
+					<audioTrackFormatIDRef>AT_00031001_01</audioTrackFormatIDRef>
+					<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+				</audioTrackUID>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+
