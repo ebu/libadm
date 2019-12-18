@@ -402,74 +402,198 @@ TEST_CASE("add_reference_without_parent") {
 
 TEST_CASE("remove_elements") {
   using namespace adm;
-  // add elements multiple times
-  auto admDocument = Document::create();
 
-  auto audioProgramme =
-      AudioProgramme::create(AudioProgrammeName("AudioProgramme"));
-  auto audioProgramme2 =
-      AudioProgramme::create(AudioProgrammeName("AudioProgramme"));
-  auto audioContent = AudioContent::create(AudioContentName("AudioContent"));
-  auto audioContent2 = AudioContent::create(AudioContentName("AudioContent"));
-  auto audioObject = AudioObject::create(AudioObjectName("AduioObject"));
-  auto audioObject2 = AudioObject::create(AudioObjectName("AduioObject"));
-  auto audioPackFormat = AudioPackFormat::create(
-      AudioPackFormatName("AudioPack"), TypeDescriptor(0));
-  auto audioPackFormat2 = AudioPackFormat::create(
-      AudioPackFormatName("AudioPack"), TypeDescriptor(0));
-  auto audioTrackUid = AudioTrackUid::create();
-  auto audioTrackUid2 = AudioTrackUid::create();
-  auto audioChannelFormat = AudioChannelFormat::create(
-      AudioChannelFormatName("AudioChannelFormat"), TypeDefinition::OBJECTS);
-  auto audioChannelFormat2 = AudioChannelFormat::create(
-      AudioChannelFormatName("AudioChannelFormat"), TypeDefinition::OBJECTS);
-  auto audioStreamFormat = AudioStreamFormat::create(
-      AudioStreamFormatName("AudioStreamFormat"), FormatDefinition::PCM);
-  auto audioStreamFormat2 = AudioStreamFormat::create(
-      AudioStreamFormatName("AudioStreamFormat"), FormatDefinition::PCM);
-  auto audioTrackFormat = AudioTrackFormat::create(
-      AudioTrackFormatName("AudioTrackFormat"), FormatDefinition::PCM);
-  auto audioTrackFormat2 = AudioTrackFormat::create(
-      AudioTrackFormatName("AudioTrackFormat"), FormatDefinition::PCM);
+  SECTION("basic") {
+    auto admDocument = Document::create();
 
-  admDocument->add(audioProgramme);
-  admDocument->add(audioProgramme2);
-  REQUIRE(admDocument->remove(audioProgramme) == true);
-  REQUIRE(admDocument->getElements<AudioProgramme>().size() == 1);
-  REQUIRE(admDocument->remove(audioProgramme) == false);
-  admDocument->add(audioContent);
-  admDocument->add(audioContent2);
-  REQUIRE(admDocument->remove(audioContent) == true);
-  REQUIRE(admDocument->getElements<AudioContent>().size() == 1);
-  REQUIRE(admDocument->remove(audioContent) == false);
-  admDocument->add(audioObject);
-  admDocument->add(audioObject2);
-  REQUIRE(admDocument->remove(audioObject) == true);
-  REQUIRE(admDocument->getElements<AudioObject>().size() == 1);
-  REQUIRE(admDocument->remove(audioObject) == false);
-  admDocument->add(audioPackFormat);
-  admDocument->add(audioPackFormat2);
-  REQUIRE(admDocument->remove(audioPackFormat) == true);
-  REQUIRE(admDocument->getElements<AudioPackFormat>().size() == 1);
-  REQUIRE(admDocument->remove(audioPackFormat) == false);
-  admDocument->add(audioTrackUid);
-  admDocument->add(audioTrackUid2);
-  REQUIRE(admDocument->remove(audioTrackUid) == true);
-  REQUIRE(admDocument->getElements<AudioTrackUid>().size() == 1);
-  REQUIRE(admDocument->remove(audioTrackUid) == false);
-  admDocument->add(audioChannelFormat);
-  admDocument->add(audioChannelFormat2);
-  REQUIRE(admDocument->remove(audioChannelFormat) == true);
-  REQUIRE(admDocument->getElements<AudioChannelFormat>().size() == 1);
-  REQUIRE(admDocument->remove(audioChannelFormat) == false);
-  admDocument->add(audioStreamFormat);
-  admDocument->add(audioStreamFormat2);
-  REQUIRE(admDocument->remove(audioStreamFormat) == true);
-  REQUIRE(admDocument->getElements<AudioStreamFormat>().size() == 1);
-  REQUIRE(admDocument->remove(audioStreamFormat) == false);
-  admDocument->add(audioTrackFormat);
-  admDocument->add(audioTrackFormat2);
-  REQUIRE(admDocument->remove(audioTrackFormat) == true);
-  REQUIRE(admDocument->getElements<AudioTrackFormat>().size() == 1);
-  REQUIRE(admDocument->remove(audioTrackFormat) == false);
+    auto audioProgramme =
+        AudioProgramme::create(AudioProgrammeName("AudioProgramme"));
+    auto audioProgramme2 =
+        AudioProgramme::create(AudioProgrammeName("AudioProgramme"));
+    auto audioContent = AudioContent::create(AudioContentName("AudioContent"));
+    auto audioContent2 = AudioContent::create(AudioContentName("AudioContent"));
+    auto audioObject = AudioObject::create(AudioObjectName("AduioObject"));
+    auto audioObject2 = AudioObject::create(AudioObjectName("AduioObject"));
+    auto audioPackFormat = AudioPackFormat::create(
+        AudioPackFormatName("AudioPack"), TypeDescriptor(0));
+    auto audioPackFormat2 = AudioPackFormat::create(
+        AudioPackFormatName("AudioPack"), TypeDescriptor(0));
+    auto audioTrackUid = AudioTrackUid::create();
+    auto audioTrackUid2 = AudioTrackUid::create();
+    auto audioChannelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName("AudioChannelFormat"), TypeDefinition::OBJECTS);
+    auto audioChannelFormat2 = AudioChannelFormat::create(
+        AudioChannelFormatName("AudioChannelFormat"), TypeDefinition::OBJECTS);
+    auto audioStreamFormat = AudioStreamFormat::create(
+        AudioStreamFormatName("AudioStreamFormat"), FormatDefinition::PCM);
+    auto audioStreamFormat2 = AudioStreamFormat::create(
+        AudioStreamFormatName("AudioStreamFormat"), FormatDefinition::PCM);
+    auto audioTrackFormat = AudioTrackFormat::create(
+        AudioTrackFormatName("AudioTrackFormat"), FormatDefinition::PCM);
+    auto audioTrackFormat2 = AudioTrackFormat::create(
+        AudioTrackFormatName("AudioTrackFormat"), FormatDefinition::PCM);
+
+    admDocument->add(audioProgramme);
+    admDocument->add(audioProgramme2);
+    REQUIRE(admDocument->remove(audioProgramme) == true);
+    REQUIRE(admDocument->getElements<AudioProgramme>().size() == 1);
+    REQUIRE(admDocument->remove(audioProgramme) == false);
+    admDocument->add(audioContent);
+    admDocument->add(audioContent2);
+    REQUIRE(admDocument->remove(audioContent) == true);
+    REQUIRE(admDocument->getElements<AudioContent>().size() == 1);
+    REQUIRE(admDocument->remove(audioContent) == false);
+    admDocument->add(audioObject);
+    admDocument->add(audioObject2);
+    REQUIRE(admDocument->remove(audioObject) == true);
+    REQUIRE(admDocument->getElements<AudioObject>().size() == 1);
+    REQUIRE(admDocument->remove(audioObject) == false);
+    admDocument->add(audioPackFormat);
+    admDocument->add(audioPackFormat2);
+    REQUIRE(admDocument->remove(audioPackFormat) == true);
+    REQUIRE(admDocument->getElements<AudioPackFormat>().size() == 1);
+    REQUIRE(admDocument->remove(audioPackFormat) == false);
+    admDocument->add(audioTrackUid);
+    admDocument->add(audioTrackUid2);
+    REQUIRE(admDocument->remove(audioTrackUid) == true);
+    REQUIRE(admDocument->getElements<AudioTrackUid>().size() == 1);
+    REQUIRE(admDocument->remove(audioTrackUid) == false);
+    admDocument->add(audioChannelFormat);
+    admDocument->add(audioChannelFormat2);
+    REQUIRE(admDocument->remove(audioChannelFormat) == true);
+    REQUIRE(admDocument->getElements<AudioChannelFormat>().size() == 1);
+    REQUIRE(admDocument->remove(audioChannelFormat) == false);
+    admDocument->add(audioStreamFormat);
+    admDocument->add(audioStreamFormat2);
+    REQUIRE(admDocument->remove(audioStreamFormat) == true);
+    REQUIRE(admDocument->getElements<AudioStreamFormat>().size() == 1);
+    REQUIRE(admDocument->remove(audioStreamFormat) == false);
+    admDocument->add(audioTrackFormat);
+    admDocument->add(audioTrackFormat2);
+    REQUIRE(admDocument->remove(audioTrackFormat) == true);
+    REQUIRE(admDocument->getElements<AudioTrackFormat>().size() == 1);
+    REQUIRE(admDocument->remove(audioTrackFormat) == false);
+  }
+
+  SECTION("AudioContent – reference removal") {
+    auto admDocument = Document::create();
+    auto programme = AudioProgramme::create(AudioProgrammeName("My Programme"));
+    auto content = AudioContent::create(AudioContentName("My Content"));
+
+    programme->addReference(content);
+    admDocument->add(programme);
+
+    REQUIRE(programme->getReferences<AudioContent>().size() == 1);
+    REQUIRE(admDocument->remove(content));
+    REQUIRE(programme->getReferences<AudioContent>().size() == 0);
+  }
+
+  SECTION("AudioObject – reference removal") {
+    auto admDocument = Document::create();
+    auto content = AudioContent::create(AudioContentName("My Content"));
+    auto object = AudioObject::create(AudioObjectName("My Object"));
+
+    content->addReference(object);
+    admDocument->add(content);
+
+    REQUIRE(content->getReferences<AudioObject>().size() == 1);
+    REQUIRE(admDocument->remove(object));
+    REQUIRE(content->getReferences<AudioObject>().size() == 0);
+  }
+
+  SECTION("AudioTrackUID – reference removal") {
+    auto admDocument = Document::create();
+    auto object = AudioObject::create(AudioObjectName("My Object"));
+    auto trackUid = AudioTrackUid::create();
+
+    object->addReference(trackUid);
+    admDocument->add(object);
+
+    REQUIRE(object->getReferences<AudioTrackUid>().size() == 1);
+    REQUIRE(admDocument->remove(trackUid));
+    REQUIRE(object->getReferences<AudioTrackUid>().size() == 0);
+  }
+
+  SECTION("AudioPackFormat – reference removal") {
+    auto admDocument = Document::create();
+    auto packFormat1 = AudioPackFormat::create(
+        AudioPackFormatName("My PackFormat"), TypeDefinition::OBJECTS);
+    auto packFormat2 = AudioPackFormat::create(
+        AudioPackFormatName("My PackFormat"), TypeDefinition::OBJECTS);
+
+    auto trackUID = AudioTrackUid::create();
+    auto object = AudioObject::create(AudioObjectName("My Object"));
+    auto streamFormat = AudioStreamFormat::create(
+        AudioStreamFormatName("My StreamFormat"), FormatDefinition::PCM);
+
+    packFormat1->addReference(packFormat2);
+    trackUID->setReference(packFormat2);
+    object->addReference(packFormat2);
+    streamFormat->setReference(packFormat2);
+
+    admDocument->add(packFormat1);
+    admDocument->add(trackUID);
+    admDocument->add(object);
+    admDocument->add(streamFormat);
+
+    REQUIRE(packFormat1->getReferences<AudioPackFormat>().size() == 1);
+    REQUIRE(object->getReferences<AudioPackFormat>().size() == 1);
+    REQUIRE(trackUID->getReference<AudioPackFormat>() != nullptr);
+    REQUIRE(streamFormat->getReference<AudioPackFormat>() != nullptr);
+    REQUIRE(admDocument->remove(packFormat2));
+    REQUIRE(packFormat1->getReferences<AudioPackFormat>().size() == 0);
+    REQUIRE(object->getReferences<AudioPackFormat>().size() == 0);
+    REQUIRE(trackUID->getReference<AudioPackFormat>() == nullptr);
+    REQUIRE(streamFormat->getReference<AudioPackFormat>() == nullptr);
+  }
+
+  SECTION("AudioChannelFormat – reference removal") {
+    auto admDocument = Document::create();
+    auto packFormat = AudioPackFormat::create(
+        AudioPackFormatName("My PackFormat"), TypeDefinition::OBJECTS);
+    auto channelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName("My ChannelFormat"), TypeDefinition::OBJECTS);
+
+    packFormat->addReference(channelFormat);
+    admDocument->add(packFormat);
+
+    REQUIRE(packFormat->getReferences<AudioChannelFormat>().size() == 1);
+    REQUIRE(admDocument->remove(channelFormat));
+    REQUIRE(packFormat->getReferences<AudioChannelFormat>().size() == 0);
+  }
+
+  SECTION("AudioStreamFormat – reference removal") {
+    auto admDocument = Document::create();
+    auto streamFormat = AudioStreamFormat::create(
+        AudioStreamFormatName("My StreamFormat"), FormatDefinition::PCM);
+    auto trackFormat = AudioTrackFormat::create(
+        AudioTrackFormatName("My TrackFormat"), FormatDefinition::PCM);
+
+    trackFormat->setReference(streamFormat);
+    admDocument->add(trackFormat);
+
+    REQUIRE(trackFormat->getReference<AudioStreamFormat>() != nullptr);
+    REQUIRE(admDocument->remove(streamFormat));
+    REQUIRE(trackFormat->getReference<AudioStreamFormat>() == nullptr);
+  }
+
+  SECTION("AudioTrackFormat – reference removal") {
+    auto admDocument = Document::create();
+    auto trackFormat = AudioTrackFormat::create(
+        AudioTrackFormatName("My TrackFormat"), FormatDefinition::PCM);
+    auto streamFormat = AudioStreamFormat::create(
+        AudioStreamFormatName("My StreamFormat"), FormatDefinition::PCM);
+    auto trackUid = AudioTrackUid::create();
+
+    streamFormat->addReference(trackFormat);
+    trackUid->setReference(trackFormat);
+    admDocument->add(streamFormat);
+    admDocument->add(trackUid);
+
+    REQUIRE(streamFormat->getAudioTrackFormatReferences().size() == 1);
+    REQUIRE(trackUid->getReference<AudioTrackFormat>() != nullptr);
+    REQUIRE(admDocument->remove(trackFormat));
+    REQUIRE(streamFormat->getAudioTrackFormatReferences().size() == 0);
+    REQUIRE(trackUid->getReference<AudioTrackFormat>() == nullptr);
+  }
 }
