@@ -320,34 +320,6 @@ TEST_CASE("copy_document_all_adm_elements") {
           copy->getElements<AudioStreamFormat>()[0]);
   REQUIRE(admDocument->getElements<AudioChannelFormat>()[0] !=
           copy->getElements<AudioChannelFormat>()[0]);
-  // disabled until https://gitlab.irt.de/pa/libadm/issues/12 is resolved
-  /*
-    // copy to document2
-    admDocument2->add(myProgramme->copy());
-    REQUIRE(admDocument2->resolveReferences(admDocument1) == true);
-    REQUIRE(admDocument2->getElements<AudioProgramme>().size() == 1);
-    REQUIRE(admDocument2->getElements<AudioContent>().size() == 1);
-    REQUIRE(admDocument2->getElements<AudioObject>().size() == 1);
-    REQUIRE(admDocument2->getElements<AudioTrackUid>().size() == 1);
-    REQUIRE(admDocument2->getElements<AudioStreamFormat>().size() == 1);
-    REQUIRE(admDocument2->getElements<AudioTrackFormat>().size() == 1);
-    REQUIRE(admDocument2->getElements<AudioPackFormat>().size() == 1);
-    REQUIRE(admDocument2->getElements<AudioChannelFormat>().size() == 1);
-
-    // copy document in stages to document3
-    auto myPackFormat = admDocument1->getElements<AudioPackFormat>()[0];
-    admDocument3->add(myPackFormat->copy());
-    admDocument3->add(myProgramme->copy());
-    admDocument3->resolveReferences(admDocument1);
-    REQUIRE(admDocument3->getElements<AudioProgramme>().size() == 1);
-    REQUIRE(admDocument3->getElements<AudioContent>().size() == 1);
-    REQUIRE(admDocument3->getElements<AudioObject>().size() == 1);
-    REQUIRE(admDocument3->getElements<AudioTrackUid>().size() == 1);
-    REQUIRE(admDocument3->getElements<AudioStreamFormat>().size() == 1);
-    REQUIRE(admDocument3->getElements<AudioTrackFormat>().size() == 1);
-    REQUIRE(admDocument3->getElements<AudioPackFormat>().size() == 1);
-    REQUIRE(admDocument3->getElements<AudioChannelFormat>().size() == 1);
-*/
 }
 
 template <typename T>
