@@ -9,7 +9,7 @@
 ### Changed
 
 ### Fixed
-
+- fixed bug were not all references were removed if AudioPackFormat was removed from document
 
 
 ## 0.11.0 (Oktober 11, 2019)
