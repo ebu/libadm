@@ -38,10 +38,10 @@ namespace adm {
     return holder;
   }
 
-  ChannelBedObjectHolder addChannelBedObjectTo(
+  SimpleCommonDefinitionsObjectHolder addSimpleCommonDefinitionsObjectTo(
       std::shared_ptr<Document> document, const std::string& name,
       const std::string& speakerLayout) {
-    ChannelBedObjectHolder holder;
+    SimpleCommonDefinitionsObjectHolder holder;
     holder.audioObject = AudioObject::create(AudioObjectName(name));
     auto packFormat =
         document->lookup(audioPackFormatLookupTable().at(speakerLayout));
