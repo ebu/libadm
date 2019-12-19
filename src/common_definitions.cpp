@@ -2,6 +2,19 @@
 #include "resources.hpp"
 #include "adm/private/xml_parser.hpp"
 #include "adm/utilities/copy.hpp"
+#include <iostream>
+#include <iomanip>
+
+namespace {
+    std::string intToHex(int i )
+    {
+      std::stringstream stream;
+      stream << std::setfill ('0')
+             << std::setw(2)
+             << std::hex << i;
+      return stream.str();
+    }
+}
 
 namespace adm {
 
@@ -18,6 +31,24 @@ namespace adm {
         {"9+10+3", adm::parseAudioPackFormatId("AP_00010009")},
         // {"0+7+0", adm::parseAudioPackFormatId("")},
         // {"4+7+0", adm::parseAudioPackFormatId("")},
+        {"SN3D-Order1-3D", adm::parseAudioPackFormatId("AP_00040001")},
+        {"SN3D-Order2-3D", adm::parseAudioPackFormatId("AP_00040002")},
+        {"SN3D-Order3-3D", adm::parseAudioPackFormatId("AP_00040003")},
+        {"SN3D-Order4-3D", adm::parseAudioPackFormatId("AP_00040004")},
+        {"SN3D-Order5-3D", adm::parseAudioPackFormatId("AP_00040005")},
+        {"SN3D-Order6-3D", adm::parseAudioPackFormatId("AP_00040006")},
+        {"N3D-Order1-3D", adm::parseAudioPackFormatId("AP_00040011")},
+        {"N3D-Order2-3D", adm::parseAudioPackFormatId("AP_00040012")},
+        {"N3D-Order3-3D", adm::parseAudioPackFormatId("AP_00040013")},
+        {"N3D-Order4-3D", adm::parseAudioPackFormatId("AP_00040014")},
+        {"N3D-Order5-3D", adm::parseAudioPackFormatId("AP_00040015")},
+        {"N3D-Order6-3D", adm::parseAudioPackFormatId("AP_00040016")},
+        {"FuMa-Order1-3D", adm::parseAudioPackFormatId("AP_00040021")},
+        {"FuMa-Order2-3D", adm::parseAudioPackFormatId("AP_00040022")},
+        {"FuMa-Order3-3D", adm::parseAudioPackFormatId("AP_00040023")},
+        {"FuMa-Order4-3D", adm::parseAudioPackFormatId("AP_00040024")},
+        {"FuMa-Order5-3D", adm::parseAudioPackFormatId("AP_00040025")},
+        {"FuMa-Order6-3D", adm::parseAudioPackFormatId("AP_00040026")},
     };
   };
 
@@ -110,6 +141,23 @@ namespace adm {
         {"4+7+0",
          {"M+030", "M-030", "M+000", "LFE1", "M+090", "M-090", "M+135", "M-135",
           "U+045", "U-045", "U+135", "U-135"}}};
+  }
+
+  const adm::AudioTrackFormatId
+  audioTrackFormatHoaLookup(int order, int degree, std::string normalization){
+      std::string normalizationTypeValue = "400";
+      if(normalization == "SN3D"){
+          normalizationTypeValue = "400";
+      } else if(normalization == "N3D") {
+          normalizationTypeValue = "401";
+      } else if(normalization == "FuMa") {
+          normalizationTypeValue = "402";
+      } else {
+          throw std::invalid_argument("Not a supported normalization value.");
+      }
+      int channelNumber = order*order + order + degree + 1; // ACN starts from 0, while AudioTrackFormatId starts from 1
+      std::string hexChannelNumber = intToHex(channelNumber);
+      return adm::parseAudioTrackFormatId("AT_000"+normalizationTypeValue+hexChannelNumber+"_"+"01");
   }
 
   std::shared_ptr<Document> getCommonDefinitions() {
