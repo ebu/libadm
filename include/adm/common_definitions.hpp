@@ -28,7 +28,7 @@ namespace adm {
    *  - 9+10+3
    *
    * @return Map with the loudspeaker id specified in ITU-R BS.2051 as key and
-   * the corresponding AudioPackFormatId as value.
+   * the corresponding AudioPackFormatID as value.
    */
   ADM_EXPORT const std::map<std::string, adm::AudioPackFormatId>
   audioPackFormatLookupTable();
@@ -46,7 +46,7 @@ namespace adm {
    *  - LFE1, LFE2
    *
    * @return Map with the speaker label specified in ITU-R BS.2051 as key and
-   * the corresponding AudioTrackFormat as value.
+   * the corresponding AudioTrackFormatID as value.
    */
   ADM_EXPORT const std::map<std::string, adm::AudioTrackFormatId>
   audioTrackFormatLookupTable();
@@ -68,7 +68,7 @@ namespace adm {
    * @return Map with the speaker label specified in ITU-R BS.2051 as key and
    * a vector of the corresponding speaker labels as value.
    */
-  const std::map<std::string, std::vector<std::string>>
+  ADM_EXPORT const std::map<std::string, std::vector<std::string>>
   speakerLabelsLookupTable();
 
   /**
@@ -77,9 +77,9 @@ namespace adm {
    * @param order
    * @param degree
    * @param normalization
-   * @return The corresponding AudioTrackFormat as specified in ITU-R BS.2094
+   * @return The corresponding AudioTrackFormatID as specified in ITU-R BS.2094
    */
-  ADM_EXPORT const adm::AudioTrackFormatId
-  audioTrackFormatHoaLookup(int order, int degree, std::string normalization);
+  ADM_EXPORT const adm::AudioTrackFormatId audioTrackFormatHoaLookup(
+      int order, int degree, std::string normalization);
 
 }  // namespace adm

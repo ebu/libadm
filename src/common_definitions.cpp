@@ -5,17 +5,6 @@
 #include <iostream>
 #include <iomanip>
 
-namespace {
-    std::string intToHex(int i )
-    {
-      std::stringstream stream;
-      stream << std::setfill ('0')
-             << std::setw(2)
-             << std::hex << i;
-      return stream.str();
-    }
-}
-
 namespace adm {
 
   const std::map<std::string, adm::AudioPackFormatId>
@@ -143,21 +132,24 @@ namespace adm {
           "U+045", "U-045", "U+135", "U-135"}}};
   }
 
-  const adm::AudioTrackFormatId
-  audioTrackFormatHoaLookup(int order, int degree, std::string normalization){
-      std::string normalizationTypeValue = "400";
-      if(normalization == "SN3D"){
-          normalizationTypeValue = "400";
-      } else if(normalization == "N3D") {
-          normalizationTypeValue = "401";
-      } else if(normalization == "FuMa") {
-          normalizationTypeValue = "402";
-      } else {
-          throw std::invalid_argument("Not a supported normalization value.");
-      }
-      int channelNumber = order*order + order + degree + 1; // ACN starts from 0, while AudioTrackFormatId starts from 1
-      std::string hexChannelNumber = intToHex(channelNumber);
-      return adm::parseAudioTrackFormatId("AT_000"+normalizationTypeValue+hexChannelNumber+"_"+"01");
+  const adm::AudioTrackFormatId audioTrackFormatHoaLookup(
+      int order, int degree, std::string normalization) {
+    int normalizationTypeValue;
+    if (normalization == "SN3D") {
+      normalizationTypeValue = 0;
+    } else if (normalization == "N3D") {
+      normalizationTypeValue = 1;
+    } else if (normalization == "FuMa") {
+      normalizationTypeValue = 2;
+    } else {
+      throw std::invalid_argument("Not a supported normalization value.");
+    }
+    // ACN starts from 0, while AudioTrackFormatId starts from 1
+    int trackFormatIdValue =
+        order * order + order + degree + 1 + normalizationTypeValue * 0x100;
+    return adm::AudioTrackFormatId(TypeDefinition::HOA,
+                                   AudioTrackFormatIdValue(trackFormatIdValue),
+                                   AudioTrackFormatIdCounter(1));
   }
 
   std::shared_ptr<Document> getCommonDefinitions() {
