@@ -5,6 +5,7 @@
 ### Added
 - new `addSimpleCommonDefinitionsObjectTo` function
 - new `addSimpleObjectTo` function
+- added support to lookup HOA common definitions AudioPackFormatIDs and AudioTrackFormatIDs
 
 ### Changed
 
