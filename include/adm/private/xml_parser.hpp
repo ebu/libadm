@@ -10,6 +10,7 @@
 #include "adm/parse.hpp"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
+#include "adm/elements/audio_pack_format_hoa.hpp"
 
 namespace adm {
   /**
@@ -49,7 +50,6 @@ namespace adm {
 
     NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr root);
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
-
     class XmlParser {
      public:
       XmlParser(const std::string& filename,

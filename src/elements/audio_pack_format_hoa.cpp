@@ -92,15 +92,4 @@ namespace adm {
                                      TypeDescriptor channelType)
         : AudioPackFormat(name, channelType)
         {}
-    /*
-    AudioPackFormatHoa::AudioPackFormatHoa(AudioPackFormatName name,
-                                           TypeDescriptor channelType,
-                                           ScreenRef screenRef,
-                                           Normalization normalization,
-                                           NfcRefDist nfcRefDist)
-        : AudioPackFormat(name, channelType),
-          screenRef_(screenRef),
-          normalization_(normalization),
-          nfcRefDist_(nfcRefDist)
-    {}*/
 }

@@ -7,7 +7,10 @@
 #include "adm/detail/id_assigner.hpp"
 #include "adm/export.h"
 
+#include "adm/elements/audio_pack_format_hoa.hpp"
 namespace adm {
+
+  typedef boost::variant<std::shared_ptr<AudioPackFormat>, std::shared_ptr<AudioPackFormatHoa>> ParseAudioPackFormatResult;
 
   /**
    * @ingroup main
@@ -43,7 +46,9 @@ namespace adm {
     /// @brief Add an AudioObject
     ADM_EXPORT bool add(std::shared_ptr<AudioObject> object);
     /// @brief Add an AudioPackFormat
-    ADM_EXPORT bool add(std::shared_ptr<AudioPackFormat> packFormat);
+    ADM_EXPORT bool add(/*ParseAudioPackFormatResult packFormatResult*/ std::shared_ptr<AudioPackFormat> packFormat);
+    /// @brief Add an AudioPackFormatHoa
+    ADM_EXPORT bool add(/*ParseAudioPackFormatResult packFormatResult*/ std::shared_ptr<AudioPackFormatHoa> packFormat);
     /// @brief Add an AudioChannelFormat
     ADM_EXPORT bool add(std::shared_ptr<AudioChannelFormat> channelFormat);
     /// @brief Add an AudioStreamFormat
@@ -68,6 +73,8 @@ namespace adm {
     ADM_EXPORT bool remove(std::shared_ptr<AudioObject> object);
     /// @brief Remove an AudioPackFormat
     ADM_EXPORT bool remove(std::shared_ptr<AudioPackFormat> packFormat);
+    /// @brief Remove an AudioPackFormatHoa
+    ADM_EXPORT bool remove(std::shared_ptr<AudioPackFormatHoa> packFormat);
     /// @brief Remove an AudioChannelFormat
     ADM_EXPORT bool remove(std::shared_ptr<AudioChannelFormat> channelFormat);
     /// @brief Remove an AudioStreamFormat
@@ -213,6 +220,7 @@ namespace adm {
         detail::ParameterTraits<AudioContent>::tag) const;
     ADM_EXPORT ElementRange<const AudioObject> getElements(
         detail::ParameterTraits<AudioObject>::tag) const;
+
     ADM_EXPORT ElementRange<const AudioPackFormat> getElements(
         detail::ParameterTraits<AudioPackFormat>::tag) const;
     ADM_EXPORT ElementRange<const AudioChannelFormat> getElements(
@@ -244,6 +252,7 @@ namespace adm {
     std::vector<std::shared_ptr<AudioContent>> audioContents_;
     std::vector<std::shared_ptr<AudioObject>> audioObjects_;
     std::vector<std::shared_ptr<AudioPackFormat>> audioPackFormats_;
+    std::vector<std::shared_ptr<AudioPackFormatHoa>> audioPackFormatsHoa_;
     std::vector<std::shared_ptr<AudioChannelFormat>> audioChannelFormats_;
     std::vector<std::shared_ptr<AudioStreamFormat>> audioStreamFormats_;
     std::vector<std::shared_ptr<AudioTrackFormat>> audioTrackFormats_;
