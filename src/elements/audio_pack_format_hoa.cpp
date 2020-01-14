@@ -71,8 +71,6 @@ namespace adm {
     }
 
     // ---- Common ---- //
-    //TODO: Is there a better way to overload this - if so remove in header file too
-    /*
     void AudioPackFormatHoa::print(std::ostream& os) const {
       os << get<AudioPackFormatId>();
       os << " (";
@@ -85,9 +83,18 @@ namespace adm {
       if (has<AbsoluteDistance>()) {
         os << ", absoluteDistance=" << get<AbsoluteDistance>();
       }
+      if (has<ScreenRef>()) {
+        os << ", screenRef=" << get<ScreenRef>();
+      }
+      if (has<Normalization>()) {
+        os << ", normalization=" << get<Normalization>();
+      }
+      if (has<NfcRefDist>()) {
+        os << ", nfcRefDist=" << get<NfcRefDist>();
+      }
       os << ")";
     }
-    */
+
     AudioPackFormatHoa::AudioPackFormatHoa(AudioPackFormatName name,
                                      TypeDescriptor channelType)
         : AudioPackFormat(name, channelType)

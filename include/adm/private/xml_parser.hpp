@@ -117,6 +117,8 @@ namespace adm {
           }
         }
       }
+      void setCommonProperties(std::shared_ptr<AudioPackFormat> audioPackFormat,
+                               NodePtr node);
     };
 
   }  // namespace xml

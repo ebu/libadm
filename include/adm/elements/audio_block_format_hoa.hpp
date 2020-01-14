@@ -34,9 +34,6 @@ namespace adm {
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "HOA"
-   *
-   * @warning The parent element audioPackFormat does not yet support
-   * HOA parameters.
    */
   class AudioBlockFormatHoa {
    public:

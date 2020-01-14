@@ -215,7 +215,8 @@ namespace adm {
     ADM_EXPORT void disconnectReferences();
 
     ADM_EXPORT void setParent(std::weak_ptr<Document> document);
-   //protected:
+
+   private:
     std::weak_ptr<Document> parent_;
     AudioPackFormatName name_;
     AudioPackFormatId id_;

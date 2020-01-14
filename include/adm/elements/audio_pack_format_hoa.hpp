@@ -73,17 +73,15 @@ namespace adm {
          */
         void print(std::ostream &os) const;
 
-     private:
-        friend class AudioPackFormatHoaAttorney; //TODO: OS what is this?
+       private:
+        friend class AudioPackFormatHoaAttorney;
 
-        //TODO - perhaps this should just be "using" functions from the base class
         ADM_EXPORT AudioPackFormatHoa(AudioPackFormatName name,
-                                   TypeDescriptor channelType);
-        //ADM_EXPORT AudioPackFormatHoa(const AudioPackFormat &) = default;
-        //ADM_EXPORT AudioPackFormatHoa(AudioPackFormat &&) = default;
+                                      TypeDescriptor channelType);
+        // ADM_EXPORT AudioPackFormatHoa(const AudioPackFormat &) = default;
+        // ADM_EXPORT AudioPackFormatHoa(AudioPackFormat &&) = default;
 
-        ADM_EXPORT ScreenRef
-            get(detail::ParameterTraits<ScreenRef>::tag) const;
+        ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
         ADM_EXPORT Normalization
             get(detail::ParameterTraits<Normalization>::tag) const;
         ADM_EXPORT NfcRefDist
@@ -93,9 +91,12 @@ namespace adm {
         ADM_EXPORT bool has(detail::ParameterTraits<Normalization>::tag) const;
         ADM_EXPORT bool has(detail::ParameterTraits<NfcRefDist>::tag) const;
 
-        ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
-        ADM_EXPORT bool isDefault(detail::ParameterTraits<Normalization>::tag) const;
-        ADM_EXPORT bool isDefault(detail::ParameterTraits<NfcRefDist>::tag) const;
+        ADM_EXPORT bool isDefault(
+            detail::ParameterTraits<ScreenRef>::tag) const;
+        ADM_EXPORT bool isDefault(
+            detail::ParameterTraits<Normalization>::tag) const;
+        ADM_EXPORT bool isDefault(
+            detail::ParameterTraits<NfcRefDist>::tag) const;
 
         ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
         ADM_EXPORT void unset(detail::ParameterTraits<Normalization>::tag);
