@@ -22,6 +22,7 @@
 - new CMake option `ADM_HIDE_INTERNAL_SYMBOLS`
 - new CMake option `ADM_PACKAGE_AND_INSTALL`
 - new CMake option `BUILD_SHARED_LIBS`
+- `audioPackFormat` now supports typeDefinition `HOA`
 
 ### Changed
 - Renamed CMake library target name from `libadm` to `adm`
