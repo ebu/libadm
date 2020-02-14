@@ -225,7 +225,7 @@ namespace adm {
                         const AudioBlockFormatBinaural &blockFormat);
 
     template <typename BlockFormat>
-    void assignId(BlockFormat &blockFormat);
+    void assignId(BlockFormat &blockFormat, BlockFormat *previousBlock = nullptr);
 
     template <typename BlockFormat>
     bool idUsed(const AudioBlockFormatId &id);
@@ -360,29 +360,46 @@ namespace adm {
   }
 
   template <typename BlockFormat>
-  void AudioChannelFormat::assignId(BlockFormat &blockFormat) {
-    auto id = blockFormat.template get<AudioBlockFormatId>();
+  void AudioChannelFormat::assignId(BlockFormat &blockFormat,
+                                    BlockFormat *previousBlock) {
+    auto thisId = blockFormat.template get<AudioBlockFormatId>();
 
-    TypeDescriptor typeDescriptor;
-    AudioBlockFormatIdValue value;
-    AudioBlockFormatIdCounter counter;
+    auto expectedTypeDescriptor = get<TypeDescriptor>();
+    auto expectedValue = AudioBlockFormatIdValue(
+        get<AudioChannelFormatId>().get<AudioChannelFormatIdValue>().get());
 
-    if (isUndefined(id)) {
-      typeDescriptor = get<TypeDescriptor>();
-      value = AudioBlockFormatIdValue(
-          get<AudioChannelFormatId>().get<AudioChannelFormatIdValue>().get());
-      counter = AudioBlockFormatIdCounter(1u);
+    if (isUndefined(thisId)) {
+      AudioBlockFormatIdCounter counter;
+      if (previousBlock) {
+        auto prevId = previousBlock->template get<AudioBlockFormatId>();
+        counter = AudioBlockFormatIdCounter(
+            prevId.template get<AudioBlockFormatIdCounter>().get() + 1);
+      } else {
+        counter = AudioBlockFormatIdCounter(1u);
+      }
+
+      blockFormat.set(
+          AudioBlockFormatId(expectedTypeDescriptor, expectedValue, counter));
+
     } else {
-      typeDescriptor = id.template get<TypeDescriptor>();
-      value = id.template get<AudioBlockFormatIdValue>();
-      counter = id.template get<AudioBlockFormatIdCounter>();
-    }
+      auto thisTypeDescriptor = thisId.template get<TypeDescriptor>();
+      if (thisTypeDescriptor != expectedTypeDescriptor)
+        throw std::runtime_error("Invalid ID - incorrect type descriptor");
 
-    while (idUsed<BlockFormat>(
-        AudioBlockFormatId(typeDescriptor, value, counter))) {
-      ++counter;
+      auto thisValue = thisId.template get<AudioBlockFormatIdValue>();
+      if (thisTypeDescriptor != expectedTypeDescriptor)
+        throw std::runtime_error("Invalid ID - incorrect value");
+
+      if (previousBlock) {
+        int thisCounterValue =
+            thisId.template get<AudioBlockFormatIdCounter>().get();
+        auto prevId = previousBlock->template get<AudioBlockFormatId>();
+        int expectedCounterValue =
+            prevId.template get<AudioBlockFormatIdCounter>().get() + 1;
+        if (thisCounterValue != expectedCounterValue)
+          throw std::runtime_error("Invalid ID - unexpected counter");
+      }
     }
-    blockFormat.set(AudioBlockFormatId(typeDescriptor, value, counter));
   }
 
 }  // namespace adm
