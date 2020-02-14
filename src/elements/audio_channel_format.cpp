@@ -88,26 +88,46 @@ namespace adm {
 
   // ---- AudioBlocks ---- //
   void AudioChannelFormat::add(AudioBlockFormatDirectSpeakers blockFormat) {
-    assignId(blockFormat);
+    if (audioBlockFormatsDirectSpeakers_.empty()) {
+      assignId(blockFormat);
+    } else {
+      assignId(blockFormat, &audioBlockFormatsDirectSpeakers_.back());
+    }
     audioBlockFormatsDirectSpeakers_.push_back(blockFormat);
   }
   void AudioChannelFormat::add(AudioBlockFormatMatrix blockFormat) {
-    assignId(blockFormat);
+    if (audioBlockFormatsMatrix_.empty()) {
+      assignId(blockFormat);
+    } else {
+      assignId(blockFormat, &audioBlockFormatsMatrix_.back());
+    }
     audioBlockFormatsMatrix_.push_back(blockFormat);
   }
 
   void AudioChannelFormat::add(AudioBlockFormatObjects blockFormat) {
-    assignId(blockFormat);
+    if (audioBlockFormatsObjects_.empty()) {
+      assignId(blockFormat);
+    } else {
+      assignId(blockFormat, &audioBlockFormatsObjects_.back());
+    }
     audioBlockFormatsObjects_.push_back(blockFormat);
   }
 
   void AudioChannelFormat::add(AudioBlockFormatHoa blockFormat) {
-    assignId(blockFormat);
+    if (audioBlockFormatsHoa_.empty()) {
+      assignId(blockFormat);
+    } else {
+      assignId(blockFormat, &audioBlockFormatsHoa_.back());
+    }
     audioBlockFormatsHoa_.push_back(blockFormat);
   }
 
   void AudioChannelFormat::add(AudioBlockFormatBinaural blockFormat) {
-    assignId(blockFormat);
+    if (audioBlockFormatsBinaural_.empty()) {
+      assignId(blockFormat);
+    } else {
+      assignId(blockFormat, &audioBlockFormatsBinaural_.back());
+    }
     audioBlockFormatsBinaural_.push_back(blockFormat);
   }
 
