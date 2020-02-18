@@ -387,7 +387,7 @@ namespace adm {
         throw std::runtime_error("Invalid ID - incorrect type descriptor");
 
       auto thisValue = thisId.template get<AudioBlockFormatIdValue>();
-      if (thisTypeDescriptor != expectedTypeDescriptor)
+      if (thisValue != expectedValue)
         throw std::runtime_error("Invalid ID - incorrect value");
 
       if (previousBlock) {
