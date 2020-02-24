@@ -6,7 +6,6 @@
 #include "adm/parse.hpp"
 #include "adm/errors.hpp"
 
-
 TEST_CASE("xml_parser/audio_pack_format") {
   using namespace adm;
   auto document = parseXml("../test_data/xml_parser/audio_pack_format.xml");

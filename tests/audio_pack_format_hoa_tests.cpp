@@ -4,38 +4,37 @@
 #include "adm/elements/audio_pack_format_hoa.hpp"
 
 TEST_CASE("audio_pack_format_hoa_without_extra_param") {
-    using namespace adm;
+  using namespace adm;
 
-    auto packFormatHoa = AudioPackFormatHoa::create(AudioPackFormatName("MyPackFormatHoa"),
-                                                    parseTypeDefinition("HOA"));
-    packFormatHoa->set(AudioPackFormatId(TypeDefinition::HOA,
-                                         AudioPackFormatIdValue(1)));
-    packFormatHoa->set(AudioPackFormatName("MyNewPackFormatHoa"));
-    packFormatHoa->set(Importance(5));
-    packFormatHoa->set(AbsoluteDistance(4.5));
+  auto packFormatHoa = AudioPackFormatHoa::create(
+      AudioPackFormatName("MyPackFormatHoa"), parseTypeDefinition("HOA"));
+  packFormatHoa->set(
+      AudioPackFormatId(TypeDefinition::HOA, AudioPackFormatIdValue(1)));
+  packFormatHoa->set(AudioPackFormatName("MyNewPackFormatHoa"));
+  packFormatHoa->set(Importance(5));
+  packFormatHoa->set(AbsoluteDistance(4.5));
 
-    REQUIRE(packFormatHoa->has<AudioPackFormatId>());
-    REQUIRE(packFormatHoa->has<AudioPackFormatName>());
-    REQUIRE(packFormatHoa->has<TypeDescriptor>());
-    REQUIRE(packFormatHoa->has<Importance>());
-    REQUIRE(packFormatHoa->has<AbsoluteDistance>());
+  REQUIRE(packFormatHoa->has<AudioPackFormatId>());
+  REQUIRE(packFormatHoa->has<AudioPackFormatName>());
+  REQUIRE(packFormatHoa->has<TypeDescriptor>());
+  REQUIRE(packFormatHoa->has<Importance>());
+  REQUIRE(packFormatHoa->has<AbsoluteDistance>());
 
-    REQUIRE(packFormatHoa->get<AudioPackFormatId>().get<TypeDescriptor>() ==
-            TypeDefinition::HOA);
-    REQUIRE(
-        packFormatHoa->get<AudioPackFormatId>().get<AudioPackFormatIdValue>() ==
-        1u);
-    REQUIRE(packFormatHoa->get<AudioPackFormatName>() == "MyNewPackFormatHoa");
-    REQUIRE(packFormatHoa->get<TypeDescriptor>() ==
-            TypeDefinition::HOA);
-    REQUIRE(packFormatHoa->get<Importance>() == 5);
-    REQUIRE(packFormatHoa->get<AbsoluteDistance>() == 4.5);
+  REQUIRE(packFormatHoa->get<AudioPackFormatId>().get<TypeDescriptor>() ==
+          TypeDefinition::HOA);
+  REQUIRE(
+      packFormatHoa->get<AudioPackFormatId>().get<AudioPackFormatIdValue>() ==
+      1u);
+  REQUIRE(packFormatHoa->get<AudioPackFormatName>() == "MyNewPackFormatHoa");
+  REQUIRE(packFormatHoa->get<TypeDescriptor>() == TypeDefinition::HOA);
+  REQUIRE(packFormatHoa->get<Importance>() == 5);
+  REQUIRE(packFormatHoa->get<AbsoluteDistance>() == 4.5);
 
-    packFormatHoa->unset<Importance>();
-    packFormatHoa->unset<AbsoluteDistance>();
+  packFormatHoa->unset<Importance>();
+  packFormatHoa->unset<AbsoluteDistance>();
 
-    REQUIRE(!packFormatHoa->has<Importance>());
-    REQUIRE(!packFormatHoa->has<AbsoluteDistance>());
+  REQUIRE(!packFormatHoa->has<Importance>());
+  REQUIRE(!packFormatHoa->has<AbsoluteDistance>());
 }
 
 TEST_CASE("audio_pack_format_hoa_with_all_extra_param") {

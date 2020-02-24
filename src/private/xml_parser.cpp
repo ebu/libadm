@@ -49,7 +49,7 @@ namespace adm {
           } else if (std::string(node->name()) == "audioTrackUID") {
             document_->add(parseAudioTrackUid(node));
           } else if (std::string(node->name()) == "audioPackFormat") {
-              document_->add(parseAudioPackFormat(node));
+            document_->add(parseAudioPackFormat(node));
           } else if (std::string(node->name()) == "audioChannelFormat") {
             document_->add(parseAudioChannelFormat(node));
           } else if (std::string(node->name()) == "audioStreamFormat") {
