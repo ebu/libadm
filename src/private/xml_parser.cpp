@@ -274,7 +274,7 @@ namespace adm {
       checkChannelType(id, typeLabel, typeDefinition);
 
       if(typeDescriptor == adm::TypeDefinition::HOA){
-          auto audioPackFormat = AudioPackFormatHoa::create(name, typeDescriptor, id);
+          auto audioPackFormat = AudioPackFormatHoa::create(name, id);
           setCommonProperties(audioPackFormat, node);
           setOptionalAttribute<Normalization>(node, "normalization", audioPackFormat);
           setOptionalAttribute<ScreenRef>(node, "screenRef", audioPackFormat);

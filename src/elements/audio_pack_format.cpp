@@ -207,6 +207,15 @@ namespace adm {
 
   AudioPackFormat::AudioPackFormat(AudioPackFormatName name,
                                    TypeDescriptor channelType)
+      : name_(name), typeDescriptor_(channelType) {
+    if (channelType == adm::TypeDefinition::OBJECTS) {
+      throw std::invalid_argument(
+          "For AudioPackFormat of type HOA use AudioPackFormatHoa instead.");
+    }
+  }
+
+  AudioPackFormat::AudioPackFormat(AudioPackFormatName name,
+                                   TypeDescriptor channelType, UnChecked)
       : name_(name), typeDescriptor_(channelType) {}
 
 }  // namespace adm

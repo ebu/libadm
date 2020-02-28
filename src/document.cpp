@@ -115,33 +115,6 @@ namespace adm {
       }
   }
 
-  bool Document::add(
-          std::shared_ptr<AudioPackFormatHoa> packFormat
-          ) {
-      if (packFormat->getParent().lock() &&
-          packFormat->getParent().lock() != shared_from_this()) {
-        throw std::runtime_error(
-            "AudioPackFormat already belongs to another Document");
-      }
-      auto it = std::find(audioPackFormats_.begin(), audioPackFormats_.end(),
-                          packFormat);
-      if (it == audioPackFormats_.end()) {
-        idAssigner_.assignId(*packFormat);
-        AudioPackFormatAttorney::setParent(packFormat, shared_from_this());
-        audioPackFormats_.push_back(packFormat);
-        for (auto& reference : packFormat->getReferences<AudioPackFormat>()) {
-          add(reference);
-        }
-        for (auto& reference : packFormat->getReferences<AudioChannelFormat>()) {
-          add(reference);
-        }
-        return true;
-      } else {
-        return false;
-      }
-  }
-
-
   bool Document::add(std::shared_ptr<AudioChannelFormat> channelFormat) {
     if (channelFormat->getParent().lock() &&
         channelFormat->getParent().lock() != shared_from_this()) {

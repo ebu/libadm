@@ -6,8 +6,8 @@
 TEST_CASE("audio_pack_format_hoa_without_extra_param") {
   using namespace adm;
 
-  auto packFormatHoa = AudioPackFormatHoa::create(
-      AudioPackFormatName("MyPackFormatHoa"), parseTypeDefinition("HOA"));
+  auto packFormatHoa =
+      AudioPackFormatHoa::create(AudioPackFormatName("MyPackFormatHoa"));
   packFormatHoa->set(
       AudioPackFormatId(TypeDefinition::HOA, AudioPackFormatIdValue(1)));
   packFormatHoa->set(AudioPackFormatName("MyNewPackFormatHoa"));
@@ -40,8 +40,8 @@ TEST_CASE("audio_pack_format_hoa_without_extra_param") {
 TEST_CASE("audio_pack_format_hoa_with_all_extra_param") {
     using namespace adm;
 
-    auto packFormatHoa = AudioPackFormatHoa::create(AudioPackFormatName("MyPackFormatHoa"),
-                                                    parseTypeDefinition("HOA"));
+    auto packFormatHoa =
+        AudioPackFormatHoa::create(AudioPackFormatName("MyPackFormatHoa"));
     packFormatHoa->set(AudioPackFormatId(TypeDefinition::HOA,
                                          AudioPackFormatIdValue(1)));
     packFormatHoa->set(AudioPackFormatName("MyNewPackFormatHoa"));
@@ -89,14 +89,10 @@ TEST_CASE("audio_pack_format_hoa_with_all_extra_param") {
 TEST_CASE("audio_pack_format_hoa_with_extra_param_in_constructor") {
     using namespace adm;
 
-    auto packFormatHoa = AudioPackFormatHoa::create(AudioPackFormatName("MyPackFormatHoa"),
-                                                    TypeDefinition::HOA,
-                                                    AudioPackFormatId(
-                                                        AudioPackFormatIdValue(1),
-                                                        TypeDescriptor(4)),
-                                                    Normalization("FuMa"),
-                                                    ScreenRef(true),
-                                                    NfcRefDist(2));
+    auto packFormatHoa = AudioPackFormatHoa::create(
+        AudioPackFormatName("MyPackFormatHoa"),
+        AudioPackFormatId(AudioPackFormatIdValue(1), TypeDescriptor(4)),
+        Normalization("FuMa"), ScreenRef(true), NfcRefDist(2));
 
     REQUIRE(packFormatHoa->has<AudioPackFormatId>());
     REQUIRE(packFormatHoa->has<AudioPackFormatName>());

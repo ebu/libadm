@@ -44,8 +44,6 @@ namespace adm {
     ADM_EXPORT bool add(std::shared_ptr<AudioObject> object);
     /// @brief Add an AudioPackFormat
     ADM_EXPORT bool add(std::shared_ptr<AudioPackFormat> packFormat);
-    /// @brief Add an AudioPackFormatHoa
-    ADM_EXPORT bool add(std::shared_ptr<AudioPackFormatHoa> packFormat);
     /// @brief Add an AudioChannelFormat
     ADM_EXPORT bool add(std::shared_ptr<AudioChannelFormat> channelFormat);
     /// @brief Add an AudioStreamFormat
@@ -70,8 +68,6 @@ namespace adm {
     ADM_EXPORT bool remove(std::shared_ptr<AudioObject> object);
     /// @brief Remove an AudioPackFormat
     ADM_EXPORT bool remove(std::shared_ptr<AudioPackFormat> packFormat);
-    /// @brief Remove an AudioPackFormatHoa
-    ADM_EXPORT bool remove(std::shared_ptr<AudioPackFormatHoa> packFormat);
     /// @brief Remove an AudioChannelFormat
     ADM_EXPORT bool remove(std::shared_ptr<AudioChannelFormat> channelFormat);
     /// @brief Remove an AudioStreamFormat

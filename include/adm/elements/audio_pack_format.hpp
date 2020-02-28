@@ -16,6 +16,8 @@ namespace adm {
 
   class Document;
 
+  struct UnChecked {};
+
   /// @brief Tag for NamedType ::AudioPackFormatName
   struct AudioPackFormatNameTag {};
   /// @brief NamedType for the audioPackFormatName attribute
@@ -166,6 +168,8 @@ namespace adm {
 
     ADM_EXPORT AudioPackFormat(AudioPackFormatName name,
                                TypeDescriptor channelType);
+    ADM_EXPORT AudioPackFormat(AudioPackFormatName name,
+                               TypeDescriptor channelType, UnChecked);
     ADM_EXPORT AudioPackFormat(const AudioPackFormat &) = default;
     ADM_EXPORT AudioPackFormat(AudioPackFormat &&) = default;
 
