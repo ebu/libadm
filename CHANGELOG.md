@@ -6,6 +6,7 @@
 - new `addSimpleCommonDefinitionsObjectTo` function
 - new `addSimpleObjectTo` function
 - added support to lookup HOA common definitions AudioPackFormatIDs and AudioTrackFormatIDs
+- added missing ITU-R BS.2051 setups 0+7+0 and 4+7+0 to common definition lookup tables
 
 ### Changed
 - improved `AudioChannelFormat::assignId` logic - huge performance increase for large documents
