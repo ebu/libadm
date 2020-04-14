@@ -1,0 +1,33 @@
+name: Windows
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        shared: [BUILD_SHARED_LIBS=True, BUILD_SHARED_LIBS=False]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies (chocolatey)
+      run: choco install ninja
+    - uses: ilammy/msvc-dev-cmd@v1
+    - name: Configure
+      run: |
+        mkdir build
+        cd build
+        cmake .. -G Ninja -DCMAKE_CXX_COMPILER="cl.exe" -DCMAKE_BUILD_TYPE=Release -D${{ matrix.shared }}
+    - name: Build
+      run: |
+        cd build
+        cmake --build .
+    - name: Add library directory to PATH for Tests
+      run: echo "::add-path::${{ github.workspace }}\build\src"
+    - name: Test
+      run: |
+        cd build
+        ctest --output-on-failure
