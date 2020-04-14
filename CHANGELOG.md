@@ -8,6 +8,7 @@
 - added support to lookup HOA common definitions AudioPackFormatIDs and AudioTrackFormatIDs
 
 ### Changed
+- improved `AudioChannelFormat::assignId` logic - huge performance increase for large documents
 
 ### Fixed
 - fixed bug were not all references were removed if AudioPackFormat was removed from document
