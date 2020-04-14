@@ -1,0 +1,31 @@
+name: macOS
+
+on: [push]
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        shared: [BUILD_SHARED_LIBS=True, BUILD_SHARED_LIBS=False]
+    
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies (brew)
+      run: |
+        brew install cmake ninja boost
+    - name: Configure
+      run: |
+        mkdir build
+        cd build
+        cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -D${{ matrix.shared }}
+    - name: Build
+      run: |
+        cd build
+        cmake --build .
+    - name: Test
+      run: |
+        cd build
+        ctest --output-on-failure
