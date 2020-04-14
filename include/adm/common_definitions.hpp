@@ -26,6 +26,8 @@ namespace adm {
    *  - 3+7+0
    *  - 4+9+0
    *  - 9+10+3
+   *  - 0+7+0
+   *  - 4+7+0
    *
    * @return Map with the loudspeaker id specified in ITU-R BS.2051 as key and
    * the corresponding AudioPackFormatID as value.
@@ -64,6 +66,8 @@ namespace adm {
    *  - 3+7+0
    *  - 4+9+0
    *  - 9+10+3
+   *  - 0+7+0
+   *  - 4+7+0
    *
    * @return Map with the speaker label specified in ITU-R BS.2051 as key and
    * a vector of the corresponding speaker labels as value.
