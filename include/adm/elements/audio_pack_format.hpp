@@ -16,8 +16,6 @@ namespace adm {
 
   class Document;
 
-  struct UnChecked {};
-
   /// @brief Tag for NamedType ::AudioPackFormatName
   struct AudioPackFormatNameTag {};
   /// @brief NamedType for the audioPackFormatName attribute
@@ -168,8 +166,6 @@ namespace adm {
 
     ADM_EXPORT AudioPackFormat(AudioPackFormatName name,
                                TypeDescriptor channelType);
-    ADM_EXPORT AudioPackFormat(AudioPackFormatName name,
-                               TypeDescriptor channelType, UnChecked);
     ADM_EXPORT AudioPackFormat(const AudioPackFormat &) = default;
     ADM_EXPORT AudioPackFormat(AudioPackFormat &&) = default;
 
@@ -237,11 +233,17 @@ namespace adm {
   std::shared_ptr<AudioPackFormat> AudioPackFormat::create(
       AudioPackFormatName name, TypeDescriptor channelType,
       Parameters... optionalNamedArgs) {
-    std::shared_ptr<AudioPackFormat> pack(
-        new AudioPackFormat(name, channelType));
-    detail::setNamedOptionHelper(
-        pack, std::forward<Parameters>(optionalNamedArgs)...);
-    return pack;
+    if (channelType == adm::TypeDefinition::HOA) {
+      throw std::invalid_argument(
+          "For AudioPackFormat of type HOA use AudioPackFormatHoa::create() instead.");
+    } else {
+
+      std::shared_ptr<AudioPackFormat> pack(
+          new AudioPackFormat(name, channelType));
+      detail::setNamedOptionHelper(
+          pack, std::forward<Parameters>(optionalNamedArgs)...);
+      return pack;
+    }
   }
 
   template <typename Parameter>

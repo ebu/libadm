@@ -101,5 +101,5 @@ namespace adm {
   }
 
   AudioPackFormatHoa::AudioPackFormatHoa(AudioPackFormatName name)
-      : AudioPackFormat(name, adm::TypeDefinition::HOA, UnChecked{}) {}
+      : AudioPackFormat(name, adm::TypeDefinition::HOA) {}
 }  // namespace adm
