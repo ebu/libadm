@@ -88,4 +88,12 @@ TEST_CASE("audio_pack_format") {
     REQUIRE_THROWS_AS(audioPackFormat3->addReference(audioPackFormat1),
                       std::runtime_error);
   }
+
+  // check Hoa fails when constructed directly
+  {
+    REQUIRE_THROWS_AS(
+        AudioPackFormat::create(AudioPackFormatName("MyPackFormat"),
+                                parseTypeDefinition("HOA")),
+        std::invalid_argument);
+  }
 }

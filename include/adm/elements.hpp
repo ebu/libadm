@@ -33,6 +33,8 @@
 #include "adm/elements/audio_block_format_hoa.hpp"
 #include "adm/elements/audio_block_format_binaural.hpp"
 
+#include "adm/elements/audio_pack_format_hoa.hpp"
+
 #include "adm/elements/audio_programme_id.hpp"
 #include "adm/elements/audio_content_id.hpp"
 #include "adm/elements/audio_object_id.hpp"

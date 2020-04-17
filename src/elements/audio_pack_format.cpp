@@ -207,6 +207,8 @@ namespace adm {
 
   AudioPackFormat::AudioPackFormat(AudioPackFormatName name,
                                    TypeDescriptor channelType)
-      : name_(name), typeDescriptor_(channelType) {}
+      : name_(name), typeDescriptor_(channelType) {
+  }
+
 
 }  // namespace adm

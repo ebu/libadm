@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioPackFormat audioPackFormatID="AP_00041001" audioPackFormatName="MyPackFormat" typeDefinition="HOA" importance="10" normalization="N3D" screenRef="1" nfcRefDist="2"></audioPackFormat>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

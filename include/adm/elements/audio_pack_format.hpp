@@ -53,6 +53,7 @@ namespace adm {
         AudioPackFormatName name, TypeDescriptor channelType,
         Parameters... optionalNamedArgs);
 
+    ADM_EXPORT virtual ~AudioPackFormat() = default;
     /**
      * @brief Copy AudioPackFormat
      *
@@ -116,7 +117,7 @@ namespace adm {
     ADM_EXPORT bool addReference(std::shared_ptr<AudioPackFormat> packFormat);
 
     /**
-     * @brief Get references to ADM elements template
+     * @brief Get references to ADM elements template
      *
      * Templated get method with the ADM parameter type as template
      * argument. Returns a set of all references to the ADM elements with the
@@ -126,7 +127,7 @@ namespace adm {
     ElementRange<const Element> getReferences() const;
 
     /**
-     * @brief Get references to ADM elements template
+     * @brief Get references to ADM elements template
      *
      * Templated get method with the ADM parameter type as template
      * argument. Returns a set of all references to the ADM elements with the
@@ -143,7 +144,7 @@ namespace adm {
         std::shared_ptr<AudioPackFormat> packFormat);
 
     /**
-     * @brief Clear references to Elements template
+     * @brief Clear references to Elements template
      *
      * Templated clear method with the ADM parameter type as template
      * argument. Removes all references to the ADM elements with the specified
@@ -160,7 +161,7 @@ namespace adm {
     /// Get adm::Document this element belongs to
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
-   private:
+   protected:
     friend class AudioPackFormatAttorney;
 
     ADM_EXPORT AudioPackFormat(AudioPackFormatName name,
@@ -215,6 +216,7 @@ namespace adm {
 
     ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
+   private:
     std::weak_ptr<Document> parent_;
     AudioPackFormatName name_;
     AudioPackFormatId id_;
@@ -231,11 +233,17 @@ namespace adm {
   std::shared_ptr<AudioPackFormat> AudioPackFormat::create(
       AudioPackFormatName name, TypeDescriptor channelType,
       Parameters... optionalNamedArgs) {
-    std::shared_ptr<AudioPackFormat> pack(
-        new AudioPackFormat(name, channelType));
-    detail::setNamedOptionHelper(
-        pack, std::forward<Parameters>(optionalNamedArgs)...);
-    return pack;
+    if (channelType == adm::TypeDefinition::HOA) {
+      throw std::invalid_argument(
+          "For AudioPackFormat of type HOA use AudioPackFormatHoa::create() instead.");
+    } else {
+
+      std::shared_ptr<AudioPackFormat> pack(
+          new AudioPackFormat(name, channelType));
+      detail::setNamedOptionHelper(
+          pack, std::forward<Parameters>(optionalNamedArgs)...);
+      return pack;
+    }
   }
 
   template <typename Parameter>
