@@ -39,8 +39,11 @@ TEST_CASE("xml_parser/audio_block_format_objects") {
     REQUIRE(
         firstBlockFormat.get<JumpPosition>().get<InterpolationLength>().get() ==
         std::chrono::milliseconds(200));
+    REQUIRE(firstBlockFormat.get<ScreenRef>() == true);
     // TODO: add zoneExclusion test
-    // TODO: add screenRef test
     REQUIRE(firstBlockFormat.get<Importance>() == 10);
+    auto secondBlockFormat = *(channelFormat->getElements<AudioBlockFormatObjects>().begin().operator++());
+    REQUIRE(secondBlockFormat.get<ScreenRef>() == false);
+    REQUIRE(secondBlockFormat.get<JumpPosition>().get<JumpPositionFlag>() == false);
   }
 }

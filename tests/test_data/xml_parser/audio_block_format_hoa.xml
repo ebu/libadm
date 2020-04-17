@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioChannelFormat audioChannelFormatID="AC_00041001" audioChannelFormatName="HOA_Channel" typeLabel="0004" typeDefinition="HOA">
+          <audioBlockFormat audioBlockFormatID="AB_00041001_00000001">
+            <order>1</order>
+            <degree>-1</degree>
+            <normalization>SN3D</normalization>
+            <nfcRefDist>2.0</nfcRefDist>
+            <screenRef>0</screenRef>
+            <equation>cos(A)*sin(E)</equation>
+          </audioBlockFormat>
+          <audioBlockFormat audioBlockFormatID="AB_00041001_00000002">
+            <order>1</order>
+            <degree>-1</degree>
+            <normalization>N3D</normalization>
+            <nfcRefDist>2.0</nfcRefDist>
+            <screenRef>1</screenRef>
+          </audioBlockFormat>
+        </audioChannelFormat>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
