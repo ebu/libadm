@@ -10,6 +10,7 @@ namespace adm {
   const std::map<std::string, adm::AudioPackFormatId>
   audioPackFormatLookupTable() {
     return std::map<std::string, adm::AudioPackFormatId>{
+        {"0+1+0", adm::parseAudioPackFormatId("AP_00010001")},
         {"0+2+0", adm::parseAudioPackFormatId("AP_00010002")},
         {"0+5+0", adm::parseAudioPackFormatId("AP_0001000c")},
         {"2+5+0", adm::parseAudioPackFormatId("AP_00010004")},
@@ -103,6 +104,7 @@ namespace adm {
   const std::map<std::string, std::vector<std::string>>
   speakerLabelsLookupTable() {
     return std::map<std::string, std::vector<std::string>>{
+        {"0+1+0", {"M+000"}},
         {"0+2+0", {"M+030", "M-030"}},
         {"0+5+0", {"M+030", "M-030", "M+000", "LFE1", "M+110", "M-110"}},
         {"2+5+0",
