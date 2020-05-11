@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+### Changed
+- included mono (0+1+0) to the common definitions lookup tables
+
+### Fixed
+
 ## 0.12.0 (April 18, 2020)
 
 ### Added
@@ -13,7 +22,6 @@
 
 ### Fixed
 - fixed bug were not all references were removed if AudioPackFormat was removed from document
-
 
 ## 0.11.0 (Oktober 11, 2019)
 

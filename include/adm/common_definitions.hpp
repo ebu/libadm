@@ -18,6 +18,7 @@ namespace adm {
    *
    * Specified loudspeaker ids:
    *
+   *  - 0+1+0
    *  - 0+2+0
    *  - 0+5+0
    *  - 2+5+0
@@ -58,6 +59,7 @@ namespace adm {
    *
    * Specified loudspeaker ids:
    *
+   *  - 0+1+0
    *  - 0+2+0
    *  - 0+5+0
    *  - 2+5+0
