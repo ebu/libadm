@@ -6,7 +6,6 @@ jobs:
   build:
 
     runs-on: windows-latest
-
     strategy:
       matrix:
         shared: [BUILD_SHARED_LIBS=True, BUILD_SHARED_LIBS=False]
@@ -16,6 +15,8 @@ jobs:
     - name: Install dependencies (chocolatey)
       run: choco install ninja
     - uses: ilammy/msvc-dev-cmd@v1
+    - name: set boost version
+      run: echo "::set-env name=BOOST_ROOT::$env:BOOST_ROOT_1_69_0"
     - name: Configure
       run: |
         mkdir build
