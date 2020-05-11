@@ -11,13 +11,117 @@ namespace adm {
   audioPackFormatLookupTable() {
     return std::map<std::string, adm::AudioPackFormatId>{
         {"0+2+0", adm::parseAudioPackFormatId("AP_00010002")},
-        {"0+5+0", adm::parseAudioPackFormatId("AP_0001000c")},
+          /*
+        <audioChannelFormatIDRef>AC_00010001</audioChannelFormatIDRef> M+030
+        <audioChannelFormatIDRef>AC_00010002</audioChannelFormatIDRef> M-030
+          */
+        {"0+5+0", adm::parseAudioPackFormatId("AP_00010003")}, //Corrected: was AP_0001000c (5.0), AP_00010003 is 5.1 - If that was intentional, the speakerLabelsLookupTable needs correcting
+          /*
+        <audioChannelFormatIDRef>AC_00010001</audioChannelFormatIDRef> M+030
+        <audioChannelFormatIDRef>AC_00010002</audioChannelFormatIDRef> M-030
+        <audioChannelFormatIDRef>AC_00010003</audioChannelFormatIDRef> M+000
+        <audioChannelFormatIDRef>AC_00010004</audioChannelFormatIDRef> LFE (Exclude in 5.0 pack!)
+        <audioChannelFormatIDRef>AC_00010005</audioChannelFormatIDRef> M+110
+        <audioChannelFormatIDRef>AC_00010006</audioChannelFormatIDRef> M-110
+          */
         {"2+5+0", adm::parseAudioPackFormatId("AP_00010004")},
+          /*
+        <audioChannelFormatIDRef>AC_00010001</audioChannelFormatIDRef> M+030
+        <audioChannelFormatIDRef>AC_00010002</audioChannelFormatIDRef> M-030
+        <audioChannelFormatIDRef>AC_00010003</audioChannelFormatIDRef> M+000
+        <audioChannelFormatIDRef>AC_00010004</audioChannelFormatIDRef> LFE
+        <audioChannelFormatIDRef>AC_00010005</audioChannelFormatIDRef> M+110
+        <audioChannelFormatIDRef>AC_00010006</audioChannelFormatIDRef> M-110
+        <audioChannelFormatIDRef>AC_0001000d</audioChannelFormatIDRef> U+030
+        <audioChannelFormatIDRef>AC_0001000f</audioChannelFormatIDRef> U-030
+          */
         {"4+5+0", adm::parseAudioPackFormatId("AP_00010005")},
+          /*
+        <audioChannelFormatIDRef>AC_00010001</audioChannelFormatIDRef> M+030
+        <audioChannelFormatIDRef>AC_00010002</audioChannelFormatIDRef> M-030
+        <audioChannelFormatIDRef>AC_00010003</audioChannelFormatIDRef> M+000
+        <audioChannelFormatIDRef>AC_00010004</audioChannelFormatIDRef> LFE
+        <audioChannelFormatIDRef>AC_00010005</audioChannelFormatIDRef> M+110
+        <audioChannelFormatIDRef>AC_00010006</audioChannelFormatIDRef> M-110
+        <audioChannelFormatIDRef>AC_0001000d</audioChannelFormatIDRef> U+030
+        <audioChannelFormatIDRef>AC_0001000f</audioChannelFormatIDRef> U-030
+        <audioChannelFormatIDRef>AC_00010010</audioChannelFormatIDRef> U+110
+        <audioChannelFormatIDRef>AC_00010012</audioChannelFormatIDRef> U-110
+          */
         {"4+5+1", adm::parseAudioPackFormatId("AP_00010010")},
+          /*
+        <audioChannelFormatIDRef>AC_00010001</audioChannelFormatIDRef> M+030
+        <audioChannelFormatIDRef>AC_00010002</audioChannelFormatIDRef> M-030
+        <audioChannelFormatIDRef>AC_00010003</audioChannelFormatIDRef> M+000
+        <audioChannelFormatIDRef>AC_00010004</audioChannelFormatIDRef> LFE
+        <audioChannelFormatIDRef>AC_00010005</audioChannelFormatIDRef> M+110
+        <audioChannelFormatIDRef>AC_00010006</audioChannelFormatIDRef> M-110
+        <audioChannelFormatIDRef>AC_0001000d</audioChannelFormatIDRef> U+030
+        <audioChannelFormatIDRef>AC_0001000f</audioChannelFormatIDRef> U-030
+        <audioChannelFormatIDRef>AC_00010010</audioChannelFormatIDRef> U+110
+        <audioChannelFormatIDRef>AC_00010012</audioChannelFormatIDRef> U-110
+        <audioChannelFormatIDRef>AC_00010015</audioChannelFormatIDRef> B+000
+          */
         {"3+7+0", adm::parseAudioPackFormatId("AP_00010007")},
+          /*
+        <audioChannelFormatIDRef>AC_00010003</audioChannelFormatIDRef> M+000
+        <audioChannelFormatIDRef>AC_00010001</audioChannelFormatIDRef> M+030
+        <audioChannelFormatIDRef>AC_00010002</audioChannelFormatIDRef> M-030
+        <audioChannelFormatIDRef>AC_00010022</audioChannelFormatIDRef> U+045
+        <audioChannelFormatIDRef>AC_00010023</audioChannelFormatIDRef> U-045
+        <audioChannelFormatIDRef>AC_0001000a</audioChannelFormatIDRef> M+090
+        <audioChannelFormatIDRef>AC_0001000b</audioChannelFormatIDRef> M-090
+        <audioChannelFormatIDRef>AC_0001001c</audioChannelFormatIDRef> M+135
+        <audioChannelFormatIDRef>AC_0001001d</audioChannelFormatIDRef> M-135
+        <audioChannelFormatIDRef>AC_00010028</audioChannelFormatIDRef> UH+180
+        <audioChannelFormatIDRef>AC_00010020</audioChannelFormatIDRef> LFEL
+        <audioChannelFormatIDRef>AC_00010021</audioChannelFormatIDRef> LFER
+          */
         {"4+9+0", adm::parseAudioPackFormatId("AP_00010008")},
+          /*
+        <audioChannelFormatIDRef>AC_00010001</audioChannelFormatIDRef> M+030
+        <audioChannelFormatIDRef>AC_00010002</audioChannelFormatIDRef> M-030
+        <audioChannelFormatIDRef>AC_00010003</audioChannelFormatIDRef> M+000
+        <audioChannelFormatIDRef>AC_00010004</audioChannelFormatIDRef> LFE
+        <audioChannelFormatIDRef>AC_0001000a</audioChannelFormatIDRef> M+090
+        <audioChannelFormatIDRef>AC_0001000b</audioChannelFormatIDRef> M-090
+        <audioChannelFormatIDRef>AC_0001001c</audioChannelFormatIDRef> M+135
+        <audioChannelFormatIDRef>AC_0001001d</audioChannelFormatIDRef> M-135
+        <audioChannelFormatIDRef>AC_00010022</audioChannelFormatIDRef> U+045
+        <audioChannelFormatIDRef>AC_00010023</audioChannelFormatIDRef> U-045
+        <audioChannelFormatIDRef>AC_0001001e</audioChannelFormatIDRef> U+135
+        <audioChannelFormatIDRef>AC_0001001f</audioChannelFormatIDRef> U-135
+        <audioChannelFormatIDRef>AC_00010024</audioChannelFormatIDRef> M+SC
+        <audioChannelFormatIDRef>AC_00010025</audioChannelFormatIDRef> M-SC
+          */
         {"9+10+3", adm::parseAudioPackFormatId("AP_00010009")},
+          /*
+        <audioChannelFormatIDRef>AC_00010018</audioChannelFormatIDRef> M+060
+        <audioChannelFormatIDRef>AC_00010019</audioChannelFormatIDRef> M-060
+        <audioChannelFormatIDRef>AC_00010003</audioChannelFormatIDRef> M+000
+        <audioChannelFormatIDRef>AC_00010020</audioChannelFormatIDRef> LFEL
+        <audioChannelFormatIDRef>AC_0001001c</audioChannelFormatIDRef> M+135
+        <audioChannelFormatIDRef>AC_0001001d</audioChannelFormatIDRef> M-135
+        <audioChannelFormatIDRef>AC_00010001</audioChannelFormatIDRef> M+030
+        <audioChannelFormatIDRef>AC_00010002</audioChannelFormatIDRef> M-030
+        <audioChannelFormatIDRef>AC_00010009</audioChannelFormatIDRef> M+180
+        <audioChannelFormatIDRef>AC_00010021</audioChannelFormatIDRef> LFER
+        <audioChannelFormatIDRef>AC_0001000a</audioChannelFormatIDRef> M+090
+        <audioChannelFormatIDRef>AC_0001000b</audioChannelFormatIDRef> M-090
+        <audioChannelFormatIDRef>AC_00010022</audioChannelFormatIDRef> U+045
+        <audioChannelFormatIDRef>AC_00010023</audioChannelFormatIDRef> U-045
+        <audioChannelFormatIDRef>AC_0001000e</audioChannelFormatIDRef> U+000
+        <audioChannelFormatIDRef>AC_0001000c</audioChannelFormatIDRef> T+000
+        <audioChannelFormatIDRef>AC_0001001e</audioChannelFormatIDRef> U+135
+        <audioChannelFormatIDRef>AC_0001001f</audioChannelFormatIDRef> U-135
+        <audioChannelFormatIDRef>AC_00010013</audioChannelFormatIDRef> U+090
+        <audioChannelFormatIDRef>AC_00010014</audioChannelFormatIDRef> U-090
+        <audioChannelFormatIDRef>AC_00010011</audioChannelFormatIDRef> U+180
+        <audioChannelFormatIDRef>AC_00010015</audioChannelFormatIDRef> B+000
+        <audioChannelFormatIDRef>AC_00010016</audioChannelFormatIDRef> B+045
+        <audioChannelFormatIDRef>AC_00010017</audioChannelFormatIDRef> B-045
+          */
+
         // {"0+7+0", adm::parseAudioPackFormatId("")},
         // {"4+7+0", adm::parseAudioPackFormatId("")},
         {"SN3D-Order1-3D", adm::parseAudioPackFormatId("AP_00040001")},
@@ -86,7 +190,7 @@ namespace adm {
         // {"B+030", adm::parseAudioTrackFormatId("")},
         // {"B-030", adm::parseAudioTrackFormatId("")},
         {"B+045", adm::parseAudioTrackFormatId("AT_00010016_01")},
-        {"B-045", adm::parseAudioTrackFormatId("AT_00010016_01")},
+        {"B-045", adm::parseAudioTrackFormatId("AT_00010017_01")},
         // {"B+060", adm::parseAudioTrackFormatId("")},
         // {"B-060", adm::parseAudioTrackFormatId("")},
         // {"B+090", adm::parseAudioTrackFormatId("")},
@@ -96,6 +200,7 @@ namespace adm {
         // {"B+135", adm::parseAudioTrackFormatId("")},
         // {"B-135", adm::parseAudioTrackFormatId("")},
         // {"B+180", adm::parseAudioTrackFormatId("")},
+        {"LFE", adm::parseAudioTrackFormatId("AT_00010004_01")}, // New! Need this
         {"LFE1", adm::parseAudioTrackFormatId("AT_00010020_01")},
         {"LFE2", adm::parseAudioTrackFormatId("AT_00010021_01")}};
   };
@@ -104,31 +209,31 @@ namespace adm {
   speakerLabelsLookupTable() {
     return std::map<std::string, std::vector<std::string>>{
         {"0+2+0", {"M+030", "M-030"}},
-        {"0+5+0", {"M+030", "M-030", "M+000", "LFE1", "M+110", "M-110"}},
+        {"0+5+0", {"M+030", "M-030", "M+000", "LFE", "M+110", "M-110"}}, // Corrected: LFE1 not in AP_0001000c (5.0). With AP_00010003 (5.1), it's LFE, not LFE1(LFEL)
         {"2+5+0",
-         {"M+030", "M-030", "M+000", "LFE1", "M+110", "M-110", "U+030",
+         {"M+030", "M-030", "M+000", "LFE", "M+110", "M-110", "U+030",
           "U-030"}},
         {"4+5+0",
-         {"M+030", "M-030", "M+000", "LFE1", "M+110", "M-110", "U+030", "U-030",
+         {"M+030", "M-030", "M+000", "LFE", "M+110", "M-110", "U+030", "U-030", // Corrected: LFE1 = LFE
           "U+110", "U-110"}},
         {"4+5+1",
-         {"M+030", "M-030", "M+000", "LFE1", "M+110", "M-110", "U+030", "U-030",
+         {"M+030", "M-030", "M+000", "LFE", "M+110", "M-110", "U+030", "U-030", // Corrected: LFE1 = LFE
           "U+110", "U-110", "B+000"}},
         {"3+7+0",
          {"M+000", "M+030", "M-030", "U+045", "U-045", "M+090", "M-090",
           "M+135", "M-135", "UH+180", "LFE1", "LFE2"}},
         {"4+9+0",
-         {"M+030", "M-030", "M+000", "LFE1", "M+090", "M-090", "M+135", "M-135",
+         {"M+030", "M-030", "M+000", "LFE", "M+090", "M-090", "M+135", "M-135", // Corrected: LFE1 = LFE
           "U+045", "U-045", "U+135", "U-135", "M+SC", "M-SC"}},
         {"9+10+3", {"M+060", "M-060", "M+000", "LFE1",  "M+135", "M-135",
                     "M+030", "M-030", "M+180", "LFE2",  "M+090", "M-090",
                     "U+045", "U-045", "U+000", "T+000", "U+135", "U-135",
                     "U+090", "U-090", "U+180", "B+000", "B+045", "B-045"}},
         {"0+7+0",
-         {"M+030", "M-030", "M+000", "LFE1", "M+090", "M-090", "M+135",
+         {"M+030", "M-030", "M+000", "LFE1", "M+090", "M-090", "M+135", // (not checked)
           "M-135"}},
         {"4+7+0",
-         {"M+030", "M-030", "M+000", "LFE1", "M+090", "M-090", "M+135", "M-135",
+         {"M+030", "M-030", "M+000", "LFE1", "M+090", "M-090", "M+135", "M-135", // (not checked)
           "U+045", "U-045", "U+135", "U-135"}}};
   }
 
