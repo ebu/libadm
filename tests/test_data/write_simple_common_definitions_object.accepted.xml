@@ -4,7 +4,7 @@
 		<format>
 			<audioFormatExtended>
 				<audioObject audioObjectID="AO_1001" audioObjectName="My 5.1 Object">
-					<audioPackFormatIDRef>AP_0001000c</audioPackFormatIDRef>
+					<audioPackFormatIDRef>AP_00010003</audioPackFormatIDRef>
 					<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
 					<audioTrackUIDRef>ATU_00000002</audioTrackUIDRef>
 					<audioTrackUIDRef>ATU_00000003</audioTrackUIDRef>
@@ -14,27 +14,27 @@
 				</audioObject>
 				<audioTrackUID UID="ATU_00000001">
 					<audioTrackFormatIDRef>AT_00010001_01</audioTrackFormatIDRef>
-					<audioPackFormatIDRef>AP_0001000c</audioPackFormatIDRef>
+					<audioPackFormatIDRef>AP_00010003</audioPackFormatIDRef>
 				</audioTrackUID>
 				<audioTrackUID UID="ATU_00000002">
 					<audioTrackFormatIDRef>AT_00010002_01</audioTrackFormatIDRef>
-					<audioPackFormatIDRef>AP_0001000c</audioPackFormatIDRef>
+					<audioPackFormatIDRef>AP_00010003</audioPackFormatIDRef>
 				</audioTrackUID>
 				<audioTrackUID UID="ATU_00000003">
 					<audioTrackFormatIDRef>AT_00010003_01</audioTrackFormatIDRef>
-					<audioPackFormatIDRef>AP_0001000c</audioPackFormatIDRef>
+					<audioPackFormatIDRef>AP_00010003</audioPackFormatIDRef>
 				</audioTrackUID>
 				<audioTrackUID UID="ATU_00000004">
-					<audioTrackFormatIDRef>AT_00010020_01</audioTrackFormatIDRef>
-					<audioPackFormatIDRef>AP_0001000c</audioPackFormatIDRef>
+					<audioTrackFormatIDRef>AT_00010004_01</audioTrackFormatIDRef>
+					<audioPackFormatIDRef>AP_00010003</audioPackFormatIDRef>
 				</audioTrackUID>
 				<audioTrackUID UID="ATU_00000005">
 					<audioTrackFormatIDRef>AT_00010005_01</audioTrackFormatIDRef>
-					<audioPackFormatIDRef>AP_0001000c</audioPackFormatIDRef>
+					<audioPackFormatIDRef>AP_00010003</audioPackFormatIDRef>
 				</audioTrackUID>
 				<audioTrackUID UID="ATU_00000006">
 					<audioTrackFormatIDRef>AT_00010006_01</audioTrackFormatIDRef>
-					<audioPackFormatIDRef>AP_0001000c</audioPackFormatIDRef>
+					<audioPackFormatIDRef>AP_00010003</audioPackFormatIDRef>
 				</audioTrackUID>
 			</audioFormatExtended>
 		</format>
