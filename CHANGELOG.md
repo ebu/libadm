@@ -6,6 +6,11 @@
 
 ### Changed
 - included mono (0+1+0) to the common definitions lookup tables
+- corrected (0+5+0) to point to 5.1 pack (AP_00010003) in common definitions lookup table
+- included LFE in common definitions lookup table
+- multiple incorrect references to LFE1 changed to LFE in common definitions lookup tables
+- corrected B-045 AudioTrackFormat reference in common definitions lookup table
+- fixed erroneous test acceptance data
 
 ### Fixed
 
