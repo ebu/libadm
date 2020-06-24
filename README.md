@@ -13,6 +13,9 @@ write ITU-R BS.2076-1 conform XML document. It works well with the header-only
 library [`libbw64`](https://github.com/irt-open-source/libbw64) to write ADM
 related applications with minimal dependencies.
 
+[Read the documentation](https://libadm.readthedocs.io/en/latest/) to get
+started.
+
 ## Features
 
 - minimal dependencies
