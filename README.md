@@ -1,10 +1,10 @@
 # libadm - ITU-R BS.2076 Library
 
-[![](https://github.com/IRT-Open-Source/libadm/workflows/Linux/badge.svg)](https://github.com/IRT-Open-Source/libadm/actions?workflow=Linux)
-[![](https://github.com/IRT-Open-Source/libadm/workflows/macOS/badge.svg)](https://github.com/IRT-Open-Source/libadm/actions?workflow=macOS)
-[![](https://github.com/IRT-Open-Source/libadm/workflows/Windows/badge.svg)](https://github.com/IRT-Open-Source/libadm/actions?workflow=Windows)
+[![](https://github.com/ebu/libadm/workflows/Linux/badge.svg)](https://github.com/ebu/libadm/actions?workflow=Linux)
+[![](https://github.com/ebu/libadm/workflows/macOS/badge.svg)](https://github.com/ebu/libadm/actions?workflow=macOS)
+[![](https://github.com/ebu/libadm/workflows/Windows/badge.svg)](https://github.com/ebu/libadm/actions?workflow=Windows)
 [![Documentation Status](https://readthedocs.org/projects/libadm/badge/?version=latest)](https://libadm.readthedocs.io/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/IRT-Open-Source/libadm/branch/master/graph/badge.svg)](https://codecov.io/gh/IRT-Open-Source/libadm)
+[![codecov](https://codecov.io/gh/ebu/libadm/branch/master/graph/badge.svg)](https://codecov.io/gh/ebu/libadm)
 
 ## Introduction
 
