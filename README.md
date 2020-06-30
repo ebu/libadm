@@ -133,6 +133,10 @@ int main() {
 1. some ADM sub-elements are missing
 2. no SADM support (ITU-R BS.[SERIAL])
 
+## Credits
+
+*libadm* is originally a development of the [IRT](https://www.irt.de).
+
 ## Acknowledgement
 
 This project has received funding from the European Union’s Horizon 2020
@@ -141,7 +145,7 @@ research and innovation programme under grant agreement No 687645.
 ## License
 
 ```
-Copyright 2018 Institut fuer Rundfunktechnik GmbH (IRT)
+Copyright 2018-2020 The libadm Authors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
