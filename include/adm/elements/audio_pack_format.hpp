@@ -164,8 +164,8 @@ namespace adm {
    protected:
     friend class AudioPackFormatAttorney;
 
-    ADM_EXPORT AudioPackFormat(AudioPackFormatName name,
-                               TypeDescriptor channelType);
+    ADM_EXPORT explicit AudioPackFormat(AudioPackFormatName name,
+                                        TypeDescriptor channelType);
     ADM_EXPORT AudioPackFormat(const AudioPackFormat &) = default;
     ADM_EXPORT AudioPackFormat(AudioPackFormat &&) = default;
 
@@ -235,9 +235,9 @@ namespace adm {
       Parameters... optionalNamedArgs) {
     if (channelType == adm::TypeDefinition::HOA) {
       throw std::invalid_argument(
-          "For AudioPackFormat of type HOA use AudioPackFormatHoa::create() instead.");
+          "For AudioPackFormat of type HOA use AudioPackFormatHoa::create() "
+          "instead.");
     } else {
-
       std::shared_ptr<AudioPackFormat> pack(
           new AudioPackFormat(name, channelType));
       detail::setNamedOptionHelper(

@@ -34,7 +34,7 @@ namespace adm {
     typedef AudioBlockFormatDirectSpeakersTag tag;
 
     template <typename... Parameters>
-    AudioBlockFormatDirectSpeakers(Parameters... optionalNamedArgs);
+    explicit AudioBlockFormatDirectSpeakers(Parameters... optionalNamedArgs);
 
     ADM_EXPORT AudioBlockFormatDirectSpeakers(
         const AudioBlockFormatDirectSpeakers&) = default;

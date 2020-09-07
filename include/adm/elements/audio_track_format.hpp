@@ -182,8 +182,8 @@ namespace adm {
    private:
     friend class AudioTrackFormatAttorney;
 
-    ADM_EXPORT AudioTrackFormat(AudioTrackFormatName name,
-                                FormatDescriptor channelType);
+    ADM_EXPORT explicit AudioTrackFormat(AudioTrackFormatName name,
+                                         FormatDescriptor channelType);
     ADM_EXPORT AudioTrackFormat(const AudioTrackFormat &) = default;
     ADM_EXPORT AudioTrackFormat(AudioTrackFormat &&) = default;
 

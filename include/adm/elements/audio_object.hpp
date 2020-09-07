@@ -190,7 +190,7 @@ namespace adm {
    private:
     friend class AudioObjectAttorney;
 
-    ADM_EXPORT AudioObject(AudioObjectName name);
+    ADM_EXPORT explicit AudioObject(AudioObjectName name);
     ADM_EXPORT AudioObject(const AudioObject &) = default;
     ADM_EXPORT AudioObject(AudioObject &&) = default;
 

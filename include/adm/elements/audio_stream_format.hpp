@@ -258,8 +258,8 @@ namespace adm {
    private:
     friend class AudioStreamFormatAttorney;
 
-    ADM_EXPORT AudioStreamFormat(AudioStreamFormatName name,
-                                 FormatDescriptor format);
+    ADM_EXPORT explicit AudioStreamFormat(AudioStreamFormatName name,
+                                          FormatDescriptor format);
     ADM_EXPORT AudioStreamFormat(const AudioStreamFormat &) = default;
     ADM_EXPORT AudioStreamFormat(AudioStreamFormat &&) = default;
 

@@ -42,9 +42,8 @@ namespace adm {
     typedef AudioBlockFormatId id_type;
 
     template <typename... Parameters>
-    AudioBlockFormatHoa(Order order,
-                        Degree degree,
-                        Parameters... optionalNamedArgs);
+    explicit AudioBlockFormatHoa(Order order, Degree degree,
+                                 Parameters... optionalNamedArgs);
 
     ADM_EXPORT AudioBlockFormatHoa(const AudioBlockFormatHoa&) = default;
     ADM_EXPORT AudioBlockFormatHoa(AudioBlockFormatHoa&&) = default;
@@ -125,7 +124,8 @@ namespace adm {
     ADM_EXPORT Degree get(detail::ParameterTraits<Degree>::tag) const;
     ADM_EXPORT NfcRefDist get(detail::ParameterTraits<NfcRefDist>::tag) const;
     ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT Normalization get(detail::ParameterTraits<Normalization>::tag) const;
+    ADM_EXPORT Normalization
+        get(detail::ParameterTraits<Normalization>::tag) const;
     ADM_EXPORT Equation get(detail::ParameterTraits<Equation>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
@@ -145,7 +145,8 @@ namespace adm {
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<NfcRefDist>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Normalization>::tag) const;
+    ADM_EXPORT bool isDefault(
+        detail::ParameterTraits<Normalization>::tag) const;
 
     ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
@@ -167,8 +168,8 @@ namespace adm {
   // ---- Implementation ---- //
 
   template <typename... Parameters>
-  AudioBlockFormatHoa::AudioBlockFormatHoa(Order order,
-      Degree degree, Parameters... optionalNamedArgs) {
+  AudioBlockFormatHoa::AudioBlockFormatHoa(Order order, Degree degree,
+                                           Parameters... optionalNamedArgs) {
     set(order);
     set(degree);
     detail::setNamedOptionHelper(

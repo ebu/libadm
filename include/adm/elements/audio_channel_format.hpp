@@ -184,8 +184,8 @@ namespace adm {
    private:
     friend class AudioChannelFormatAttorney;
 
-    ADM_EXPORT AudioChannelFormat(AudioChannelFormatName name,
-                                  TypeDescriptor channelType);
+    ADM_EXPORT explicit AudioChannelFormat(AudioChannelFormatName name,
+                                           TypeDescriptor channelType);
     ADM_EXPORT AudioChannelFormat(const AudioChannelFormat &) = default;
     ADM_EXPORT AudioChannelFormat(AudioChannelFormat &&) = default;
 
@@ -225,7 +225,8 @@ namespace adm {
                         const AudioBlockFormatBinaural &blockFormat);
 
     template <typename BlockFormat>
-    void assignId(BlockFormat &blockFormat, BlockFormat *previousBlock = nullptr);
+    void assignId(BlockFormat &blockFormat,
+                  BlockFormat *previousBlock = nullptr);
 
     template <typename BlockFormat>
     bool idUsed(const AudioBlockFormatId &id);

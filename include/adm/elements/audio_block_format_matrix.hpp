@@ -32,7 +32,7 @@ namespace adm {
     typedef AudioBlockFormatId id_type;
 
     template <typename... Parameters>
-    AudioBlockFormatMatrix(Parameters... optionalNamedArgs);
+    explicit AudioBlockFormatMatrix(Parameters... optionalNamedArgs);
 
     ADM_EXPORT AudioBlockFormatMatrix(const AudioBlockFormatMatrix&) = default;
     ADM_EXPORT AudioBlockFormatMatrix(AudioBlockFormatMatrix&&) = default;

@@ -25,8 +25,8 @@ namespace adm {
     typedef SphericalPositionTag tag;
 
     /// @brief Constructor without optional parameters
-    ADM_EXPORT SphericalPosition(Azimuth azimuth = Azimuth(0.f),
-                                 Elevation elevation = Elevation(0.f));
+    ADM_EXPORT explicit SphericalPosition(Azimuth azimuth = Azimuth(0.f),
+                                          Elevation elevation = Elevation(0.f));
     /**
      * @brief Constructor template
      *
@@ -34,8 +34,8 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    SphericalPosition(Azimuth azimuth, Elevation elevation,
-                      Parameters... optionalNamedArgs);
+    explicit SphericalPosition(Azimuth azimuth, Elevation elevation,
+                               Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template

@@ -38,7 +38,7 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    SpeakerPosition(Parameters... optionalNamedArgs);
+    explicit SpeakerPosition(Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template

@@ -50,7 +50,7 @@ namespace adm {
      * in random order.
      */
     template <typename... Parameters>
-    GainInteractionRange(Parameters... optionalNamedArgs);
+    explicit GainInteractionRange(Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template

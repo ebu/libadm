@@ -26,7 +26,7 @@ namespace adm {
     typedef AudioBlockFormatId id_type;
 
     template <typename... Parameters>
-    AudioBlockFormatBinaural(Parameters... optionalNamedArgs);
+    explicit AudioBlockFormatBinaural(Parameters... optionalNamedArgs);
 
     ADM_EXPORT AudioBlockFormatBinaural(const AudioBlockFormatBinaural&) =
         default;
