@@ -10,7 +10,7 @@
 
 The `libadm` library is a modern C++11 library to parse, modify, create and
 write ITU-R BS.2076-1 conform XML document. It works well with the header-only
-library [`libbw64`](https://github.com/irt-open-source/libbw64) to write ADM
+library [`libbw64`](https://github.com/ebu/libbw64) to write ADM
 related applications with minimal dependencies.
 
 [Read the documentation](https://libadm.readthedocs.io/en/latest/) to get
@@ -49,7 +49,7 @@ brew install libadm
 To manually install the library you have to clone the git repository and then use the CMake build system to build and install it.
 
 ```
-git clone git@github.com:irt-open-source/libadm.git
+git clone git@github.com:ebu/libadm.git
 cd libadm
 mkdir build && cd build
 cmake ..
