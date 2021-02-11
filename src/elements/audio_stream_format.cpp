@@ -5,6 +5,8 @@
 #include "adm/utilities/element_io.hpp"
 #include "adm/utilities/id_assignment.hpp"
 
+#include <algorithm>
+
 namespace adm {
 
   // ---- Getter ---- //

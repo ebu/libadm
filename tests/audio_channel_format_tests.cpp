@@ -1,4 +1,5 @@
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+#include <algorithm>
 #include <catch2/catch.hpp>
 #include "adm/elements/audio_channel_format.hpp"
 #include "adm/utilities/comparator.hpp"

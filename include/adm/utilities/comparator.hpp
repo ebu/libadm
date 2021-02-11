@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include "adm/elements/time.hpp"
 
 namespace adm {

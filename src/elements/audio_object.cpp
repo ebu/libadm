@@ -6,6 +6,8 @@
 #include "adm/utilities/id_assignment.hpp"
 #include "adm/errors.hpp"
 
+#include <algorithm>
+
 namespace adm {
 
   // ---- Defaults ---- //

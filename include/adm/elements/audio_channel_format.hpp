@@ -1,6 +1,7 @@
 /// @file audio_channel_format.hpp
 #pragma once
 
+#include <algorithm>
 #include <boost/optional.hpp>
 #include <boost/variant.hpp>
 #include <memory>
