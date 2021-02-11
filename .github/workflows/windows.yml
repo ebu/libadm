@@ -15,13 +15,11 @@ jobs:
     - name: Install dependencies (chocolatey)
       run: choco install ninja
     - uses: ilammy/msvc-dev-cmd@v1
-    - name: set boost version
-      run: echo "::set-env name=BOOST_ROOT::$env:BOOST_ROOT_1_69_0"
     - name: Configure
       run: |
         mkdir build
         cd build
-        cmake .. -G Ninja -DCMAKE_CXX_COMPILER="cl.exe" -DCMAKE_BUILD_TYPE=Release -D${{ matrix.shared }}
+        cmake .. -G Ninja -DBOOST_ROOT="$env:BOOST_ROOT_1_72_0" -DCMAKE_CXX_COMPILER="cl.exe" -DCMAKE_BUILD_TYPE=Release -D${{ matrix.shared }}
     - name: Build
       run: |
         cd build
