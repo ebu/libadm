@@ -9,7 +9,7 @@
 ## Introduction
 
 The `libadm` library is a modern C++11 library to parse, modify, create and
-write ITU-R BS.2076-1 conform XML document. It works well with the header-only
+write [`ITU-R BS.2076`](https://www.itu.int/rec/R-REC-BS.2076) conformant XML. It works well with the header-only
 library [`libbw64`](https://github.com/ebu/libbw64) to write ADM
 related applications with minimal dependencies.
 
@@ -129,9 +129,11 @@ int main() {
 ```
 
 ## Current Limitations
+It can take time for revisions to Rec. ITU-R BS.2076 to be incorporated into this library. The implementation of the library might not include all possible uses of all the Recommendation.
 
-1. some ADM sub-elements are missing
-2. no SADM support (ITU-R BS.[SERIAL])
+The areas that are currently unsupported include:
+1. Some ADM sub-elements are missing
+2. There is no SADM support (ITU-R BS.2125)
 
 ## Credits
 
