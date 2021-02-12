@@ -43,7 +43,7 @@ use the CMake build system to build and install it.
 
 .. code:: console
 
-    git clone git@github.com:irt-open-source/libadm.git
+    git clone git@github.com:ebu/libadm.git
     cd libadm
     mkdir build && cd build
     cmake ..
