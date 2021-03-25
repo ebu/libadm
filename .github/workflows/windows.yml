@@ -13,13 +13,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install dependencies (chocolatey)
-      run: choco install ninja
+      run: choco install ninja boost-msvc-14.2
     - uses: ilammy/msvc-dev-cmd@v1
     - name: Configure
       run: |
         mkdir build
         cd build
-        cmake .. -G Ninja -DBOOST_ROOT="$env:BOOST_ROOT_1_72_0" -DCMAKE_CXX_COMPILER="cl.exe" -DCMAKE_BUILD_TYPE=Release -D${{ matrix.shared }}
+        cmake .. -G Ninja -DBOOST_ROOT="$env:BOOST_ROOT_1_74_0" -DCMAKE_CXX_COMPILER="cl.exe" -DCMAKE_BUILD_TYPE=Release -D${{ matrix.shared }}
     - name: Build
       run: |
         cd build
