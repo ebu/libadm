@@ -13,9 +13,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Set up Homebrew
+      id: set-up-homebrew
+      uses: Homebrew/actions/setup-homebrew@master
     - name: Install dependencies (brew)
       run: |
-        brew install cmake ninja boost
+        brew install ninja boost
     - name: Configure
       run: |
         mkdir build
