@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioChannelFormat audioChannelFormatID="AC_00011001" audioChannelFormatName="Test" typeLabel="0001" typeDefinition="DirectSpeakers">
+					<audioBlockFormat audioBlockFormatID="AB_00011001_00000001" rtime="00:00:01.000000000" duration="00:00:01.000000000">
+						<speakerLabel>testLabel</speakerLabel>
+						<position coordinate="X" screenEdgeLock="left">0.000000</position>
+						<position coordinate="X" bound="min">-0.100000</position>
+						<position coordinate="X" bound="max">0.100000</position>
+						<position coordinate="Y">0.000000</position>
+						<position coordinate="Y" bound="min">-0.100000</position>
+						<position coordinate="Y" bound="max">0.100000</position>
+						<position coordinate="Z">0.500000</position>
+						<position coordinate="Z" bound="min">0.400000</position>
+						<position coordinate="Z" bound="max">0.600000</position>
+					</audioBlockFormat>
+				</audioChannelFormat>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+

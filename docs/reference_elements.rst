@@ -93,7 +93,8 @@ there are five different ``AudioBlockFormat`` classes.
 
 
 .. doxygenclass:: adm::AudioBlockFormatDirectSpeakers
-.. doxygenclass:: adm::SpeakerPosition
+.. doxygenclass:: adm::CartesianSpeakerPosition
+.. doxygenclass:: adm::SphericalSpeakerPosition
 
 .. doxygenclass:: adm::AudioBlockFormatMatrix
 

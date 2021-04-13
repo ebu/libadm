@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <boost/optional.hpp>
+#include <boost/variant.hpp>
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/elements/screen_edge_lock.hpp"
 #include "adm/elements/position_types.hpp"
@@ -20,16 +21,14 @@ namespace adm {
   using BoundValue = detail::NamedType<std::string, BoundValueTag,
                                        detail::BoundValueValidator>;
 
-  /// @brief Tag for SpeakerPosition class
-  struct SpeakerPositionTag {};
+  /// @brief Tag for CartesianSpeakerPosition class
+  struct CartesianSpeakerPositionTag {};
   /**
-   * @brief ADM parameter class to specify a speaker position
-   *
-   * @warning The SpeakerPosition class does not support cartesian coordinates.
+   * @brief ADM parameter class to specify a cartesian speaker position
    */
-  class SpeakerPosition {
+  class CartesianSpeakerPosition {
    public:
-    typedef SpeakerPositionTag tag;
+    typedef CartesianSpeakerPositionTag tag;
 
     /**
      * @brief Constructor template
@@ -38,7 +37,167 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    SpeakerPosition(Parameters... optionalNamedArgs);
+    explicit CartesianSpeakerPosition(Parameters... optionalNamedArgs);
+
+    /**
+     * @brief ADM parameter getter template
+     *
+     * Templated getter with the wanted ADM parameter type as template
+     * argument. If currently no value is available trying to get the adm
+     * parameter will result in an exception. Check with the has method before
+     */
+    template <typename Parameter>
+    Parameter get() const;
+
+    /**
+     * @brief ADM parameter has template
+     *
+     * Templated has method with the ADM parameter type as template argument.
+     * Returns true if the ADM parameter is set or has a default value.
+     */
+    template <typename Parameter>
+    bool has() const;
+
+    /**
+     * @brief ADM parameter isDefault template
+     *
+     * Templated isDefault method with the ADM parameter type as template
+     * argument. Returns true if the ADM parameter is the default value.
+     */
+    template <typename Parameter>
+    bool isDefault() const;
+
+    /// @brief X setter
+    ADM_EXPORT void set(X x);
+    /// @brief XMin setter
+    ADM_EXPORT void set(XMin xMin);
+    /// @brief XMax setter
+    ADM_EXPORT void set(XMax xMax);
+    /// @brief Y setter
+    ADM_EXPORT void set(Y y);
+    /// @brief Y minimum setter
+    ADM_EXPORT void set(YMin yMin);
+    /// @brief YMax setter
+    ADM_EXPORT void set(YMax yMax);
+    /// @brief Z setter
+    ADM_EXPORT void set(Z z);
+    /// @brief ZMin setter
+    ADM_EXPORT void set(ZMin zMin);
+    /// @brief ZMax setter
+    ADM_EXPORT void set(ZMax zMax);
+    /// @brief ScreenEdgeLock setter
+    ADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
+
+    /**
+     * @brief ADM parameter unset template
+     *
+     * Templated unset method with the ADM parameter type as template
+     * argument. Removes an ADM parameter if it is optional or resets it to
+     * the default value if there is one.
+     */
+    template <typename Parameter>
+    void unset();
+
+   private:
+    ADM_EXPORT X get(detail::ParameterTraits<X>::tag) const;
+    ADM_EXPORT XMin get(detail::ParameterTraits<XMin>::tag) const;
+    ADM_EXPORT XMax get(detail::ParameterTraits<XMax>::tag) const;
+    ADM_EXPORT Y get(detail::ParameterTraits<Y>::tag) const;
+    ADM_EXPORT YMin get(detail::ParameterTraits<YMin>::tag) const;
+    ADM_EXPORT YMax get(detail::ParameterTraits<YMax>::tag) const;
+    ADM_EXPORT Z get(detail::ParameterTraits<Z>::tag) const;
+    ADM_EXPORT ZMin get(detail::ParameterTraits<ZMin>::tag) const;
+    ADM_EXPORT ZMax get(detail::ParameterTraits<ZMax>::tag) const;
+    ADM_EXPORT ScreenEdgeLock
+        get(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
+
+    ADM_EXPORT bool has(detail::ParameterTraits<X>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<XMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<XMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Y>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<YMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<YMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Z>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ZMin>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ZMax>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
+
+    template <typename Tag>
+    bool isDefault(Tag) const {
+      return false;
+    }
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Z>::tag) const;
+
+    ADM_EXPORT void unset(detail::ParameterTraits<XMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<XMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<YMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<YMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Z>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ZMin>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ZMax>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
+
+    X x_;
+    boost::optional<XMin> xMin_;
+    boost::optional<XMax> xMax_;
+    Y y_;
+    boost::optional<YMin> yMin_;
+    boost::optional<YMax> yMax_;
+    boost::optional<Z> z_;
+    boost::optional<ZMin> zMin_;
+    boost::optional<ZMax> zMax_;
+    boost::optional<ScreenEdgeLock> screenEdgeLock_;
+  };
+
+  // ---- Implementation ---- //
+
+  template <typename... Parameters>
+  CartesianSpeakerPosition::CartesianSpeakerPosition(
+      Parameters... optionalNamedArgs) {
+    detail::setNamedOptionHelper(
+        this, std::forward<Parameters>(optionalNamedArgs)...);
+  }
+
+  template <typename Parameter>
+  Parameter CartesianSpeakerPosition::get() const {
+    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
+    return get(Tag());
+  }
+
+  template <typename Parameter>
+  bool CartesianSpeakerPosition::has() const {
+    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
+    return has(Tag());
+  }
+
+  template <typename Parameter>
+  bool CartesianSpeakerPosition::isDefault() const {
+    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
+    return isDefault(Tag());
+  }
+
+  template <typename Parameter>
+  void CartesianSpeakerPosition::unset() {
+    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
+    return unset(Tag());
+  }
+
+  struct SphericalSpeakerPositionTag {};
+  /**
+   * @brief ADM parameter class to specify a spherical speaker position
+   */
+  class SphericalSpeakerPosition {
+   public:
+    typedef SphericalSpeakerPositionTag tag;
+
+    /**
+     * @brief Constructor template
+     *
+     * Templated constructor which accepts a variable number of ADM parameters
+     * in random order after the mandatory ADM parameters.
+     */
+    template <typename... Parameters>
+    explicit SphericalSpeakerPosition(Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template
@@ -135,6 +294,8 @@ namespace adm {
       return false;
     }
 
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Distance>::tag) const;
+
     ADM_EXPORT void unset(detail::ParameterTraits<AzimuthMin>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<AzimuthMax>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ElevationMin>::tag);
@@ -159,31 +320,32 @@ namespace adm {
   // ---- Implementation ---- //
 
   template <typename... Parameters>
-  SpeakerPosition::SpeakerPosition(Parameters... optionalNamedArgs) {
+  SphericalSpeakerPosition::SphericalSpeakerPosition(
+      Parameters... optionalNamedArgs) {
     detail::setNamedOptionHelper(
         this, std::forward<Parameters>(optionalNamedArgs)...);
   }
 
   template <typename Parameter>
-  Parameter SpeakerPosition::get() const {
+  Parameter SphericalSpeakerPosition::get() const {
     typedef typename detail::ParameterTraits<Parameter>::tag Tag;
     return get(Tag());
   }
 
   template <typename Parameter>
-  bool SpeakerPosition::has() const {
+  bool SphericalSpeakerPosition::has() const {
     typedef typename detail::ParameterTraits<Parameter>::tag Tag;
     return has(Tag());
   }
 
   template <typename Parameter>
-  bool SpeakerPosition::isDefault() const {
+  bool SphericalSpeakerPosition::isDefault() const {
     typedef typename detail::ParameterTraits<Parameter>::tag Tag;
     return isDefault(Tag());
   }
 
   template <typename Parameter>
-  void SpeakerPosition::unset() {
+  void SphericalSpeakerPosition::unset() {
     typedef typename detail::ParameterTraits<Parameter>::tag Tag;
     return unset(Tag());
   }

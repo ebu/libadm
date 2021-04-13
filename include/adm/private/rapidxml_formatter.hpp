@@ -56,8 +56,12 @@ namespace adm {
 
     void formatSpeakerLabels(XmlNode &parentNode, const std::string &name,
                              const SpeakerLabels &speakerLabels);
-    void formatSpeakerPosition(XmlNode &parentNode, const std::string &name,
-                               const SpeakerPosition &position);
+    void formatCartesianSpeakerPosition(
+        XmlNode &parentNode, const std::string &name,
+        const CartesianSpeakerPosition &position);
+    void formatSphericalSpeakerPosition(
+        XmlNode &parentNode, const std::string &name,
+        const SphericalSpeakerPosition &position);
     void formatFrequency(XmlNode &parentNode, const std::string &name,
                          const Frequency &frequency);
     void formatPosition(XmlNode &parentNode, const std::string &name,

@@ -287,7 +287,13 @@ namespace adm {
       node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
       node.addOptionalAttribute<Duration>(&audioBlock, "duration");
       node.addMultiElement<SpeakerLabels>(&audioBlock, "speakerLabel", &formatSpeakerLabels);
-      node.addMultiElement<SpeakerPosition>(&audioBlock, "position", &formatSpeakerPosition);
+      if(audioBlock.has<SphericalSpeakerPosition>()) {
+        node.addMultiElement<SphericalSpeakerPosition>(&audioBlock, "position", &formatSphericalSpeakerPosition);
+      }
+      if(audioBlock.has<CartesianSpeakerPosition>()) {
+        node.addMultiElement<CartesianSpeakerPosition>(&audioBlock, "position", &formatCartesianSpeakerPosition);
+      }
+
       // clang-format on
     }
 
@@ -299,36 +305,135 @@ namespace adm {
       }
     }
 
-    void formatSpeakerPosition(XmlNode &parentNode, const std::string &name,
-                               const SpeakerPosition &position) {
+    void formatSphericalSpeakerPosition(
+        XmlNode &parentNode, const std::string &name,
+        const SphericalSpeakerPosition &position) {
       auto azimuthNode = parentNode.addNode(name);
       azimuthNode.addAttribute("coordinate", "azimuth");
-      azimuthNode.addOptionalAttribute<AzimuthMin>(&position, "min");
-      azimuthNode.addOptionalAttribute<AzimuthMax>(&position, "max");
       if (position.has<ScreenEdgeLock>()) {
         auto screenEdgeLock = position.get<ScreenEdgeLock>();
         azimuthNode.addOptionalAttribute<HorizontalEdge>(&screenEdgeLock,
                                                          "screenEdgeLock");
       }
       azimuthNode.setValue(position.get<Azimuth>());
+      parentNode.addOptionalElement<AzimuthMin>(
+          &position, name, [](XmlNode &node, AzimuthMin const &min) {
+            node.addAttribute("coordinate", "azimuth");
+            node.addAttribute("bound", "min");
+            node.setValue(min.get());
+          });
+      parentNode.addOptionalElement<AzimuthMax>(
+          &position, name, [](XmlNode &node, AzimuthMax const &max) {
+            node.addAttribute("coordinate", "azimuth");
+            node.addAttribute("bound", "max");
+            node.setValue(max.get());
+          });
 
       auto elevationNode = parentNode.addNode(name);
       elevationNode.addAttribute("coordinate", "elevation");
-      elevationNode.addOptionalAttribute<ElevationMin>(&position, "min");
-      elevationNode.addOptionalAttribute<ElevationMax>(&position, "max");
       if (position.has<ScreenEdgeLock>()) {
         auto screenEdgeLock = position.get<ScreenEdgeLock>();
         elevationNode.addOptionalAttribute<VerticalEdge>(&screenEdgeLock,
                                                          "screenEdgeLock");
       }
       elevationNode.setValue(position.get<Elevation>());
-      if (!position.isDefault<Distance>()) {
-        auto distanceNode = parentNode.addNode(name);
-        distanceNode.addAttribute("coordinate", "distance");
-        distanceNode.addOptionalAttribute<DistanceMin>(&position, "min");
-        distanceNode.addOptionalAttribute<DistanceMax>(&position, "max");
-        distanceNode.setValue(position.get<Distance>());
+
+      parentNode.addOptionalElement<ElevationMin>(
+          &position, name, [](XmlNode &node, ElevationMin const &min) {
+            node.addAttribute("coordinate", "elevation");
+            node.addAttribute("bound", "min");
+            node.setValue(min.get());
+          });
+      parentNode.addOptionalElement<ElevationMax>(
+          &position, name, [](XmlNode &node, ElevationMax const &max) {
+            node.addAttribute("coordinate", "elevation");
+            node.addAttribute("bound", "max");
+            node.setValue(max.get());
+          });
+
+      parentNode.addOptionalElement<Distance>(
+          &position, name, [](XmlNode &node, Distance const &distance) {
+            node.addAttribute("coordinate", "distance");
+            node.setValue(distance.get());
+          });
+      parentNode.addOptionalElement<DistanceMin>(
+          &position, name, [](XmlNode &node, DistanceMin const &min) {
+            node.addAttribute("coordinate", "distance");
+            node.addAttribute("bound", "min");
+            node.setValue(min.get());
+          });
+      parentNode.addOptionalElement<DistanceMax>(
+          &position, name, [](XmlNode &node, DistanceMax const &max) {
+            node.addAttribute("coordinate", "distance");
+            node.addAttribute("bound", "max");
+            node.setValue(max.get());
+          });
+    }
+
+    void formatCartesianSpeakerPosition(
+        XmlNode &parentNode, const std::string &name,
+        const CartesianSpeakerPosition &position) {
+      auto xNode = parentNode.addNode(name);
+      xNode.addAttribute("coordinate", "X");
+      if (position.has<ScreenEdgeLock>()) {
+        auto screenEdgeLock = position.get<ScreenEdgeLock>();
+        xNode.addOptionalAttribute<HorizontalEdge>(&screenEdgeLock,
+                                                   "screenEdgeLock");
       }
+      xNode.setValue(position.get<X>());
+
+      parentNode.addOptionalElement<XMin>(
+          &position, name, [](XmlNode &node, XMin const &min) {
+            node.addAttribute("coordinate", "X");
+            node.addAttribute("bound", "min");
+            node.setValue(min.get());
+          });
+      parentNode.addOptionalElement<XMax>(
+          &position, name, [](XmlNode &node, XMax const &max) {
+            node.addAttribute("coordinate", "X");
+            node.addAttribute("bound", "max");
+            node.setValue(max.get());
+          });
+
+      auto yNode = parentNode.addNode(name);
+      yNode.addAttribute("coordinate", "Y");
+      if (position.has<ScreenEdgeLock>()) {
+        auto screenEdgeLock = position.get<ScreenEdgeLock>();
+        yNode.addOptionalAttribute<VerticalEdge>(&screenEdgeLock,
+                                                 "screenEdgeLock");
+      }
+      yNode.setValue(position.get<Y>());
+
+      parentNode.addOptionalElement<YMin>(
+          &position, name, [](XmlNode &node, YMin const &min) {
+            node.addAttribute("coordinate", "Y");
+            node.addAttribute("bound", "min");
+            node.setValue(min.get());
+          });
+      parentNode.addOptionalElement<YMax>(
+          &position, name, [](XmlNode &node, YMax const &max) {
+            node.addAttribute("coordinate", "Y");
+            node.addAttribute("bound", "max");
+            node.setValue(max.get());
+          });
+
+      parentNode.addOptionalElement<Z>(&position, name,
+                                       [](XmlNode &node, Z const &z) {
+                                         node.addAttribute("coordinate", "Z");
+                                         node.setValue(z.get());
+                                       });
+      parentNode.addOptionalElement<ZMin>(
+          &position, name, [](XmlNode &node, ZMin const &min) {
+            node.addAttribute("coordinate", "Z");
+            node.addAttribute("bound", "min");
+            node.setValue(min.get());
+          });
+      parentNode.addOptionalElement<ZMax>(
+          &position, name, [](XmlNode &node, ZMax const &max) {
+            node.addAttribute("coordinate", "Z");
+            node.addAttribute("bound", "max");
+            node.setValue(max.get());
+          });
     }
 
     void formatFrequency(XmlNode &parentNode, const std::string &name,
