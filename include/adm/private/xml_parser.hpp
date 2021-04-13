@@ -44,6 +44,13 @@ namespace adm {
     JumpPosition parseJumpPosition(NodePtr node);
     AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(
         NodePtr node);
+    SphericalSpeakerPosition parseSphericalSpeakerPosition(
+        const std::vector<std::pair<NodePtr, SphericalCoordinateValue>>&
+            sphericalCoordinates);
+    CartesianSpeakerPosition parseCartesianSpeakerPosition(
+        const std::vector<
+            std::pair<adm::xml::NodePtr, adm::CartesianCoordinateValue>>&
+            cartesianCoordinates);
     SpeakerPosition parseSpeakerPosition(std::vector<NodePtr> node);
     SpeakerLabel parseSpeakerLabel(NodePtr node);
     AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node);

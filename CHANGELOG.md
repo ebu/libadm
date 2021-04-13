@@ -3,8 +3,11 @@
 ## Unreleased
 
 ### Added
+- Added support for Cartesian speaker positions.
 
 ### Changed
+- SpeakerPosition is now a boost::variant that can be either a CartesianSpeakerPosition or a SphericalSpeakerPosition
+- The previous SpeakerPosition type has been renamed to SphericalSpeakerPosition.
 - included mono (0+1+0) to the common definitions lookup tables
 - corrected (0+5+0) to point to 5.1 pack (AP_00010003) in common definitions lookup table
 - included LFE in common definitions lookup table

@@ -97,18 +97,60 @@ namespace adm {
    * @brief NamedType for the X parameter of the position element
    */
   using X = detail::NamedType<float, XTag>;
+  /// @brief Tag for NamedType ::XMin
+  struct XMinTag {};
+  /**
+   * @brief NamedType for the minimum X parameter of the position
+   * element
+   */
+  using XMin = detail::NamedType<float, XMinTag>;
+  /// @brief Tag for NamedType ::XMax
+  struct XMaxTag {};
+  /**
+   * @brief NamedType for the maximum X parameter of the position
+   * element
+   */
+  using XMax = detail::NamedType<float, XMaxTag>;
   /// @brief Tag for NamedType ::Y
   struct YTag {};
   /**
    * @brief NamedType for the Y parameter of the position element
    */
   using Y = detail::NamedType<float, YTag>;
+  /// @brief Tag for NamedType ::YMin
+  struct YMinTag {};
+  /**
+   * @brief NamedType for the minimum Y parameter of the position
+   * element
+   */
+  using YMin = detail::NamedType<float, YMinTag>;
+  /// @brief Tag for NamedType ::YMax
+  struct YMaxTag {};
+  /**
+   * @brief NamedType for the maximum Y parameter of the position
+   * element
+   */
+  using YMax = detail::NamedType<float, YMaxTag>;
   /// @brief Tag for NamedType ::Z
   struct ZTag {};
   /**
    * @brief NamedType for the Z parameter of the position element
    */
   using Z = detail::NamedType<float, ZTag>;
+  /// @brief Tag for NamedType ::ZMin
+  struct ZMinTag {};
+  /**
+   * @brief NamedType for the minimum Z parameter of the position
+   * element
+   */
+  using ZMin = detail::NamedType<float, ZMinTag>;
+  /// @brief Tag for NamedType ::ZMax
+  struct ZMaxTag {};
+  /**
+   * @brief NamedType for the maximum Z parameter of the position
+   * element
+   */
+  using ZMax = detail::NamedType<float, ZMaxTag>;
 
   /// @brief Tag for NamedType ::SphericalCoordinateValue
   struct SphericalCoordinateValueTag {};
