@@ -87,4 +87,29 @@ namespace adm {
                                      const std::string& name,
                                      const std::string& speakerLayout);
 
+  /**
+   * @brief Create and add `AudioObject` with common definitions direct speakers
+   * channel bed to document with a given channel order
+   *
+   * Creates an `AudioObject` and corresponding `AudioTrackUids` and connects it
+   * to the common definition ADM elements for the given speaker layout. The
+   * created ADM elements are added to the given document.
+   *
+   * @note The document must already have the common definition elements added.
+   *
+   * @param document The document where the `AudioObject` and the
+   * `AudioTrackUids` should be added to and whose common definition ADM
+   * elements should be used.
+   * @param name Name that will be used for the created `AudioObject`.
+   * @param packFormatId AudioPackFormatId of the given layout.
+   * @param trackFormatIds AudioTrackFormatIds of all the speakers in the layout.
+   * @param speakerLabels Labels of all the speakers in the layout.
+   */
+  ADM_EXPORT SimpleCommonDefinitionsObjectHolder
+  addTailoredCommonDefinitionsObjectTo(
+      std::shared_ptr<Document> document, const std::string& name,
+      const adm::AudioPackFormatId packFormatId,
+      const std::vector<adm::AudioTrackFormatId>& trackFormatIds,
+      const std::vector<std::string>& speakerLabels);
+
 }  // namespace adm
