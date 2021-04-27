@@ -96,6 +96,12 @@ namespace adm {
       for (size_t i = 0; i < trackFormatIds.size(); i++) {
           auto track =
               document->lookup(adm::parseAudioTrackFormatId(trackFormatIds.at(i)));
+          if (!track) {
+              std::stringstream ss;
+              ss << "AudioTrackFormatId \"" << trackFormatIds.at(i)
+                  << "\" not found. Id might be invalid.";
+              throw error::AdmException(ss.str());
+          }
           auto uid = AudioTrackUid::create();
           uid->setReference(packFormat);
           uid->setReference(track);
