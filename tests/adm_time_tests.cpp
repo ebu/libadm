@@ -2,9 +2,10 @@
 #include <catch2/catch.hpp>
 #include "adm/elements/time.hpp"
 
+using namespace adm;
+
 namespace std {
-  std::ostream& operator<<(std::ostream& stream,
-                           const adm::FractionalTime& time) {
+  std::ostream& operator<<(std::ostream& stream, const FractionalTime& time) {
     return stream << "FractionalTime{" << time.numerator << ", "
                   << time.denominator << "}";
   }
@@ -14,10 +15,15 @@ namespace std {
                            const std::chrono::nanoseconds& time) {
     return stream << "nanoseconds{" << time.count() << "}";
   }
+
+  std::ostream& operator<<(std::ostream& stream, const Time& time) {
+    return boost::apply_visitor(
+        [&](const auto& t) -> std::ostream& { return stream << t; },
+        time.asVariant());
+  }
 }  // namespace std
 
 TEST_CASE("adm_time") {
-  using namespace adm;
   // different accuracy
   {
     parseFractionalTimecode("00:00:00.00000");
@@ -70,4 +76,26 @@ TEST_CASE("adm_time") {
     REQUIRE(formatFractionalTimecode(parseFractionalTimecode(
                 "04:20:14.123S456")) == "04:20:14.123S456");
   }
+}
+
+TEST_CASE("Time Fractional") {
+  Time t{FractionalTime{6, 4}};
+
+  REQUIRE(t == FractionalTime{6, 4});
+  REQUIRE(t.asFractional() == FractionalTime{6, 4});
+  REQUIRE(t.asNanoseconds() == std::chrono::nanoseconds{1500000000});
+  REQUIRE(t.isFractional());
+  REQUIRE(!t.isNanoseconds());
+
+  REQUIRE(t.asFractional().normalised() == FractionalTime{3, 2});
+}
+
+TEST_CASE("Time nanoseconds") {
+  Time t{std::chrono::nanoseconds{1500000000}};
+
+  REQUIRE(t == std::chrono::nanoseconds{1500000000});
+  REQUIRE(t.asNanoseconds() == std::chrono::nanoseconds{1500000000});
+  REQUIRE(t.asFractional() == FractionalTime{1500000000, 1000000000});
+  REQUIRE(t.isNanoseconds());
+  REQUIRE(!t.isFractional());
 }

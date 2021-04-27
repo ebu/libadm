@@ -1,10 +1,46 @@
 #include "adm/elements/time.hpp"
+#include <boost/integer/common_factor.hpp>
 #include <boost/format.hpp>
 #include <iomanip>
 #include <regex>
 #include <sstream>
 
 namespace adm {
+
+  FractionalTime FractionalTime::normalised() const {
+    int64_t gcd = boost::integer::gcd(numerator, denominator);
+    return {numerator / gcd, denominator / gcd};
+  }
+
+  struct AsNanosecondsVisitor
+      : public boost::static_visitor<std::chrono::nanoseconds> {
+    std::chrono::nanoseconds operator()(
+        const std::chrono::nanoseconds& time) const {
+      return time;
+    }
+
+    std::chrono::nanoseconds operator()(const FractionalTime& time) const {
+      FractionalTime normalised = time.normalised();
+      return std::chrono::nanoseconds{(1000000000 * normalised.numerator) /
+                                      normalised.denominator};
+    }
+  };
+
+  struct AsFractionalVisitor : public boost::static_visitor<FractionalTime> {
+    FractionalTime operator()(const std::chrono::nanoseconds& time) const {
+      return {time.count(), 1000000000};
+    }
+
+    FractionalTime operator()(const FractionalTime& time) const { return time; }
+  };
+
+  std::chrono::nanoseconds Time::asNanoseconds() const {
+    return boost::apply_visitor(AsNanosecondsVisitor(), time);
+  }
+
+  FractionalTime Time::asFractional() const {
+    return boost::apply_visitor(AsFractionalVisitor(), time);
+  }
 
   std::chrono::nanoseconds parseTimecode(const std::string& timecode) {
     const static std::regex commonFormat(
@@ -108,7 +144,7 @@ namespace adm {
   };
 
   std::string formatFractionalTimecode(const Time& time) {
-    return boost::apply_visitor(FormatTimeVisitor(), time);
+    return boost::apply_visitor(FormatTimeVisitor(), time.asVariant());
   }
 
 }  // namespace adm

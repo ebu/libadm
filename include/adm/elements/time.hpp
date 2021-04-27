@@ -21,9 +21,38 @@ namespace adm {
     bool operator!=(const FractionalTime& other) const {
       return !(*this == other);
     }
+
+    /// normalised fraction, such that numerator and denominator have no common
+    /// fractors
+    FractionalTime normalised() const;
   };
 
-  using Time = boost::variant<std::chrono::nanoseconds, FractionalTime>;
+  /// representation of ADM times; this can either be decimal times,
+  /// represented as nanoseconds, or fractional times, represented as a
+  /// FractionalTime
+  class Time {
+   public:
+    Time(const std::chrono::nanoseconds& time) : time(time) {}
+    Time(const FractionalTime& time) : time(time) {}
+
+    /// convert to nanoseconds, rounding down
+    std::chrono::nanoseconds asNanoseconds() const;
+    FractionalTime asFractional() const;
+
+    bool isNanoseconds() const {
+      return time.type() == typeid(std::chrono::nanoseconds);
+    }
+    bool isFractional() const { return time.type() == typeid(FractionalTime); };
+
+    using Variant = boost::variant<std::chrono::nanoseconds, FractionalTime>;
+    Variant asVariant() const { return time; }
+
+    bool operator==(const Time& other) const { return time == other.time; }
+    bool operator!=(const Time& other) const { return time != other.time; }
+
+   private:
+    Variant time;
+  };
 
   /// @brief Tag for NamedType ::Start
   struct StartTag {};
