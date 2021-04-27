@@ -20,6 +20,11 @@ namespace adm {
       return Gain{1.0f};
     }
 
+    template <>
+    inline Rtime getDefault<Rtime>() {
+      return Rtime{std::chrono::nanoseconds{0}};
+    }
+
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Gain>;
 
     extern template class ADM_EXPORT_TEMPLATE_METHODS
