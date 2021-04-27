@@ -48,4 +48,8 @@ namespace adm {
   /// @brief Format a std::chrono::duration object as an adm timecode string
   ADM_EXPORT std::string formatTimecode(const std::chrono::nanoseconds& time);
 
+  /// @brief Parse an adm timecode and convert it to a std::chrono::duration
+  ADM_EXPORT Time parseFractionalTimecode(const std::string& timecode);
+  /// @brief Format a std::chrono::duration object as an adm timecode string
+  ADM_EXPORT std::string formatFractionalTimecode(const Time& time);
 }  // namespace adm
