@@ -3,10 +3,19 @@
 
 #include <chrono>
 #include <string>
+#include <boost/variant.hpp>
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 
 namespace adm {
+
+  /// @brief storage for ADM times of format 'hh:mm:ss.zzzzzSfffff'
+  struct FractionalTime {
+    int64_t numerator;
+    int64_t denominator;
+  };
+
+  using Time = boost::variant<std::chrono::nanoseconds, FractionalTime>;
 
   /// @brief Tag for NamedType ::Start
   struct StartTag {};
