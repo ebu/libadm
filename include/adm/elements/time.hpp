@@ -13,6 +13,14 @@ namespace adm {
   struct FractionalTime {
     int64_t numerator;
     int64_t denominator;
+
+    bool operator==(const FractionalTime& other) const {
+      return numerator == other.numerator && denominator == other.denominator;
+    }
+
+    bool operator!=(const FractionalTime& other) const {
+      return !(*this == other);
+    }
   };
 
   using Time = boost::variant<std::chrono::nanoseconds, FractionalTime>;
