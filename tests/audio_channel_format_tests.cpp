@@ -63,7 +63,8 @@ TEST_CASE("audio_channel_format") {
     REQUIRE(blockFormats.size() == 3);
     Rtime previousRtime(std::chrono::seconds(0));
     for (auto &blockFormat : blockFormats) {
-      REQUIRE(previousRtime.get() < blockFormat.get<Rtime>().get());
+      REQUIRE(previousRtime.get().asNanoseconds() <
+              blockFormat.get<Rtime>().get().asNanoseconds());
       previousRtime = blockFormat.get<Rtime>();
     }
   }

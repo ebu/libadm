@@ -30,7 +30,8 @@ namespace adm {
     template <typename AudioBlockFormat>
     bool operator()(const AudioBlockFormat& lhs, const AudioBlockFormat& rhs) {
       if (lhs.template has<Rtime>() && rhs.template has<Rtime>()) {
-        return lhs.template get<Rtime>() < rhs.template get<Rtime>();
+        return lhs.template get<Rtime>().get().asNanoseconds() <
+               rhs.template get<Rtime>().get().asNanoseconds();
       }
 
       return false;
