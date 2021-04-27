@@ -4,6 +4,7 @@
 #include <chrono>
 #include <memory>
 #include "adm/export.h"
+#include "adm/elements/time.hpp"
 
 namespace adm {
 
@@ -34,7 +35,7 @@ namespace adm {
    * @sa void updateBlockFormatDurations(std::shared_ptr<Document>)
    */
   ADM_EXPORT void updateBlockFormatDurations(
-      std::shared_ptr<Document> document, std::chrono::nanoseconds fileLength);
+      std::shared_ptr<Document> document, const Time& fileLength);
 
   /**
    * @brief Set or update durations of all `AudioBlockFormats`

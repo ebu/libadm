@@ -73,7 +73,7 @@ namespace adm {
 
     namespace detail {
       std::string toString(const std::string &string);
-      std::string toString(const std::chrono::nanoseconds &time);
+      std::string toString(const Time &time);
       std::string toString(const AudioProgrammeId &id);
       std::string toString(const AudioContentId &id);
       std::string toString(const AudioObjectId &id);
