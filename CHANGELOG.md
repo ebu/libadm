@@ -14,6 +14,7 @@
 - multiple incorrect references to LFE1 changed to LFE in common definitions lookup tables
 - corrected B-045 AudioTrackFormat reference in common definitions lookup table
 - fixed erroneous test acceptance data
+- updated required C++ standard from C++11 to C++14
 
 ### Fixed
 

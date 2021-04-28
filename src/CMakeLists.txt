@@ -103,7 +103,7 @@ if (${CMAKE_VERSION} VERSION_LESS "3.8.0")
   # this for CMake < 3.8
   target_compile_features(adm PUBLIC cxx_auto_type cxx_nullptr cxx_range_for)
 else()
-  target_compile_features(adm PUBLIC cxx_std_11)
+  target_compile_features(adm PUBLIC cxx_std_14)
 endif()
 set_target_properties(adm PROPERTIES CXX_EXTENSIONS OFF)
 
