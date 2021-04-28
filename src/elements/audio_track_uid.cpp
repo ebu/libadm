@@ -66,8 +66,8 @@ namespace adm {
 
     if (audioChannelFormat_ != nullptr) {
       throw adm::error::AudioTrackUidMutuallyExclusiveReferences(
-        audioChannelFormat_->get<AudioChannelFormatId>(),
-        trackFormat->get<AudioTrackFormatId>());
+          audioChannelFormat_->get<AudioChannelFormatId>(),
+          trackFormat->get<AudioTrackFormatId>());
     }
 
     audioTrackFormat_ = trackFormat;
@@ -85,8 +85,8 @@ namespace adm {
   }
 
   void AudioTrackUid::setReference(
-    std::shared_ptr<AudioChannelFormat> channelFormat) {
-    autoParent(shared_from_this(), channelFormat); // TODO what is this
+      std::shared_ptr<AudioChannelFormat> channelFormat) {
+    autoParent(shared_from_this(), channelFormat);
     if (getParent().lock() != channelFormat->getParent().lock()) {
       throw std::runtime_error(
           "AudioTrackUid cannot refer to an AudioChannelFormat in a different "
@@ -95,8 +95,8 @@ namespace adm {
 
     if (audioTrackFormat_ != nullptr) {
       throw adm::error::AudioTrackUidMutuallyExclusiveReferences(
-        channelFormat->get<AudioChannelFormatId>(),
-        audioTrackFormat_->get<AudioTrackFormatId>());
+          channelFormat->get<AudioChannelFormatId>(),
+          audioTrackFormat_->get<AudioTrackFormatId>());
     }
 
     audioChannelFormat_ = channelFormat;
