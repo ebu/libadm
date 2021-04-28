@@ -3,6 +3,7 @@
 #include "adm/elements/audio_pack_format.hpp"
 #include "adm/elements/audio_track_format.hpp"
 #include "adm/elements/audio_track_uid.hpp"
+#include "adm/errors.hpp"
 
 TEST_CASE("audio_track_uid") {
   using namespace adm;
@@ -81,4 +82,44 @@ TEST_CASE("audio_track_uid_with_channel_format_ref") {
 
   audioTrackUid->removeReference<AudioPackFormat>();
   audioTrackUid->removeReference<AudioChannelFormat>();
+}
+
+TEST_CASE("audio_track_uid_with_channel_format_and_track_format_refs") {
+  // This checks that an error is thrown when both a channel format and track format are present.
+  using namespace adm;
+  auto audioTrackUid =
+      AudioTrackUid::create(AudioTrackUidId(AudioTrackUidIdValue(1)),
+                            BitDepth(16), SampleRate(44100));
+  auto audioPackFormat = AudioPackFormat::create(
+      AudioPackFormatName("MyPackFormat"), TypeDefinition::DIRECT_SPEAKERS);
+    auto audioTrackFormat = AudioTrackFormat::create(
+        AudioTrackFormatName("MyTrackFormat"), FormatDefinition::PCM);
+  auto audioChannelFormat = AudioChannelFormat::create(
+      AudioChannelFormatName("MyChannelFormat"), TypeDefinition::DIRECT_SPEAKERS);
+
+  audioTrackUid->setReference(audioPackFormat);
+
+  // Track format added first
+  audioTrackUid->setReference(audioTrackFormat);
+  REQUIRE_THROWS_AS(audioTrackUid->setReference(audioChannelFormat),
+  adm::error::AudioTrackUidMutuallyExclusiveReferences);
+
+  REQUIRE(audioTrackUid->getReference<AudioChannelFormat>() == nullptr);
+  REQUIRE(audioTrackUid->getReference<AudioTrackFormat>() == audioTrackFormat);
+
+  // Channel format added first
+  audioTrackUid->setReference(audioChannelFormat);
+  REQUIRE_THROWS_AS(audioTrackUid->setReference(audioTrackFormat),
+  adm::error::AudioTrackUidMutuallyExclusiveReferences);
+
+  REQUIRE(audioTrackUid->getReference<AudioChannelFormat>() == audioChannelFormat);
+  REQUIRE(audioTrackUid->getReference<AudioTrackFormat>() == nullptr);
+
+  audioTrackUid->removeReference<AudioChannelFormat>();
+
+
+  // cleanup
+  audioTrackUid->removeReference<AudioPackFormat>();
+  audioTrackUid->removeReference<AudioChannelFormat>();
+  audioTrackUid->removeReference<AudioTrackFormat>();
 }
