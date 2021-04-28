@@ -58,28 +58,22 @@ namespace adm {
   /// @brief Tag for NamedType ::Start
   struct StartTag {};
   /// @brief NamedType for the start attribute
-  using Start = detail::NamedType<std::chrono::nanoseconds, StartTag>;
+  using Start = detail::NamedType<Time, StartTag>;
   /// @brief Tag for NamedType ::End
   struct EndTag {};
   /// @brief NamedType for the end attribute
-  using End = detail::NamedType<std::chrono::nanoseconds, EndTag>;
+  using End = detail::NamedType<Time, EndTag>;
   /// @brief Tag for NamedType ::Duration
   struct DurationTag {};
   /// @brief NamedType for the duration attribute
-  using Duration = detail::NamedType<std::chrono::nanoseconds, DurationTag>;
+  using Duration = detail::NamedType<Time, DurationTag>;
   /// @brief Tag for NamedType ::Rtime
   struct RtimeTag {};
   /// @brief NamedType for the rtime attribute
-  using Rtime = detail::NamedType<std::chrono::nanoseconds, RtimeTag>;
+  using Rtime = detail::NamedType<Time, RtimeTag>;
 
   /// @brief Parse an adm timecode and convert it to a std::chrono::duration
-  ADM_EXPORT std::chrono::nanoseconds parseTimecode(
-      const std::string& timecode);
+  ADM_EXPORT Time parseTimecode(const std::string& timecode);
   /// @brief Format a std::chrono::duration object as an adm timecode string
-  ADM_EXPORT std::string formatTimecode(const std::chrono::nanoseconds& time);
-
-  /// @brief Parse an adm timecode and convert it to a std::chrono::duration
-  ADM_EXPORT Time parseFractionalTimecode(const std::string& timecode);
-  /// @brief Format a std::chrono::duration object as an adm timecode string
-  ADM_EXPORT std::string formatFractionalTimecode(const Time& time);
+  ADM_EXPORT std::string formatTimecode(const Time& time);
 }  // namespace adm

@@ -14,7 +14,7 @@ namespace adm {
       boost::optional<std::chrono::nanoseconds> fileLength) {
     if (programme->has<End>()) {
       auto duration =
-          programme->get<End>().get() - programme->get<Start>().get();
+          programme->get<End>().get().asNanoseconds() - programme->get<Start>().get().asNanoseconds();
       // if a file length is given AND a programme end is set, both durations
       // must match
       if (fileLength && fileLength.get() != duration) {
@@ -39,19 +39,19 @@ namespace adm {
         isVariantType<std::shared_ptr<const AudioChannelFormat>>(route.back()));
     auto lastObject = route.getLastOf<AudioObject>();
     auto effectiveDuration = getPropertyOr(lastObject, Duration(fileLength));
-    return effectiveDuration.get();
+    return effectiveDuration.get().asNanoseconds();
   }
 
   template <typename BlockType>
   Duration calculateDuration(const BlockType& first, const BlockType& second) {
-    return Duration{second.template get<Rtime>().get() -
-                    first.template get<Rtime>().get()};
+    return Duration{second.template get<Rtime>().get().asNanoseconds() -
+                    first.template get<Rtime>().get().asNanoseconds()};
   }
 
   template <typename BlockType>
   Duration calculateDuration(const BlockType& block,
                              std::chrono::nanoseconds channelFormatDuration) {
-    return Duration{channelFormatDuration - block.template get<Rtime>().get()};
+    return Duration{channelFormatDuration - block.template get<Rtime>().get().asNanoseconds()};
   }
 
   template <typename BlockType>
