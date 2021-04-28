@@ -98,7 +98,7 @@ endif()
 ############################################################
 # enable C++11 support
 ############################################################
-if ({CMAKE_VERSION} VERSION_LESS "3.8.0")
+if (${CMAKE_VERSION} VERSION_LESS "3.8.0")
   # Note: this is not a complete list of c++ features required by libadm.
   # What we want is C++11 support and this is a simple way to trigger
   # this for CMake < 3.8
