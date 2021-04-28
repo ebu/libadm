@@ -60,3 +60,25 @@ TEST_CASE("audio_track_uid") {
     REQUIRE(audioTrackUid->getReference<AudioPackFormat>() == nullptr);
   }
 }
+
+TEST_CASE("audio_track_uid_with_channel_format_ref") {
+  // This is for the new BS 2076-2 case of omitting the track format and stream format with PCM
+  // audio, and specifying a link to a channel format directly.
+  using namespace adm;
+  auto audioTrackUid =
+      AudioTrackUid::create(AudioTrackUidId(AudioTrackUidIdValue(1)),
+                            BitDepth(16), SampleRate(44100));
+  auto audioPackFormat = AudioPackFormat::create(
+      AudioPackFormatName("MyPackFormat"), TypeDefinition::DIRECT_SPEAKERS);
+  auto audioChannelFormat = AudioChannelFormat::create(
+      AudioChannelFormatName("MyChannelFormat"), TypeDefinition::DIRECT_SPEAKERS);
+
+  audioTrackUid->setReference(audioPackFormat);
+  audioTrackUid->setReference(audioChannelFormat);
+
+  REQUIRE(audioTrackUid->getReference<AudioPackFormat>() == audioPackFormat);
+  REQUIRE(audioTrackUid->getReference<AudioChannelFormat>() == audioChannelFormat);
+
+  audioTrackUid->removeReference<AudioPackFormat>();
+  audioTrackUid->removeReference<AudioChannelFormat>();
+}
