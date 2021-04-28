@@ -63,6 +63,13 @@ namespace adm {
           "AudioTrackUid cannot refer to an AudioTrackFormat in a different "
           "document");
     }
+
+    if (audioChannelFormat_ != nullptr) {
+      throw adm::error::AudioTrackUidMutuallyExclusiveReferences(
+        audioChannelFormat_->get<AudioChannelFormatId>(),
+        trackFormat->get<AudioTrackFormatId>());
+    }
+
     audioTrackFormat_ = trackFormat;
   }
 
@@ -84,6 +91,12 @@ namespace adm {
       throw std::runtime_error(
           "AudioTrackUid cannot refer to an AudioChannelFormat in a different "
           "document");
+    }
+
+    if (audioTrackFormat_ != nullptr) {
+      throw adm::error::AudioTrackUidMutuallyExclusiveReferences(
+        channelFormat->get<AudioChannelFormatId>(),
+        audioTrackFormat_->get<AudioTrackFormatId>());
     }
 
     audioChannelFormat_ = channelFormat;
