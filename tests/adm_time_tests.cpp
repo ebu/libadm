@@ -104,3 +104,12 @@ TEST_CASE("construction") {
   REQUIRE(Time{std::chrono::seconds(1)} ==
           std::chrono::nanoseconds{1000000000});
 }
+
+TEST_CASE("Exceptions") {
+  REQUIRE_THROWS_WITH(parseFractionalTimecode("foo"),
+                      Catch::Contains("invalid timecode"));
+  REQUIRE_THROWS_WITH(parseFractionalTimecode("00:00:00.000S001YYY"),
+                      Catch::Contains("invalid timecode"));
+  REQUIRE_THROWS_WITH(parseFractionalTimecode("YYY00:00:00.000S001"),
+                      Catch::Contains("invalid timecode"));
+}
