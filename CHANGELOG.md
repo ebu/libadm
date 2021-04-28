@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- updated required C++ standard from C++11 to C++14
+
 ## 0.13.0 (February 15, 2022)
 
 ### Added
