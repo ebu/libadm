@@ -10,6 +10,22 @@ namespace adm {
     AdmGenericRuntimeError::AdmGenericRuntimeError(const std::string& msg)
         : AdmException(msg) {}
 
+    AudioTrackUidMutuallyExclusiveReferences::
+        AudioTrackUidMutuallyExclusiveReferences(
+            const AudioChannelFormatId& audioChannelFormatRef,
+            const AudioTrackFormatId& audioTrackFormatRef)
+        : AdmException(
+              formatMessage(audioChannelFormatRef, audioTrackFormatRef)) {}
+
+    std::string AudioTrackUidMutuallyExclusiveReferences::formatMessage(
+        AudioChannelFormatId audioChannelFormatRef,
+        AudioTrackFormatId audioTrackFormatRef) const {
+      return boost::str(
+          boost::format(
+              "Mutually-exclusive AudioTrackUid references detected: %1% and %2%") %
+          formatId(audioChannelFormatRef) % formatId(audioTrackFormatRef));
+    }
+
     AudioObjectReferenceCycle::AudioObjectReferenceCycle(
         const AudioObjectId& referent, const AudioObjectId& reference)
         : AdmException(formatMessage(referent, reference)) {}

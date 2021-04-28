@@ -3,6 +3,8 @@
 #include <boost/format.hpp>
 #include <boost/optional.hpp>
 #include <adm/elements/audio_object_id.hpp>
+#include <adm/elements/audio_channel_format_id.hpp>
+#include <adm/elements/audio_track_format_id.hpp>
 #include "adm/export.h"
 
 namespace adm {
@@ -16,6 +18,20 @@ namespace adm {
     class ADM_EXPORT AdmGenericRuntimeError : public AdmException {
      public:
       explicit AdmGenericRuntimeError(const std::string& msg);
+    };
+
+    class ADM_EXPORT AudioTrackUidMutuallyExclusiveReferences
+        : public AdmException {
+     public:
+      explicit AudioTrackUidMutuallyExclusiveReferences(
+          const AudioChannelFormatId& audioChannelFormatRef,
+          const AudioTrackFormatId& audioTrackFormatRef);
+
+     private:
+      std::string formatMessage(AudioChannelFormatId audioChannelFormatRef,
+                                AudioTrackFormatId audioTrackFormatRef) const;
+      AudioChannelFormatId audioChannelFormatRef_;
+      AudioTrackFormatId audioTrackFormatRef_;
     };
 
     class ADM_EXPORT AudioObjectReferenceCycle : public AdmException {
