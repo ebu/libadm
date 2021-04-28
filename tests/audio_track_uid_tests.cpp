@@ -107,6 +107,8 @@ TEST_CASE("audio_track_uid_with_channel_format_and_track_format_refs") {
   REQUIRE(audioTrackUid->getReference<AudioChannelFormat>() == nullptr);
   REQUIRE(audioTrackUid->getReference<AudioTrackFormat>() == audioTrackFormat);
 
+  audioTrackUid->removeReference<AudioTrackFormat>();
+
   // Channel format added first
   audioTrackUid->setReference(audioChannelFormat);
   REQUIRE_THROWS_AS(audioTrackUid->setReference(audioTrackFormat),
@@ -116,7 +118,6 @@ TEST_CASE("audio_track_uid_with_channel_format_and_track_format_refs") {
   REQUIRE(audioTrackUid->getReference<AudioTrackFormat>() == nullptr);
 
   audioTrackUid->removeReference<AudioChannelFormat>();
-
 
   // cleanup
   audioTrackUid->removeReference<AudioPackFormat>();
