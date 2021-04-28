@@ -99,3 +99,8 @@ TEST_CASE("Time nanoseconds") {
   REQUIRE(t.isNanoseconds());
   REQUIRE(!t.isFractional());
 }
+
+TEST_CASE("construction") {
+  REQUIRE(Time{std::chrono::seconds(1)} ==
+          std::chrono::nanoseconds{1000000000});
+}

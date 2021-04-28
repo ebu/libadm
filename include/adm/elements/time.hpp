@@ -32,7 +32,8 @@ namespace adm {
   /// FractionalTime
   class Time {
    public:
-    Time(const std::chrono::nanoseconds& time) : time(time) {}
+    template <typename Rep, typename Period>
+    Time(const std::chrono::duration<Rep, Period>& time) : time(time) {}
     Time(const FractionalTime& time) : time(time) {}
 
     /// convert to nanoseconds, rounding down
