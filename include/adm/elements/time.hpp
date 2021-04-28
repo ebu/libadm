@@ -24,7 +24,7 @@ namespace adm {
 
     /// normalised fraction, such that numerator and denominator have no common
     /// fractors
-    FractionalTime normalised() const;
+    ADM_EXPORT FractionalTime normalised() const;
   };
 
   /// representation of ADM times; this can either be decimal times,
@@ -36,8 +36,8 @@ namespace adm {
     Time(const FractionalTime& time) : time(time) {}
 
     /// convert to nanoseconds, rounding down
-    std::chrono::nanoseconds asNanoseconds() const;
-    FractionalTime asFractional() const;
+    ADM_EXPORT std::chrono::nanoseconds asNanoseconds() const;
+    ADM_EXPORT FractionalTime asFractional() const;
 
     bool isNanoseconds() const {
       return time.type() == typeid(std::chrono::nanoseconds);
