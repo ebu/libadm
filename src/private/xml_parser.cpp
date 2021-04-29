@@ -65,6 +65,7 @@ namespace adm {
         resolveReferences(objectPackFormatRefs_);
         resolveReferences(objectTrackUidRefs_);
         resolveReference(trackUidTrackFormatRef_);
+        resolveReference(trackUidChannelFormatRef_);
         resolveReference(trackUidPackFormatRef_);
         resolveReferences(packFormatChannelFormatRefs_);
         resolveReferences(packFormatPackFormatRefs_);
@@ -335,9 +336,9 @@ namespace adm {
         }
       } else if (audioChannelFormat->get<TypeDescriptor>() ==
                  TypeDefinition::HOA) {
-         for (auto& element : elements) {
-            audioChannelFormat->add(parseAudioBlockFormatHoa(element));
-         }
+        for (auto& element : elements) {
+          audioChannelFormat->add(parseAudioBlockFormatHoa(element));
+        }
       } else if (audioChannelFormat->get<TypeDescriptor>() ==
                  TypeDefinition::BINAURAL) {
         // for (auto& element : elements) {
@@ -399,6 +400,7 @@ namespace adm {
       setOptionalAttribute<SampleRate>(node, "sampleRate", audioTrackUid);
       setOptionalAttribute<BitDepth>(node, "bitDepth", audioTrackUid);
 
+      setOptionalReference<AudioChannelFormatId>(node, "audioChannelFormatIDRef", audioTrackUid, trackUidChannelFormatRef_, &parseAudioChannelFormatId);
       setOptionalReference<AudioTrackFormatId>(node, "audioTrackFormatIDRef", audioTrackUid, trackUidTrackFormatRef_, &parseAudioTrackFormatId);
       setOptionalReference<AudioPackFormatId>(node, "audioPackFormatIDRef", audioTrackUid, trackUidPackFormatRef_, &parseAudioPackFormatId);
       // clang-format on
@@ -731,9 +733,8 @@ namespace adm {
 
     /* Below here Hoa */
 
-    AudioBlockFormatHoa parseAudioBlockFormatHoa(
-        NodePtr node) {
-        AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
+    AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node) {
+      AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
       setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
