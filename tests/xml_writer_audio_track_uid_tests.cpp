@@ -19,10 +19,6 @@ TEST_CASE("write_audio_track_uid_channel_format_reference") {
   auto audioTrackFormat = AudioTrackFormat::create(
       AudioTrackFormatName("MyTrackFormat"), FormatDefinition::PCM);
 
-  // TODO how complete does the document have to be in these tests, do we need
-  // the audioContent, an object, and a streamFormat linking track to channel
-  // format?
-
   document->add(audioPackFormat);
   document->add(audioChannelFormat);
   document->add(audioTrackFormat);
