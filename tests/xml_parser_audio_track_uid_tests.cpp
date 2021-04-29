@@ -26,14 +26,24 @@ TEST_CASE("xml_parser/audio_track_uid_duplicate_id") {
       adm::error::XmlParsingDuplicateId);
 }
 
+TEST_CASE("xml_parser/audio_track_uid_track_format_reference") {
+  using namespace adm;
+  auto document =
+      parseXml("xml_parser/audio_track_uid_track_format_reference.xml");
+  auto audioTrackUid = document->lookup(parseAudioTrackUidId("ATU_00000001"));
+  auto trackFormat = audioTrackUid->getReference<AudioTrackFormat>();
+
+  REQUIRE(trackFormat != nullptr);
+  REQUIRE(trackFormat->get<AudioTrackFormatName>() == "MyTrackFormat");
+}
+
 TEST_CASE("xml_parser/audio_track_uid_channel_format_reference") {
   using namespace adm;
   auto document =
       parseXml("xml_parser/audio_track_uid_channel_format_reference.xml");
   auto audioTrackUid = document->lookup(parseAudioTrackUidId("ATU_00000001"));
   auto channelFormat = audioTrackUid->getReference<AudioChannelFormat>();
+
   REQUIRE(channelFormat != nullptr);
-  // TODO I'm not sure if this comparison to an integer is correct
-  REQUIRE(channelFormat->get<AudioChannelFormatId>()
-              .get<AudioChannelFormatIdValue>() == 0x00011001u);
+  REQUIRE(channelFormat->get<AudioChannelFormatName>() == "MyChannelFormat");
 }

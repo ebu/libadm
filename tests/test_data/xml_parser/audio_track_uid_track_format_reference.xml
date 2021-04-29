@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioTrackUID UID="ATU_00000001" sampleRate="48000" bitDepth="24">
+					<audioTrackFormatIDRef>AT_00001001_01</audioTrackFormatIDRef>
+        </audioTrackUID>
+				<audioTrackFormat audioTrackFormatID="AT_00001001_01" audioTrackFormatName="MyTrackFormat" formatLabel="0001" formatDefinition="PCM"/>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
