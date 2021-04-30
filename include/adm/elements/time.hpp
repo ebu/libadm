@@ -46,7 +46,7 @@ namespace adm {
     bool isFractional() const { return time.type() == typeid(FractionalTime); };
 
     using Variant = boost::variant<std::chrono::nanoseconds, FractionalTime>;
-    Variant asVariant() const { return time; }
+    const Variant& asVariant() const { return time; }
 
     bool operator==(const Time& other) const { return time == other.time; }
     bool operator!=(const Time& other) const { return time != other.time; }
