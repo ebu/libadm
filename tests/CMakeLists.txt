@@ -1,5 +1,11 @@
 include(${PROJECT_SOURCE_DIR}/submodules/catch2.cmake)
 
+set(TEST_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test_data")
+configure_file(test_config.hpp.in test_config.hpp)
+
+# working directory for tests containing misc. outputs
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/test_data_out")
+
 # --- unit tests ---
 function(add_adm_test name)
   add_executable(${name} ${name}.cpp)
@@ -10,17 +16,15 @@ function(add_adm_test name)
   )
   target_include_directories(${name} PRIVATE
     ${PROJECT_SOURCE_DIR}/submodules
+    # for including test_config.h
+    ${CMAKE_CURRENT_BINARY_DIR}
   )
   add_test(
     NAME ${name}
     COMMAND $<TARGET_FILE:${name}>
-    WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/test_data"
+    WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/test_data_out"
   )
 endfunction()
-
-# copy test files so unit test can find them relative to their running location
-# when executed as "test" target
-file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/test_data" DESTINATION ${PROJECT_BINARY_DIR})
 
 add_adm_test("adm_auto_parenting_tests")
 add_adm_test("adm_common_definitions_tests")

@@ -4,10 +4,12 @@
 #include "adm/elements/audio_channel_format.hpp"
 #include "adm/parse.hpp"
 #include "adm/errors.hpp"
+#include "test_config.hpp"
 
 TEST_CASE("xml_parser/audio_block_format_direct_speakers") {
   using namespace adm;
-  auto document = parseXml("xml_parser/audio_block_format_direct_speakers.xml");
+  auto document =
+      parseXml(data_file("xml_parser/audio_block_format_direct_speakers.xml"));
   auto channelFormat =
       document->lookup(parseAudioChannelFormatId("AC_00011001"));
   REQUIRE(channelFormat->get<AudioChannelFormatId>()
@@ -31,8 +33,8 @@ TEST_CASE("xml_parser/audio_block_format_direct_speakers") {
 
 TEST_CASE("xml_parser/audio_block_format_direct_speakers_cartesian") {
   using namespace adm;
-  auto document =
-      parseXml("xml_parser/audio_block_format_direct_speakers_cartesian.xml");
+  auto document = parseXml(
+      data_file("xml_parser/audio_block_format_direct_speakers_cartesian.xml"));
   REQUIRE(!document->getElements<AudioChannelFormat>().empty());
   auto channelFormat =
       document->lookup(parseAudioChannelFormatId("AC_00011001"));
@@ -84,15 +86,17 @@ TEST_CASE("xml_parser/audio_block_format_direct_speakers_cartesian") {
 TEST_CASE("xml_parser/audio_block_format_direct_speakers_cartesian_bad_bound") {
   using namespace adm;
   REQUIRE_THROWS_AS(
-      parseXml("xml_parser/"
-               "audio_block_format_direct_speakers_cartesian_bad_bound.xml"),
+      parseXml(data_file(
+          "xml_parser/"
+          "audio_block_format_direct_speakers_cartesian_bad_bound.xml")),
       error::XmlParsingError);
 }
 
 TEST_CASE("xml_parser/audio_block_format_direct_speakers_cartesian_bad_coord") {
   using namespace adm;
   REQUIRE_THROWS_AS(
-      parseXml("xml_parser/"
-               "audio_block_format_direct_speakers_cartesian_bad_coord.xml"),
+      parseXml(data_file(
+          "xml_parser/"
+          "audio_block_format_direct_speakers_cartesian_bad_coord.xml")),
       error::XmlParsingError);
 }

@@ -4,10 +4,11 @@
 #include "adm/elements/audio_content.hpp"
 #include "adm/parse.hpp"
 #include "adm/errors.hpp"
+#include "test_config.hpp"
 
 TEST_CASE("xml_parser/audio_content") {
   using namespace adm;
-  auto document = parseXml("xml_parser/audio_content.xml");
+  auto document = parseXml(data_file("xml_parser/audio_content.xml"));
   auto audioContent = document->lookup(parseAudioContentId("ACO_1001"));
 
   REQUIRE(audioContent->has<AudioContentName>() == true);
@@ -26,6 +27,7 @@ TEST_CASE("xml_parser/audio_content") {
 }
 
 TEST_CASE("xml_parser/audio_content_duplicate_id") {
-  REQUIRE_THROWS_AS(adm::parseXml("xml_parser/audio_content_duplicate_id.xml"),
-                    adm::error::XmlParsingDuplicateId);
+  REQUIRE_THROWS_AS(
+      adm::parseXml(data_file("xml_parser/audio_content_duplicate_id.xml")),
+      adm::error::XmlParsingDuplicateId);
 }

@@ -2,6 +2,7 @@
 #include <sstream>
 #include "adm/parse.hpp"
 #include "adm/errors.hpp"
+#include "test_config.hpp"
 
 std::string formatFilepath(const std::string& filename) {
   std::stringstream ss;
@@ -16,7 +17,7 @@ TEST_CASE("xml_parser/unresolved_references") {
         "audio_track_uid_1", "audio_track_uid_2", "audio_track_format",
         "audio_stream_format_1", "audio_stream_format_2"}) {
     SECTION(filename) {
-      REQUIRE_THROWS_AS(adm::parseXml(formatFilepath(filename)),
+      REQUIRE_THROWS_AS(adm::parseXml(data_file(formatFilepath(filename))),
                         adm::error::XmlParsingUnresolvedReference);
     }
   }

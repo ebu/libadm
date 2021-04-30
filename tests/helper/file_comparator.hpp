@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <streambuf>
+#include "test_config.hpp"
 
 class FileComparator : public Catch::MatcherBase<std::string> {
  public:
@@ -11,7 +12,8 @@ class FileComparator : public Catch::MatcherBase<std::string> {
 
   virtual bool match(const std::string& received) const override {
     bool check_successful = false;
-    std::ifstream acceptedFile(filename_ + ".accepted." + extension_);
+    std::ifstream acceptedFile(
+        data_file(filename_ + ".accepted." + extension_));
     if (acceptedFile.is_open()) {
       std::string acceptedStr((std::istreambuf_iterator<char>(acceptedFile)),
                               std::istreambuf_iterator<char>());

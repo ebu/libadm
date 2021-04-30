@@ -4,11 +4,13 @@
 #include "adm/elements/audio_channel_format.hpp"
 #include "adm/elements/frequency.hpp"
 #include "adm/parse.hpp"
+#include "test_config.hpp"
 
 TEST_CASE("xml_parser/audio_block_format_objects") {
   using namespace adm;
   {
-    auto document = parseXml("xml_parser/audio_block_format_objects.xml");
+    auto document =
+        parseXml(data_file("xml_parser/audio_block_format_objects.xml"));
     auto channelFormat =
         document->lookup(parseAudioChannelFormatId("AC_00031001"));
     REQUIRE(channelFormat->get<AudioChannelFormatId>()
