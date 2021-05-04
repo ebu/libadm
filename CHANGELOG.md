@@ -4,6 +4,7 @@
 
 ### Added
 - Added support for Cartesian speaker positions.
+- Added support for AudioChannelFormatIDRef in AudioTrackUID as per BS.2076-2
 
 ### Changed
 - SpeakerPosition is now a boost::variant that can be either a CartesianSpeakerPosition or a SphericalSpeakerPosition
