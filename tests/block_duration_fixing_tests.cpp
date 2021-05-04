@@ -88,6 +88,36 @@ TEST_CASE_METHOD(BaseSceneFixture, "no_durations_fractional") {
   CHECK(blocks1[1].get<Duration>().get() == FractionalTime{49, 10});
 }
 
+TEST_CASE_METHOD(BaseSceneFixture, "fractional_durations_not_normalised") {
+  using namespace adm;
+  REQUIRE(document->getElements<AudioProgramme>().size() == 1);
+  channel1->add(AudioBlockFormatObjects(SphericalPosition{},
+                                        Rtime{FractionalTime{0, 1}},
+                                        Duration{FractionalTime{10, 100}}));
+  channel1->add(AudioBlockFormatObjects(SphericalPosition{},
+                                        Rtime{FractionalTime{1, 10}},
+                                        Duration{FractionalTime{490, 100}}));
+
+  updateBlockFormatDurations(document, FractionalTime{5, 1});
+
+  auto blocks1 = channel1->getElements<AudioBlockFormatObjects>();
+  CHECK(blocks1[0].get<Duration>().get() == FractionalTime{10, 100});
+  CHECK(blocks1[1].get<Duration>().get() == FractionalTime{490, 100});
+}
+
+TEST_CASE_METHOD(BaseSceneFixture,
+                 "programme_duration_ns_file_duration_fractional") {
+  using namespace adm;
+  programme->set(Start{std::chrono::seconds(0)});
+  programme->set(End{std::chrono::seconds(20)});
+  channel1->add(AudioBlockFormatObjects(SphericalPosition{},
+                                        Rtime{FractionalTime{0, 1}},
+                                        Duration{FractionalTime{20, 1}}));
+
+  // should not raise, as programme times are equal
+  updateBlockFormatDurations(document, FractionalTime{20, 1});
+}
+
 TEST_CASE_METHOD(BaseSceneFixture, "duration_from_programme") {
   using namespace adm;
   programme->set(Start{std::chrono::seconds(0)});

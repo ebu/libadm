@@ -18,6 +18,11 @@ namespace adm {
     }
   }
 
+  bool timesEqual(const Time& firstTime, const Time& secondTime) {
+    return firstTime.asFractional().normalised() ==
+           secondTime.asFractional().normalised();
+  }
+
   Time durationOfProgramme(const AudioProgramme* programme,
                            boost::optional<Time> fileLength) {
     if (programme->has<End>()) {
@@ -25,7 +30,7 @@ namespace adm {
                                     programme->get<Start>().get());
       // if a file length is given AND a programme end is set, both durations
       // must match
-      if (fileLength && fileLength.get() != duration) {
+      if (fileLength && !timesEqual(fileLength.get(), duration)) {
         throw error::detail::formatElementRuntimeError(
             programme->get<AudioProgrammeId>(),
             "Programme length does not match specified filelength");
@@ -65,19 +70,36 @@ namespace adm {
   }
 
   template <typename BlockType>
+  void setDurationIfNotEqual(BlockType& block, const Duration& newDuration) {
+    if (!block.template has<Duration>() ||
+        !timesEqual(block.template get<Duration>().get(), newDuration.get()))
+      block.set(newDuration);
+  }
+
+  template <typename BlockType>
   void updateBlockFormatDurationWithType(AudioChannelFormat* channel,
                                          Time channelFormatDuration) {
     auto current = begin(channel->getElements<BlockType>());
+    // no blocks, do nothing
+    if (current == end(channel->getElements<BlockType>()))
+      throw error::detail::formatElementRuntimeError(
+          channel->get<AudioChannelFormatId>(),
+          "AudioChannelFormat has no audioBlockFormats");
+
     auto next = current;
     std::advance(next, 1);
     while (next != end(channel->getElements<BlockType>())) {
-      current->set(calculateDuration(*current, *next));
+      // a single time can have multiple representations, so if the current time
+      // is correct it should be kept
+      setDurationIfNotEqual(*current, calculateDuration(*current, *next));
+
       std::advance(current, 1);
       std::advance(next, 1);
     }
-    if (current != end(channel->getElements<BlockType>())) {
-      current->set(calculateDuration(*current, channelFormatDuration));
-    }
+    // here, current is always the last block
+
+    setDurationIfNotEqual(*current,
+                          calculateDuration(*current, channelFormatDuration));
   }
 
   void updateBlockFormatDuration(AudioChannelFormat* channel,
@@ -107,7 +129,8 @@ namespace adm {
   bool isPresentWithDifferentValue(
       AudioChannelFormatId channel, Time duration,
       const std::map<AudioChannelFormatId, Time>& durations) {
-    return durations.count(channel) > 0 && durations.at(channel) != duration;
+    return durations.count(channel) > 0 &&
+           !timesEqual(durations.at(channel), duration);
   }
 
   std::map<AudioChannelFormatId, Time> calculateDurationOfChannels(
