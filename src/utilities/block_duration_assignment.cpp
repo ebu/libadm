@@ -87,14 +87,14 @@ namespace adm {
           "AudioChannelFormat has no audioBlockFormats");
 
     auto next = current;
-    std::advance(next, 1);
+    next++;
     while (next != end(channel->getElements<BlockType>())) {
       // a single time can have multiple representations, so if the current time
       // is correct it should be kept
       setDurationIfNotEqual(*current, calculateDuration(*current, *next));
 
-      std::advance(current, 1);
-      std::advance(next, 1);
+      current++;
+      next++;
     }
     // here, current is always the last block
 
