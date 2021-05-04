@@ -6,15 +6,23 @@
 #include <memory>
 #include <map>
 #include <stdexcept>
+#include <adm/utilities/time_conversion.hpp>
 
 namespace adm {
 
-  std::chrono::nanoseconds durationOfProgramme(
-      const AudioProgramme* programme,
-      boost::optional<std::chrono::nanoseconds> fileLength) {
+  Time subtractTimes(const Time& firstTime, const Time& secondTime) {
+    if (firstTime.isNanoseconds() && secondTime.isNanoseconds()) {
+      return firstTime.asNanoseconds() - secondTime.asNanoseconds();
+    } else {
+      return asTime(asRational(firstTime) - asRational(secondTime));
+    }
+  }
+
+  Time durationOfProgramme(const AudioProgramme* programme,
+                           boost::optional<Time> fileLength) {
     if (programme->has<End>()) {
-      auto duration =
-          programme->get<End>().get().asNanoseconds() - programme->get<Start>().get().asNanoseconds();
+      auto duration = subtractTimes(programme->get<End>().get(),
+                                    programme->get<Start>().get());
       // if a file length is given AND a programme end is set, both durations
       // must match
       if (fileLength && fileLength.get() != duration) {
@@ -33,31 +41,33 @@ namespace adm {
     }
   }
 
-  std::chrono::nanoseconds durationOfChannel(
-      const Route& route, std::chrono::nanoseconds fileLength) {
+  Time durationOfChannel(
+      const Route& route, Time fileLength) {
     assert(
         isVariantType<std::shared_ptr<const AudioChannelFormat>>(route.back()));
     auto lastObject = route.getLastOf<AudioObject>();
     auto effectiveDuration = getPropertyOr(lastObject, Duration(fileLength));
-    return effectiveDuration.get().asNanoseconds();
+    return effectiveDuration.get();
   }
 
   template <typename BlockType>
   Duration calculateDuration(const BlockType& first, const BlockType& second) {
-    return Duration{second.template get<Rtime>().get().asNanoseconds() -
-                    first.template get<Rtime>().get().asNanoseconds()};
+    const Time firstRTime = first.template get<Rtime>().get();
+    const Time secondRTime = second.template get<Rtime>().get();
+
+    return Duration{subtractTimes(secondRTime, firstRTime)};
   }
 
   template <typename BlockType>
   Duration calculateDuration(const BlockType& block,
-                             std::chrono::nanoseconds channelFormatDuration) {
-    return Duration{channelFormatDuration - block.template get<Rtime>().get().asNanoseconds()};
+                             Time channelFormatDuration) {
+    return Duration{subtractTimes(channelFormatDuration,
+                                  block.template get<Rtime>().get())};
   }
 
   template <typename BlockType>
-  void updateBlockFormatDurationWithType(
-      AudioChannelFormat* channel,
-      std::chrono::nanoseconds channelFormatDuration) {
+  void updateBlockFormatDurationWithType(AudioChannelFormat* channel,
+                                         Time channelFormatDuration) {
     auto current = begin(channel->getElements<BlockType>());
     auto next = current;
     std::advance(next, 1);
@@ -71,9 +81,8 @@ namespace adm {
     }
   }
 
-  void updateBlockFormatDuration(
-      AudioChannelFormat* channel,
-      std::chrono::nanoseconds channelFormatDuration) {
+  void updateBlockFormatDuration(AudioChannelFormat* channel,
+                                 Time channelFormatDuration) {
     auto typedefinition = channel->get<TypeDescriptor>();
     if (typedefinition == TypeDefinition::DIRECT_SPEAKERS) {
       updateBlockFormatDurationWithType<AudioBlockFormatDirectSpeakers>(
@@ -97,20 +106,18 @@ namespace adm {
   }
 
   bool isPresentWithDifferentValue(
-      AudioChannelFormatId channel, std::chrono::nanoseconds duration,
-      const std::map<AudioChannelFormatId, std::chrono::nanoseconds>&
-          durations) {
+      AudioChannelFormatId channel, Time duration,
+      const std::map<AudioChannelFormatId, Time>& durations) {
     return durations.count(channel) > 0 && durations.at(channel) != duration;
   }
 
-  std::map<AudioChannelFormatId, std::chrono::nanoseconds>
-  calculateDurationOfChannels(
+  std::map<AudioChannelFormatId, Time> calculateDurationOfChannels(
       std::shared_ptr<const AudioProgramme> programme,
-      boost::optional<std::chrono::nanoseconds> fileLength) {
+      boost::optional<Time> fileLength) {
     auto programmeDuration = durationOfProgramme(programme.get(), fileLength);
     RouteTracer tracer;
     auto result = tracer.run(programme);
-    std::map<AudioChannelFormatId, std::chrono::nanoseconds> durations;
+    std::map<AudioChannelFormatId, Time> durations;
     for (const auto& route : result) {
       auto duration = durationOfChannel(route, programmeDuration);
       auto channel =
@@ -125,10 +132,9 @@ namespace adm {
     return durations;
   }
 
-  void updateBlockFormatDurationsImpl(
-      std::shared_ptr<Document> document,
-      boost::optional<std::chrono::nanoseconds> fileLength) {
-    std::map<AudioChannelFormatId, std::chrono::nanoseconds> durations;
+  void updateBlockFormatDurationsImpl(std::shared_ptr<Document> document,
+                                      boost::optional<Time> fileLength) {
+    std::map<AudioChannelFormatId, Time> durations;
     for (auto& programme : document->template getElements<AudioProgramme>()) {
       auto durationsOfProgramme =
           calculateDurationOfChannels(programme, fileLength);
@@ -152,7 +158,7 @@ namespace adm {
   }
 
   void updateBlockFormatDurations(std::shared_ptr<Document> document,
-                                  std::chrono::nanoseconds fileLength) {
+                                  const Time& fileLength) {
     updateBlockFormatDurationsImpl(document, fileLength);
   }
 
