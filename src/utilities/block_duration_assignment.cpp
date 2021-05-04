@@ -41,8 +41,7 @@ namespace adm {
     }
   }
 
-  Time durationOfChannel(
-      const Route& route, Time fileLength) {
+  Time durationOfChannel(const Route& route, Time fileLength) {
     assert(
         isVariantType<std::shared_ptr<const AudioChannelFormat>>(route.back()));
     auto lastObject = route.getLastOf<AudioObject>();
