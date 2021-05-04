@@ -51,15 +51,6 @@ namespace adm {
     template <typename Parameter>
     bool has() const;
 
-    /**
-     * @brief ADM parameter isDefault template
-     *
-     * Templated isDefault method with the ADM parameter type as template
-     * argument. Returns true if the ADM parameter is the default value.
-     */
-    template <typename Parameter>
-    bool isDefault() const;
-
     /// @brief set value
     ADM_EXPORT void set(AudioProgrammeLabelValue value);
 
@@ -103,26 +94,13 @@ namespace adm {
     ADM_EXPORT bool has(
         detail::ParameterTraits<AudioProgrammeLabelLanguage>::tag) const;
 
-    ADM_EXPORT bool isDefault(
-        detail::ParameterTraits<AudioProgrammeLabelValue>::tag) const;
-    ADM_EXPORT bool isDefault(
-        detail::ParameterTraits<AudioProgrammeLabelLanguage>::tag) const;
-
-    template <typename Tag>
-    bool isDefault(Tag) const {
-      return false;
-    }
-
     ADM_EXPORT void unset(
         detail::ParameterTraits<AudioProgrammeLabelValue>::tag);
     ADM_EXPORT void unset(
         detail::ParameterTraits<AudioProgrammeLabelLanguage>::tag);
 
-    boost::optional<std::string> value_;
-    boost::optional<std::string> language_;
-
-    static const AudioProgrammeLabelValue valueDefault_;
-    static const AudioProgrammeLabelLanguage languageDefault_;
+    boost::optional<AudioProgrammeLabelValue> value_;
+    boost::optional<AudioProgrammeLabelLanguage> language_;
   };
 
   // ---- Free functions ---- //
@@ -150,12 +128,6 @@ namespace adm {
   bool AudioProgrammeLabel::has() const {
     typedef typename detail::ParameterTraits<Parameter>::tag Tag;
     return has(Tag());
-  }
-
-  template <typename Parameter>
-  bool AudioProgrammeLabel::isDefault() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return isDefault(Tag());
   }
 
   template <typename Parameter>
