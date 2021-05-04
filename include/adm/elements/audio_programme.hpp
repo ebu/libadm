@@ -340,6 +340,18 @@ namespace adm {
     return detail::makeElementRange<AudioContent>(audioContents_);
   }
 
+  template <typename Element>
+  ElementRange<const Element> AudioProgramme::getElements() const {
+      typedef typename detail::ParameterTraits<Element>::tag Tag;
+      return getElements(Tag());
+  }
+
+  template <typename Element>
+  ElementRange<Element> AudioProgramme::getElements() {
+      typedef typename detail::ParameterTraits<Element>::tag Tag;
+      return getElements(Tag());
+  }
+
   inline ElementRange<const AudioProgrammeLabel> AudioProgramme::getElements(
       detail::ParameterTraits<AudioProgrammeLabel>::tag) const {
     return detail::makeElementRange<AudioProgrammeLabel>(audioProgrammeLabels_);
