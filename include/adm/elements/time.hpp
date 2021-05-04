@@ -10,12 +10,17 @@
 namespace adm {
 
   /// @brief storage for ADM times of format 'hh:mm:ss.zzzzzSfffff'
-  struct FractionalTime {
-    int64_t numerator;
-    int64_t denominator;
+  class FractionalTime {
+   public:
+    FractionalTime(int64_t numerator, int64_t denominator)
+        : _numerator(numerator), _denominator(denominator) {}
+
+    int64_t numerator() const { return _numerator; }
+    int64_t denominator() const { return _denominator; }
 
     bool operator==(const FractionalTime& other) const {
-      return numerator == other.numerator && denominator == other.denominator;
+      return numerator() == other.numerator() &&
+             denominator() == other.denominator();
     }
 
     bool operator!=(const FractionalTime& other) const {
@@ -25,6 +30,10 @@ namespace adm {
     /// normalised fraction, such that numerator and denominator have no common
     /// fractors
     ADM_EXPORT FractionalTime normalised() const;
+
+   private:
+    int64_t _numerator;
+    int64_t _denominator;
   };
 
   /// representation of ADM times; this can either be decimal times,

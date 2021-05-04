@@ -7,8 +7,8 @@ using namespace adm;
 
 namespace std {
   std::ostream& operator<<(std::ostream& stream, const FractionalTime& time) {
-    return stream << "FractionalTime{" << time.numerator << ", "
-                  << time.denominator << "}";
+    return stream << "FractionalTime{" << time.numerator() << ", "
+                  << time.denominator() << "}";
   }
 
   // required because catch2 stringify doesn't know about boost::variants

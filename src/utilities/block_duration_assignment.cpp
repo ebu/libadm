@@ -20,9 +20,9 @@ namespace adm {
       FractionalTime firstFrac = firstTime.asFractional();
       FractionalTime secondFrac = secondTime.asFractional();
 
-      if (firstFrac.denominator == secondFrac.denominator)
-        return FractionalTime{firstFrac.numerator - secondFrac.numerator,
-                              firstFrac.denominator};
+      if (firstFrac.denominator() == secondFrac.denominator())
+        return FractionalTime{firstFrac.numerator() - secondFrac.numerator(),
+                              firstFrac.denominator()};
     }
 
     // mixed, or different denominators

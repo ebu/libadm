@@ -8,8 +8,8 @@
 namespace adm {
 
   FractionalTime FractionalTime::normalised() const {
-    int64_t gcd = boost::integer::gcd(numerator, denominator);
-    return {numerator / gcd, denominator / gcd};
+    int64_t gcd = boost::integer::gcd(numerator(), denominator());
+    return {numerator() / gcd, denominator() / gcd};
   }
 
   struct AsNanosecondsVisitor
@@ -21,8 +21,8 @@ namespace adm {
 
     std::chrono::nanoseconds operator()(const FractionalTime& time) const {
       FractionalTime normalised = time.normalised();
-      return std::chrono::nanoseconds{(1000000000 * normalised.numerator) /
-                                      normalised.denominator};
+      return std::chrono::nanoseconds{(1000000000 * normalised.numerator()) /
+                                      normalised.denominator()};
     }
   };
 
@@ -91,9 +91,9 @@ namespace adm {
     }
 
     std::string operator()(const FractionalTime& time) const {
-      int64_t whole_seconds = time.numerator / time.denominator;
+      int64_t whole_seconds = time.numerator() / time.denominator();
       int64_t frac_numerator =
-          time.numerator - whole_seconds * time.denominator;
+          time.numerator() - whole_seconds * time.denominator();
 
       std::stringstream ss;
       ss << std::setw(2) << std::setfill('0') << whole_seconds / 3600;
@@ -102,7 +102,7 @@ namespace adm {
       ss << ":";
       ss << std::setw(2) << std::setfill('0') << whole_seconds % 60;
       ss << ".";
-      ss << frac_numerator << "S" << time.denominator;
+      ss << frac_numerator << "S" << time.denominator();
       return ss.str();
     }
   };
