@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #include <catch2/catch.hpp>
 #include "adm/elements/time.hpp"
+#include "adm/utilities/time_conversion.hpp"
 
 using namespace adm;
 
@@ -107,4 +108,15 @@ TEST_CASE("Exceptions") {
                       Catch::Contains("invalid timecode"));
   REQUIRE_THROWS_WITH(parseTimecode("YYY00:00:00.000S001"),
                       Catch::Contains("invalid timecode"));
+}
+
+TEST_CASE("rational conversion") {
+  REQUIRE(asRational(FractionalTime{4, 8}) == RationalTime{1, 2});
+
+  REQUIRE(asRational(std::chrono::nanoseconds{1000}) ==
+          RationalTime{1, 1000000});
+
+  REQUIRE(asFractionalTime(RationalTime{1, 2}) == FractionalTime{1, 2});
+
+  REQUIRE(asTime(RationalTime{1, 2}) == FractionalTime{1, 2});
 }
