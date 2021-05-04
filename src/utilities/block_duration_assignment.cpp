@@ -89,8 +89,8 @@ namespace adm {
     auto next = current;
     next++;
     while (next != end(channel->getElements<BlockType>())) {
-      // a single time can have multiple representations, so if the current time
-      // is correct it should be kept
+      // a single time can have multiple representations, so if the current
+      // time is correct it should be kept
       setDurationIfNotEqual(*current, calculateDuration(*current, *next));
 
       current++;
