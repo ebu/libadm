@@ -59,7 +59,8 @@ namespace adm {
       node.addOptionalAttribute<MaxDuckingDepth>(programme, "maxDuckingDepth");
       node.addReferences<AudioContent, AudioContentId>(programme, "audioContentIDRef");
       node.addOptionalElement<LoudnessMetadata>(programme, "loudnessMetadata", &formatLoudnessMetadata);
-      node.addOptionalMultiElement<AudioProgrammeLabel>(programme, "audioProgrammeLabel", &formatAudioProgrammeLabel);
+      // node.addOptionalMultiElement<AudioProgrammeLabel>(programme, "audioProgrammeLabel", &formatAudioProgrammeLabel);
+      node.addElements<AudioProgrammeLabel>(programme, "audioProgrammeLabel", &formatAudioProgrammeLabel);
       // clang-format on
     }
 
@@ -83,10 +84,8 @@ namespace adm {
     }
 
     void formatAudioProgrammeLabel(
-        XmlNode &parentNode, const std::string &name,
-        const AudioProgrammeLabel &audioProgrammeLabel) {
+        XmlNode &node, const AudioProgrammeLabel &audioProgrammeLabel) {
       // clang-format off
-      auto node = parentNode.addNode(name);
       node.addOptionalAttribute<AudioProgrammeLabelLanguage>(audioProgrammeLabel, "language");
       node.setOptionalValue<AudioProgrammeLabelValue>(audioProgrammeLabel);
       // clang-format on
@@ -103,7 +102,7 @@ namespace adm {
       node.addOptionalElement<NonDialogueContentKind>(content, "dialogue", &formatNonDialogueContentKind);
       node.addOptionalElement<DialogueContentKind>(content, "dialogue", &formatDialogueContentKind);
       node.addOptionalElement<MixedContentKind>(content, "dialogue", &formatMixedContentKind);
-      node.addOptionalMultiElement<AudioContentLabel>(content, "audioContentLabel", &formatAudioContentLabel);
+      // node.addOptionalMultiElement<AudioContentLabel>(content, "audioContentLabel", &formatAudioContentLabel);
       // clang-format on
     }
 
@@ -131,14 +130,17 @@ namespace adm {
       // clang-format on
     }
 
-    void formatAudioContentLabel(XmlNode &parentNode, const std::string &name,
-                                 const AudioContentLabel &audioContentLabel) {
-      // clang-format off
-      auto node = parentNode.addNode(name);
-      node.addOptionalAttribute<AudioContentLabelLanguage>(audioContentLabel, "language");
-      node.setOptionalValue<AudioContentLabelValue>(audioContentLabel);
-      // clang-format on
-    }
+    // void formatAudioContentLabel(XmlNode &parentNode, const std::string
+    // &name,
+    //                              const AudioContentLabel &audioContentLabel)
+    //                              {
+    //   // clang-format off
+    //   auto node = parentNode.addNode(name);
+    //   node.addOptionalAttribute<AudioContentLabelLanguage>(audioContentLabel,
+    //   "language");
+    //   node.setOptionalValue<AudioContentLabelValue>(audioContentLabel);
+    //   // clang-format on
+    // }
 
     void formatAudioObject(XmlNode &node,
                            std::shared_ptr<const AudioObject> object) {
@@ -157,8 +159,8 @@ namespace adm {
         node.addElement<AudioObjectId>(element, "audioComplementaryObjectIDRef");
       }
       node.addReferences<AudioTrackUid, AudioTrackUidId>(object, "audioTrackUIDRef");
-      node.addOptionalMultiElement<AudioObjectLabel>(object, "audioObjectLabel", &formatAudioObjectLabel);
-      node.addOptionalMultiElement<AudioComplementaryObjectGroupLabel>(object, "audioComplementaryObjectGroupLabel", &formatAudioComplementaryObjectGroupLabel);
+      // node.addOptionalMultiElement<AudioObjectLabel>(object, "audioObjectLabel", &formatAudioObjectLabel);
+      // node.addOptionalMultiElement<AudioComplementaryObjectGroupLabel>(object, "audioComplementaryObjectGroupLabel", &formatAudioComplementaryObjectGroupLabel);
       // clang-format on
     }
 
@@ -265,25 +267,27 @@ namespace adm {
       }
     }
 
-    void formatAudioObjectLabel(XmlNode &parentNode, const std::string &name,
-                                const AudioObjectLabel &audioObjectLabel) {
-      // clang-format off
-      auto node = parentNode.addNode(name);
-      node.addOptionalAttribute<AudioObjectLabelLanguage>(audioObjectLabel, "language");
-      node.setOptionalValue<AudioObjectLabelValue>(audioObjectLabel);
-      // clang-format on
-    }
+    // void formatAudioObjectLabel(XmlNode &parentNode, const std::string &name,
+    //                             const AudioObjectLabel &audioObjectLabel) {
+    //   // clang-format off
+    //   auto node = parentNode.addNode(name);
+    //   node.addOptionalAttribute<AudioObjectLabelLanguage>(audioObjectLabel,
+    //   "language");
+    //   node.setOptionalValue<AudioObjectLabelValue>(audioObjectLabel);
+    //   // clang-format on
+    // }
 
-    void formatAudioComplementaryObjectGroupLabel(
-        XmlNode &parentNode, const std::string &name,
-        const AudioComplementaryObjectGroupLabel
-            &audioComplementaryObjectGroupLabel) {
-      // clang-format off
-      auto node = parentNode.addNode(name);
-      node.addOptionalAttribute<AudioComplementaryObjectGroupLabelLanguage>(audioComplementaryObjectGroupLabel, "language");
-      node.setOptionalValue<AudioComplementaryObjectGroupLabelValue>(audioComplementaryObjectGroupLabel);
-      // clang-format on
-    }
+    // void formatAudioComplementaryObjectGroupLabel(
+    //     XmlNode &parentNode, const std::string &name,
+    //     const AudioComplementaryObjectGroupLabel
+    //         &audioComplementaryObjectGroupLabel) {
+    //   // clang-format off
+    //   auto node = parentNode.addNode(name);
+    //   node.addOptionalAttribute<AudioComplementaryObjectGroupLabelLanguage>(audioComplementaryObjectGroupLabel,
+    //   "language");
+    //   node.setOptionalValue<AudioComplementaryObjectGroupLabelValue>(audioComplementaryObjectGroupLabel);
+    //   // clang-format on
+    // }
 
     void formatAudioPackFormat(
         XmlNode &node, std::shared_ptr<const AudioPackFormat> packFormat) {
