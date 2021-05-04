@@ -8,6 +8,7 @@
 #include "adm/elements/audio_content.hpp"
 #include "adm/elements/audio_programme_id.hpp"
 #include "adm/elements/audio_programme_ref_screen.hpp"
+#include "adm/elements/audio_programme_label.hpp"
 #include "adm/elements/loudness_metadata.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
@@ -170,6 +171,29 @@ namespace adm {
     void clearReferences();
 
     /**
+     * @brief Add AudioProgrammeLabel
+     */
+    ADM_EXPORT void add(std::shared_ptr<AudioProgrammeLabel> label);
+
+    /**
+     * @brief Get ADM elements template
+     *
+     * Templated get method with the ADM parameter type as template
+     * argument. Returns a set of all ADM elements with the specified type.
+     */
+    template <typename Element>
+    ElementRange<Element> getElements();
+
+    /**
+     * @brief Get references to ADM elements template
+     *
+     * Templated get method with the ADM parameter type as template
+     * argument. Returns a set of ADM elements with the specified type.
+     */
+    template <typename Element>
+    ElementRange<const Element> getElements() const;
+
+    /**
      * @brief Print overview to ostream
      */
     void print(std::ostream &os) const;
@@ -231,6 +255,12 @@ namespace adm {
     ADM_EXPORT ElementRange<AudioContent> getReferences(
         detail::ParameterTraits<AudioContent>::tag);
 
+    ADM_EXPORT ElementRange<const AudioProgrammeLabel> getElements(
+        detail::ParameterTraits<AudioProgrammeLabel>::tag) const;
+
+    ADM_EXPORT ElementRange<AudioProgrammeLabel> getElements(
+        detail::ParameterTraits<AudioProgrammeLabel>::tag);
+
     ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioContent>::tag);
 
     ADM_EXPORT void disconnectReferences();
@@ -244,6 +274,8 @@ namespace adm {
     boost::optional<Start> start_;
     boost::optional<End> end_;
     std::vector<std::shared_ptr<AudioContent>> audioContents_;
+    // TODO should we store labels in shared_ptrs?
+    std::vector<std::shared_ptr<AudioProgrammeLabel>> audioProgrammeLabels_;
     boost::optional<LoudnessMetadata> loudnessMetadata_;
     boost::optional<MaxDuckingDepth> maxDuckingDepth_;
     boost::optional<AudioProgrammeReferenceScreen> refScreen_;
@@ -306,6 +338,16 @@ namespace adm {
   inline ElementRange<AudioContent> AudioProgramme::getReferences(
       detail::ParameterTraits<AudioContent>::tag) {
     return detail::makeElementRange<AudioContent>(audioContents_);
+  }
+
+  inline ElementRange<const AudioProgrammeLabel> AudioProgramme::getElements(
+      detail::ParameterTraits<AudioProgrammeLabel>::tag) const {
+    return detail::makeElementRange<AudioProgrammeLabel>(audioProgrammeLabels_);
+  }
+
+  inline ElementRange<AudioProgrammeLabel> AudioProgramme::getElements(
+      detail::ParameterTraits<AudioProgrammeLabel>::tag) {
+    return detail::makeElementRange<AudioProgrammeLabel>(audioProgrammeLabels_);
   }
 
   template <typename Element>

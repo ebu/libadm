@@ -135,6 +135,11 @@ namespace adm {
     refScreen_ = boost::none;
   }
 
+  // --- Elements --- //
+  void AudioProgramme::add(std::shared_ptr<AudioProgrammeLabel> label) {
+    audioProgrammeLabels_.push_back(label);
+  }
+
   // ---- References ---- //
   bool AudioProgramme::addReference(std::shared_ptr<AudioContent> content) {
     autoParent(shared_from_this(), content);
