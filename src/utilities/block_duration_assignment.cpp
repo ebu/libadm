@@ -11,11 +11,22 @@
 namespace adm {
 
   Time subtractTimes(const Time& firstTime, const Time& secondTime) {
-    if (firstTime.isNanoseconds() && secondTime.isNanoseconds()) {
+    // both nanoseconds -> return nanoseconds
+    if (firstTime.isNanoseconds() && secondTime.isNanoseconds())
       return firstTime.asNanoseconds() - secondTime.asNanoseconds();
-    } else {
-      return asTime(asRational(firstTime) - asRational(secondTime));
+
+    // both fractional with same denominator -> keep denominator
+    if (firstTime.isFractional() && secondTime.isFractional()) {
+      FractionalTime firstFrac = firstTime.asFractional();
+      FractionalTime secondFrac = secondTime.asFractional();
+
+      if (firstFrac.denominator == secondFrac.denominator)
+        return FractionalTime{firstFrac.numerator - secondFrac.numerator,
+                              firstFrac.denominator};
     }
+
+    // mixed, or different denominators
+    return asTime(asRational(firstTime) - asRational(secondTime));
   }
 
   bool timesEqual(const Time& firstTime, const Time& secondTime) {

@@ -73,19 +73,19 @@ TEST_CASE_METHOD(BaseSceneFixture, "no_durations_fractional") {
   using namespace adm;
   REQUIRE(document->getElements<AudioProgramme>().size() == 1);
   channel1->add(AudioBlockFormatObjects(SphericalPosition{},
-                                        Rtime{FractionalTime{0, 1}}));
+                                        Rtime{FractionalTime{0, 100}}));
   channel1->add(AudioBlockFormatObjects(SphericalPosition{},
-                                        Rtime{FractionalTime{1, 10}}));
+                                        Rtime{FractionalTime{10, 100}}));
 
-  updateBlockFormatDurations(document, FractionalTime{5, 1});
+  updateBlockFormatDurations(document, FractionalTime{500, 100});
 
   auto blocks1 = channel1->getElements<AudioBlockFormatObjects>();
   REQUIRE(blocks1[0].has<Duration>());
 
-  CHECK(blocks1[0].get<Duration>().get() == FractionalTime{1, 10});
+  CHECK(blocks1[0].get<Duration>().get() == FractionalTime{10, 100});
 
   REQUIRE(blocks1[1].has<Duration>());
-  CHECK(blocks1[1].get<Duration>().get() == FractionalTime{49, 10});
+  CHECK(blocks1[1].get<Duration>().get() == FractionalTime{490, 100});
 }
 
 TEST_CASE_METHOD(BaseSceneFixture, "fractional_durations_not_normalised") {
