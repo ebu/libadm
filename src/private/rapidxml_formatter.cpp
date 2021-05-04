@@ -59,6 +59,7 @@ namespace adm {
       node.addOptionalAttribute<MaxDuckingDepth>(programme, "maxDuckingDepth");
       node.addReferences<AudioContent, AudioContentId>(programme, "audioContentIDRef");
       node.addOptionalElement<LoudnessMetadata>(programme, "loudnessMetadata", &formatLoudnessMetadata);
+      node.addOptionalMultiElement<AudioProgrammeLabel>(programme, "audioProgrammeLabel", &formatAudioProgrammeLabel);
       // clang-format on
     }
 
@@ -81,6 +82,21 @@ namespace adm {
                                                 "dialogueLoudness");
     }
 
+    void formatAudioProgrammeLabel(
+        XmlNode &parentNode, const std::string &name,
+        const AudioProgrammeLabel &audioProgrammeLabel) {
+      auto node = parentNode.addNode(name);
+      if (audioProgrammeLabel.has<AudioProgrammeLabelLanguage>()) {
+        node.addAttribute(
+            "language",
+            audioProgrammeLabel.get<AudioProgrammeLabelLanguage>().get());
+      }
+      if (audioProgrammeLabel.has<AudioProgrammeLabelValue>()) {
+        node.setValue(
+            audioProgrammeLabel.get<AudioProgrammeLabelValue>().get());
+      }
+    }
+
     void formatAudioContent(XmlNode &node,
                             std::shared_ptr<const AudioContent> content) {
       // clang-format off
@@ -92,6 +108,7 @@ namespace adm {
       node.addOptionalElement<NonDialogueContentKind>(content, "dialogue", &formatNonDialogueContentKind);
       node.addOptionalElement<DialogueContentKind>(content, "dialogue", &formatDialogueContentKind);
       node.addOptionalElement<MixedContentKind>(content, "dialogue", &formatMixedContentKind);
+      node.addOptionalMultiElement<AudioContentLabel>(content, "audioContentLabel", &formatAudioContentLabel);
       // clang-format on
     }
 
@@ -119,6 +136,19 @@ namespace adm {
       // clang-format on
     }
 
+    void formatAudioContentLabel(XmlNode &parentNode, const std::string &name,
+                                 const AudioContentLabel &audioContentLabel) {
+      auto node = parentNode.addNode(name);
+      if (audioContentLabel.has<AudioContentLabelLanguage>()) {
+        node.addAttribute(
+            "language",
+            audioContentLabel.get<AudioContentLabelLanguage>().get());
+      }
+      if (audioContentLabel.has<AudioContentLabelValue>()) {
+        node.setValue(audioContentLabel.get<AudioContentLabelValue>().get());
+      }
+    }
+
     void formatAudioObject(XmlNode &node,
                            std::shared_ptr<const AudioObject> object) {
       // clang-format off
@@ -136,6 +166,8 @@ namespace adm {
         node.addElement<AudioObjectId>(element, "audioComplementaryObjectIDRef");
       }
       node.addReferences<AudioTrackUid, AudioTrackUidId>(object, "audioTrackUIDRef");
+      node.addOptionalMultiElement<AudioObjectLabel>(object, "audioObjectLabel", &formatAudioObjectLabel);
+      node.addOptionalMultiElement<AudioComplementaryObjectGroupLabel>(object, "audioComplementaryObjectGroupLabel", &formatAudioComplementaryObjectGroupLabel);
       // clang-format on
     }
 
@@ -239,6 +271,38 @@ namespace adm {
         maxNode.addAttribute("coordinate", "Z");
         maxNode.addAttribute("bound", "max");
         maxNode.setValue(positionInteraction.get<ZInteractionMax>());
+      }
+    }
+
+    void formatAudioObjectLabel(XmlNode &parentNode, const std::string &name,
+                                const AudioObjectLabel &audioObjectLabel) {
+      auto node = parentNode.addNode(name);
+      if (audioObjectLabel.has<AudioObjectLabelLanguage>()) {
+        node.addAttribute(
+            "language", audioObjectLabel.get<AudioObjectLabelLanguage>().get());
+      }
+      if (audioObjectLabel.has<AudioObjectLabelValue>()) {
+        node.setValue(audioObjectLabel.get<AudioObjectLabelValue>().get());
+      }
+    }
+
+    void formatAudioComplementaryObjectGroupLabel(
+        XmlNode &parentNode, const std::string &name,
+        const AudioComplementaryObjectGroupLabel
+            &audioComplementaryObjectGroupLabel) {
+      auto node = parentNode.addNode(name);
+      if (audioComplementaryObjectGroupLabel
+              .has<AudioComplementaryObjectGroupLabelLanguage>()) {
+        node.addAttribute("language",
+                          audioComplementaryObjectGroupLabel
+                              .get<AudioComplementaryObjectGroupLabelLanguage>()
+                              .get());
+      }
+      if (audioComplementaryObjectGroupLabel
+              .has<AudioComplementaryObjectGroupLabelValue>()) {
+        node.setValue(audioComplementaryObjectGroupLabel
+                          .get<AudioComplementaryObjectGroupLabelValue>()
+                          .get());
       }
     }
 
