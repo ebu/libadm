@@ -38,6 +38,13 @@ TEST_CASE("xml_parser/audio_programme") {
     REQUIRE(loudnessMetadata.get<MaxMomentary>() == Approx(-19.0f));
     REQUIRE(loudnessMetadata.get<MaxShortTerm>() == Approx(-21.2f));
     REQUIRE(loudnessMetadata.get<DialogueLoudness>() == Approx(-24.0f));
+
+    auto labels = audioProgramme->getElements<AudioProgrammeLabel>();
+    REQUIRE(labels.size == 2);
+    REQUIRE(labels[0]->get<AudioProgrammeLabelLanguage> == "en");
+    REQUIRE(labels[0]->get<AudioProgrammeLabelValue> == "Good morning");
+    REQUIRE(labels[1]->get<AudioProgrammeLabelLanguage> == "fr");
+    REQUIRE(labels[1]->get<AudioProgrammeLabelValue> == "Bonjour");
   }
 }
 

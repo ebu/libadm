@@ -17,6 +17,15 @@ TEST_CASE("audio_programme") {
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // audioProgramme->set(AudioProgrammeReferenceScreen());
 
+    auto label_en =
+        AudioProgrammeLabel::create(AudioProgrammeLabelValue("Good morning"),
+                                    AudioProgrammeLabelLanguage("en"));
+    auto label_fr = AudioProgrammeLabel::create(
+        AudioProgrammeLabelValue("Bonjour"), AudioProgrammeLabelLanguage("fr"));
+
+    audioProgramme->add(label_en);
+    audioProgramme->add(label_fr);
+
     REQUIRE(audioProgramme->has<AudioProgrammeId>());
     REQUIRE(audioProgramme->has<AudioProgrammeName>());
     REQUIRE(audioProgramme->has<AudioProgrammeLanguage>());
@@ -37,6 +46,10 @@ TEST_CASE("audio_programme") {
     REQUIRE(audioProgramme->get<MaxDuckingDepth>() == -30);
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // REQUIRE(audioProgramme->get<AudioProgrammeReferenceScreen>() == ???);
+    auto labels = audioProgramme->getElements<AudioProgrammeLabel>();
+    REQUIRE(labels.size == 2);
+    REQUIRE(labels[0] == label_en);
+    REQUIRE(labels[1] == label_fr);
 
     audioProgramme->unset<AudioProgrammeLanguage>();
     audioProgramme->unset<Start>();
@@ -45,6 +58,9 @@ TEST_CASE("audio_programme") {
     audioProgramme->unset<MaxDuckingDepth>();
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // audioProgramme->unset<AudioProgrammeReferenceScreen>();
+    audioProgramme->remove(label_en);
+    audioProgramme->remove(label_fr);
+    REQUIRE(audioProgramme->getElements<AudioProgrammeLabel>().size == 0);
 
     REQUIRE(!audioProgramme->has<AudioProgrammeLanguage>());
     REQUIRE(audioProgramme->has<Start>());

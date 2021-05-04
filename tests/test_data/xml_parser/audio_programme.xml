@@ -12,6 +12,8 @@
             <maxShortTerm>-21.2</maxShortTerm>
             <dialogueLoudness>-24.0</dialogueLoudness>
           </loudnessMetadata>
+          <audioProgrammeLabel language="en">Good morning</audioProgrammeLabel>
+          <audioProgrammeLabel language="fr">Bonjour</audioProgrammeLabel>
         </audioProgramme>
       </audioFormatExtended>
     </format>
