@@ -85,16 +85,11 @@ namespace adm {
     void formatAudioProgrammeLabel(
         XmlNode &parentNode, const std::string &name,
         const AudioProgrammeLabel &audioProgrammeLabel) {
+      // clang-format off
       auto node = parentNode.addNode(name);
-      if (audioProgrammeLabel.has<AudioProgrammeLabelLanguage>()) {
-        node.addAttribute(
-            "language",
-            audioProgrammeLabel.get<AudioProgrammeLabelLanguage>().get());
-      }
-      if (audioProgrammeLabel.has<AudioProgrammeLabelValue>()) {
-        node.setValue(
-            audioProgrammeLabel.get<AudioProgrammeLabelValue>().get());
-      }
+      node.addOptionalAttribute<AudioProgrammeLabelLanguage>(audioProgrammeLabel, "language");
+      node.setOptionalValue<AudioProgrammeLabelValue>(audioProgrammeLabel);
+      // clang-format on
     }
 
     void formatAudioContent(XmlNode &node,
@@ -138,15 +133,11 @@ namespace adm {
 
     void formatAudioContentLabel(XmlNode &parentNode, const std::string &name,
                                  const AudioContentLabel &audioContentLabel) {
+      // clang-format off
       auto node = parentNode.addNode(name);
-      if (audioContentLabel.has<AudioContentLabelLanguage>()) {
-        node.addAttribute(
-            "language",
-            audioContentLabel.get<AudioContentLabelLanguage>().get());
-      }
-      if (audioContentLabel.has<AudioContentLabelValue>()) {
-        node.setValue(audioContentLabel.get<AudioContentLabelValue>().get());
-      }
+      node.addOptionalAttribute<AudioContentLabelLanguage>(audioContentLabel, "language");
+      node.setOptionalValue<AudioContentLabelValue>(audioContentLabel);
+      // clang-format on
     }
 
     void formatAudioObject(XmlNode &node,
@@ -276,34 +267,22 @@ namespace adm {
 
     void formatAudioObjectLabel(XmlNode &parentNode, const std::string &name,
                                 const AudioObjectLabel &audioObjectLabel) {
+      // clang-format off
       auto node = parentNode.addNode(name);
-      if (audioObjectLabel.has<AudioObjectLabelLanguage>()) {
-        node.addAttribute(
-            "language", audioObjectLabel.get<AudioObjectLabelLanguage>().get());
-      }
-      if (audioObjectLabel.has<AudioObjectLabelValue>()) {
-        node.setValue(audioObjectLabel.get<AudioObjectLabelValue>().get());
-      }
+      node.addOptionalAttribute<AudioObjectLabelLanguage>(audioObjectLabel, "language");
+      node.setOptionalValue<AudioObjectLabelValue>(audioObjectLabel);
+      // clang-format on
     }
 
     void formatAudioComplementaryObjectGroupLabel(
         XmlNode &parentNode, const std::string &name,
         const AudioComplementaryObjectGroupLabel
             &audioComplementaryObjectGroupLabel) {
+      // clang-format off
       auto node = parentNode.addNode(name);
-      if (audioComplementaryObjectGroupLabel
-              .has<AudioComplementaryObjectGroupLabelLanguage>()) {
-        node.addAttribute("language",
-                          audioComplementaryObjectGroupLabel
-                              .get<AudioComplementaryObjectGroupLabelLanguage>()
-                              .get());
-      }
-      if (audioComplementaryObjectGroupLabel
-              .has<AudioComplementaryObjectGroupLabelValue>()) {
-        node.setValue(audioComplementaryObjectGroupLabel
-                          .get<AudioComplementaryObjectGroupLabelValue>()
-                          .get());
-      }
+      node.addOptionalAttribute<AudioComplementaryObjectGroupLabelLanguage>(audioComplementaryObjectGroupLabel, "language");
+      node.setOptionalValue<AudioComplementaryObjectGroupLabelValue>(audioComplementaryObjectGroupLabel);
+      // clang-format on
     }
 
     void formatAudioPackFormat(
