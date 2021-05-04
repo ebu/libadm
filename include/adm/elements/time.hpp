@@ -2,6 +2,7 @@
 #pragma once
 
 #include <chrono>
+#include <stdexcept>
 #include <string>
 #include <boost/variant.hpp>
 #include "adm/detail/named_type.hpp"
@@ -13,7 +14,11 @@ namespace adm {
   class FractionalTime {
    public:
     FractionalTime(int64_t numerator, int64_t denominator)
-        : _numerator(numerator), _denominator(denominator) {}
+        : _numerator(numerator), _denominator(denominator) {
+      if (denominator < 1)
+        throw std::invalid_argument(
+            "FractionalTime denominator must be positive");
+    }
 
     int64_t numerator() const { return _numerator; }
     int64_t denominator() const { return _denominator; }
