@@ -59,6 +59,12 @@ namespace adm {
       AudioChannelFormat* channel,
       std::chrono::nanoseconds channelFormatDuration) {
     auto current = begin(channel->getElements<BlockType>());
+    // no blocks
+    if (current == end(channel->getElements<BlockType>()))
+      throw error::detail::formatElementRuntimeError(
+          channel->get<AudioChannelFormatId>(),
+          "AudioChannelFormat has no audioBlockFormats");
+
     auto next = current;
     std::advance(next, 1);
     while (next != end(channel->getElements<BlockType>())) {
@@ -66,9 +72,9 @@ namespace adm {
       std::advance(current, 1);
       std::advance(next, 1);
     }
-    if (current != end(channel->getElements<BlockType>())) {
-      current->set(calculateDuration(*current, channelFormatDuration));
-    }
+    // here, current is always the last block
+
+    current->set(calculateDuration(*current, channelFormatDuration));
   }
 
   void updateBlockFormatDuration(

@@ -16,6 +16,7 @@
 - fixed erroneous test acceptance data
 
 ### Fixed
+- updateBlockFormatDurations now throws an exception when given an audioChannelFormat with no audioBlockFormats, rather than segfaulting
 
 ## 0.12.0 (April 18, 2020)
 
