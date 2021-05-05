@@ -20,10 +20,10 @@ namespace adm {
     std::string AudioTrackUidMutuallyExclusiveReferences::formatMessage(
         AudioChannelFormatId audioChannelFormatRef,
         AudioTrackFormatId audioTrackFormatRef) const {
-      return boost::str(
-          boost::format(
-              "Mutually-exclusive AudioTrackUid references detected: %1% and %2%") %
-          formatId(audioChannelFormatRef) % formatId(audioTrackFormatRef));
+      return boost::str(boost::format("Mutually-exclusive AudioTrackUid "
+                                      "references detected: %1% and %2%") %
+                        formatId(audioChannelFormatRef) %
+                        formatId(audioTrackFormatRef));
     }
 
     AudioObjectReferenceCycle::AudioObjectReferenceCycle(

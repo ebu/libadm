@@ -119,12 +119,13 @@ namespace adm {
      *
      * A pending unresolved reference will be removed.
      */
-    ADM_EXPORT void setReference(std::shared_ptr<AudioChannelFormat> channelFormat);
+    ADM_EXPORT void setReference(
+        std::shared_ptr<AudioChannelFormat> channelFormat);
     /**
-    * @brief Set reference to an AudioPackFormat
-    *
-    * A pending unresolved reference will be removed.
-    */
+     * @brief Set reference to an AudioPackFormat
+     *
+     * A pending unresolved reference will be removed.
+     */
     ADM_EXPORT void setReference(std::shared_ptr<AudioPackFormat> packFormat);
 
     template <typename Element>
