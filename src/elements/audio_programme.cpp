@@ -136,7 +136,7 @@ namespace adm {
   }
 
   // --- Elements --- //
-  void AudioProgramme::add(std::shared_ptr<AudioProgrammeLabel> label) {
+  void AudioProgramme::add(AudioProgrammeLabel label) {
     audioProgrammeLabels_.push_back(label);
   }
 

@@ -173,7 +173,7 @@ namespace adm {
     /**
      * @brief Add AudioProgrammeLabel
      */
-    ADM_EXPORT void add(std::shared_ptr<AudioProgrammeLabel> label);
+    ADM_EXPORT void add(AudioProgrammeLabel label);
 
     /**
      * @brief Get ADM elements template
@@ -274,8 +274,7 @@ namespace adm {
     boost::optional<Start> start_;
     boost::optional<End> end_;
     std::vector<std::shared_ptr<AudioContent>> audioContents_;
-    // TODO should we store labels in shared_ptrs?
-    std::vector<std::shared_ptr<AudioProgrammeLabel>> audioProgrammeLabels_;
+    std::vector<AudioProgrammeLabel> audioProgrammeLabels_;
     boost::optional<LoudnessMetadata> loudnessMetadata_;
     boost::optional<MaxDuckingDepth> maxDuckingDepth_;
     boost::optional<AudioProgrammeReferenceScreen> refScreen_;
