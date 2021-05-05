@@ -33,8 +33,8 @@ namespace adm {
       detail::NamedType<std::string, AudioProgrammeLanguageTag>;
 
   template <typename ElementType>
-  using ElementTypeConstRange = boost::iterator_range<
-      typename std::vector<ElementType>::const_iterator>;
+  using ElementTypeConstRange =
+      boost::iterator_range<typename std::vector<ElementType>::const_iterator>;
   template <typename ElementType>
   using ElementTypeRange =
       boost::iterator_range<typename std::vector<ElementType>::iterator>;
@@ -184,26 +184,20 @@ namespace adm {
     ADM_EXPORT void add(AudioProgrammeLabel label);
 
     /**
-    * @brief ElementType elements getter template
-    *
-    * Templated getter with the wanted ElementType type as template
-    * argument.
-    *
-    * @returns ContainerProxy containing all audioBlockFormats of the given
-    * type.
-    */
+     * @brief ElementType elements getter template
+     *
+     * Templated getter with the wanted ElementType type as template
+     * argument.
+     */
     template <typename ElementType>
     ElementTypeConstRange<ElementType> getElements() const;
 
     /**
-    * @brief AudioBlockFormat elements getter template
-    *
-    * Templated getter with the wanted audioBlockFormat type as template
-    * argument.
-    *
-    * @returns ContainerProxy containing all audioBlockFormats of the given
-    * type.
-    */
+     * @brief AudioBlockFormat elements getter template
+     *
+     * Templated getter with the wanted ElementType type as template
+     * argument.
+     */
     template <typename ElementType>
     ElementTypeRange<ElementType> getElements();
 
@@ -279,11 +273,11 @@ namespace adm {
     ADM_EXPORT void disconnectReferences();
 
     ADM_EXPORT
-        ElementTypeConstRange<AudioProgrammeLabel> get(
-            detail::ParameterTraits<AudioProgrammeLabel>::tag) const;
+    ElementTypeConstRange<AudioProgrammeLabel> get(
+        detail::ParameterTraits<AudioProgrammeLabel>::tag) const;
     ADM_EXPORT
-        ElementTypeRange<AudioProgrammeLabel> get(
-            detail::ParameterTraits<AudioProgrammeLabel>::tag);
+    ElementTypeRange<AudioProgrammeLabel> get(
+        detail::ParameterTraits<AudioProgrammeLabel>::tag);
 
     void setParent(std::weak_ptr<Document> document);
 
@@ -360,16 +354,15 @@ namespace adm {
   }
 
   template <typename ElementType>
-  ElementTypeConstRange<ElementType> AudioProgramme::getElements()
-      const {
-      typedef typename detail::ParameterTraits<ElementType>::tag Tag;
-      return get(Tag());
+  ElementTypeConstRange<ElementType> AudioProgramme::getElements() const {
+    typedef typename detail::ParameterTraits<ElementType>::tag Tag;
+    return get(Tag());
   }
 
   template <typename ElementType>
   ElementTypeRange<ElementType> AudioProgramme::getElements() {
-      typedef typename detail::ParameterTraits<ElementType>::tag Tag;
-      return get(Tag());
+    typedef typename detail::ParameterTraits<ElementType>::tag Tag;
+    return get(Tag());
   }
 
   template <typename Element>
