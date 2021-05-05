@@ -108,6 +108,9 @@ TEST_CASE("Exceptions") {
                       Catch::Contains("invalid timecode"));
   REQUIRE_THROWS_WITH(parseTimecode("YYY00:00:00.000S001"),
                       Catch::Contains("invalid timecode"));
+  REQUIRE_THROWS_WITH(parseTimecode("00:00:00.1S000"),
+                      Catch::Contains("invalid timecode") &&
+                          Catch::Contains("zero denominator"));
 }
 
 TEST_CASE("rational conversion") {

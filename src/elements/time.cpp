@@ -66,6 +66,14 @@ namespace adm {
 
       int64_t numerator = stoi(timecodeMatch[4]);
       int64_t denominator = stoi(timecodeMatch[5]);
+
+      if (denominator == 0) {
+        std::stringstream errorString;
+        errorString << "invalid timecode: " << timecode
+                    << " has a zero denominator";
+        throw std::runtime_error(errorString.str());
+      }
+
       return FractionalTime{seconds * denominator + numerator, denominator};
     } else {
       std::stringstream errorString;
