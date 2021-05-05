@@ -91,7 +91,7 @@ namespace adm {
   void updateBlockFormatDurationWithType(AudioChannelFormat* channel,
                                          Time channelFormatDuration) {
     auto current = begin(channel->getElements<BlockType>());
-    // no blocks, do nothing
+    // no blocks
     if (current == end(channel->getElements<BlockType>()))
       throw error::detail::formatElementRuntimeError(
           channel->get<AudioChannelFormatId>(),
