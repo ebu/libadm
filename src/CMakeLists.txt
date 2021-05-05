@@ -24,7 +24,7 @@ add_library(adm
   elements/audio_track_format.cpp
   elements/audio_track_uid.cpp
   elements/audio_programme_id.cpp
-  elements/audio_programme_label.cpp
+  elements/label.cpp
   elements/audio_content_id.cpp
   elements/audio_object_id.cpp
   elements/audio_pack_format_id.cpp

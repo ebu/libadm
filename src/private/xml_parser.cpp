@@ -151,7 +151,7 @@ namespace adm {
 
       addOptionalReferences<AudioContentId>(node, "audioContentIDRef", audioProgramme, programmeContentRefs_, &parseAudioContentId);
 
-      addOptionalElements<AudioProgrammeLabel>(node, "audioProgrammeLabel", audioProgramme, &parseAudioProgrammeLabel);
+      addOptionalElements<AudioProgrammeLabel>(node, "audioProgrammeLabel", audioProgramme, &parseLabel);
       // clang-format on
       return audioProgramme;
     }
@@ -596,15 +596,15 @@ namespace adm {
       return audioBlockFormat;
     }
 
-    AudioProgrammeLabel parseAudioProgrammeLabel(NodePtr node) {
-      AudioProgrammeLabel audioProgrammeLabel = AudioProgrammeLabel();
+    Label parseLabel(NodePtr node) {
+      Label label = Label();
 
       // clang-format off
-      setOptionalAttribute<AudioProgrammeLabelLanguage>(node, "language", audioProgrammeLabel);
-      setValue<AudioProgrammeLabelValue>(node, audioProgrammeLabel);
+      setOptionalAttribute<LabelLanguage>(node, "language", label);
+      setValue<LabelValue>(node, label);
       // clang-format on
 
-      return audioProgrammeLabel;
+      return label;
     }
 
     ChannelLock parseChannelLock(NodePtr node) {

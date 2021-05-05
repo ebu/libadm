@@ -8,7 +8,7 @@
 #include "adm/elements/audio_content.hpp"
 #include "adm/elements/audio_programme_id.hpp"
 #include "adm/elements/audio_programme_ref_screen.hpp"
-#include "adm/elements/audio_programme_label.hpp"
+#include "adm/elements/label.hpp"
 #include "adm/elements/loudness_metadata.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"

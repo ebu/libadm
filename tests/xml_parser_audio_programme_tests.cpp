@@ -41,10 +41,10 @@ TEST_CASE("xml_parser/audio_programme") {
 
     auto labels = audioProgramme->getElements<AudioProgrammeLabel>();
     REQUIRE(labels.size() == 2);
-    REQUIRE(labels[0].get<AudioProgrammeLabelLanguage>() == "en");
-    REQUIRE(labels[0].get<AudioProgrammeLabelValue>() == "Good morning");
-    REQUIRE(labels[1].get<AudioProgrammeLabelLanguage>() == "fr");
-    REQUIRE(labels[1].get<AudioProgrammeLabelValue>() == "Bonjour");
+    REQUIRE(labels[0].get<LabelLanguage>() == "en");
+    REQUIRE(labels[0].get<LabelValue>() == "Good morning");
+    REQUIRE(labels[1].get<LabelLanguage>() == "fr");
+    REQUIRE(labels[1].get<LabelValue>() == "Bonjour");
   }
 }
 
