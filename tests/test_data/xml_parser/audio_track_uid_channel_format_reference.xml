@@ -6,7 +6,7 @@
         <audioTrackUID UID="ATU_00000001" sampleRate="48000" bitDepth="24">
           <audioChannelFormatIDRef>AC_00011001</audioChannelFormatIDRef>
         </audioTrackUID>
-				<audioChannelFormat audioChannelFormatID="AC_00011001" audioChannelFormatName="MyChannelFormat" typeLabel="0001" typeDefinition="DirectSpeakers"/>
+        <audioChannelFormat audioChannelFormatID="AC_00011001" audioChannelFormatName="MyChannelFormat" typeLabel="0001" typeDefinition="DirectSpeakers"/>
       </audioFormatExtended>
     </format>
   </coreMetadata>
