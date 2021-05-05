@@ -59,7 +59,6 @@ namespace adm {
       node.addOptionalAttribute<MaxDuckingDepth>(programme, "maxDuckingDepth");
       node.addReferences<AudioContent, AudioContentId>(programme, "audioContentIDRef");
       node.addOptionalElement<LoudnessMetadata>(programme, "loudnessMetadata", &formatLoudnessMetadata);
-      // node.addOptionalMultiElement<AudioProgrammeLabel>(programme, "audioProgrammeLabel", &formatAudioProgrammeLabel);
       node.addElements<AudioProgrammeLabel>(programme, "audioProgrammeLabel", &formatAudioProgrammeLabel);
       // clang-format on
     }
@@ -86,8 +85,15 @@ namespace adm {
     void formatAudioProgrammeLabel(
         XmlNode &node, const AudioProgrammeLabel &audioProgrammeLabel) {
       // clang-format off
-      node.addOptionalAttribute<AudioProgrammeLabelLanguage>(audioProgrammeLabel, "language");
-      node.setOptionalValue<AudioProgrammeLabelValue>(audioProgrammeLabel);
+        if (audioProgrammeLabel.has<AudioProgrammeLabelLanguage>()) {
+            node.addAttribute(
+                "language",
+                audioProgrammeLabel.get<AudioProgrammeLabelLanguage>().get());
+        }
+        if (audioProgrammeLabel.has<AudioProgrammeLabelValue>()) {
+            node.setValue(
+                audioProgrammeLabel.get<AudioProgrammeLabelValue>().get());
+        }
       // clang-format on
     }
 
