@@ -31,6 +31,14 @@ namespace adm {
   /// @brief NamedType for the language attribute of the audioProgramme element
   using AudioProgrammeLanguage =
       detail::NamedType<std::string, AudioProgrammeLanguageTag>;
+
+  template <typename ElementType>
+  using ElementTypeConstRange = boost::iterator_range<
+      typename std::vector<ElementType>::const_iterator>;
+  template <typename ElementType>
+  using ElementTypeRange =
+      boost::iterator_range<typename std::vector<ElementType>::iterator>;
+
   /// @brief Tag for NamedType ::MaxDuckingDepth
   struct MaxDuckingDepthTag {};
   /**
@@ -176,22 +184,28 @@ namespace adm {
     ADM_EXPORT void add(AudioProgrammeLabel label);
 
     /**
-     * @brief Get ADM elements template
-     *
-     * Templated get method with the ADM parameter type as template
-     * argument. Returns a set of all ADM elements with the specified type.
-     */
-    template <typename Element>
-    ElementRange<Element> getElements();
+    * @brief ElementType elements getter template
+    *
+    * Templated getter with the wanted ElementType type as template
+    * argument.
+    *
+    * @returns ContainerProxy containing all audioBlockFormats of the given
+    * type.
+    */
+    template <typename ElementType>
+    ElementTypeConstRange<ElementType> getElements() const;
 
     /**
-     * @brief Get references to ADM elements template
-     *
-     * Templated get method with the ADM parameter type as template
-     * argument. Returns a set of ADM elements with the specified type.
-     */
-    template <typename Element>
-    ElementRange<const Element> getElements() const;
+    * @brief AudioBlockFormat elements getter template
+    *
+    * Templated getter with the wanted audioBlockFormat type as template
+    * argument.
+    *
+    * @returns ContainerProxy containing all audioBlockFormats of the given
+    * type.
+    */
+    template <typename ElementType>
+    ElementTypeRange<ElementType> getElements();
 
     /**
      * @brief Print overview to ostream
@@ -255,15 +269,16 @@ namespace adm {
     ADM_EXPORT ElementRange<AudioContent> getReferences(
         detail::ParameterTraits<AudioContent>::tag);
 
-    ADM_EXPORT ElementRange<const AudioProgrammeLabel> getElements(
-        detail::ParameterTraits<AudioProgrammeLabel>::tag) const;
-
-    ADM_EXPORT ElementRange<AudioProgrammeLabel> getElements(
-        detail::ParameterTraits<AudioProgrammeLabel>::tag);
-
     ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioContent>::tag);
 
     ADM_EXPORT void disconnectReferences();
+
+    ADM_EXPORT
+        ElementTypeConstRange<AudioProgrammeLabel> get(
+            detail::ParameterTraits<AudioProgrammeLabel>::tag) const;
+    ADM_EXPORT
+        ElementTypeRange<AudioProgrammeLabel> get(
+            detail::ParameterTraits<AudioProgrammeLabel>::tag);
 
     void setParent(std::weak_ptr<Document> document);
 
@@ -339,26 +354,17 @@ namespace adm {
     return detail::makeElementRange<AudioContent>(audioContents_);
   }
 
-  template <typename Element>
-  ElementRange<const Element> AudioProgramme::getElements() const {
-      typedef typename detail::ParameterTraits<Element>::tag Tag;
-      return getElements(Tag());
+  template <typename ElementType>
+  ElementTypeConstRange<ElementType> AudioProgramme::getElements()
+      const {
+      typedef typename detail::ParameterTraits<ElementType>::tag Tag;
+      return get(Tag());
   }
 
-  template <typename Element>
-  ElementRange<Element> AudioProgramme::getElements() {
-      typedef typename detail::ParameterTraits<Element>::tag Tag;
-      return getElements(Tag());
-  }
-
-  inline ElementRange<const AudioProgrammeLabel> AudioProgramme::getElements(
-      detail::ParameterTraits<AudioProgrammeLabel>::tag) const {
-    return detail::makeElementRange<AudioProgrammeLabel>(audioProgrammeLabels_);
-  }
-
-  inline ElementRange<AudioProgrammeLabel> AudioProgramme::getElements(
-      detail::ParameterTraits<AudioProgrammeLabel>::tag) {
-    return detail::makeElementRange<AudioProgrammeLabel>(audioProgrammeLabels_);
+  template <typename ElementType>
+  ElementTypeRange<ElementType> AudioProgramme::getElements() {
+      typedef typename detail::ParameterTraits<ElementType>::tag Tag;
+      return get(Tag());
   }
 
   template <typename Element>

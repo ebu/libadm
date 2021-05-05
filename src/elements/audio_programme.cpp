@@ -173,6 +173,19 @@ namespace adm {
     audioContents_.clear();
   }
 
+
+  ElementTypeConstRange<AudioProgrammeLabel> AudioProgramme::get(
+      detail::ParameterTraits<AudioProgrammeLabel>::tag) const {
+      return boost::make_iterator_range(audioProgrammeLabels_.begin(),
+                                        audioProgrammeLabels_.end());
+  }
+
+  ElementTypeRange<AudioProgrammeLabel> AudioProgramme::get(
+      detail::ParameterTraits<AudioProgrammeLabel>::tag) {
+      return boost::make_iterator_range(audioProgrammeLabels_.begin(),
+                                        audioProgrammeLabels_.end());
+  }
+
   // ---- Common ---- //
   void AudioProgramme::print(std::ostream& os) const {
     os << get<AudioProgrammeId>();
