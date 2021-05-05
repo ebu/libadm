@@ -111,6 +111,11 @@ TEST_CASE("Exceptions") {
   REQUIRE_THROWS_WITH(parseTimecode("00:00:00.1S000"),
                       Catch::Contains("invalid timecode") &&
                           Catch::Contains("zero denominator"));
+
+  REQUIRE_THROWS_WITH(FractionalTime(0, 0),
+                      Catch::Contains("denominator must be positive"));
+  REQUIRE_THROWS_WITH(FractionalTime(0, -1),
+                      Catch::Contains("denominator must be positive"));
 }
 
 TEST_CASE("rational conversion") {
