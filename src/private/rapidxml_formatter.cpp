@@ -28,6 +28,8 @@ namespace adm {
       }
       std::string toString(const AudioTrackUidId &id) { return formatId(id); }
 
+      std::string toString(const Gain &gain) { return toString(gain.asLinear()); }
+
       struct MultiElementAttributeFormatter {
         MultiElementAttributeFormatter(const std::string &a,
                                        const std::string &v)

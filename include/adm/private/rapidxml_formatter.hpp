@@ -83,6 +83,7 @@ namespace adm {
       std::string toString(const AudioStreamFormatId &id);
       std::string toString(const AudioTrackFormatId &id);
       std::string toString(const AudioTrackUidId &id);
+      std::string toString(const Gain &gain);
 
       template <typename T, typename std::enable_if<
                                 std::is_integral<T>::value>::type * = nullptr>

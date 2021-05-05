@@ -583,7 +583,7 @@ namespace adm {
       setOptionalElement<Width>(node, "width", audioBlockFormat);
       setOptionalElement<Height>(node, "height", audioBlockFormat);
       setOptionalElement<Depth>(node, "depth", audioBlockFormat);
-      setOptionalElement<Gain>(node, "gain", audioBlockFormat);
+      setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Diffuse>(node, "diffuse", audioBlockFormat);
       setOptionalElement<ChannelLock>(node, "channelLock", audioBlockFormat, &parseChannelLock);
       setOptionalElement<ObjectDivergence>(node, "objectDivergence", audioBlockFormat, &parseObjectDivergence);
@@ -592,6 +592,10 @@ namespace adm {
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
       // clang-format on
       return audioBlockFormat;
+    }
+
+    Gain parseGain(NodePtr node) {
+      return Gain::fromLinear(std::stod(node->value()));
     }
 
     ChannelLock parseChannelLock(NodePtr node) {

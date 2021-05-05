@@ -8,7 +8,7 @@ namespace adm {
     const Width widthDefault{0.f};
     const Height heightDefault{0.f};
     const Depth depthDefault{0.f};
-    const Gain gainDefault{1.f};
+    const Gain gainDefault{Gain::fromLinear(1.0)};
     const Diffuse diffuseDefault{0.f};
     const ChannelLock channelLockDefault{};
     const ObjectDivergence objectDivergenceDefault{};

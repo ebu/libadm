@@ -14,6 +14,7 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 #include "adm/elements/screen_ref.hpp"
+#include "adm/elements/gain.hpp"
 
 namespace adm {
 
@@ -35,10 +36,6 @@ namespace adm {
   struct DepthTag {};
   /// @brief NamedType for depth parameter
   using Depth = detail::NamedType<float, DepthTag>;
-  /// @brief Tag for NamedType ::Gain
-  struct GainTag {};
-  /// @brief NamedType for gain parameter
-  using Gain = detail::NamedType<float, GainTag>;
   /// @brief Tag for NamedType ::Diffuse
   struct DiffuseTag {};
   /// @brief NamedType for diffuse parameter
