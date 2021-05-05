@@ -23,7 +23,7 @@ TEST_CASE("xml_parser/audio_block_format_objects") {
     REQUIRE(firstBlockFormat.get<Width>().get() == Approx(45.0f));
     REQUIRE(firstBlockFormat.get<Height>() == Approx(20.0f));
     REQUIRE(firstBlockFormat.get<Depth>() == Approx(0.2f));
-    REQUIRE(firstBlockFormat.get<Gain>() == Approx(0.8f));
+    REQUIRE(firstBlockFormat.get<Gain>().asLinear() == Approx(0.8f));
     REQUIRE(firstBlockFormat.get<Diffuse>() == Approx(0.5f));
     REQUIRE(firstBlockFormat.get<ChannelLock>().get<ChannelLockFlag>() == true);
     REQUIRE(firstBlockFormat.get<ChannelLock>().get<MaxDistance>() ==
