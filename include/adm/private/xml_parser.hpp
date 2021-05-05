@@ -38,6 +38,7 @@ namespace adm {
     LoudnessMetadata parseLoudnessMetadata(NodePtr node);
     AudioProgrammeReferenceScreen parseAudioProgrammeReferenceScreen(
         NodePtr node);
+    AudioProgrammeLabel parseAudioProgrammeLabel(NodePtr node);
     AudioBlockFormatObjects parseAudioBlockFormatObjects(NodePtr node);
     ChannelLock parseChannelLock(NodePtr node);
     ObjectDivergence parseObjectDivergence(NodePtr node);

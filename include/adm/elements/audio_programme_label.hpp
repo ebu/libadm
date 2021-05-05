@@ -103,14 +103,6 @@ namespace adm {
     boost::optional<AudioProgrammeLabelLanguage> language_;
   };
 
-  // ---- Free functions ---- //
-
-  /// @brief Parse an AudioProgrammeLabel string and convert it into an object
-  ADM_EXPORT AudioProgrammeLabel
-  parseAudioProgrammeLabel(const std::string& id);
-  /// @brief Format an AudioProgrammeLabel object as string
-  ADM_EXPORT std::string format(AudioProgrammeLabel id);
-
   // ---- Implementation ---- //
   template <typename... Parameters>
   AudioProgrammeLabel::AudioProgrammeLabel(Parameters... optionalNamedArgs) {

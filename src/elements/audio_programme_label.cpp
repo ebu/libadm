@@ -75,23 +75,4 @@ namespace adm {
   }
   */
 
-  // TODO don't have a clear pattern to parse from as value can be any string
-  /*
-  AudioProgrammeLabel parseAudioProgrammeLabel(const std::string& id) {
-    const static std::regex r(
-        "AB_([0-9a-fA-F]{4})([0-9a-fA-F]{4})_([0-9a-fA-F]{8})");
-    std::smatch idMatch;
-    if (std::regex_match(id, idMatch, r)) {
-      auto type = parseTypeLabel(idMatch[1]);
-      auto value = detail::parseHexValue(idMatch[2], 4);
-      auto counter = detail::parseHexValue(idMatch[3], 8);
-      return AudioProgrammeLabel(type, AudioProgrammeLabelValue(value),
-                                 AudioProgrammeLabelCounter(counter));
-    } else {
-      std::stringstream errorString;
-      errorString << "invalid AudioProgrammeLabel: " << id;
-      throw std::runtime_error(errorString.str());
-    }
-  }
-  */
 }  // namespace adm
