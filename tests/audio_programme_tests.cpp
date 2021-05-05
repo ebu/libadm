@@ -60,10 +60,8 @@ TEST_CASE("audio_programme") {
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // audioProgramme->unset<AudioProgrammeReferenceScreen>();
 
-    // TODO: Implement remove method, or more consistently, a clear method like clearAudioBlockFormats
-    // audioProgramme->remove(label_en);
-    // audioProgramme->remove(label_fr);
-    // REQUIRE(audioProgramme->getElements<AudioProgrammeLabel>().size() == 0);
+    audioProgramme->clearAudioProgrammeLabels();
+    REQUIRE(audioProgramme->getElements<AudioProgrammeLabel>().size() == 0);
 
     REQUIRE(!audioProgramme->has<AudioProgrammeLanguage>());
     REQUIRE(audioProgramme->has<Start>());

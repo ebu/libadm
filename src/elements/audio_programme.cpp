@@ -140,6 +140,10 @@ namespace adm {
     audioProgrammeLabels_.push_back(label);
   }
 
+  void AudioProgramme::clearAudioProgrammeLabels() {
+    audioProgrammeLabels_.clear();
+  }
+
   // ---- References ---- //
   bool AudioProgramme::addReference(std::shared_ptr<AudioContent> content) {
     autoParent(shared_from_this(), content);
@@ -173,17 +177,16 @@ namespace adm {
     audioContents_.clear();
   }
 
-
   ElementTypeConstRange<AudioProgrammeLabel> AudioProgramme::get(
       detail::ParameterTraits<AudioProgrammeLabel>::tag) const {
-      return boost::make_iterator_range(audioProgrammeLabels_.begin(),
-                                        audioProgrammeLabels_.end());
+    return boost::make_iterator_range(audioProgrammeLabels_.begin(),
+                                      audioProgrammeLabels_.end());
   }
 
   ElementTypeRange<AudioProgrammeLabel> AudioProgramme::get(
       detail::ParameterTraits<AudioProgrammeLabel>::tag) {
-      return boost::make_iterator_range(audioProgrammeLabels_.begin(),
-                                        audioProgrammeLabels_.end());
+    return boost::make_iterator_range(audioProgrammeLabels_.begin(),
+                                      audioProgrammeLabels_.end());
   }
 
   // ---- Common ---- //

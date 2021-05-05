@@ -208,6 +208,11 @@ namespace adm {
     ElementTypeRange<ElementType> getElements();
 
     /**
+     * @brief remove all AudioProgrammeLabel instances
+     */
+    void clearAudioProgrammeLabels();
+
+    /**
      * @brief Print overview to ostream
      */
     void print(std::ostream &os) const;
