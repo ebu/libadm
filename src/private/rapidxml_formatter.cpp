@@ -107,7 +107,7 @@ namespace adm {
       node.addOptionalElement<NonDialogueContentKind>(content, "dialogue", &formatNonDialogueContentKind);
       node.addOptionalElement<DialogueContentKind>(content, "dialogue", &formatDialogueContentKind);
       node.addOptionalElement<MixedContentKind>(content, "dialogue", &formatMixedContentKind);
-      // node.addOptionalMultiElement<AudioContentLabel>(content, "audioContentLabel", &formatAudioContentLabel);
+      node.addElements<AudioContentLabel>(content, "audioContentLabel", &formatLabel);
       // clang-format on
     }
 
@@ -134,18 +134,6 @@ namespace adm {
       node.setValue(std::string("2"));
       // clang-format on
     }
-
-    // void formatAudioContentLabel(XmlNode &parentNode, const std::string
-    // &name,
-    //                              const AudioContentLabel &audioContentLabel)
-    //                              {
-    //   // clang-format off
-    //   auto node = parentNode.addNode(name);
-    //   node.addOptionalAttribute<AudioContentLabelLanguage>(audioContentLabel,
-    //   "language");
-    //   node.setOptionalValue<AudioContentLabelValue>(audioContentLabel);
-    //   // clang-format on
-    // }
 
     void formatAudioObject(XmlNode &node,
                            std::shared_ptr<const AudioObject> object) {

@@ -171,6 +171,8 @@ namespace adm {
       setOptionalElement<ContentKind>(node, "dialogue", audioContent, &parseContentKind);
 
       addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", audioContent, contentObjectRefs_, &parseAudioObjectId);
+
+      addOptionalElements<AudioContentLabel>(node, "audioContentLabel", audioContent, &parseLabel);
       // clang-format on
       return audioContent;
     }
