@@ -1,6 +1,8 @@
 #include <catch2/catch.hpp>
 #include "adm/private/rapidxml_utils.hpp"
 #include "adm/private/rapidxml_wrapper.hpp"
+#include "adm/errors.hpp"
+#include "adm/parse.hpp"
 
 TEST_CASE("line_number_calculation") {
   using namespace adm;
@@ -25,5 +27,21 @@ TEST_CASE("line_number_calculation") {
     REQUIRE(p == 2);
     p = adm::xml::getDocumentLine(freq->first_attribute());
     REQUIRE(p == 3);
+  }
+}
+
+TEST_CASE("empty document") {
+  using namespace adm;
+
+  SECTION("ebucore") {
+    std::istringstream admStream("");
+    REQUIRE_THROWS_AS(parseXml(admStream), error::XmlParsingError);
+  }
+
+  SECTION("recursive") {
+    std::istringstream admStream("");
+    REQUIRE_THROWS_AS(
+        parseXml(admStream, xml::ParserOptions::recursive_node_search),
+        error::XmlParsingError);
   }
 }

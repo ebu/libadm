@@ -30,6 +30,10 @@ namespace adm {
     std::shared_ptr<Document> XmlParser::parse() {
       rapidxml::xml_document<> xmlDocument;
       xmlDocument.parse<0>(xmlFile_.data());
+
+      if (!xmlDocument.first_node())
+        throw error::XmlParsingError("xml document is empty");
+
       NodePtr root = nullptr;
       if (isSet(options_, ParserOptions::recursive_node_search)) {
         root =
