@@ -44,6 +44,7 @@ TEST_CASE("audio_content") {
     audioContent->unset<AudioContentLanguage>();
     audioContent->unset<LoudnessMetadata>();
     audioContent->unset<DialogueId>();
+    audioContent->clearAudioContentLabels();
 
     REQUIRE(audioContent->has<AudioContentLanguage>() == false);
     REQUIRE(audioContent->has<LoudnessMetadata>() == false);
@@ -51,6 +52,7 @@ TEST_CASE("audio_content") {
     REQUIRE(audioContent->has<NonDialogueContentKind>() == false);
     REQUIRE(audioContent->has<DialogueContentKind>() == false);
     REQUIRE(audioContent->has<MixedContentKind>() == false);
+    REQUIRE(audioContent->getElements<AudioContentLabel>().size() == 0);
   }
   // References
   {

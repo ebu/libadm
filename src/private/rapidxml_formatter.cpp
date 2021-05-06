@@ -152,7 +152,7 @@ namespace adm {
         node.addElement<AudioObjectId>(element, "audioComplementaryObjectIDRef");
       }
       node.addReferences<AudioTrackUid, AudioTrackUidId>(object, "audioTrackUIDRef");
-      // node.addOptionalMultiElement<AudioObjectLabel>(object, "audioObjectLabel", &formatAudioObjectLabel);
+      node.addElements<AudioContentLabel>(object, "audioObjectLabel", &formatLabel);
       // node.addOptionalMultiElement<AudioComplementaryObjectGroupLabel>(object, "audioComplementaryObjectGroupLabel", &formatAudioComplementaryObjectGroupLabel);
       // clang-format on
     }
@@ -259,16 +259,6 @@ namespace adm {
         maxNode.setValue(positionInteraction.get<ZInteractionMax>());
       }
     }
-
-    // void formatAudioObjectLabel(XmlNode &parentNode, const std::string &name,
-    //                             const AudioObjectLabel &audioObjectLabel) {
-    //   // clang-format off
-    //   auto node = parentNode.addNode(name);
-    //   node.addOptionalAttribute<AudioObjectLabelLanguage>(audioObjectLabel,
-    //   "language");
-    //   node.setOptionalValue<AudioObjectLabelValue>(audioObjectLabel);
-    //   // clang-format on
-    // }
 
     // void formatAudioComplementaryObjectGroupLabel(
     //     XmlNode &parentNode, const std::string &name,

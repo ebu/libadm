@@ -29,6 +29,13 @@ TEST_CASE("xml_parser/audio_object") {
   REQUIRE(audioObject->get<Importance>() == 10);
   REQUIRE(audioObject->get<Interact>() == false);
   REQUIRE(audioObject->get<DisableDucking>() == true);
+
+  auto labels = audioObject->getElements<AudioObjectLabel>();
+  REQUIRE(labels.size() == 2);
+  REQUIRE(labels[0].get<LabelLanguage>() == "en");
+  REQUIRE(labels[0].get<LabelValue>() == "My Object");
+  REQUIRE(labels[1].get<LabelLanguage>() == "deu");
+  REQUIRE(labels[1].get<LabelValue>() == "Mein Objekt");
 }
 
 TEST_CASE("xml_parser/audio_object_duplicate_id") {

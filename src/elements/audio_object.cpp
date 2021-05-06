@@ -298,6 +298,25 @@ namespace adm {
     return audioComplementaryObjects_.clear();
   }
 
+  // --- Elements --- //
+  void AudioObject::add(AudioObjectLabel label) {
+    audioObjectLabels_.push_back(label);
+  }
+
+  void AudioObject::clearAudioObjectLabels() { audioObjectLabels_.clear(); }
+
+  ElementTypeConstRange<AudioObjectLabel> AudioObject::get(
+      detail::ParameterTraits<AudioObjectLabel>::tag) const {
+    return boost::make_iterator_range(audioObjectLabels_.begin(),
+                                      audioObjectLabels_.end());
+  }
+
+  ElementTypeRange<AudioObjectLabel> AudioObject::get(
+      detail::ParameterTraits<AudioObjectLabel>::tag) {
+    return boost::make_iterator_range(audioObjectLabels_.begin(),
+                                      audioObjectLabels_.end());
+  }
+
   // ---- Common ---- //
   void AudioObject::print(std::ostream& os) const {
     os << get<AudioObjectId>();

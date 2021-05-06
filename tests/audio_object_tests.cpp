@@ -3,6 +3,7 @@
 #include "adm/elements/audio_object.hpp"
 #include "adm/elements/audio_pack_format.hpp"
 #include "adm/elements/audio_track_uid.hpp"
+#include "adm/elements/label.hpp"
 #include "adm/errors.hpp"
 
 TEST_CASE("audio_object_basic") {
@@ -19,6 +20,12 @@ TEST_CASE("audio_object_basic") {
   audioObject->set(Interact(false));
   audioObject->set(DisableDucking(true));
   audioObject->set(AudioObjectInteraction(OnOffInteract(true)));
+
+  auto label_en =
+      AudioObjectLabel(LabelValue("Good morning"), LabelLanguage("en"));
+  auto label_fr = AudioObjectLabel(LabelValue("Bonjour"), LabelLanguage("fr"));
+  audioObject->add(label_en);
+  audioObject->add(label_fr);
 
   REQUIRE(audioObject->has<AudioObjectId>() == true);
   REQUIRE(audioObject->has<AudioObjectName>() == true);
@@ -41,6 +48,11 @@ TEST_CASE("audio_object_basic") {
   REQUIRE(audioObject->get<AudioObjectInteraction>().get<OnOffInteract>() ==
           true);
 
+  auto labels = audioObject->getElements<AudioObjectLabel>();
+  REQUIRE(labels.size() == 2);
+  REQUIRE(labels[0] == label_en);
+  REQUIRE(labels[1] == label_fr);
+
   audioObject->unset<Start>();
   audioObject->unset<Duration>();
   audioObject->unset<DialogueId>();
@@ -48,6 +60,7 @@ TEST_CASE("audio_object_basic") {
   audioObject->unset<Interact>();
   audioObject->unset<DisableDucking>();
   audioObject->unset<AudioObjectInteraction>();
+  audioObject->clearAudioObjectLabels();
 
   REQUIRE(audioObject->has<Start>() == true);
   REQUIRE(audioObject->has<Duration>() == false);
@@ -56,6 +69,7 @@ TEST_CASE("audio_object_basic") {
   REQUIRE(audioObject->has<Interact>() == false);
   REQUIRE(audioObject->has<DisableDucking>() == false);
   REQUIRE(audioObject->has<AudioObjectInteraction>() == false);
+  REQUIRE(audioObject->getElements<AudioObjectLabel>().size() == 0);
 }
 
 TEST_CASE("audio_object_references") {
