@@ -22,11 +22,9 @@ TEST_CASE("write_audio_object_interaction") {
       MaxShortTerm(-21.2), DialogueLoudness(-24.f)));
   audioProgramme->set(MaxDuckingDepth(-30));
   audioProgramme->add(
-      AudioProgrammeLabel(AudioProgrammeLabelLanguage("en"),
-                          AudioProgrammeLabelValue("My Programme")));
+      AudioProgrammeLabel(LabelLanguage("en"), LabelValue("My Programme")));
   audioProgramme->add(
-      AudioProgrammeLabel(AudioProgrammeLabelLanguage("deu"),
-                          AudioProgrammeLabelValue("Mein Programm")));
+      AudioProgrammeLabel(LabelLanguage("deu"), LabelValue("Mein Programm")));
 
   auto document = Document::create();
   document->add(audioProgramme);
