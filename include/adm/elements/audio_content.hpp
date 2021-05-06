@@ -9,6 +9,7 @@
 #include "adm/elements/dialogue.hpp"
 #include "adm/elements/loudness_metadata.hpp"
 #include "adm/elements_fwd.hpp"
+#include "adm/elements/label.hpp"
 #include "adm/helper/element_range.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/export.h"
@@ -27,6 +28,13 @@ namespace adm {
   /// audioContent element
   using AudioContentLanguage =
       detail::NamedType<std::string, AudioContentLanguageTag>;
+
+  template <typename ElementType>
+  using ElementTypeConstRange =
+      boost::iterator_range<typename std::vector<ElementType>::const_iterator>;
+  template <typename ElementType>
+  using ElementTypeRange =
+      boost::iterator_range<typename std::vector<ElementType>::iterator>;
 
   /// @brief Tag for AudioContent
   struct AudioContentTag {};
@@ -178,6 +186,34 @@ namespace adm {
     void clearReferences();
 
     /**
+     * @brief Add AudioContentLabel
+     */
+    ADM_EXPORT void add(AudioContentLabel label);
+
+    /**
+     * @brief ElementType elements getter template
+     *
+     * Templated getter with the wanted ElementType type as template
+     * argument.
+     */
+    template <typename ElementType>
+    ElementTypeConstRange<ElementType> getElements() const;
+
+    /**
+     * @brief ElementType elements getter template
+     *
+     * Templated getter with the wanted ElementType type as template
+     * argument.
+     */
+    template <typename ElementType>
+    ElementTypeRange<ElementType> getElements();
+
+    /**
+     * @brief remove all AudioContentLabel instances
+     */
+    void clearAudioContentLabels();
+
+    /**
      * @brief Print overview to ostream
      */
     void print(std::ostream &os) const;
@@ -245,6 +281,13 @@ namespace adm {
 
     ADM_EXPORT void disconnectReferences();
 
+    ADM_EXPORT
+    ElementTypeConstRange<AudioContentLabel> get(
+        detail::ParameterTraits<AudioContentLabel>::tag) const;
+    ADM_EXPORT
+    ElementTypeRange<AudioContentLabel> get(
+        detail::ParameterTraits<AudioContentLabel>::tag);
+
     void setParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
@@ -252,6 +295,7 @@ namespace adm {
     AudioContentName name_;
     boost::optional<AudioContentLanguage> language_;
     std::vector<std::shared_ptr<AudioObject>> audioObjects_;
+    std::vector<AudioContentLabel> audioContentLabels_;
     boost::optional<LoudnessMetadata> loudnessMetadata_;
     boost::optional<DialogueId> dialogueId_;
     boost::optional<NonDialogueContentKind> nonDialogueContentKind_;
@@ -315,6 +359,18 @@ namespace adm {
   inline ElementRange<AudioObject> AudioContent::getReferences(
       detail::ParameterTraits<AudioObject>::tag) {
     return detail::makeElementRange<AudioObject>(audioObjects_);
+  }
+
+  template <typename ElementType>
+  ElementTypeConstRange<ElementType> AudioContent::getElements() const {
+    typedef typename detail::ParameterTraits<ElementType>::tag Tag;
+    return get(Tag());
+  }
+
+  template <typename ElementType>
+  ElementTypeRange<ElementType> AudioContent::getElements() {
+    typedef typename detail::ParameterTraits<ElementType>::tag Tag;
+    return get(Tag());
   }
 
   template <typename Element>

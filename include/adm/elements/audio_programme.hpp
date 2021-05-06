@@ -193,7 +193,7 @@ namespace adm {
     ElementTypeConstRange<ElementType> getElements() const;
 
     /**
-     * @brief AudioBlockFormat elements getter template
+     * @brief ElementType elements getter template
      *
      * Templated getter with the wanted ElementType type as template
      * argument.
