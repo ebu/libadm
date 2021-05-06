@@ -13,6 +13,8 @@
 						<dialogueLoudness>-24.000000</dialogueLoudness>
 					</loudnessMetadata>
 					<dialogue dialogueContentKind="4">1</dialogue>
+					<audioContentLabel language="en">My Content</audioContentLabel>
+					<audioContentLabel language="deu">Mein Inhalt</audioContentLabel>
 				</audioContent>
 			</audioFormatExtended>
 		</format>

@@ -18,6 +18,10 @@ TEST_CASE("write_audio_object_interaction") {
       LoudnessRange(10.f), MaxTruePeak(-2.3f), MaxMomentary(-19.f),
       MaxShortTerm(-21.2), DialogueLoudness(-24.f)));
   audioContent->set(DialogueContent::AUDIO_DESCRIPTION);
+  audioContent->add(
+      AudioContentLabel(LabelLanguage("en"), LabelValue("My Content")));
+  audioContent->add(
+      AudioContentLabel(LabelLanguage("deu"), LabelValue("Mein Inhalt")));
 
   auto document = Document::create();
   document->add(audioContent);

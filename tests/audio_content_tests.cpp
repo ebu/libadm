@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #include <catch2/catch.hpp>
 #include "adm/elements/audio_content.hpp"
+#include "adm/elements/label.hpp"
 #include "adm/elements/audio_object.hpp"
 
 TEST_CASE("audio_content") {
@@ -12,6 +13,13 @@ TEST_CASE("audio_content") {
     audioContent->set(AudioContentLanguage("de"));
     audioContent->set(LoudnessMetadata());
     audioContent->set(Dialogue::NON_DIALOGUE);
+
+    auto label_en =
+        AudioContentLabel(LabelValue("Good morning"), LabelLanguage("en"));
+    auto label_fr =
+        AudioContentLabel(LabelValue("Bonjour"), LabelLanguage("fr"));
+    audioContent->add(label_en);
+    audioContent->add(label_fr);
 
     REQUIRE(audioContent->has<AudioContentId>() == true);
     REQUIRE(audioContent->has<AudioContentName>() == true);
@@ -27,6 +35,11 @@ TEST_CASE("audio_content") {
     REQUIRE(audioContent->get<AudioContentName>() == "MyNewContent");
     REQUIRE(audioContent->get<AudioContentLanguage>() == "de");
     REQUIRE(audioContent->get<DialogueId>() == Dialogue::NON_DIALOGUE);
+
+    auto labels = audioContent->getElements<AudioContentLabel>();
+    REQUIRE(labels.size() == 2);
+    REQUIRE(labels[0] == label_en);
+    REQUIRE(labels[1] == label_fr);
 
     audioContent->unset<AudioContentLanguage>();
     audioContent->unset<LoudnessMetadata>();
