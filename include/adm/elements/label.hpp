@@ -89,10 +89,9 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<LabelValue>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<LabelLanguage>::tag) const;
 
-    ADM_EXPORT void unset(detail::ParameterTraits<LabelValue>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<LabelLanguage>::tag);
 
-    boost::optional<LabelValue> value_;
+    LabelValue value_{ "" };
     boost::optional<LabelLanguage> language_;
   };
 

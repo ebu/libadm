@@ -26,21 +26,25 @@ TEST_CASE("xml_parser/audio_programme_label") {
 
   REQUIRE(labels[2].has<LabelLanguage>() == true);
   REQUIRE(labels[2].get<LabelLanguage>() == "fr");
-  REQUIRE(labels[2].has<LabelValue>() == false);
+  REQUIRE(labels[2].has<LabelValue>() == true);
+  REQUIRE(labels[2].get<LabelValue>() == "");
 
   REQUIRE(labels[3].has<LabelLanguage>() == true);
   REQUIRE(labels[3].get<LabelLanguage>() == "es");
-  REQUIRE(labels[3].has<LabelValue>() == false);
+  REQUIRE(labels[3].has<LabelValue>() == true);
+  REQUIRE(labels[3].get<LabelValue>() == "");
 
   REQUIRE(labels[4].has<LabelLanguage>() == false);
   REQUIRE(labels[4].has<LabelValue>() == true);
   REQUIRE(labels[4].get<LabelValue>() == "Undefined Language");
 
   REQUIRE(labels[5].has<LabelLanguage>() == false);
-  REQUIRE(labels[5].has<LabelValue>() == false);
+  REQUIRE(labels[5].has<LabelValue>() == true);
+  REQUIRE(labels[5].get<LabelValue>() == "");
 
   REQUIRE(labels[6].has<LabelLanguage>() == false);
-  REQUIRE(labels[6].has<LabelValue>() == false);
+  REQUIRE(labels[6].has<LabelValue>() == true);
+  REQUIRE(labels[6].get<LabelValue>() == "");
 }
 
 TEST_CASE("xml_parser/audio_content_label") {
@@ -63,21 +67,25 @@ TEST_CASE("xml_parser/audio_content_label") {
 
     REQUIRE(labels[2].has<LabelLanguage>() == true);
     REQUIRE(labels[2].get<LabelLanguage>() == "fr");
-    REQUIRE(labels[2].has<LabelValue>() == false);
+    REQUIRE(labels[2].has<LabelValue>() == true);
+    REQUIRE(labels[2].get<LabelValue>() == "");
 
     REQUIRE(labels[3].has<LabelLanguage>() == true);
     REQUIRE(labels[3].get<LabelLanguage>() == "es");
-    REQUIRE(labels[3].has<LabelValue>() == false);
+    REQUIRE(labels[3].has<LabelValue>() == true);
+    REQUIRE(labels[3].get<LabelValue>() == "");
 
     REQUIRE(labels[4].has<LabelLanguage>() == false);
     REQUIRE(labels[4].has<LabelValue>() == true);
     REQUIRE(labels[4].get<LabelValue>() == "Undefined Language");
 
     REQUIRE(labels[5].has<LabelLanguage>() == false);
-    REQUIRE(labels[5].has<LabelValue>() == false);
+    REQUIRE(labels[5].has<LabelValue>() == true);
+    REQUIRE(labels[5].get<LabelValue>() == "");
 
     REQUIRE(labels[6].has<LabelLanguage>() == false);
-    REQUIRE(labels[6].has<LabelValue>() == false);
+    REQUIRE(labels[6].has<LabelValue>() == true);
+    REQUIRE(labels[6].get<LabelValue>() == "");
 }
 
 TEST_CASE("xml_parser/audio_object_label") {
@@ -100,19 +108,23 @@ TEST_CASE("xml_parser/audio_object_label") {
 
     REQUIRE(labels[2].has<LabelLanguage>() == true);
     REQUIRE(labels[2].get<LabelLanguage>() == "fr");
-    REQUIRE(labels[2].has<LabelValue>() == false);
+    REQUIRE(labels[2].has<LabelValue>() == true);
+    REQUIRE(labels[2].get<LabelValue>() == "");
 
     REQUIRE(labels[3].has<LabelLanguage>() == true);
     REQUIRE(labels[3].get<LabelLanguage>() == "es");
-    REQUIRE(labels[3].has<LabelValue>() == false);
+    REQUIRE(labels[3].has<LabelValue>() == true);
+    REQUIRE(labels[3].get<LabelValue>() == "");
 
     REQUIRE(labels[4].has<LabelLanguage>() == false);
     REQUIRE(labels[4].has<LabelValue>() == true);
     REQUIRE(labels[4].get<LabelValue>() == "Undefined Language");
 
     REQUIRE(labels[5].has<LabelLanguage>() == false);
-    REQUIRE(labels[5].has<LabelValue>() == false);
+    REQUIRE(labels[5].has<LabelValue>() == true);
+    REQUIRE(labels[5].get<LabelValue>() == "");
 
     REQUIRE(labels[6].has<LabelLanguage>() == false);
-    REQUIRE(labels[6].has<LabelValue>() == false);
+    REQUIRE(labels[6].has<LabelValue>() == true);
+    REQUIRE(labels[6].get<LabelValue>() == "");
 }
