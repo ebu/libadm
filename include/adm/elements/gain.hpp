@@ -2,12 +2,14 @@
 #include <cmath>
 
 namespace adm {
-  /// storage for gain parameters, which can either be a linear or dB value
 
   struct GainTag {};
+
+  /// storage for gain parameters, which can either be a linear or dB value
   class Gain {
    public:
     typedef GainTag tag;
+
     static Gain fromLinear(double linearGain) {
       return Gain{linearGain, false};
     }
