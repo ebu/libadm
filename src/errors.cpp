@@ -55,5 +55,17 @@ namespace adm {
       return boost::str(boost::format("Id %1% could not be resolved") % id);
     }
 
+    XmlParsingUnexpectedAttrError::XmlParsingUnexpectedAttrError(
+        const std::string& attr, const std::string& value,
+        boost::optional<int> line)
+        : XmlParsingError(formatMessage(attr, value), line) {}
+
+    std::string XmlParsingUnexpectedAttrError::formatMessage(
+        const std::string& attr, const std::string& value) {
+      return boost::str(
+          boost::format("Unexpected value \"%2%\" found in attribute %1%") %
+          attr % value);
+    }
+
   }  // namespace error
 }  // namespace adm
