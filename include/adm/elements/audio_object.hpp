@@ -9,6 +9,7 @@
 #include "adm/elements/audio_pack_format.hpp"
 #include "adm/elements/audio_track_uid.hpp"
 #include "adm/elements/dialogue.hpp"
+#include "adm/elements/gain.hpp"
 #include "adm/elements/importance.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
@@ -113,6 +114,8 @@ namespace adm {
     ADM_EXPORT void set(DisableDucking disableDucking);
     /// @brief AudioObjectInteraction setter
     ADM_EXPORT void set(AudioObjectInteraction objectInteraction);
+    /// @brief Gain setter
+    ADM_EXPORT void set(Gain gain);
 
     /**
      * @brief ADM parameter unset template
@@ -207,6 +210,7 @@ namespace adm {
         get(detail::ParameterTraits<DisableDucking>::tag) const;
     ADM_EXPORT AudioObjectInteraction
         get(detail::ParameterTraits<AudioObjectInteraction>::tag) const;
+    ADM_EXPORT Gain get(detail::ParameterTraits<Gain>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioObjectId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<AudioObjectName>::tag) const;
@@ -218,6 +222,7 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<DisableDucking>::tag) const;
     ADM_EXPORT bool has(
         detail::ParameterTraits<AudioObjectInteraction>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Gain>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -233,6 +238,7 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<Interact>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<DisableDucking>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<AudioObjectInteraction>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Gain>::tag);
 
     bool isAudioObjectReferenceCycle(
         std::shared_ptr<AudioObject> destinationObject);
@@ -277,6 +283,7 @@ namespace adm {
     boost::optional<Interact> interact_;
     boost::optional<DisableDucking> disableDucking_;
     boost::optional<AudioObjectInteraction> audioObjectInteraction_;
+    boost::optional<Gain> gain_;
   };
 
   // ---- Implementation ---- //

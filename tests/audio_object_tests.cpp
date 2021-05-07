@@ -19,6 +19,7 @@ TEST_CASE("audio_object_basic") {
   audioObject->set(Interact(false));
   audioObject->set(DisableDucking(true));
   audioObject->set(AudioObjectInteraction(OnOffInteract(true)));
+  audioObject->set(Gain::fromLinear(0.5));
 
   REQUIRE(audioObject->has<AudioObjectId>() == true);
   REQUIRE(audioObject->has<AudioObjectName>() == true);
@@ -29,6 +30,7 @@ TEST_CASE("audio_object_basic") {
   REQUIRE(audioObject->has<Interact>() == true);
   REQUIRE(audioObject->has<DisableDucking>() == true);
   REQUIRE(audioObject->has<AudioObjectInteraction>() == true);
+  REQUIRE(audioObject->has<Gain>() == true);
 
   REQUIRE(audioObject->get<AudioObjectId>().get<AudioObjectIdValue>() == 1u);
   REQUIRE(audioObject->get<AudioObjectName>() == "MyNewObject");
@@ -40,6 +42,7 @@ TEST_CASE("audio_object_basic") {
   REQUIRE(audioObject->get<DisableDucking>() == true);
   REQUIRE(audioObject->get<AudioObjectInteraction>().get<OnOffInteract>() ==
           true);
+  REQUIRE(audioObject->get<Gain>().asLinear() == 0.5);
 
   audioObject->unset<Start>();
   audioObject->unset<Duration>();
@@ -48,6 +51,7 @@ TEST_CASE("audio_object_basic") {
   audioObject->unset<Interact>();
   audioObject->unset<DisableDucking>();
   audioObject->unset<AudioObjectInteraction>();
+  audioObject->unset<Gain>();
 
   REQUIRE(audioObject->has<Start>() == true);
   REQUIRE(audioObject->has<Duration>() == false);
@@ -56,6 +60,7 @@ TEST_CASE("audio_object_basic") {
   REQUIRE(audioObject->has<Interact>() == false);
   REQUIRE(audioObject->has<DisableDucking>() == false);
   REQUIRE(audioObject->has<AudioObjectInteraction>() == false);
+  REQUIRE(audioObject->has<Gain>() == false);
 }
 
 TEST_CASE("audio_object_references") {

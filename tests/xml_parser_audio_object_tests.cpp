@@ -29,6 +29,7 @@ TEST_CASE("xml_parser/audio_object") {
   REQUIRE(audioObject->get<Importance>() == 10);
   REQUIRE(audioObject->get<Interact>() == false);
   REQUIRE(audioObject->get<DisableDucking>() == true);
+  REQUIRE(audioObject->get<Gain>().asLinear() == 0.5);
 }
 
 TEST_CASE("xml_parser/audio_object_duplicate_id") {

@@ -57,6 +57,21 @@ TEST_CASE("write_complementary_audio_objects") {
   CHECK_THAT(xml.str(), EqualsXmlFile("write_complementary_audio_objects"));
 }
 
+TEST_CASE("write_object_attributes") {
+  using namespace adm;
+
+  auto audioObject = AudioObject::create(AudioObjectName("Default"));
+  audioObject->set(Gain::fromLinear(0.5));
+
+  auto document = Document::create();
+  document->add(audioObject);
+
+  std::stringstream xml;
+  writeXml(xml, document);
+
+  CHECK_THAT(xml.str(), EqualsXmlFile("write_object_attributes"));
+}
+
 std::shared_ptr<const adm::Document> createSimpleScene() {
   using namespace adm;
   auto document = Document::create();
