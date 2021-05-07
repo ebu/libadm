@@ -29,6 +29,13 @@
           <audioObjectLabel>Undefined Language</audioObjectLabel>
 		  <audioObjectLabel></audioObjectLabel>
 		  <audioObjectLabel />
+		  <audioComplementaryObjectGroupLabel language="en">My Object</audioComplementaryObjectGroupLabel>
+          <audioComplementaryObjectGroupLabel language="deu">Mein Objekt</audioComplementaryObjectGroupLabel>
+          <audioComplementaryObjectGroupLabel language="fr" />
+          <audioComplementaryObjectGroupLabel language="es"></audioComplementaryObjectGroupLabel>
+          <audioComplementaryObjectGroupLabel>Undefined Language</audioComplementaryObjectGroupLabel>
+		  <audioComplementaryObjectGroupLabel></audioComplementaryObjectGroupLabel>
+		  <audioComplementaryObjectGroupLabel />
         </audioObject>
       </audioFormatExtended>
     </format>

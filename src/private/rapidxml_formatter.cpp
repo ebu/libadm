@@ -154,7 +154,7 @@ namespace adm {
       }
       node.addReferences<AudioTrackUid, AudioTrackUidId>(object, "audioTrackUIDRef");
       node.addElements<AudioObjectLabel>(object, "audioObjectLabel", &formatLabel<AudioObjectLabel>);
-      // node.addOptionalMultiElement<AudioComplementaryObjectGroupLabel>(object, "audioComplementaryObjectGroupLabel", &formatAudioComplementaryObjectGroupLabel);
+      node.addElements<AudioComplementaryObjectGroupLabel>(object, "audioComplementaryObjectGroupLabel", &formatLabel<AudioComplementaryObjectGroupLabel>);
       // clang-format on
     }
 
