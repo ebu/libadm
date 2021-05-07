@@ -193,6 +193,11 @@ namespace adm {
     ADM_EXPORT void add(AudioObjectLabel label);
 
     /**
+    * @brief Add AudioComplementaryObjectGroupLabel
+    */
+    ADM_EXPORT void add(AudioComplementaryObjectGroupLabel label);
+
+    /**
      * @brief ElementType elements getter template
      *
      * Templated getter with the wanted ElementType type as template
@@ -214,6 +219,13 @@ namespace adm {
      * @brief remove all AudioObjectLabel instances
      */
     void clearAudioObjectLabels();
+
+    /**
+    * @brief remove all AudioComplementaryObjectGroupLabel instances
+    */
+    void clearAudioComplementaryObjectGroupLabels();
+
+
     /**
      * @brief Print overview to ostream
      */
@@ -303,6 +315,13 @@ namespace adm {
     ElementTypeRange<AudioObjectLabel> get(
         detail::ParameterTraits<AudioObjectLabel>::tag);
 
+    ADM_EXPORT
+        ElementTypeConstRange<AudioComplementaryObjectGroupLabel> get(
+            detail::ParameterTraits<AudioComplementaryObjectGroupLabel>::tag) const;
+    ADM_EXPORT
+        ElementTypeRange<AudioComplementaryObjectGroupLabel> get(
+            detail::ParameterTraits<AudioComplementaryObjectGroupLabel>::tag);
+
     ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
@@ -313,6 +332,7 @@ namespace adm {
     std::vector<std::shared_ptr<AudioPackFormat>> audioPackFormats_;
     std::vector<std::shared_ptr<AudioTrackUid>> audioTrackUids_;
     std::vector<AudioObjectLabel> audioObjectLabels_;
+    std::vector<AudioComplementaryObjectGroupLabel> audioComplementaryObjectGroupLabels_;
     boost::optional<Start> start_;
     boost::optional<Duration> duration_;
     boost::optional<DialogueId> dialogueId_;
