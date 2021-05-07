@@ -10,7 +10,7 @@
           <audioProgrammeLabel language="es"></audioProgrammeLabel>
           <audioProgrammeLabel>Undefined Language</audioProgrammeLabel>
 		  <audioProgrammeLabel></audioProgrammeLabel>
-		  <audioProgrammeLabel></audioProgrammeLabel>
+		  <audioProgrammeLabel />
         </audioProgramme>
 		<audioContent audioContentID="ACO_1001" audioContentName="MyContent">
           <audioContentLabel language="en">My Content</audioContentLabel>
