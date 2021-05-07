@@ -595,7 +595,19 @@ namespace adm {
     }
 
     Gain parseGain(NodePtr node) {
-      return Gain::fromLinear(std::stod(node->value()));
+      auto unitAttr = node->first_attribute("gainUnit");
+      double value = std::stod(node->value());
+      if (unitAttr) {
+        std::string unitAttrStr{unitAttr->value()};
+        if (unitAttrStr == "linear")
+          return Gain::fromLinear(value);
+        else if (unitAttrStr == "dB")
+          return Gain::fromDb(value);
+        else
+          throw error::XmlParsingUnexpectedAttrError("gainUnit", unitAttrStr,
+                                                     getDocumentLine(unitAttr));
+      } else
+        return Gain::fromLinear(value);
     }
 
     ChannelLock parseChannelLock(NodePtr node) {

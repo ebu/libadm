@@ -28,8 +28,6 @@ namespace adm {
       }
       std::string toString(const AudioTrackUidId &id) { return formatId(id); }
 
-      std::string toString(const Gain &gain) { return toString(gain.asLinear()); }
-
       struct MultiElementAttributeFormatter {
         MultiElementAttributeFormatter(const std::string &a,
                                        const std::string &v)
@@ -473,7 +471,7 @@ namespace adm {
       node.addOptionalElement<Height>(&audioBlock, "height");
       node.addOptionalElement<Depth>(&audioBlock, "depth");
       node.addOptionalElement<Cartesian>(&audioBlock, "cartesian");
-      node.addOptionalElement<Gain>(&audioBlock, "gain");
+      node.addOptionalElement<Gain>(&audioBlock, "gain", &formatGain);
       node.addOptionalElement<Diffuse>(&audioBlock, "diffuse");
       node.addOptionalElement<ChannelLock>(&audioBlock, "channelLock", &formatChannelLock);
       node.addOptionalElement<ObjectDivergence>(&audioBlock, "objectDivergence", &formatObjectDivergence);
@@ -508,6 +506,15 @@ namespace adm {
         parentNode.addOptionalElement<Z>(
             &cartesianPosition, name,
             detail::formatMultiElementAttribute("coordinate", "Z"));
+      }
+    }
+
+    void formatGain(XmlNode &node, const Gain &gain) {
+      if (gain.isLinear()) {
+        node.setValue(gain.asLinear());
+      } else {
+        node.setValue(gain.asDb());
+        node.addAttribute("gainUnit", "dB");
       }
     }
 
