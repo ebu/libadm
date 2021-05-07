@@ -156,12 +156,12 @@ namespace adm {
       if (gainInteraction.has<GainInteractionMin>()) {
         auto minNode = parentNode.addNode(name);
         minNode.addAttribute("bound", "min");
-        minNode.setValue(gainInteraction.get<GainInteractionMin>());
+        formatGain(minNode, gainInteraction.get<GainInteractionMin>().get());
       }
       if (gainInteraction.has<GainInteractionMax>()) {
         auto maxNode = parentNode.addNode(name);
         maxNode.addAttribute("bound", "max");
-        maxNode.setValue(gainInteraction.get<GainInteractionMax>());
+        formatGain(maxNode, gainInteraction.get<GainInteractionMax>().get());
       }
     }
 

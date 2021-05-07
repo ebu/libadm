@@ -215,9 +215,9 @@ namespace adm {
         auto bound =
             parseAttribute<GainInteractionBoundValue>(element, "bound");
         if (bound.get() == "min") {
-          setValue<GainInteractionMin>(element, gainInteraction);
+          gainInteraction.set(GainInteractionMin(parseGain(element)));
         } else if (bound.get() == "max") {
-          setValue<GainInteractionMax>(element, gainInteraction);
+          gainInteraction.set(GainInteractionMax(parseGain(element)));
         }
       }
       return gainInteraction;
@@ -335,9 +335,9 @@ namespace adm {
         }
       } else if (audioChannelFormat->get<TypeDescriptor>() ==
                  TypeDefinition::HOA) {
-         for (auto& element : elements) {
-            audioChannelFormat->add(parseAudioBlockFormatHoa(element));
-         }
+        for (auto& element : elements) {
+          audioChannelFormat->add(parseAudioBlockFormatHoa(element));
+        }
       } else if (audioChannelFormat->get<TypeDescriptor>() ==
                  TypeDefinition::BINAURAL) {
         // for (auto& element : elements) {
@@ -747,9 +747,8 @@ namespace adm {
 
     /* Below here Hoa */
 
-    AudioBlockFormatHoa parseAudioBlockFormatHoa(
-        NodePtr node) {
-        AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
+    AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node) {
+      AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
       setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
