@@ -32,6 +32,7 @@ add_library(adm
   elements/audio_track_format_id.cpp
   elements/audio_stream_format_id.cpp
   elements/audio_track_uid_id.cpp
+  elements/audio_block_format.cpp
   elements/audio_block_format_direct_speakers.cpp
   elements/audio_block_format_matrix.cpp
   elements/audio_block_format_objects.cpp

@@ -3,6 +3,7 @@
 
 #include <boost/optional.hpp>
 #include "adm/elements/time.hpp"
+#include "adm/elements/audio_block_format.hpp"
 #include "adm/elements/audio_block_format_id.hpp"
 #include "adm/elements/channel_lock.hpp"
 #include "adm/elements/importance.hpp"
@@ -14,7 +15,6 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 #include "adm/elements/screen_ref.hpp"
-#include "adm/elements/gain.hpp"
 
 namespace adm {
 
@@ -51,7 +51,7 @@ namespace adm {
    * @warning This class has unsupported parameters
    *   - ZoneExclusion
    */
-  class AudioBlockFormatObjects {
+  class AudioBlockFormatObjects : private AudioBlockFormat {
    public:
     typedef AudioBlockFormatObjectsTag tag;
     /// Type that holds the id for this element;
@@ -98,6 +98,8 @@ namespace adm {
      */
     template <typename Parameter>
     bool isDefault() const;
+
+    using AudioBlockFormat::set;
 
     /// @brief AudioBlockFormatId setter
     ADM_EXPORT void set(AudioBlockFormatId id);
@@ -146,8 +148,6 @@ namespace adm {
     ADM_EXPORT void set(Depth depth);
     /// @brief ScreenEdgeLock setter
     ADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
-    /// @brief Gain setter
-    ADM_EXPORT void set(Gain gain);
     /// @brief Diffuse setter
     ADM_EXPORT void set(Diffuse diffuse);
     /// @brief ChannelLock setter
@@ -172,6 +172,11 @@ namespace adm {
     void unset();
 
    private:
+    using AudioBlockFormat::get;
+    using AudioBlockFormat::has;
+    using AudioBlockFormat::isDefault;
+    using AudioBlockFormat::unset;
+
     ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
@@ -187,7 +192,6 @@ namespace adm {
     ADM_EXPORT Depth get(detail::ParameterTraits<Depth>::tag) const;
     ADM_EXPORT ScreenEdgeLock
         get(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
-    ADM_EXPORT Gain get(detail::ParameterTraits<Gain>::tag) const;
     ADM_EXPORT Diffuse get(detail::ParameterTraits<Diffuse>::tag) const;
     ADM_EXPORT ChannelLock get(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT ObjectDivergence
@@ -208,7 +212,6 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<Height>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Depth>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Gain>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Diffuse>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ObjectDivergence>::tag) const;
@@ -225,7 +228,6 @@ namespace adm {
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Width>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Height>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Depth>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Gain>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Diffuse>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT bool isDefault(
@@ -244,7 +246,6 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<Height>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Depth>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Gain>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Diffuse>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ChannelLock>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ObjectDivergence>::tag);
@@ -262,7 +263,6 @@ namespace adm {
     boost::optional<Width> width_;
     boost::optional<Depth> depth_;
     boost::optional<ScreenEdgeLock> screenEdgeLock_;
-    boost::optional<Gain> gain_;
     boost::optional<Diffuse> diffuse_;
     boost::optional<ChannelLock> channelLock_;
     boost::optional<ObjectDivergence> objectDivergence_;

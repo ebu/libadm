@@ -8,7 +8,6 @@ namespace adm {
     const Width widthDefault{0.f};
     const Height heightDefault{0.f};
     const Depth depthDefault{0.f};
-    const Gain gainDefault{Gain::fromLinear(1.0)};
     const Diffuse diffuseDefault{0.f};
     const ChannelLock channelLockDefault{};
     const ObjectDivergence objectDivergenceDefault{};
@@ -73,9 +72,6 @@ namespace adm {
   ScreenEdgeLock AudioBlockFormatObjects::get(
       detail::ParameterTraits<ScreenEdgeLock>::tag) const {
     return screenEdgeLock_.get();
-  }
-  Gain AudioBlockFormatObjects::get(detail::ParameterTraits<Gain>::tag) const {
-    return boost::get_optional_value_or(gain_, gainDefault);
   }
   Diffuse AudioBlockFormatObjects::get(
       detail::ParameterTraits<Diffuse>::tag) const {
@@ -146,9 +142,6 @@ namespace adm {
       detail::ParameterTraits<ScreenEdgeLock>::tag) const {
     return screenEdgeLock_ != boost::none;
   }
-  bool AudioBlockFormatObjects::has(detail::ParameterTraits<Gain>::tag) const {
-    return true;
-  }
   bool AudioBlockFormatObjects::has(
       detail::ParameterTraits<Diffuse>::tag) const {
     return true;
@@ -194,10 +187,6 @@ namespace adm {
   bool AudioBlockFormatObjects::isDefault(
       detail::ParameterTraits<Depth>::tag) const {
     return depth_ == boost::none;
-  }
-  bool AudioBlockFormatObjects::isDefault(
-      detail::ParameterTraits<Gain>::tag) const {
-    return gain_ == boost::none;
   }
   bool AudioBlockFormatObjects::isDefault(
       detail::ParameterTraits<Diffuse>::tag) const {
@@ -264,7 +253,6 @@ namespace adm {
   void AudioBlockFormatObjects::set(ScreenEdgeLock screenEdgeLock) {
     screenEdgeLock_ = screenEdgeLock;
   }
-  void AudioBlockFormatObjects::set(Gain gain) { gain_ = gain; }
   void AudioBlockFormatObjects::set(Diffuse diffuse) { diffuse_ = diffuse; }
   void AudioBlockFormatObjects::set(ChannelLock channelLock) {
     channelLock_ = channelLock;
@@ -317,9 +305,6 @@ namespace adm {
   void AudioBlockFormatObjects::unset(
       detail::ParameterTraits<ScreenEdgeLock>::tag) {
     screenEdgeLock_ = boost::none;
-  }
-  void AudioBlockFormatObjects::unset(detail::ParameterTraits<Gain>::tag) {
-    gain_ = boost::none;
   }
   void AudioBlockFormatObjects::unset(detail::ParameterTraits<Diffuse>::tag) {
     diffuse_ = boost::none;
