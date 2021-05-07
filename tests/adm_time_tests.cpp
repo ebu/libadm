@@ -5,7 +5,7 @@
 
 using namespace adm;
 
-namespace std {
+namespace adm {
   std::ostream& operator<<(std::ostream& stream, const FractionalTime& time) {
     return stream << "FractionalTime{" << time.numerator() << ", "
                   << time.denominator() << "}";
@@ -22,7 +22,7 @@ namespace std {
         [&](const auto& t) -> std::ostream& { return stream << t; },
         time.asVariant());
   }
-}  // namespace std
+}  // namespace adm
 
 TEST_CASE("adm_time") {
   // different accuracy
