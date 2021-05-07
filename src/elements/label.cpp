@@ -2,7 +2,6 @@
 
 namespace adm {
 
-
   // TODO don't have an Id to compare here - does it make sense to have a <
   // operator?
 

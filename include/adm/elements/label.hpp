@@ -21,7 +21,7 @@ namespace adm {
   /// @brief Tag for LabelId
   struct LabelTag {};
   /// @brief Representation of an Label
-  template<class TagType>
+  template <class TagType>
   class Label {
    public:
     typedef TagType tag;
@@ -95,7 +95,7 @@ namespace adm {
 
     ADM_EXPORT void unset(detail::ParameterTraits<LabelLanguage>::tag);
 
-    LabelValue value_{ "" };
+    LabelValue value_{""};
     boost::optional<LabelLanguage> language_;
   };
 
@@ -130,46 +130,54 @@ namespace adm {
 
   /// ---- Getter ---- //
   template <class TagType>
-  LabelLanguage Label<TagType>::get(detail::ParameterTraits<LabelLanguage>::tag) const {
-      return language_.get();
+  LabelLanguage Label<TagType>::get(
+      detail::ParameterTraits<LabelLanguage>::tag) const {
+    return language_.get();
   }
   template <class TagType>
-  LabelValue Label<TagType>::get(detail::ParameterTraits<LabelValue>::tag) const {
-      return value_;
+  LabelValue Label<TagType>::get(
+      detail::ParameterTraits<LabelValue>::tag) const {
+    return value_;
   }
 
   /// ---- Has ---- //
   template <class TagType>
   bool Label<TagType>::has(detail::ParameterTraits<LabelLanguage>::tag) const {
-      return language_ != boost::none;
+    return language_ != boost::none;
   }
   template <class TagType>
   bool Label<TagType>::has(detail::ParameterTraits<LabelValue>::tag) const {
-      return true;
+    return true;
   }
 
   /// ---- Setter ---- //
   template <class TagType>
-  void Label<TagType>::set(LabelValue value) { value_ = value; }
+  void Label<TagType>::set(LabelValue value) {
+    value_ = value;
+  }
   template <class TagType>
-  void Label<TagType>::set(LabelLanguage language) { language_ = language; }
+  void Label<TagType>::set(LabelLanguage language) {
+    language_ = language;
+  }
 
   /// ---- Unsetter ---- //
   template <class TagType>
   void Label<TagType>::unset(detail::ParameterTraits<LabelLanguage>::tag) {
-      language_ = boost::none;
+    language_ = boost::none;
   }
 
   /// ---- Operators ---- //
   template <class TagType>
   template <typename OtherTagType>
   bool Label<TagType>::operator==(const Label<OtherTagType>& other) const {
-      return get<LabelValue>() == other.get<LabelValue>() &&
-          get<LabelLanguage>() == other.get<LabelLanguage>();
+    return get<LabelValue>() == other.get<LabelValue>() &&
+           get<LabelLanguage>() == other.get<LabelLanguage>();
   }
   template <class TagType>
   template <typename OtherTagType>
-  bool Label<TagType>::operator!=(const Label<OtherTagType>& other) const { return !(*this == other); }
+  bool Label<TagType>::operator!=(const Label<OtherTagType>& other) const {
+    return !(*this == other);
+  }
 
   // Label Typedefs
 
@@ -178,7 +186,8 @@ namespace adm {
   struct AudioObjectLabelTag {};
   struct AudioProgrammeLabelTag {};
 
-  typedef Label<AudioComplementaryObjectGroupLabelTag> AudioComplementaryObjectGroupLabel;
+  typedef Label<AudioComplementaryObjectGroupLabelTag>
+      AudioComplementaryObjectGroupLabel;
   typedef Label<AudioContentLabelTag> AudioContentLabel;
   typedef Label<AudioObjectLabelTag> AudioObjectLabel;
   typedef Label<AudioProgrammeLabelTag> AudioProgrammeLabel;

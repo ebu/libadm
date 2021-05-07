@@ -304,11 +304,13 @@ namespace adm {
   }
 
   void AudioObject::add(AudioComplementaryObjectGroupLabel label) {
-      audioComplementaryObjectGroupLabels_.push_back(label);
+    audioComplementaryObjectGroupLabels_.push_back(label);
   }
 
   void AudioObject::clearAudioObjectLabels() { audioObjectLabels_.clear(); }
-  void AudioObject::clearAudioComplementaryObjectGroupLabels() { audioComplementaryObjectGroupLabels_.clear(); }
+  void AudioObject::clearAudioComplementaryObjectGroupLabels() {
+    audioComplementaryObjectGroupLabels_.clear();
+  }
 
   ElementTypeConstRange<AudioObjectLabel> AudioObject::get(
       detail::ParameterTraits<AudioObjectLabel>::tag) const {
@@ -324,14 +326,16 @@ namespace adm {
 
   ElementTypeConstRange<AudioComplementaryObjectGroupLabel> AudioObject::get(
       detail::ParameterTraits<AudioComplementaryObjectGroupLabel>::tag) const {
-      return boost::make_iterator_range(audioComplementaryObjectGroupLabels_.begin(),
-                                        audioComplementaryObjectGroupLabels_.end());
+    return boost::make_iterator_range(
+        audioComplementaryObjectGroupLabels_.begin(),
+        audioComplementaryObjectGroupLabels_.end());
   }
 
   ElementTypeRange<AudioComplementaryObjectGroupLabel> AudioObject::get(
       detail::ParameterTraits<AudioComplementaryObjectGroupLabel>::tag) {
-      return boost::make_iterator_range(audioComplementaryObjectGroupLabels_.begin(),
-                                        audioComplementaryObjectGroupLabels_.end());
+    return boost::make_iterator_range(
+        audioComplementaryObjectGroupLabels_.begin(),
+        audioComplementaryObjectGroupLabels_.end());
   }
 
   // ---- Common ---- //

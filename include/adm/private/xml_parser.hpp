@@ -41,7 +41,8 @@ namespace adm {
     AudioProgrammeLabel parseAudioProgrammeLabel(NodePtr node);
     AudioContentLabel parseAudioContentLabel(NodePtr node);
     AudioObjectLabel parseAudioObjectLabel(NodePtr node);
-    AudioComplementaryObjectGroupLabel parseAudioComplementaryObjectGroupLabel(NodePtr node);
+    AudioComplementaryObjectGroupLabel parseAudioComplementaryObjectGroupLabel(
+        NodePtr node);
     AudioBlockFormatObjects parseAudioBlockFormatObjects(NodePtr node);
     ChannelLock parseChannelLock(NodePtr node);
     ObjectDivergence parseObjectDivergence(NodePtr node);

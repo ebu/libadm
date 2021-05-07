@@ -608,24 +608,25 @@ namespace adm {
     }
 
     AudioContentLabel parseAudioContentLabel(NodePtr node) {
-        auto label = AudioContentLabel();
-        setOptionalAttribute<LabelLanguage>(node, "language", label);
-        setValue<LabelValue>(node, label);
-        return label;
+      auto label = AudioContentLabel();
+      setOptionalAttribute<LabelLanguage>(node, "language", label);
+      setValue<LabelValue>(node, label);
+      return label;
     }
 
     AudioObjectLabel parseAudioObjectLabel(NodePtr node) {
-        auto label = AudioObjectLabel();
-        setOptionalAttribute<LabelLanguage>(node, "language", label);
-        setValue<LabelValue>(node, label);
-        return label;
+      auto label = AudioObjectLabel();
+      setOptionalAttribute<LabelLanguage>(node, "language", label);
+      setValue<LabelValue>(node, label);
+      return label;
     }
 
-    AudioComplementaryObjectGroupLabel parseAudioComplementaryObjectGroupLabel(NodePtr node) {
-        auto label = AudioComplementaryObjectGroupLabel();
-        setOptionalAttribute<LabelLanguage>(node, "language", label);
-        setValue<LabelValue>(node, label);
-        return label;
+    AudioComplementaryObjectGroupLabel parseAudioComplementaryObjectGroupLabel(
+        NodePtr node) {
+      auto label = AudioComplementaryObjectGroupLabel();
+      setOptionalAttribute<LabelLanguage>(node, "language", label);
+      setValue<LabelValue>(node, label);
+      return label;
     }
 
     ChannelLock parseChannelLock(NodePtr node) {

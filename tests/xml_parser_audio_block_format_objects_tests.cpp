@@ -42,8 +42,11 @@ TEST_CASE("xml_parser/audio_block_format_objects") {
     REQUIRE(firstBlockFormat.get<ScreenRef>() == true);
     // TODO: add zoneExclusion test
     REQUIRE(firstBlockFormat.get<Importance>() == 10);
-    auto secondBlockFormat = *(channelFormat->getElements<AudioBlockFormatObjects>().begin().operator++());
+    auto secondBlockFormat =
+        *(channelFormat->getElements<AudioBlockFormatObjects>().begin().
+          operator++());
     REQUIRE(secondBlockFormat.get<ScreenRef>() == false);
-    REQUIRE(secondBlockFormat.get<JumpPosition>().get<JumpPositionFlag>() == false);
+    REQUIRE(secondBlockFormat.get<JumpPosition>().get<JumpPositionFlag>() ==
+            false);
   }
 }
