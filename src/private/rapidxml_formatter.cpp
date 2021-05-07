@@ -59,7 +59,7 @@ namespace adm {
       node.addOptionalAttribute<MaxDuckingDepth>(programme, "maxDuckingDepth");
       node.addReferences<AudioContent, AudioContentId>(programme, "audioContentIDRef");
       node.addOptionalElement<LoudnessMetadata>(programme, "loudnessMetadata", &formatLoudnessMetadata);
-      node.addElements<AudioProgrammeLabel>(programme, "audioProgrammeLabel", &formatLabel);
+      node.addElements<AudioProgrammeLabel>(programme, "audioProgrammeLabel", &formatLabel<AudioProgrammeLabel>);
       // clang-format on
     }
 
@@ -82,7 +82,8 @@ namespace adm {
                                                 "dialogueLoudness");
     }
 
-    void formatLabel(XmlNode &node, const Label &label) {
+    template <typename LabelType>
+    void formatLabel(XmlNode &node, const LabelType &label) {
       // clang-format off
         if (label.has<LabelLanguage>()) {
             node.addAttribute(
@@ -107,7 +108,7 @@ namespace adm {
       node.addOptionalElement<NonDialogueContentKind>(content, "dialogue", &formatNonDialogueContentKind);
       node.addOptionalElement<DialogueContentKind>(content, "dialogue", &formatDialogueContentKind);
       node.addOptionalElement<MixedContentKind>(content, "dialogue", &formatMixedContentKind);
-      node.addElements<AudioContentLabel>(content, "audioContentLabel", &formatLabel);
+      node.addElements<AudioContentLabel>(content, "audioContentLabel", &formatLabel<AudioContentLabel>);
       // clang-format on
     }
 
@@ -152,7 +153,7 @@ namespace adm {
         node.addElement<AudioObjectId>(element, "audioComplementaryObjectIDRef");
       }
       node.addReferences<AudioTrackUid, AudioTrackUidId>(object, "audioTrackUIDRef");
-      node.addElements<AudioContentLabel>(object, "audioObjectLabel", &formatLabel);
+      node.addElements<AudioObjectLabel>(object, "audioObjectLabel", &formatLabel<AudioObjectLabel>);
       // node.addOptionalMultiElement<AudioComplementaryObjectGroupLabel>(object, "audioComplementaryObjectGroupLabel", &formatAudioComplementaryObjectGroupLabel);
       // clang-format on
     }

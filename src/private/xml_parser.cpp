@@ -151,7 +151,7 @@ namespace adm {
 
       addOptionalReferences<AudioContentId>(node, "audioContentIDRef", audioProgramme, programmeContentRefs_, &parseAudioContentId);
 
-      addOptionalElements<AudioProgrammeLabel>(node, "audioProgrammeLabel", audioProgramme, &parseLabel);
+      addOptionalElements<AudioProgrammeLabel>(node, "audioProgrammeLabel", audioProgramme, &parseAudioProgrammeLabel);
       // clang-format on
       return audioProgramme;
     }
@@ -172,7 +172,7 @@ namespace adm {
 
       addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", audioContent, contentObjectRefs_, &parseAudioObjectId);
 
-      addOptionalElements<AudioContentLabel>(node, "audioContentLabel", audioContent, &parseLabel);
+      addOptionalElements<AudioContentLabel>(node, "audioContentLabel", audioContent, &parseAudioContentLabel);
       // clang-format on
       return audioContent;
     }
@@ -197,7 +197,8 @@ namespace adm {
       addOptionalReferences<AudioPackFormatId>(node, "audioPackFormatIDRef", audioObject, objectPackFormatRefs_, &parseAudioPackFormatId);
       addOptionalReferences<AudioTrackUidId>(node, "audioTrackUIDRef", audioObject, objectTrackUidRefs_, &parseAudioTrackUidId);
       setOptionalElement<AudioObjectInteraction>(node, "audioObjectInteraction", audioObject, &parseAudioObjectInteraction);
-      addOptionalElements<AudioObjectLabel>(node, "audioObjectLabel", audioObject, &parseLabel);
+      addOptionalElements<AudioObjectLabel>(node, "audioObjectLabel", audioObject, &parseAudioObjectLabel);
+      addOptionalElements<AudioComplementaryObjectGroupLabel>(node, "audioComplementaryObjectGroupLabel", audioObject, &parseAudioComplementaryObjectGroupLabel);
       // clang-format on
       return audioObject;
     }
@@ -599,15 +600,32 @@ namespace adm {
       return audioBlockFormat;
     }
 
-    Label parseLabel(NodePtr node) {
-      Label label = Label();
-
-      // clang-format off
+    AudioProgrammeLabel parseAudioProgrammeLabel(NodePtr node) {
+      auto label = AudioProgrammeLabel();
       setOptionalAttribute<LabelLanguage>(node, "language", label);
       setValue<LabelValue>(node, label);
-      // clang-format on
-
       return label;
+    }
+
+    AudioContentLabel parseAudioContentLabel(NodePtr node) {
+        auto label = AudioContentLabel();
+        setOptionalAttribute<LabelLanguage>(node, "language", label);
+        setValue<LabelValue>(node, label);
+        return label;
+    }
+
+    AudioObjectLabel parseAudioObjectLabel(NodePtr node) {
+        auto label = AudioObjectLabel();
+        setOptionalAttribute<LabelLanguage>(node, "language", label);
+        setValue<LabelValue>(node, label);
+        return label;
+    }
+
+    AudioComplementaryObjectGroupLabel parseAudioComplementaryObjectGroupLabel(NodePtr node) {
+        auto label = AudioComplementaryObjectGroupLabel();
+        setOptionalAttribute<LabelLanguage>(node, "language", label);
+        setValue<LabelValue>(node, label);
+        return label;
     }
 
     ChannelLock parseChannelLock(NodePtr node) {

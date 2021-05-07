@@ -21,9 +21,10 @@ namespace adm {
   /// @brief Tag for LabelId
   struct LabelTag {};
   /// @brief Representation of an Label
+  template<class TagType>
   class Label {
    public:
-    typedef LabelTag tag;
+    typedef TagType tag;
 
     /**
      * @brief Constructor template
@@ -71,9 +72,12 @@ namespace adm {
      *
      * Compares the string representation of the Label.
      */
-    ADM_EXPORT bool operator==(const Label& other) const;
-    ADM_EXPORT bool operator!=(const Label& other) const;
-    ADM_EXPORT bool operator<(const Label& other) const;
+    template <typename OtherTagType>
+    ADM_EXPORT bool operator==(const Label<OtherTagType>& other) const;
+    template <typename OtherTagType>
+    ADM_EXPORT bool operator!=(const Label<OtherTagType>& other) const;
+    template <typename OtherTagType>
+    ADM_EXPORT bool operator<(const Label<OtherTagType>& other) const;
     ///@}
 
     /**
@@ -96,32 +100,87 @@ namespace adm {
   };
 
   // ---- Implementation ---- //
+  template <class TagType>
   template <typename... Parameters>
-  Label::Label(Parameters... optionalNamedArgs) {
+  Label<TagType>::Label(Parameters... optionalNamedArgs) {
     detail::setNamedOptionHelper(
         this, std::forward<Parameters>(optionalNamedArgs)...);
   };
 
+  template <class TagType>
   template <typename Parameter>
-  Parameter Label::get() const {
+  Parameter Label<TagType>::get() const {
     typedef typename detail::ParameterTraits<Parameter>::tag Tag;
     return get(Tag());
   }
 
+  template <class TagType>
   template <typename Parameter>
-  bool Label::has() const {
+  bool Label<TagType>::has() const {
     typedef typename detail::ParameterTraits<Parameter>::tag Tag;
     return has(Tag());
   }
 
+  template <class TagType>
   template <typename Parameter>
-  void Label::unset() {
+  void Label<TagType>::unset() {
     typedef typename detail::ParameterTraits<Parameter>::tag Tag;
     return unset(Tag());
   }
 
-  typedef Label AudioComplementaryObjectGroupLabel;
-  typedef Label AudioContentLabel;
-  typedef Label AudioObjectLabel;
-  typedef Label AudioProgrammeLabel;
+  /// ---- Getter ---- //
+  template <class TagType>
+  LabelLanguage Label<TagType>::get(detail::ParameterTraits<LabelLanguage>::tag) const {
+      return language_.get();
+  }
+  template <class TagType>
+  LabelValue Label<TagType>::get(detail::ParameterTraits<LabelValue>::tag) const {
+      return value_;
+  }
+
+  /// ---- Has ---- //
+  template <class TagType>
+  bool Label<TagType>::has(detail::ParameterTraits<LabelLanguage>::tag) const {
+      return language_ != boost::none;
+  }
+  template <class TagType>
+  bool Label<TagType>::has(detail::ParameterTraits<LabelValue>::tag) const {
+      return true;
+  }
+
+  /// ---- Setter ---- //
+  template <class TagType>
+  void Label<TagType>::set(LabelValue value) { value_ = value; }
+  template <class TagType>
+  void Label<TagType>::set(LabelLanguage language) { language_ = language; }
+
+  /// ---- Unsetter ---- //
+  template <class TagType>
+  void Label<TagType>::unset(detail::ParameterTraits<LabelLanguage>::tag) {
+      language_ = boost::none;
+  }
+
+  /// ---- Operators ---- //
+  template <class TagType>
+  template <typename OtherTagType>
+  bool Label<TagType>::operator==(const Label<OtherTagType>& other) const {
+      return get<LabelValue>() == other.get<LabelValue>() &&
+          get<LabelLanguage>() == other.get<LabelLanguage>();
+  }
+  template <class TagType>
+  template <typename OtherTagType>
+  bool Label<TagType>::operator!=(const Label<OtherTagType>& other) const { return !(*this == other); }
+
+  // Label Typedefs
+
+  struct AudioComplementaryObjectGroupLabelTag {};
+  struct AudioContentLabelTag {};
+  struct AudioObjectLabelTag {};
+  struct AudioProgrammeLabelTag {};
+
+  typedef Label<AudioComplementaryObjectGroupLabelTag> AudioComplementaryObjectGroupLabel;
+  typedef Label<AudioContentLabelTag> AudioContentLabel;
+  typedef Label<AudioObjectLabelTag> AudioObjectLabel;
+  typedef Label<AudioProgrammeLabelTag> AudioProgrammeLabel;
+
 }  // namespace adm

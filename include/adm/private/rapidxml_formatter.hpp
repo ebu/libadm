@@ -9,7 +9,8 @@ namespace adm {
 
     void formatAudioProgramme(
         XmlNode &node, const std::shared_ptr<const AudioProgramme> programme);
-    void formatLabel(XmlNode &parentNode, const Label &label);
+    template <typename LabelType>
+    void formatLabel(XmlNode &parentNode, const LabelType &label);
     void formatLoudnessMetadata(XmlNode &node,
                                 const LoudnessMetadata loudnessMetadata);
     void formatNonDialogueContentKind(XmlNode &node,

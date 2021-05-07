@@ -1,41 +1,7 @@
 #include "adm/elements/label.hpp"
-#include <boost/format.hpp>
-#include <regex>
-#include <sstream>
 
 namespace adm {
-  // ---- Getter ---- //
-  LabelLanguage Label::get(detail::ParameterTraits<LabelLanguage>::tag) const {
-    return language_.get();
-  }
-  LabelValue Label::get(detail::ParameterTraits<LabelValue>::tag) const {
-    return value_;
-  }
 
-  // ---- Has ---- //
-  bool Label::has(detail::ParameterTraits<LabelLanguage>::tag) const {
-    return language_ != boost::none;
-  }
-  bool Label::has(detail::ParameterTraits<LabelValue>::tag) const {
-    return true;
-  }
-
-  // ---- Setter ---- //
-  void Label::set(LabelValue value) { value_ = value; }
-  void Label::set(LabelLanguage language) { language_ = language; }
-
-  // ---- Unsetter ---- //
-  void Label::unset(detail::ParameterTraits<LabelLanguage>::tag) {
-    language_ = boost::none;
-  }
-
-  // ---- Operators ---- //
-  bool Label::operator==(const Label& other) const {
-    return get<LabelValue>() == other.get<LabelValue>() &&
-           get<LabelLanguage>() == other.get<LabelLanguage>();
-  }
-
-  bool Label::operator!=(const Label& other) const { return !(*this == other); }
 
   // TODO don't have an Id to compare here - does it make sense to have a <
   // operator?
