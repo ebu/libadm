@@ -5,11 +5,11 @@
 
 namespace adm {
   // ---- Getter ---- //
-  LabelValue Label::get(detail::ParameterTraits<LabelValue>::tag) const {
-    return this->value_.get();
-  }
   LabelLanguage Label::get(detail::ParameterTraits<LabelLanguage>::tag) const {
     return this->language_.get();
+  }
+  LabelValue Label::get(detail::ParameterTraits<LabelValue>::tag) const {
+    return this->value_.get();
   }
 
   // ---- Has ---- //
@@ -17,7 +17,7 @@ namespace adm {
     return this->language_ != boost::none;
   }
   bool Label::has(detail::ParameterTraits<LabelValue>::tag) const {
-    return this->language_ != boost::none;
+    return this->value_ != boost::none;
   }
 
   // ---- Setter ---- //
