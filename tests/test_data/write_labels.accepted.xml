@@ -3,12 +3,28 @@
 	<coreMetadata>
 		<format>
 			<audioFormatExtended>
+				<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme">
+					<audioProgrammeLabel language="en">My Programme</audioProgrammeLabel>
+					<audioProgrammeLabel>My Programme</audioProgrammeLabel>
+					<audioProgrammeLabel language="en"/>
+					<audioProgrammeLabel/>
+				</audioProgramme>
 				<audioContent audioContentID="ACO_1001" audioContentName="MyContent">
 					<audioContentLabel language="en">My Content</audioContentLabel>
 					<audioContentLabel>My Content</audioContentLabel>
 					<audioContentLabel language="en"/>
 					<audioContentLabel/>
 				</audioContent>
+				<audioObject audioObjectID="AO_1001" audioObjectName="MyObject">
+					<audioObjectLabel language="en">My Object</audioObjectLabel>
+					<audioObjectLabel>My Object</audioObjectLabel>
+					<audioObjectLabel language="en"/>
+					<audioObjectLabel/>
+					<audioComplementaryObjectGroupLabel language="en">My ComplementaryObjectGroup</audioComplementaryObjectGroupLabel>
+					<audioComplementaryObjectGroupLabel>My ComplementaryObjectGroup</audioComplementaryObjectGroupLabel>
+					<audioComplementaryObjectGroupLabel language="en"/>
+					<audioComplementaryObjectGroupLabel/>
+				</audioObject>
 			</audioFormatExtended>
 		</format>
 	</coreMetadata>
