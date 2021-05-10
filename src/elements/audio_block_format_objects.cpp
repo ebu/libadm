@@ -15,13 +15,13 @@ namespace adm {
 
   namespace detail {
     template <>
-    const Gain DefaultParameter<Gain>::value{Gain::fromLinear(1.0)};
+    ADM_EXPORT const Gain DefaultParameter<Gain>::value{Gain::fromLinear(1.0)};
     template <>
-    const Width DefaultParameter<Width>::value{0.f};
+    ADM_EXPORT const Width DefaultParameter<Width>::value{0.f};
     template <>
-    const Height DefaultParameter<Height>::value{0.f};
+    ADM_EXPORT const Height DefaultParameter<Height>::value{0.f};
     template <>
-    const Depth DefaultParameter<Depth>::value{0.f};
+    ADM_EXPORT const Depth DefaultParameter<Depth>::value{0.f};
   }  // namespace detail
 
   // ---- Getter ---- //

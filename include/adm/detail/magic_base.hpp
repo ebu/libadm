@@ -45,7 +45,7 @@ namespace adm {
     /// holder for the default value of T parameters
     template <typename T>
     struct DefaultParameter {
-      static const T value;
+      ADM_EXPORT static const T value;
     };
 
     /// base class with set/get/has/isDefault/unset methods for an optional
@@ -53,20 +53,20 @@ namespace adm {
     template <typename T>
     class OptionalBase {
      public:
-      ADM_EXPORT void set(T value) { value_ = value; }
+      void set(T value) { value_ = value; }
 
      protected:
-      ADM_EXPORT T get(typename detail::ParameterTraits<T>::tag) const {
+      T get(typename detail::ParameterTraits<T>::tag) const {
         return boost::get_optional_value_or(value_, DefaultParameter<T>::value);
       }
-      ADM_EXPORT bool has(typename detail::ParameterTraits<T>::tag) const {
+      bool has(typename detail::ParameterTraits<T>::tag) const {
         return true;
       }
-      ADM_EXPORT bool isDefault(
+      bool isDefault(
           typename detail::ParameterTraits<T>::tag) const {
         return value_ == boost::none;
       }
-      ADM_EXPORT void unset(typename detail::ParameterTraits<T>::tag) {
+      void unset(typename detail::ParameterTraits<T>::tag) {
         value_ = boost::none;
       }
 
