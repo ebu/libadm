@@ -85,14 +85,14 @@ namespace adm {
     template <typename LabelType>
     void formatLabel(XmlNode &node, const LabelType &label) {
       // clang-format off
-        if (label.has<LabelLanguage>()) {
+        if (label.template has<LabelLanguage>()) {
             node.addAttribute(
                 "language",
-                label.get<LabelLanguage>().get());
+                label.template get<LabelLanguage>().get());
         }
-        if (label.has<LabelValue>()) {
+        if (label.template has<LabelValue>()) {
             node.setValue(
-                label.get<LabelValue>().get());
+                label.template get<LabelValue>().get());
         }
       // clang-format on
     }
