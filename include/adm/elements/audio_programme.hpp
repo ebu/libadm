@@ -204,7 +204,7 @@ namespace adm {
     /**
      * @brief remove all AudioProgrammeLabel instances
      */
-    void clearAudioProgrammeLabels();
+    ADM_EXPORT void clearAudioProgrammeLabels();
 
     /**
      * @brief Print overview to ostream

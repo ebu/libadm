@@ -218,12 +218,12 @@ namespace adm {
     /**
      * @brief remove all AudioObjectLabel instances
      */
-    void clearAudioObjectLabels();
+    ADM_EXPORT void clearAudioObjectLabels();
 
     /**
      * @brief remove all AudioComplementaryObjectGroupLabel instances
      */
-    void clearAudioComplementaryObjectGroupLabels();
+    ADM_EXPORT void clearAudioComplementaryObjectGroupLabels();
 
     /**
      * @brief Print overview to ostream
