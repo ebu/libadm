@@ -51,10 +51,10 @@ namespace adm {
     bool has() const;
 
     /// @brief set value
-    ADM_EXPORT void set(LabelValue value);
+    void set(LabelValue value);
 
     /// @brief set language
-    ADM_EXPORT void set(LabelLanguage language);
+    void set(LabelLanguage language);
 
     /**
      * @brief ADM parameter unset template
@@ -73,11 +73,9 @@ namespace adm {
      * Compares the string representation of the Label.
      */
     template <typename OtherTagType>
-    ADM_EXPORT bool operator==(const Label<OtherTagType>& other) const;
+    bool operator==(const Label<OtherTagType>& other) const;
     template <typename OtherTagType>
-    ADM_EXPORT bool operator!=(const Label<OtherTagType>& other) const;
-    template <typename OtherTagType>
-    ADM_EXPORT bool operator<(const Label<OtherTagType>& other) const;
+    bool operator!=(const Label<OtherTagType>& other) const;
     ///@}
 
     /**
@@ -86,14 +84,14 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    ADM_EXPORT LabelValue get(detail::ParameterTraits<LabelValue>::tag) const;
-    ADM_EXPORT LabelLanguage
+    LabelValue get(detail::ParameterTraits<LabelValue>::tag) const;
+    LabelLanguage
         get(detail::ParameterTraits<LabelLanguage>::tag) const;
 
-    ADM_EXPORT bool has(detail::ParameterTraits<LabelValue>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<LabelLanguage>::tag) const;
+    bool has(detail::ParameterTraits<LabelValue>::tag) const;
+    bool has(detail::ParameterTraits<LabelLanguage>::tag) const;
 
-    ADM_EXPORT void unset(detail::ParameterTraits<LabelLanguage>::tag);
+    void unset(detail::ParameterTraits<LabelLanguage>::tag);
 
     LabelValue value_{""};
     boost::optional<LabelLanguage> language_;
