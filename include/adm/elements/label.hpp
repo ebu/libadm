@@ -170,8 +170,8 @@ namespace adm {
   template <class TagType>
   template <typename OtherTagType>
   bool Label<TagType>::operator==(const Label<OtherTagType>& other) const {
-    return get<LabelValue>() == other.get<LabelValue>() &&
-           get<LabelLanguage>() == other.get<LabelLanguage>();
+    return get<LabelValue>() == other.template get<LabelValue>() &&
+           get<LabelLanguage>() == other.template get<LabelLanguage>();
   }
   template <class TagType>
   template <typename OtherTagType>
