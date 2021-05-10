@@ -10,6 +10,7 @@
 #include "adm/elements/object_divergence.hpp"
 #include "adm/elements/position.hpp"
 #include "adm/elements_fwd.hpp"
+#include "adm/detail/magic_base.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
@@ -44,6 +45,13 @@ namespace adm {
 
   /// @brief Tag for AudioBlockFormatObjects
   struct AudioBlockFormatObjectsTag {};
+
+  namespace detail {
+    using AudioBlockFormatObjectsBase =
+        CombineBase<OptionalBase<Width>, OptionalBase<Height>,
+                    OptionalBase<Depth>, OptionalBase<Gain>>;
+  }  // namespace detail
+
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "Objects"
@@ -51,7 +59,7 @@ namespace adm {
    * @warning This class has unsupported parameters
    *   - ZoneExclusion
    */
-  class AudioBlockFormatObjects {
+  class AudioBlockFormatObjects : public detail::AudioBlockFormatObjectsBase {
    public:
     typedef AudioBlockFormatObjectsTag tag;
     /// Type that holds the id for this element;
@@ -99,6 +107,8 @@ namespace adm {
     template <typename Parameter>
     bool isDefault() const;
 
+    using detail::AudioBlockFormatObjectsBase::set;
+
     /// @brief AudioBlockFormatId setter
     ADM_EXPORT void set(AudioBlockFormatId id);
     /// @brief Rtime setter
@@ -138,16 +148,8 @@ namespace adm {
      * SphericalPosition. Also the Cartesian flag will be set automatically.
      */
     ADM_EXPORT void set(CartesianPosition position);
-    /// @brief Width setter
-    ADM_EXPORT void set(Width width);
-    /// @brief Height setter
-    ADM_EXPORT void set(Height height);
-    /// @brief Depth setter
-    ADM_EXPORT void set(Depth depth);
     /// @brief ScreenEdgeLock setter
     ADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
-    /// @brief Gain setter
-    ADM_EXPORT void set(Gain gain);
     /// @brief Diffuse setter
     ADM_EXPORT void set(Diffuse diffuse);
     /// @brief ChannelLock setter
@@ -172,6 +174,11 @@ namespace adm {
     void unset();
 
    private:
+    using detail::AudioBlockFormatObjectsBase::get;
+    using detail::AudioBlockFormatObjectsBase::has;
+    using detail::AudioBlockFormatObjectsBase::isDefault;
+    using detail::AudioBlockFormatObjectsBase::unset;
+
     ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
@@ -182,12 +189,8 @@ namespace adm {
         get(detail::ParameterTraits<SphericalPosition>::tag) const;
     ADM_EXPORT CartesianPosition
         get(detail::ParameterTraits<CartesianPosition>::tag) const;
-    ADM_EXPORT Width get(detail::ParameterTraits<Width>::tag) const;
-    ADM_EXPORT Height get(detail::ParameterTraits<Height>::tag) const;
-    ADM_EXPORT Depth get(detail::ParameterTraits<Depth>::tag) const;
     ADM_EXPORT ScreenEdgeLock
         get(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
-    ADM_EXPORT Gain get(detail::ParameterTraits<Gain>::tag) const;
     ADM_EXPORT Diffuse get(detail::ParameterTraits<Diffuse>::tag) const;
     ADM_EXPORT ChannelLock get(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT ObjectDivergence
@@ -204,11 +207,7 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<Position>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<SphericalPosition>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<CartesianPosition>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Width>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Height>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Depth>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Gain>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Diffuse>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ObjectDivergence>::tag) const;
@@ -222,10 +221,6 @@ namespace adm {
     }
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Cartesian>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Width>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Height>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Depth>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Gain>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Diffuse>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT bool isDefault(
@@ -240,11 +235,7 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<Position>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<SphericalPosition>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<CartesianPosition>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Width>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Height>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Depth>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Gain>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Diffuse>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ChannelLock>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ObjectDivergence>::tag);
@@ -258,11 +249,7 @@ namespace adm {
     boost::optional<Cartesian> cartesian_;
     boost::optional<SphericalPosition> sphericalPosition_;
     boost::optional<CartesianPosition> cartesianPosition_;
-    boost::optional<Height> height_;
-    boost::optional<Width> width_;
-    boost::optional<Depth> depth_;
     boost::optional<ScreenEdgeLock> screenEdgeLock_;
-    boost::optional<Gain> gain_;
     boost::optional<Diffuse> diffuse_;
     boost::optional<ChannelLock> channelLock_;
     boost::optional<ObjectDivergence> objectDivergence_;
