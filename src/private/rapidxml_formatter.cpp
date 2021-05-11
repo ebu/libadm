@@ -261,18 +261,6 @@ namespace adm {
       }
     }
 
-    // void formatAudioComplementaryObjectGroupLabel(
-    //     XmlNode &parentNode, const std::string &name,
-    //     const AudioComplementaryObjectGroupLabel
-    //         &audioComplementaryObjectGroupLabel) {
-    //   // clang-format off
-    //   auto node = parentNode.addNode(name);
-    //   node.addOptionalAttribute<AudioComplementaryObjectGroupLabelLanguage>(audioComplementaryObjectGroupLabel,
-    //   "language");
-    //   node.setOptionalValue<AudioComplementaryObjectGroupLabelValue>(audioComplementaryObjectGroupLabel);
-    //   // clang-format on
-    // }
-
     void formatAudioPackFormat(
         XmlNode &node, std::shared_ptr<const AudioPackFormat> packFormat) {
       // clang-format off
