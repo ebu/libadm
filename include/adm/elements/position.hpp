@@ -7,6 +7,7 @@
 #include <iosfwd>
 #include "adm/elements/position_types.hpp"
 #include "adm/elements/screen_edge_lock.hpp"
+#include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/type_traits.hpp"
 #include "adm/export.h"
 #ifndef M_PI
