@@ -3,6 +3,7 @@
 #include "adm/elements/audio_object.hpp"
 #include "adm/elements/audio_pack_format.hpp"
 #include "adm/elements/audio_track_uid.hpp"
+#include "adm/elements/position_offset.hpp"
 #include "adm/errors.hpp"
 
 TEST_CASE("audio_object_basic") {
@@ -152,7 +153,7 @@ TEST_CASE("audio_object_position_offset") {
 
   {
     // Cartesian offsetPosition
-    auto offsetPosition = CartesianOffsetPosition(X(0.0f), Y(-1.0f), Z(0.5f));
+    auto offsetPosition = CartesianPositionOffset(X(0.0f), Y(-1.0f), Z(0.5f));
     auto audioObject =
         AudioObject::create(AudioObjectName("MyAudioObject"), offsetPosition);
 
@@ -164,12 +165,12 @@ TEST_CASE("audio_object_position_offset") {
     REQUIRE(audioObject->get<CartesianPositionOffset>()->get<Z>() == 0.5f);
 
     audioObject.unset<CartesianPositionOffset>();
-    REQUIRE(audioObject->has<CartesianPosition>() == false);
+    REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
   }
 
   {
     // Spherical offsetPosition
-    auto offsetPosition = SphericalOffsetPosition(
+    auto offsetPosition = SphericalPositionOffset(
         Azimuth(0.0f), Elevation(-90.0f), Distance(0.5f));
     auto audioObject =
         AudioObject::create(AudioObjectName("MyAudioObject"), offsetPosition);
