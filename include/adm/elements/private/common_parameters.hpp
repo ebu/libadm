@@ -7,6 +7,13 @@
 
 namespace adm {
   namespace detail {
+    template <>
+    const Gain DefaultParameter<Gain>::value;
+    template <>
+    const Importance DefaultParameter<Importance>::value;
+    template <>
+    const Rtime DefaultParameter<Rtime>::value;
+
     extern template class ADM_EXPORT DefaultedBase<Gain>;
 
     extern template class ADM_EXPORT DefaultedBase<Importance>;
