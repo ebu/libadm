@@ -47,6 +47,14 @@ namespace adm {
       detail::ParameterTraits<AudioObjectInteraction>::tag) const {
     return audioObjectInteraction_.get();
   }
+  SphericalPositionOffset AudioObject::get(
+      detail::ParameterTraits<SphericalPositionOffset>::tag) const {
+    return sphericalPositionOffset_.get();
+  }
+  CartesianPositionOffset AudioObject::get(
+      detail::ParameterTraits<CartesianPositionOffset>::tag) const {
+    return cartesianPositionOffset_.get();
+  }
 
   // ---- Has ---- //
   bool AudioObject::has(detail::ParameterTraits<AudioObjectId>::tag) const {
@@ -77,6 +85,14 @@ namespace adm {
       detail::ParameterTraits<AudioObjectInteraction>::tag) const {
     return audioObjectInteraction_ != boost::none;
   }
+  bool AudioObject::has(
+      detail::ParameterTraits<SphericalPositionOffset>::tag) const {
+    return sphericalPositionOffset_ != boost::none;
+  }
+  bool AudioObject::has(
+      detail::ParameterTraits<CartesianPositionOffset>::tag) const {
+    return cartesianPositionOffset_ != boost::none;
+  }
 
   // ---- isDefault ---- //
   bool AudioObject::isDefault(detail::ParameterTraits<Start>::tag) const {
@@ -106,7 +122,21 @@ namespace adm {
   void AudioObject::set(AudioObjectInteraction audioObjectInteraction) {
     audioObjectInteraction_ = audioObjectInteraction;
   }
-
+  void AudioObject::set(PositionOffset positionOffset) {
+    if (isSpherical(positionOffset)) {
+      set(boost::get<SphericalPositionOffset>(positionOffset));
+    } else if (isCartesian(positionOffset)) {
+      set(boost::get<CartesianPositionOffset>(positionOffset));
+    };
+  }
+  void AudioObject::set(SphericalPositionOffset sphericalPositionOffset) {
+    sphericalPositionOffset_ = sphericalPositionOffset;
+    cartesianPositionOffset_ = boost::none;
+  }
+  void AudioObject::set(CartesianPositionOffset cartesianPositionOffset) {
+    sphericalPositionOffset_ = boost::none;
+    cartesianPositionOffset_ = cartesianPositionOffset;
+  }
   // ---- Unsetter ---- //
   void AudioObject::unset(detail::ParameterTraits<Start>::tag) {
     start_ = boost::none;
@@ -129,6 +159,14 @@ namespace adm {
   void AudioObject::unset(
       detail::ParameterTraits<AudioObjectInteraction>::tag) {
     audioObjectInteraction_ = boost::none;
+  }
+  void AudioObject::unset(
+      detail::ParameterTraits<SphericalPositionOffset>::tag) {
+    sphericalPositionOffset_ = boost::none;
+  }
+  void AudioObject::unset(
+      detail::ParameterTraits<CartesianPositionOffset>::tag) {
+    cartesianPositionOffset_ = boost::none;
   }
 
   // ---- References ---- //

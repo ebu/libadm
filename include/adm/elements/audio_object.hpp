@@ -10,6 +10,7 @@
 #include "adm/elements/audio_track_uid.hpp"
 #include "adm/elements/dialogue.hpp"
 #include "adm/elements/importance.hpp"
+#include "adm/elements/position_offset.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
 #include "adm/detail/named_option_helper.hpp"
@@ -113,6 +114,12 @@ namespace adm {
     ADM_EXPORT void set(DisableDucking disableDucking);
     /// @brief AudioObjectInteraction setter
     ADM_EXPORT void set(AudioObjectInteraction objectInteraction);
+    /// @brief PositionOffset setter
+    ADM_EXPORT void set(PositionOffset positionOffset);
+    /// @brief SphericalPositionOffset setter
+    ADM_EXPORT void set(SphericalPositionOffset positionOffset);
+    /// @brief CartesianPositionOffset setter
+    ADM_EXPORT void set(CartesianPositionOffset positionOffset);
 
     /**
      * @brief ADM parameter unset template
@@ -207,6 +214,12 @@ namespace adm {
         get(detail::ParameterTraits<DisableDucking>::tag) const;
     ADM_EXPORT AudioObjectInteraction
         get(detail::ParameterTraits<AudioObjectInteraction>::tag) const;
+    ADM_EXPORT PositionOffset
+        get(detail::ParameterTraits<PositionOffset>::tag) const;
+    ADM_EXPORT SphericalPositionOffset
+        get(detail::ParameterTraits<SphericalPositionOffset>::tag) const;
+    ADM_EXPORT CartesianPositionOffset
+        get(detail::ParameterTraits<CartesianPositionOffset>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioObjectId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<AudioObjectName>::tag) const;
@@ -218,6 +231,11 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<DisableDucking>::tag) const;
     ADM_EXPORT bool has(
         detail::ParameterTraits<AudioObjectInteraction>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<PositionOffset>::tag) const;
+    ADM_EXPORT bool has(
+        detail::ParameterTraits<SphericalPositionOffset>::tag) const;
+    ADM_EXPORT bool has(
+        detail::ParameterTraits<CartesianPositionOffset>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -233,6 +251,11 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<Interact>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<DisableDucking>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<AudioObjectInteraction>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<PositionOffset>::tag);
+    ADM_EXPORT void unset(
+        detail::ParameterTraits<SphericalPositionOffset>::tag);
+    ADM_EXPORT void unset(
+        detail::ParameterTraits<CartesianPositionOffset>::tag);
 
     bool isAudioObjectReferenceCycle(
         std::shared_ptr<AudioObject> destinationObject);
@@ -277,6 +300,8 @@ namespace adm {
     boost::optional<Interact> interact_;
     boost::optional<DisableDucking> disableDucking_;
     boost::optional<AudioObjectInteraction> audioObjectInteraction_;
+    boost::optional<SphericalPositionOffset> sphericalPositionOffset_;
+    boost::optional<CartesianPositionOffset> cartesianPositionOffset_;
   };
 
   // ---- Implementation ---- //
