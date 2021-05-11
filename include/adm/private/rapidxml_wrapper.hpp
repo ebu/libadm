@@ -48,9 +48,6 @@ namespace adm {
       template <typename ValueType>
       void setValue(const ValueType &value);
 
-      template <typename ValueType, typename Source>
-      void setOptionalValue(const Source &src);
-
       // --- ATTRIBUTES ---- //
       void addAttribute(const std::string &name, const std::string &value);
 
@@ -127,17 +124,6 @@ namespace adm {
     template <typename ValueType>
     void XmlNode::setValue(const ValueType &value) {
       setValue(detail::toString(value));
-    }
-
-    template <typename ValueType, typename Source>
-    void XmlNode::setOptionalValue(const Source &src) {
-        if (!(discardDefaultValues_ &&
-              src->template isDefault<ValueType>())) {
-            if (src->template has<ValueType>()) {
-                auto value = src->template get<ValueType>();
-                setValue(detail::toString(value));
-            }
-        }
     }
 
     template <typename AttributeType, typename Source>
