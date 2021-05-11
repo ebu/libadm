@@ -45,16 +45,18 @@ namespace adm {
   struct AudioBlockFormatObjectsTag {};
 
   namespace detail {
+    extern template class ADM_EXPORT RequiredBase<AudioBlockFormatId>;
     extern template class ADM_EXPORT DefaultedBase<Width>;
     extern template class ADM_EXPORT DefaultedBase<Height>;
     extern template class ADM_EXPORT DefaultedBase<Depth>;
     extern template class ADM_EXPORT DefaultedBase<Diffuse>;
 
     using AudioBlockFormatObjectsBase =
-        CombineBase<DefaultedBase<Rtime>, OptionalBase<Duration>,
-                    DefaultedBase<Width>, DefaultedBase<Height>,
-                    DefaultedBase<Depth>, DefaultedBase<Diffuse>,
-                    DefaultedBase<Gain>, DefaultedBase<Importance>>;
+        CombineBase<RequiredBase<AudioBlockFormatId>, DefaultedBase<Rtime>,
+                    OptionalBase<Duration>, DefaultedBase<Width>,
+                    DefaultedBase<Height>, DefaultedBase<Depth>,
+                    DefaultedBase<Diffuse>, DefaultedBase<Gain>,
+                    DefaultedBase<Importance>>;
   }  // namespace detail
 
   /**
@@ -113,9 +115,6 @@ namespace adm {
     bool isDefault() const;
 
     using detail::AudioBlockFormatObjectsBase::set;
-
-    /// @brief AudioBlockFormatId setter
-    ADM_EXPORT void set(AudioBlockFormatId id);
 
     /**
      * @brief Cartesian setter
@@ -176,8 +175,6 @@ namespace adm {
     using detail::AudioBlockFormatObjectsBase::isDefault;
     using detail::AudioBlockFormatObjectsBase::unset;
 
-    ADM_EXPORT AudioBlockFormatId
-        get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Cartesian get(detail::ParameterTraits<Cartesian>::tag) const;
     ADM_EXPORT Position get(detail::ParameterTraits<Position>::tag) const;
     ADM_EXPORT SphericalPosition
@@ -193,7 +190,6 @@ namespace adm {
         get(detail::ParameterTraits<JumpPosition>::tag) const;
     ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
 
-    ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Cartesian>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Position>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<SphericalPosition>::tag) const;
@@ -225,7 +221,6 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<JumpPosition>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
 
-    AudioBlockFormatId id_;
     boost::optional<Cartesian> cartesian_;
     boost::optional<SphericalPosition> sphericalPosition_;
     boost::optional<CartesianPosition> cartesianPosition_;

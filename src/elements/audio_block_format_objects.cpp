@@ -11,6 +11,7 @@ namespace adm {
   }  // namespace
 
   namespace detail {
+    template class RequiredBase<AudioBlockFormatId>;
     template class DefaultedBase<Width>;
     template class DefaultedBase<Height>;
     template class DefaultedBase<Depth>;
@@ -27,10 +28,6 @@ namespace adm {
   }  // namespace detail
 
   // ---- Getter ---- //
-  AudioBlockFormatId AudioBlockFormatObjects::get(
-      detail::ParameterTraits<AudioBlockFormatId>::tag) const {
-    return id_;
-  }
   Cartesian AudioBlockFormatObjects::get(
       detail::ParameterTraits<Cartesian>::tag) const {
     if (cartesian_ != boost::none) {
@@ -82,10 +79,6 @@ namespace adm {
   }
 
   // ---- Has ---- //
-  bool AudioBlockFormatObjects::has(
-      detail::ParameterTraits<AudioBlockFormatId>::tag) const {
-    return true;
-  }
   bool AudioBlockFormatObjects::has(
       detail::ParameterTraits<Cartesian>::tag) const {
     return true;
@@ -147,7 +140,6 @@ namespace adm {
   }
 
   // ---- Setter ---- //
-  void AudioBlockFormatObjects::set(AudioBlockFormatId id) { id_ = id; }
   void AudioBlockFormatObjects::set(Cartesian cartesian) {
     cartesian_ = cartesian;
 
