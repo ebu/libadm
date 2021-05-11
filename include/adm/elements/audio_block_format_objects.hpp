@@ -2,20 +2,18 @@
 #pragma once
 
 #include <boost/optional.hpp>
-#include "adm/elements/time.hpp"
 #include "adm/elements/audio_block_format_id.hpp"
 #include "adm/elements/channel_lock.hpp"
-#include "adm/elements/importance.hpp"
 #include "adm/elements/jump_position.hpp"
 #include "adm/elements/object_divergence.hpp"
 #include "adm/elements/position.hpp"
+#include "adm/elements/private/common_parameters.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/magic_base.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 #include "adm/elements/screen_ref.hpp"
-#include "adm/elements/gain.hpp"
 
 namespace adm {
 
@@ -47,9 +45,16 @@ namespace adm {
   struct AudioBlockFormatObjectsTag {};
 
   namespace detail {
+    extern template class ADM_EXPORT DefaultedBase<Width>;
+    extern template class ADM_EXPORT DefaultedBase<Height>;
+    extern template class ADM_EXPORT DefaultedBase<Depth>;
+    extern template class ADM_EXPORT DefaultedBase<Diffuse>;
+
     using AudioBlockFormatObjectsBase =
-        CombineBase<OptionalBase<Width>, OptionalBase<Height>,
-                    OptionalBase<Depth>, OptionalBase<Gain>>;
+        CombineBase<DefaultedBase<Rtime>, OptionalBase<Duration>,
+                    DefaultedBase<Width>, DefaultedBase<Height>,
+                    DefaultedBase<Depth>, DefaultedBase<Diffuse>,
+                    DefaultedBase<Gain>, DefaultedBase<Importance>>;
   }  // namespace detail
 
   /**
@@ -111,10 +116,6 @@ namespace adm {
 
     /// @brief AudioBlockFormatId setter
     ADM_EXPORT void set(AudioBlockFormatId id);
-    /// @brief Rtime setter
-    ADM_EXPORT void set(Rtime rtime);
-    /// @brief Duration setter
-    ADM_EXPORT void set(Duration duration);
 
     /**
      * @brief Cartesian setter
@@ -150,8 +151,6 @@ namespace adm {
     ADM_EXPORT void set(CartesianPosition position);
     /// @brief ScreenEdgeLock setter
     ADM_EXPORT void set(ScreenEdgeLock screenEdgeLock);
-    /// @brief Diffuse setter
-    ADM_EXPORT void set(Diffuse diffuse);
     /// @brief ChannelLock setter
     ADM_EXPORT void set(ChannelLock channelLock);
     /// @brief ObjectDivergence setter
@@ -160,8 +159,6 @@ namespace adm {
     ADM_EXPORT void set(JumpPosition jumpPosition);
     /// @brief ScreenRef setter
     ADM_EXPORT void set(ScreenRef screenRef);
-    /// @brief Importance setter
-    ADM_EXPORT void set(Importance importance);
 
     /**
      * @brief ADM parameter unset template
@@ -181,8 +178,6 @@ namespace adm {
 
     ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
-    ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
     ADM_EXPORT Cartesian get(detail::ParameterTraits<Cartesian>::tag) const;
     ADM_EXPORT Position get(detail::ParameterTraits<Position>::tag) const;
     ADM_EXPORT SphericalPosition
@@ -191,71 +186,54 @@ namespace adm {
         get(detail::ParameterTraits<CartesianPosition>::tag) const;
     ADM_EXPORT ScreenEdgeLock
         get(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
-    ADM_EXPORT Diffuse get(detail::ParameterTraits<Diffuse>::tag) const;
     ADM_EXPORT ChannelLock get(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT ObjectDivergence
         get(detail::ParameterTraits<ObjectDivergence>::tag) const;
     ADM_EXPORT JumpPosition
         get(detail::ParameterTraits<JumpPosition>::tag) const;
     ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT Importance get(detail::ParameterTraits<Importance>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Cartesian>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Position>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<SphericalPosition>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<CartesianPosition>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ScreenEdgeLock>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Diffuse>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ObjectDivergence>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<JumpPosition>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Importance>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Cartesian>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Diffuse>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT bool isDefault(
         detail::ParameterTraits<ObjectDivergence>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<JumpPosition>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Importance>::tag) const;
 
-    ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Cartesian>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Position>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<SphericalPosition>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<CartesianPosition>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ScreenEdgeLock>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Diffuse>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ChannelLock>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ObjectDivergence>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<JumpPosition>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Importance>::tag);
 
     AudioBlockFormatId id_;
-    boost::optional<Rtime> rtime_;
-    boost::optional<Duration> duration_;
     boost::optional<Cartesian> cartesian_;
     boost::optional<SphericalPosition> sphericalPosition_;
     boost::optional<CartesianPosition> cartesianPosition_;
     boost::optional<ScreenEdgeLock> screenEdgeLock_;
-    boost::optional<Diffuse> diffuse_;
     boost::optional<ChannelLock> channelLock_;
     boost::optional<ObjectDivergence> objectDivergence_;
     boost::optional<JumpPosition> jumpPosition_;
     boost::optional<ScreenRef> screenRef_;
-    boost::optional<Importance> importance_;
   };
 
   // ---- Implementation ---- //

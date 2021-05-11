@@ -4,7 +4,6 @@
 #include "boost/optional.hpp"
 
 namespace adm {
-
   namespace detail {
 
     /// make a class derived from the given base classes, combining the
@@ -49,7 +48,8 @@ namespace adm {
     };
 
     /// base class with set/get/has/isDefault/unset methods for an optional
-    /// parameter of type T. combine these together using CombineBase
+    /// parameter of type T with no default. combine these together using
+    /// CombineBase
     template <typename T>
     class OptionalBase {
      public:
@@ -57,22 +57,36 @@ namespace adm {
 
      protected:
       T get(typename detail::ParameterTraits<T>::tag) const {
-        return boost::get_optional_value_or(value_, DefaultParameter<T>::value);
+        return value_.get();
       }
       bool has(typename detail::ParameterTraits<T>::tag) const {
-        return true;
+        return value_ != boost::none;
       }
-      bool isDefault(
-          typename detail::ParameterTraits<T>::tag) const {
-        return value_ == boost::none;
+      bool isDefault(typename detail::ParameterTraits<T>::tag) const {
+        return false;
       }
       void unset(typename detail::ParameterTraits<T>::tag) {
         value_ = boost::none;
       }
 
-     private:
       boost::optional<T> value_;
     };
-  }  // namespace detail
 
+    /// base class with set/get/has/isDefault/unset methods for an optional
+    /// parameter of type T, which has a default provided by DefaultParameter.
+    /// combine these together using CombineBase
+    template <typename T>
+    class DefaultedBase : public OptionalBase<T> {
+     protected:
+      T get(typename detail::ParameterTraits<T>::tag) const {
+        return boost::get_optional_value_or(OptionalBase<T>::value_,
+                                            DefaultParameter<T>::value);
+      }
+      bool has(typename detail::ParameterTraits<T>::tag) const { return true; }
+      bool isDefault(typename detail::ParameterTraits<T>::tag) const {
+        return OptionalBase<T>::value_ == boost::none;
+      }
+    };
+
+  }  // namespace detail
 }  // namespace adm

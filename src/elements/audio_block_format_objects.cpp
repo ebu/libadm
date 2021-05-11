@@ -4,38 +4,32 @@ namespace adm {
 
   // ---- Defaults ---- //
   namespace {
-    const Rtime rtimeDefault{std::chrono::seconds(0)};
-    const Diffuse diffuseDefault{0.f};
     const ChannelLock channelLockDefault{};
     const ObjectDivergence objectDivergenceDefault{};
     const JumpPosition jumpPositionDefault{};
     const ScreenRef screenRefDefault{false};
-    const Importance importanceDefault{10};
   }  // namespace
 
   namespace detail {
-    template <>
-    ADM_EXPORT const Gain DefaultParameter<Gain>::value{Gain::fromLinear(1.0)};
+    template class DefaultedBase<Width>;
+    template class DefaultedBase<Height>;
+    template class DefaultedBase<Depth>;
+    template class DefaultedBase<Diffuse>;
+
     template <>
     ADM_EXPORT const Width DefaultParameter<Width>::value{0.f};
     template <>
     ADM_EXPORT const Height DefaultParameter<Height>::value{0.f};
     template <>
     ADM_EXPORT const Depth DefaultParameter<Depth>::value{0.f};
+    template <>
+    ADM_EXPORT const Diffuse DefaultParameter<Diffuse>::value{0.f};
   }  // namespace detail
 
   // ---- Getter ---- //
   AudioBlockFormatId AudioBlockFormatObjects::get(
       detail::ParameterTraits<AudioBlockFormatId>::tag) const {
     return id_;
-  }
-  Rtime AudioBlockFormatObjects::get(
-      detail::ParameterTraits<Rtime>::tag) const {
-    return boost::get_optional_value_or(rtime_, rtimeDefault);
-  }
-  Duration AudioBlockFormatObjects::get(
-      detail::ParameterTraits<Duration>::tag) const {
-    return duration_.get();
   }
   Cartesian AudioBlockFormatObjects::get(
       detail::ParameterTraits<Cartesian>::tag) const {
@@ -69,10 +63,6 @@ namespace adm {
       detail::ParameterTraits<ScreenEdgeLock>::tag) const {
     return screenEdgeLock_.get();
   }
-  Diffuse AudioBlockFormatObjects::get(
-      detail::ParameterTraits<Diffuse>::tag) const {
-    return boost::get_optional_value_or(diffuse_, diffuseDefault);
-  }
   ChannelLock AudioBlockFormatObjects::get(
       detail::ParameterTraits<ChannelLock>::tag) const {
     return boost::get_optional_value_or(channelLock_, channelLockDefault);
@@ -90,22 +80,11 @@ namespace adm {
       detail::ParameterTraits<ScreenRef>::tag) const {
     return boost::get_optional_value_or(screenRef_, screenRefDefault);
   }
-  Importance AudioBlockFormatObjects::get(
-      detail::ParameterTraits<Importance>::tag) const {
-    return boost::get_optional_value_or(importance_, importanceDefault);
-  }
 
   // ---- Has ---- //
   bool AudioBlockFormatObjects::has(
       detail::ParameterTraits<AudioBlockFormatId>::tag) const {
     return true;
-  }
-  bool AudioBlockFormatObjects::has(detail::ParameterTraits<Rtime>::tag) const {
-    return true;
-  }
-  bool AudioBlockFormatObjects::has(
-      detail::ParameterTraits<Duration>::tag) const {
-    return duration_ != boost::none;
   }
   bool AudioBlockFormatObjects::has(
       detail::ParameterTraits<Cartesian>::tag) const {
@@ -129,10 +108,6 @@ namespace adm {
     return screenEdgeLock_ != boost::none;
   }
   bool AudioBlockFormatObjects::has(
-      detail::ParameterTraits<Diffuse>::tag) const {
-    return true;
-  }
-  bool AudioBlockFormatObjects::has(
       detail::ParameterTraits<ChannelLock>::tag) const {
     return true;
   }
@@ -148,23 +123,11 @@ namespace adm {
       detail::ParameterTraits<ScreenRef>::tag) const {
     return true;
   }
-  bool AudioBlockFormatObjects::has(
-      detail::ParameterTraits<Importance>::tag) const {
-    return true;
-  }
 
   // ---- isDefault ---- //
   bool AudioBlockFormatObjects::isDefault(
-      detail::ParameterTraits<Rtime>::tag) const {
-    return rtime_ == boost::none;
-  }
-  bool AudioBlockFormatObjects::isDefault(
       detail::ParameterTraits<Cartesian>::tag) const {
     return cartesian_ == boost::none;
-  }
-  bool AudioBlockFormatObjects::isDefault(
-      detail::ParameterTraits<Diffuse>::tag) const {
-    return diffuse_ == boost::none;
   }
   bool AudioBlockFormatObjects::isDefault(
       detail::ParameterTraits<ChannelLock>::tag) const {
@@ -182,15 +145,9 @@ namespace adm {
       detail::ParameterTraits<ScreenRef>::tag) const {
     return screenRef_ == boost::none;
   }
-  bool AudioBlockFormatObjects::isDefault(
-      detail::ParameterTraits<Importance>::tag) const {
-    return importance_ == boost::none;
-  }
 
   // ---- Setter ---- //
   void AudioBlockFormatObjects::set(AudioBlockFormatId id) { id_ = id; }
-  void AudioBlockFormatObjects::set(Rtime rtime) { rtime_ = rtime; }
-  void AudioBlockFormatObjects::set(Duration duration) { duration_ = duration; }
   void AudioBlockFormatObjects::set(Cartesian cartesian) {
     cartesian_ = cartesian;
 
@@ -224,7 +181,6 @@ namespace adm {
   void AudioBlockFormatObjects::set(ScreenEdgeLock screenEdgeLock) {
     screenEdgeLock_ = screenEdgeLock;
   }
-  void AudioBlockFormatObjects::set(Diffuse diffuse) { diffuse_ = diffuse; }
   void AudioBlockFormatObjects::set(ChannelLock channelLock) {
     channelLock_ = channelLock;
   }
@@ -237,17 +193,8 @@ namespace adm {
   void AudioBlockFormatObjects::set(ScreenRef screenRef) {
     screenRef_ = screenRef;
   }
-  void AudioBlockFormatObjects::set(Importance importance) {
-    importance_ = importance;
-  }
 
   // ---- Unsetter ---- //
-  void AudioBlockFormatObjects::unset(detail::ParameterTraits<Rtime>::tag) {
-    rtime_ = boost::none;
-  }
-  void AudioBlockFormatObjects::unset(detail::ParameterTraits<Duration>::tag) {
-    duration_ = boost::none;
-  }
   void AudioBlockFormatObjects::unset(detail::ParameterTraits<Cartesian>::tag) {
     cartesian_ = boost::none;
   }
@@ -268,9 +215,6 @@ namespace adm {
       detail::ParameterTraits<ScreenEdgeLock>::tag) {
     screenEdgeLock_ = boost::none;
   }
-  void AudioBlockFormatObjects::unset(detail::ParameterTraits<Diffuse>::tag) {
-    diffuse_ = boost::none;
-  }
   void AudioBlockFormatObjects::unset(
       detail::ParameterTraits<ChannelLock>::tag) {
     channelLock_ = boost::none;
@@ -285,10 +229,6 @@ namespace adm {
   }
   void AudioBlockFormatObjects::unset(detail::ParameterTraits<ScreenRef>::tag) {
     screenRef_ = boost::none;
-  }
-  void AudioBlockFormatObjects::unset(
-      detail::ParameterTraits<Importance>::tag) {
-    importance_ = boost::none;
   }
 
 }  // namespace adm
