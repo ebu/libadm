@@ -3,6 +3,7 @@
 #include <sstream>
 #include "adm/document.hpp"
 #include "adm/elements/audio_object.hpp"
+#include "adm/elements/position_offset.hpp"
 #include "adm/parse.hpp"
 #include "adm/errors.hpp"
 
@@ -102,4 +103,33 @@ TEST_CASE("xml_parser/audio_object_interaction") {
   REQUIRE(position_interaction_1.has<ZInteractionMax>() == true);
   REQUIRE(position_interaction_1.get<ZInteractionMin>() == Approx(-1.f));
   REQUIRE(position_interaction_1.get<ZInteractionMax>() == Approx(1.f));
+}
+
+TEST_CASE("xml_parser/audio_object_position_offset") {
+  using namespace adm;
+  auto document = parseXml("xml_parser/audio_object_position_offset.xml");
+
+  {
+    // Spherical position offset
+    auto audioObject = document->lookup(parseAudioObjectId("AO_1001"));
+    REQUIRE(audioObject->has<SphericalPositionOffset>() == true);
+    REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
+
+    auto positionOffset = audioObject->get<SphericalPositionOffset>();
+    REQUIRE(positionOffset.get<Azimuth>() == Approx(30.0f));
+    REQUIRE(positionOffset.get<Elevation>() == Approx(15.0f));
+    REQUIRE(positionOffset.get<Distance>() == Approx(0.9f));
+  }
+
+  {
+    // Cartesian position offset
+    auto audioObject = document->lookup(parseAudioObjectId("AO_1002"));
+    REQUIRE(audioObject->has<SphericalPositionOffset>() == false);
+    REQUIRE(audioObject->has<CartesianPositionOffset>() == true);
+
+    auto positionOffset = audioObject->get<CartesianPositionOffset>();
+    REQUIRE(positionOffset.get<X>() == Approx(-0.2f));
+    REQUIRE(positionOffset.get<Y>() == Approx(0.1f));
+    REQUIRE(positionOffset.get<Z>() == Approx(-0.5f));
+  }
 }

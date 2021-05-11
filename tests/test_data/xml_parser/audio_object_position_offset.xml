@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioObject audioObjectID="AO_1001" audioObjectName="MyObject">
+          <positionOffset coordinate="azimuth">30</positionOffset>
+          <positionOffset coordinate="elevation">15</positionOffset>
+          <positionOffset coordinate="distance">0.9</positionOffset>
+        </audioObject>
+        <audioObject audioObjectID="AO_1002" audioObjectName="MyObject2">
+          <positionOffset coordinate="X">-0.2</positionOffset>
+          <positionOffset coordinate="Y">0.1</positionOffset>
+          <positionOffset coordinate="Z">-0.5</positionOffset>
+        </audioObject>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
