@@ -29,13 +29,6 @@ namespace adm {
   using AudioContentLanguage =
       detail::NamedType<std::string, AudioContentLanguageTag>;
 
-  template <typename ElementType>
-  using ElementTypeConstRange =
-      boost::iterator_range<typename std::vector<ElementType>::const_iterator>;
-  template <typename ElementType>
-  using ElementTypeRange =
-      boost::iterator_range<typename std::vector<ElementType>::iterator>;
-
   /// @brief Tag for AudioContent
   struct AudioContentTag {};
   /**

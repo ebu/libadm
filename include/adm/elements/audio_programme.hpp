@@ -32,13 +32,6 @@ namespace adm {
   using AudioProgrammeLanguage =
       detail::NamedType<std::string, AudioProgrammeLanguageTag>;
 
-  template <typename ElementType>
-  using ElementTypeConstRange =
-      boost::iterator_range<typename std::vector<ElementType>::const_iterator>;
-  template <typename ElementType>
-  using ElementTypeRange =
-      boost::iterator_range<typename std::vector<ElementType>::iterator>;
-
   /// @brief Tag for NamedType ::MaxDuckingDepth
   struct MaxDuckingDepthTag {};
   /**

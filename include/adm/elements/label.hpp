@@ -8,6 +8,24 @@
 
 namespace adm {
 
+  /**
+   * Helper to deduce the correct `IteratorRange` type for
+   * `const_iterators` to the requested `LabelType` type
+   * @headerfile label.hpp <label.hpp>
+   */
+  template <typename LabelType>
+  using ElementTypeConstRange =
+      boost::iterator_range<typename std::vector<LabelType>::const_iterator>;
+
+  /**
+   * Helper  to deduce the correct `IteratorRange` type for
+   * `iterators` to the requested `LabelType` type
+   * @headerfile label.hpp <label.hpp>
+   */
+  template <typename LabelType>
+  using ElementTypeRange =
+      boost::iterator_range<typename std::vector<LabelType>::iterator>;
+
   /// @brief Tag for LabelValue
   struct LabelValueTag {};
   /// @brief NamedType for the LabelValue attribute
@@ -85,8 +103,7 @@ namespace adm {
 
    private:
     LabelValue get(detail::ParameterTraits<LabelValue>::tag) const;
-    LabelLanguage
-        get(detail::ParameterTraits<LabelLanguage>::tag) const;
+    LabelLanguage get(detail::ParameterTraits<LabelLanguage>::tag) const;
 
     bool has(detail::ParameterTraits<LabelValue>::tag) const;
     bool has(detail::ParameterTraits<LabelLanguage>::tag) const;

@@ -34,13 +34,6 @@ namespace adm {
   /// @brief NamedType for the disableDucking attribute
   using DisableDucking = detail::NamedType<bool, DisableDuckingTag>;
 
-  template <typename ElementType>
-  using ElementTypeConstRange =
-      boost::iterator_range<typename std::vector<ElementType>::const_iterator>;
-  template <typename ElementType>
-  using ElementTypeRange =
-      boost::iterator_range<typename std::vector<ElementType>::iterator>;
-
   /// @brief Tag for AudioObject
   struct AudioObjectTag {};
   /**
