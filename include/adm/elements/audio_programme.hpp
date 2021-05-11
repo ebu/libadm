@@ -183,7 +183,7 @@ namespace adm {
      * argument.
      */
     template <typename ElementType>
-    ElementTypeConstRange<ElementType> getElements() const;
+    LabelConstRange<ElementType> getElements() const;
 
     /**
      * @brief ElementType elements getter template
@@ -192,7 +192,7 @@ namespace adm {
      * argument.
      */
     template <typename ElementType>
-    ElementTypeRange<ElementType> getElements();
+    LabelRange<ElementType> getElements();
 
     /**
      * @brief remove all AudioProgrammeLabel instances
@@ -266,10 +266,10 @@ namespace adm {
     ADM_EXPORT void disconnectReferences();
 
     ADM_EXPORT
-    ElementTypeConstRange<AudioProgrammeLabel> get(
+    LabelConstRange<AudioProgrammeLabel> get(
         detail::ParameterTraits<AudioProgrammeLabel>::tag) const;
     ADM_EXPORT
-    ElementTypeRange<AudioProgrammeLabel> get(
+    LabelRange<AudioProgrammeLabel> get(
         detail::ParameterTraits<AudioProgrammeLabel>::tag);
 
     void setParent(std::weak_ptr<Document> document);
@@ -347,13 +347,13 @@ namespace adm {
   }
 
   template <typename ElementType>
-  ElementTypeConstRange<ElementType> AudioProgramme::getElements() const {
+  LabelConstRange<ElementType> AudioProgramme::getElements() const {
     typedef typename detail::ParameterTraits<ElementType>::tag Tag;
     return get(Tag());
   }
 
   template <typename ElementType>
-  ElementTypeRange<ElementType> AudioProgramme::getElements() {
+  LabelRange<ElementType> AudioProgramme::getElements() {
     typedef typename detail::ParameterTraits<ElementType>::tag Tag;
     return get(Tag());
   }

@@ -14,7 +14,7 @@ namespace adm {
    * @headerfile label.hpp <label.hpp>
    */
   template <typename LabelType>
-  using ElementTypeConstRange =
+  using LabelConstRange =
       boost::iterator_range<typename std::vector<LabelType>::const_iterator>;
 
   /**
@@ -23,7 +23,7 @@ namespace adm {
    * @headerfile label.hpp <label.hpp>
    */
   template <typename LabelType>
-  using ElementTypeRange =
+  using LabelRange =
       boost::iterator_range<typename std::vector<LabelType>::iterator>;
 
   /// @brief Tag for LabelValue

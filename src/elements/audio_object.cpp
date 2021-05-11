@@ -312,26 +312,26 @@ namespace adm {
     audioComplementaryObjectGroupLabels_.clear();
   }
 
-  ElementTypeConstRange<AudioObjectLabel> AudioObject::get(
+  LabelConstRange<AudioObjectLabel> AudioObject::get(
       detail::ParameterTraits<AudioObjectLabel>::tag) const {
     return boost::make_iterator_range(audioObjectLabels_.begin(),
                                       audioObjectLabels_.end());
   }
 
-  ElementTypeRange<AudioObjectLabel> AudioObject::get(
+  LabelRange<AudioObjectLabel> AudioObject::get(
       detail::ParameterTraits<AudioObjectLabel>::tag) {
     return boost::make_iterator_range(audioObjectLabels_.begin(),
                                       audioObjectLabels_.end());
   }
 
-  ElementTypeConstRange<AudioComplementaryObjectGroupLabel> AudioObject::get(
+  LabelConstRange<AudioComplementaryObjectGroupLabel> AudioObject::get(
       detail::ParameterTraits<AudioComplementaryObjectGroupLabel>::tag) const {
     return boost::make_iterator_range(
         audioComplementaryObjectGroupLabels_.begin(),
         audioComplementaryObjectGroupLabels_.end());
   }
 
-  ElementTypeRange<AudioComplementaryObjectGroupLabel> AudioObject::get(
+  LabelRange<AudioComplementaryObjectGroupLabel> AudioObject::get(
       detail::ParameterTraits<AudioComplementaryObjectGroupLabel>::tag) {
     return boost::make_iterator_range(
         audioComplementaryObjectGroupLabels_.begin(),

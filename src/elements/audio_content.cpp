@@ -206,13 +206,13 @@ namespace adm {
 
   void AudioContent::clearAudioContentLabels() { audioContentLabels_.clear(); }
 
-  ElementTypeConstRange<AudioContentLabel> AudioContent::get(
+  LabelConstRange<AudioContentLabel> AudioContent::get(
       detail::ParameterTraits<AudioContentLabel>::tag) const {
     return boost::make_iterator_range(audioContentLabels_.begin(),
                                       audioContentLabels_.end());
   }
 
-  ElementTypeRange<AudioContentLabel> AudioContent::get(
+  LabelRange<AudioContentLabel> AudioContent::get(
       detail::ParameterTraits<AudioContentLabel>::tag) {
     return boost::make_iterator_range(audioContentLabels_.begin(),
                                       audioContentLabels_.end());
