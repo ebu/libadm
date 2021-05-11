@@ -4,6 +4,7 @@
 
 ### Added
 - Added support for Cartesian speaker positions.
+- Added support for Label elements; AudioObjectLabel, AudioComplementaryObjectGroupLabel, AudioContentLabel, AudioProgrammeLabel
 
 ### Changed
 - SpeakerPosition is now a boost::variant that can be either a CartesianSpeakerPosition or a SphericalSpeakerPosition
