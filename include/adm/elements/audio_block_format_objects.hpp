@@ -45,15 +45,6 @@ namespace adm {
   struct AudioBlockFormatObjectsTag {};
 
   namespace detail {
-    template <>
-    const Width DefaultParameter<Width>::value;
-    template <>
-    const Height DefaultParameter<Height>::value;
-    template <>
-    const Depth DefaultParameter<Depth>::value;
-    template <>
-    const Diffuse DefaultParameter<Diffuse>::value;
-
     extern template class ADM_EXPORT RequiredBase<AudioBlockFormatId>;
     extern template class ADM_EXPORT DefaultedBase<Width>;
     extern template class ADM_EXPORT DefaultedBase<Height>;

@@ -118,11 +118,11 @@ namespace adm {
     template <typename B>
     class CombineBase<B> : public B {};
 
-    /// holder for the default value of T parameters
+    /// get the default value of T parameters
     template <typename T>
-    struct DefaultParameter {
-      ADM_EXPORT static const T value;
-    };
+    T getDefault() {
+      return T{};
+    }
 
     /// base class with set/get/has methods for a required parameter of type T
     /// combine these together using CombineBase
@@ -176,7 +176,7 @@ namespace adm {
      protected:
       T get(typename detail::ParameterTraits<T>::tag) const {
         return boost::get_optional_value_or(OptionalBase<T>::value_,
-                                            DefaultParameter<T>::value);
+                                            getDefault<T>());
       }
       bool has(typename detail::ParameterTraits<T>::tag) const { return true; }
       bool isDefault(typename detail::ParameterTraits<T>::tag) const {

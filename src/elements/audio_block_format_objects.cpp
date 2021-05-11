@@ -11,15 +11,6 @@ namespace adm {
   }  // namespace
 
   namespace detail {
-    template <>
-    ADM_EXPORT const Width DefaultParameter<Width>::value{0.f};
-    template <>
-    ADM_EXPORT const Height DefaultParameter<Height>::value{0.f};
-    template <>
-    ADM_EXPORT const Depth DefaultParameter<Depth>::value{0.f};
-    template <>
-    ADM_EXPORT const Diffuse DefaultParameter<Diffuse>::value{0.f};
-
     template class RequiredBase<AudioBlockFormatId>;
     template class DefaultedBase<Width>;
     template class DefaultedBase<Height>;
