@@ -146,3 +146,45 @@ TEST_CASE("audio_object_complementary") {
   audioObject->clearComplementaryObjects();
   REQUIRE(audioObject->getComplementaryObjects().size() == 0);
 }
+
+TEST_CASE("audio_object_position_offset") {
+  using namespace adm;
+
+  {
+    // Cartesian offsetPosition
+    auto offsetPosition = CartesianOffsetPosition(X(0.0f), Y(-1.0f), Z(0.5f));
+    auto audioObject =
+        AudioObject::create(AudioObjectName("MyAudioObject"), offsetPosition);
+
+    REQUIRE(audioObject->has<CartesianPositionOffset>() == true);
+    REQUIRE(audioObject->has<SphericalPositionOffset>() == false);
+
+    REQUIRE(audioObject->get<CartesianPositionOffset>()->get<X>() == 0.0f);
+    REQUIRE(audioObject->get<CartesianPositionOffset>()->get<Y>() == -1.0f);
+    REQUIRE(audioObject->get<CartesianPositionOffset>()->get<Z>() == 0.5f);
+
+    audioObject.unset<CartesianPositionOffset>();
+    REQUIRE(audioObject->has<CartesianPosition>() == false);
+  }
+
+  {
+    // Spherical offsetPosition
+    auto offsetPosition = SphericalOffsetPosition(
+        Azimuth(0.0f), Elevation(-90.0f), Distance(0.5f));
+    auto audioObject =
+        AudioObject::create(AudioObjectName("MyAudioObject"), offsetPosition);
+
+    REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
+    REQUIRE(audioObject->has<SphericalPositionOffset>() == true);
+
+    REQUIRE(audioObject->get<SphericalPositionOffset>()->get<Azimuth>() ==
+            0.0f);
+    REQUIRE(audioObject->get<SphericalPositionOffset>()->get<Elevation>() ==
+            -90.0f);
+    REQUIRE(audioObject->get<SphericalPositionOffset>()->get<Distance>() ==
+            0.5f);
+
+    audioObject.unset<SphericalPositionOffset>();
+    REQUIRE(audioObject->has<SphericalPositionOffset>() == false);
+  }
+}
