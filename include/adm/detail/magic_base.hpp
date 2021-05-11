@@ -13,7 +13,7 @@ namespace adm {
     // We define some classes below like RequiredBase and DefaultedBase which
     // define these methods automatically for given parameter types. To use
     // these, they need to be combined together in such a way that all the
-    // methods for all the parameters we want to define are available on one
+    // methods for all the parameters we want to define are available in one
     // overload set.
     //
     // This is done using multiple inheritance: given a set of *Base classes,
@@ -30,10 +30,10 @@ namespace adm {
     // used to combine two *Base classes together, these flags are or-ed in the
     // resulting class, and the correct specialisations of the Combine* classes
     // are selected by and-ing the flags (we only need the using declarations
-    // of both bases have the methods defined).
+    // if both bases have the methods defined).
     //
-    // To enable all combinations without multiple inheritance, these are
-    // chained, with the actual inheritance happens in CombineRaw. When
+    // To enable all combinations without making the dreaded diamond, these are
+    // chained, with the actual inheritance happening in CombineRaw. When
     // combining A and B we have an inheritance hierarchy like:
     //
     // Combine<A, B>
