@@ -143,6 +143,14 @@ namespace adm {
     return unset(Tag());
   }
 
+  template <class TagType>
+  void Label<TagType>::print(std::ostream& os) const {
+      os << "value=" << get<LabelValue>().get();
+      if(has<LabelLanguage>()) {
+          os << ", lang=" << get<LabelLanguage>();
+      }
+  }
+
   /// ---- Getter ---- //
   template <class TagType>
   LabelLanguage Label<TagType>::get(
