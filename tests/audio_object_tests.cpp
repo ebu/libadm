@@ -171,7 +171,7 @@ TEST_CASE("audio_object_position_offset") {
   {
     // Spherical offsetPosition
     auto offsetPosition = SphericalPositionOffset(
-        Azimuth(0.0f), Elevation(-90.0f), Distance(0.5f));
+        Azimuth(0.0f), Elevation(-90.0f), DistanceOffset(0.5f));
     auto audioObject =
         AudioObject::create(AudioObjectName("MyAudioObject"), offsetPosition);
 
@@ -181,7 +181,7 @@ TEST_CASE("audio_object_position_offset") {
     REQUIRE(audioObject->get<SphericalPositionOffset>().get<Azimuth>() == 0.0f);
     REQUIRE(audioObject->get<SphericalPositionOffset>().get<Elevation>() ==
             -90.0f);
-    REQUIRE(audioObject->get<SphericalPositionOffset>().get<Distance>() ==
+    REQUIRE(audioObject->get<SphericalPositionOffset>().get<DistanceOffset>() ==
             0.5f);
 
     audioObject->unset<SphericalPositionOffset>();
