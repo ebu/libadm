@@ -110,7 +110,6 @@ there are five different ``AudioBlockFormat`` classes.
 .. doxygentypedef:: adm::ScreenEdge
 .. doxygentypedef:: adm::HorizontalEdge
 .. doxygentypedef:: adm::VerticalEdge
-.. doxygentypedef:: adm::Gain
 .. doxygentypedef:: adm::Diffuse
 .. doxygenclass:: adm::ChannelLock
 .. doxygentypedef:: adm::ChannelLockFlag
@@ -134,3 +133,4 @@ Shared Elements
 .. doxygenclass:: adm::AudioBlockFormatId
 .. doxygentypedef:: adm::Rtime
 .. doxygentypedef:: adm::Duration
+.. doxygenclass:: adm::Gain
