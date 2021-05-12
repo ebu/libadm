@@ -5,7 +5,7 @@ Utilities
 
 .. doxygenstruct:: adm::SimpleObjectHolder
 
-.. doxygenfunction:: adm::createSimpleObject()
+.. doxygenfunction:: adm::createSimpleObject
 
 .. doxygenfunction:: adm::updateBlockFormatDurations(std::shared_ptr<Document>)
 
