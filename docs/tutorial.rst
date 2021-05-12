@@ -415,7 +415,7 @@ Setting  block format durations
 -------------------------------
 
 Multiple ``AudioBlockFormat`` s in an :cpp:class:`adm::AudioChannelFormat`
-should all have an :cpp:class:`adm::Rtime` and a :cpp:class:`adm::Duration`.
+should all have an :cpp:type:`adm::Rtime` and a :cpp:type:`adm::Duration`.
 
 In practice, however, it can be very hard to determine the duration of an
 ``adm::AudioBlockFormat`` during its creation or setup. This is due to the fact
