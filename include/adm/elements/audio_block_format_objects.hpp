@@ -66,7 +66,7 @@ namespace adm {
    * @warning This class has unsupported parameters
    *   - ZoneExclusion
    */
-  class AudioBlockFormatObjects : public detail::AudioBlockFormatObjectsBase {
+  class AudioBlockFormatObjects : private detail::AudioBlockFormatObjectsBase {
    public:
     typedef AudioBlockFormatObjectsTag tag;
     /// Type that holds the id for this element;

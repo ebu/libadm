@@ -56,45 +56,43 @@ namespace adm {
     /// a subclass of Base, with using declarations for set, get and has in A
     /// and B if defined_in_both
     template <typename A, typename B, bool defined_in_both, typename Base>
-    class CombineGetSetHas;
+    struct CombineGetSetHas;
 
     template <typename A, typename B, typename Base>
-    class CombineGetSetHas<A, B, false, Base> : public Base {};
+    struct CombineGetSetHas<A, B, false, Base> : public Base {};
 
     template <typename A, typename B, typename Base>
-    class CombineGetSetHas<A, B, true, Base> : public Base {
-     public:
+    struct CombineGetSetHas<A, B, true, Base> : public Base {
+      using A::get;
+      using B::get;
+
       using A::set;
       using B::set;
 
-     protected:
-      using A::get;
       using A::has;
-
-      using B::get;
       using B::has;
     };
 
     /// a subclass of Base, with using declarations for isDefault and unset in A
     /// and B if defined_in_both
     template <typename A, typename B, bool defined_in_both, typename Base>
-    class CombineIsDefaultUnset;
+    struct CombineIsDefaultUnset;
 
     template <typename A, typename B, typename Base>
-    class CombineIsDefaultUnset<A, B, false, Base> : public Base {};
+    struct CombineIsDefaultUnset<A, B, false, Base> : public Base {};
 
     template <typename A, typename B, typename Base>
-    class CombineIsDefaultUnset<A, B, true, Base> : public Base {
-     protected:
+    struct CombineIsDefaultUnset<A, B, true, Base> : public Base {
       using A::isDefault;
-      using A::unset;
       using B::isDefault;
+
+      using A::unset;
       using B::unset;
     };
 
     /// subclass of A and B
     template <typename A, typename B>
-    class CombineRaw : public A, public B {};
+    struct CombineRaw : public A, public B {};
 
     /// a subclass of A and B, with methods according to their Flags
     template <typename A, typename B>
@@ -113,10 +111,10 @@ namespace adm {
     /// make a class derived from the given base classes, combining the
     /// get,set,has,isDefault and unset overloads
     template <typename B, typename... BTail>
-    class CombineBase : public Combine<B, CombineBase<BTail...>> {};
+    struct CombineBase : public Combine<B, CombineBase<BTail...>> {};
 
     template <typename B>
-    class CombineBase<B> : public B {};
+    struct CombineBase<B> : public B {};
 
     /// get the default value of T parameters
     template <typename T>
@@ -131,12 +129,11 @@ namespace adm {
      public:
       static constexpr bool has_get_set_has = true;
 
-      void set(T value) { value_ = value; }
-
-     protected:
       T get(typename detail::ParameterTraits<T>::tag) const { return value_; }
+      void set(T value) { value_ = value; }
       bool has(typename detail::ParameterTraits<T>::tag) const { return true; }
 
+     private:
       T value_;
     };
 
@@ -149,12 +146,10 @@ namespace adm {
       static constexpr bool has_get_set_has = true;
       static constexpr bool has_isDefault_unset = true;
 
-      void set(T value) { value_ = value; }
-
-     protected:
       T get(typename detail::ParameterTraits<T>::tag) const {
         return value_.get();
       }
+      void set(T value) { value_ = value; }
       bool has(typename detail::ParameterTraits<T>::tag) const {
         return value_ != boost::none;
       }
@@ -165,6 +160,7 @@ namespace adm {
         value_ = boost::none;
       }
 
+     private:
       boost::optional<T> value_;
     };
 
@@ -172,16 +168,25 @@ namespace adm {
     /// parameter of type T, which has a default provided by DefaultParameter.
     /// combine these together using CombineBase
     template <typename T>
-    class DefaultedBase : public OptionalBase<T> {
-     protected:
+    class DefaultedBase : public Flags {
+     public:
+      static constexpr bool has_get_set_has = true;
+      static constexpr bool has_isDefault_unset = true;
+
       T get(typename detail::ParameterTraits<T>::tag) const {
-        return boost::get_optional_value_or(OptionalBase<T>::value_,
-                                            getDefault<T>());
+        return boost::get_optional_value_or(value_, getDefault<T>());
       }
+      void set(T value) { value_ = value; }
       bool has(typename detail::ParameterTraits<T>::tag) const { return true; }
       bool isDefault(typename detail::ParameterTraits<T>::tag) const {
-        return OptionalBase<T>::value_ == boost::none;
+        return value_ == boost::none;
       }
+      void unset(typename detail::ParameterTraits<T>::tag) {
+        value_ = boost::none;
+      }
+
+     private:
+      boost::optional<T> value_;
     };
 
   }  // namespace detail
