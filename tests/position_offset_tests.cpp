@@ -9,15 +9,15 @@ TEST_CASE("position_offset") {
     SphericalPositionOffset offset;
     REQUIRE(offset.has<Azimuth>() == true);
     REQUIRE(offset.has<Elevation>() == true);
-    REQUIRE(offset.has<Distance>() == true);
+    REQUIRE(offset.has<DistanceOffset>() == true);
 
     REQUIRE(offset.isDefault<Azimuth>() == false);
     REQUIRE(offset.isDefault<Elevation>() == false);
-    REQUIRE(offset.isDefault<Distance>() == false);
+    REQUIRE(offset.isDefault<DistanceOffset>() == false);
 
     REQUIRE(offset.get<Azimuth>() == Approx(0.f));
     REQUIRE(offset.get<Elevation>() == Approx(0.f));
-    REQUIRE(offset.get<Distance>() == Approx(0.f));
+    REQUIRE(offset.get<DistanceOffset>() == Approx(0.f));
   }
   {
     CartesianPositionOffset offset;
@@ -45,19 +45,19 @@ TEST_CASE("position_offset") {
 
   // Spherical position constructor
   {
-    auto offset =
-        SphericalPositionOffset(Azimuth(30.f), Elevation(45.f), Distance(.9f));
+    auto offset = SphericalPositionOffset(Azimuth(30.f), Elevation(45.f),
+                                          DistanceOffset(.9f));
 
     REQUIRE(offset.get<Azimuth>() == Approx(30.f));
     REQUIRE(offset.get<Elevation>() == Approx(45.f));
-    REQUIRE(offset.get<Distance>() == Approx(.9f));
+    REQUIRE(offset.get<DistanceOffset>() == Approx(.9f));
   }
 
   // PositionOffset variant
   {
     PositionOffset cartesianPositionOffset(
-        CartesianPositionOffset(X(1.f), Y(-1.f)));
-    PositionOffset sphericalPositionOffset(
-        SphericalPositionOffset(Azimuth(30.f), Elevation(45.f)));
+        CartesianPositionOffset(X(1.f), Y(-1.f), Z(0.0f)));
+    PositionOffset sphericalPositionOffset(SphericalPositionOffset(
+        Azimuth(30.f), Elevation(45.f), DistanceOffset(-0.2)));
   }
 }
