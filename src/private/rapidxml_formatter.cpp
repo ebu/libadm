@@ -516,10 +516,10 @@ namespace adm {
         auto sphericalPosition =
             boost::get<SphericalPositionOffset>(positionOffset);
         parentNode.addElement(
-            sphericalPosition.get<Azimuth>(), name,
+            sphericalPosition.get<AzimuthOffset>(), name,
             detail::formatMultiElementAttribute("coordinate", "azimuth"));
         parentNode.addElement(
-            sphericalPosition.get<Elevation>(), name,
+            sphericalPosition.get<ElevationOffset>(), name,
             detail::formatMultiElementAttribute("coordinate", "elevation"));
         parentNode.addElement(
             sphericalPosition.get<DistanceOffset>(), name,
@@ -528,13 +528,13 @@ namespace adm {
         auto cartesianPosition =
             boost::get<CartesianPositionOffset>(positionOffset);
         parentNode.addElement(
-            cartesianPosition.get<X>(), name,
+            cartesianPosition.get<XOffset>(), name,
             detail::formatMultiElementAttribute("coordinate", "X"));
         parentNode.addElement(
-            cartesianPosition.get<Y>(), name,
+            cartesianPosition.get<YOffset>(), name,
             detail::formatMultiElementAttribute("coordinate", "Y"));
         parentNode.addElement(
-            cartesianPosition.get<Z>(), name,
+            cartesianPosition.get<ZOffset>(), name,
             detail::formatMultiElementAttribute("coordinate", "Z"));
       }
     }

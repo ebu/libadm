@@ -692,9 +692,9 @@ namespace adm {
         auto coordinate =
             parseAttribute<SphericalCoordinateValue>(element, "coordinate");
         if (coordinate == "azimuth") {
-          setValue<Azimuth>(element, position);
+          setValue<AzimuthOffset>(element, position);
         } else if (coordinate == "elevation") {
-          setValue<Elevation>(element, position);
+          setValue<ElevationOffset>(element, position);
         } else if (coordinate == "distance") {
           setValue<DistanceOffset>(element, position);
         }
@@ -709,11 +709,11 @@ namespace adm {
         auto coordinate =
             parseAttribute<CartesianCoordinateValue>(element, "coordinate");
         if (coordinate == "X") {
-          setValue<X>(element, position);
+          setValue<XOffset>(element, position);
         } else if (coordinate == "Y") {
-          setValue<Y>(element, position);
+          setValue<YOffset>(element, position);
         } else if (coordinate == "Z") {
-          setValue<Z>(element, position);
+          setValue<ZOffset>(element, position);
         }
       }
       return position;

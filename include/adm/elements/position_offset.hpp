@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iosfwd>
 #include "adm/elements/position_types.hpp"
+#include "adm/elements/position_offset_types.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/type_traits.hpp"
 #include "adm/export.h"
@@ -22,7 +23,8 @@ namespace adm {
 
     /// @brief Constructor without optional parameters
     ADM_EXPORT SphericalPositionOffset(
-        Azimuth azimuth = Azimuth(0.f), Elevation elevation = Elevation(0.f),
+        AzimuthOffset azimuth = AzimuthOffset(0.f),
+        ElevationOffset elevation = ElevationOffset(0.f),
         DistanceOffset distance = DistanceOffset(0.f));
 
     /**
@@ -63,9 +65,9 @@ namespace adm {
     bool isDefault() const;
 
     /// @brief Azimuth setter
-    ADM_EXPORT void set(Azimuth azimuth);
+    ADM_EXPORT void set(AzimuthOffset azimuth);
     /// @brief Elevation setter
-    ADM_EXPORT void set(Elevation elevation);
+    ADM_EXPORT void set(ElevationOffset elevation);
     /// @brief DistanceOffset setter
     ADM_EXPORT void set(DistanceOffset distance);
 
@@ -85,13 +87,15 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    ADM_EXPORT Azimuth get(detail::ParameterTraits<Azimuth>::tag) const;
-    ADM_EXPORT Elevation get(detail::ParameterTraits<Elevation>::tag) const;
+    ADM_EXPORT AzimuthOffset
+        get(detail::ParameterTraits<AzimuthOffset>::tag) const;
+    ADM_EXPORT ElevationOffset
+        get(detail::ParameterTraits<ElevationOffset>::tag) const;
     ADM_EXPORT DistanceOffset
         get(detail::ParameterTraits<DistanceOffset>::tag) const;
 
-    ADM_EXPORT bool has(detail::ParameterTraits<Azimuth>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Elevation>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<AzimuthOffset>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ElevationOffset>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<DistanceOffset>::tag) const;
 
     template <typename Tag>
@@ -99,8 +103,8 @@ namespace adm {
       return false;
     }
 
-    Azimuth azimuth_;
-    Elevation elevation_;
+    AzimuthOffset azimuth_;
+    ElevationOffset elevation_;
     DistanceOffset distance_;
   };
 
@@ -112,8 +116,9 @@ namespace adm {
     typedef CartesianPositionOffsetTag tag;
 
     /// @brief Constructor without optional parameters
-    ADM_EXPORT CartesianPositionOffset(X x = X(0.f), Y y = Y(0.f),
-                                       Z z = Z(0.f));
+    ADM_EXPORT CartesianPositionOffset(XOffset x = XOffset(0.f),
+                                       YOffset y = YOffset(0.f),
+                                       ZOffset z = ZOffset(0.f));
 
     /**
      * @brief Constructor template
@@ -152,12 +157,12 @@ namespace adm {
     template <typename Parameter>
     bool isDefault() const;
 
-    /// @brief X setter
-    ADM_EXPORT void set(X x);
-    /// @brief Y setter
-    ADM_EXPORT void set(Y y);
-    /// @brief Z setter
-    ADM_EXPORT void set(Z z);
+    /// @brief XOffset setter
+    ADM_EXPORT void set(XOffset x);
+    /// @brief YOffset setter
+    ADM_EXPORT void set(YOffset y);
+    /// @brief ZOffset setter
+    ADM_EXPORT void set(ZOffset z);
 
     /**
      * @brief ADM parameter unset template
@@ -175,22 +180,22 @@ namespace adm {
     void print(std::ostream& os) const;
 
    private:
-    ADM_EXPORT X get(detail::ParameterTraits<X>::tag) const;
-    ADM_EXPORT Y get(detail::ParameterTraits<Y>::tag) const;
-    ADM_EXPORT Z get(detail::ParameterTraits<Z>::tag) const;
+    ADM_EXPORT XOffset get(detail::ParameterTraits<XOffset>::tag) const;
+    ADM_EXPORT YOffset get(detail::ParameterTraits<YOffset>::tag) const;
+    ADM_EXPORT ZOffset get(detail::ParameterTraits<ZOffset>::tag) const;
 
-    ADM_EXPORT bool has(detail::ParameterTraits<X>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Y>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Z>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<XOffset>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<YOffset>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<ZOffset>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
 
-    X x_;
-    Y y_;
-    Z z_;
+    XOffset x_;
+    YOffset y_;
+    ZOffset z_;
   };
 
   ///@brief Type to hold a SphericalPositionOffset or CartesianPositionOffset

@@ -153,16 +153,18 @@ TEST_CASE("audio_object_position_offset") {
 
   {
     // Cartesian offsetPosition
-    auto offsetPosition = CartesianPositionOffset(X(0.0f), Y(-1.0f), Z(0.5f));
+    auto offsetPosition =
+        CartesianPositionOffset(XOffset(0.0f), YOffset(-1.0f), ZOffset(0.5f));
     auto audioObject =
         AudioObject::create(AudioObjectName("MyAudioObject"), offsetPosition);
 
     REQUIRE(audioObject->has<CartesianPositionOffset>() == true);
     REQUIRE(audioObject->has<SphericalPositionOffset>() == false);
 
-    REQUIRE(audioObject->get<CartesianPositionOffset>().get<X>() == 0.0f);
-    REQUIRE(audioObject->get<CartesianPositionOffset>().get<Y>() == -1.0f);
-    REQUIRE(audioObject->get<CartesianPositionOffset>().get<Z>() == 0.5f);
+    REQUIRE(audioObject->get<CartesianPositionOffset>().get<XOffset>() == 0.0f);
+    REQUIRE(audioObject->get<CartesianPositionOffset>().get<YOffset>() ==
+            -1.0f);
+    REQUIRE(audioObject->get<CartesianPositionOffset>().get<ZOffset>() == 0.5f);
 
     audioObject->unset<CartesianPositionOffset>();
     REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
@@ -171,16 +173,18 @@ TEST_CASE("audio_object_position_offset") {
   {
     // Spherical offsetPosition
     auto offsetPosition = SphericalPositionOffset(
-        Azimuth(0.0f), Elevation(-90.0f), DistanceOffset(0.5f));
+        AzimuthOffset(0.0f), ElevationOffset(-90.0f), DistanceOffset(0.5f));
     auto audioObject =
         AudioObject::create(AudioObjectName("MyAudioObject"), offsetPosition);
 
     REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
     REQUIRE(audioObject->has<SphericalPositionOffset>() == true);
 
-    REQUIRE(audioObject->get<SphericalPositionOffset>().get<Azimuth>() == 0.0f);
-    REQUIRE(audioObject->get<SphericalPositionOffset>().get<Elevation>() ==
-            -90.0f);
+    REQUIRE(audioObject->get<SphericalPositionOffset>().get<AzimuthOffset>() ==
+            0.0f);
+    REQUIRE(
+        audioObject->get<SphericalPositionOffset>().get<ElevationOffset>() ==
+        -90.0f);
     REQUIRE(audioObject->get<SphericalPositionOffset>().get<DistanceOffset>() ==
             0.5f);
 

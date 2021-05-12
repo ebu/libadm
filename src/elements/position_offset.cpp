@@ -5,18 +5,18 @@ namespace adm {
   // ---- SPHERICAL POSITION OFFSET ---- //
 
   // ---- Constructor ---- //
-  SphericalPositionOffset::SphericalPositionOffset(Azimuth azimuth,
-                                                   Elevation elevation,
+  SphericalPositionOffset::SphericalPositionOffset(AzimuthOffset azimuth,
+                                                   ElevationOffset elevation,
                                                    DistanceOffset distance)
       : azimuth_(azimuth), elevation_(elevation), distance_(distance){};
 
   // ---- Getter ---- //
-  Azimuth SphericalPositionOffset::get(
-      detail::ParameterTraits<Azimuth>::tag) const {
+  AzimuthOffset SphericalPositionOffset::get(
+      detail::ParameterTraits<AzimuthOffset>::tag) const {
     return azimuth_;
   }
-  Elevation SphericalPositionOffset::get(
-      detail::ParameterTraits<Elevation>::tag) const {
+  ElevationOffset SphericalPositionOffset::get(
+      detail::ParameterTraits<ElevationOffset>::tag) const {
     return elevation_;
   }
   DistanceOffset SphericalPositionOffset::get(
@@ -26,11 +26,11 @@ namespace adm {
 
   // ---- Has ---- //
   bool SphericalPositionOffset::has(
-      detail::ParameterTraits<Azimuth>::tag) const {
+      detail::ParameterTraits<AzimuthOffset>::tag) const {
     return true;
   }
   bool SphericalPositionOffset::has(
-      detail::ParameterTraits<Elevation>::tag) const {
+      detail::ParameterTraits<ElevationOffset>::tag) const {
     return true;
   }
   bool SphericalPositionOffset::has(
@@ -39,8 +39,10 @@ namespace adm {
   }
 
   // ---- Setter ---- //
-  void SphericalPositionOffset::set(Azimuth azimuth) { azimuth_ = azimuth; }
-  void SphericalPositionOffset::set(Elevation elevation) {
+  void SphericalPositionOffset::set(AzimuthOffset azimuth) {
+    azimuth_ = azimuth;
+  }
+  void SphericalPositionOffset::set(ElevationOffset elevation) {
     elevation_ = elevation;
   }
   void SphericalPositionOffset::set(DistanceOffset distance) {
@@ -50,35 +52,42 @@ namespace adm {
   // ---- CARTESIAN POSITION ---- //
 
   // ---- Constructor ---- //
-  CartesianPositionOffset::CartesianPositionOffset(X x, Y y, Z z)
+  CartesianPositionOffset::CartesianPositionOffset(XOffset x, YOffset y,
+                                                   ZOffset z)
       : x_(x), y_(y), z_(z){};
 
   // ---- Getter ---- //
-  X CartesianPositionOffset::get(detail::ParameterTraits<X>::tag) const {
+  XOffset CartesianPositionOffset::get(
+      detail::ParameterTraits<XOffset>::tag) const {
     return x_;
   }
-  Y CartesianPositionOffset::get(detail::ParameterTraits<Y>::tag) const {
+  YOffset CartesianPositionOffset::get(
+      detail::ParameterTraits<YOffset>::tag) const {
     return y_;
   }
-  Z CartesianPositionOffset::get(detail::ParameterTraits<Z>::tag) const {
+  ZOffset CartesianPositionOffset::get(
+      detail::ParameterTraits<ZOffset>::tag) const {
     return z_;
   }
 
   // ---- Has ---- //
-  bool CartesianPositionOffset::has(detail::ParameterTraits<X>::tag) const {
+  bool CartesianPositionOffset::has(
+      detail::ParameterTraits<XOffset>::tag) const {
     return true;
   }
-  bool CartesianPositionOffset::has(detail::ParameterTraits<Y>::tag) const {
+  bool CartesianPositionOffset::has(
+      detail::ParameterTraits<YOffset>::tag) const {
     return true;
   }
-  bool CartesianPositionOffset::has(detail::ParameterTraits<Z>::tag) const {
+  bool CartesianPositionOffset::has(
+      detail::ParameterTraits<ZOffset>::tag) const {
     return true;
   }
 
   // ---- Setter ---- //
-  void CartesianPositionOffset::set(X x) { x_ = x; }
-  void CartesianPositionOffset::set(Y y) { y_ = y; }
-  void CartesianPositionOffset::set(Z z) { z_ = z; }
+  void CartesianPositionOffset::set(XOffset x) { x_ = x; }
+  void CartesianPositionOffset::set(YOffset y) { y_ = y; }
+  void CartesianPositionOffset::set(ZOffset z) { z_ = z; }
 
   // ---- FREE FUNCTIONS ---- //
 

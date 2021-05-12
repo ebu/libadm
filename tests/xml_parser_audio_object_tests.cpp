@@ -116,8 +116,8 @@ TEST_CASE("xml_parser/audio_object_position_offset") {
     REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
 
     auto positionOffset = audioObject->get<SphericalPositionOffset>();
-    REQUIRE(positionOffset.get<Azimuth>() == Approx(30.0f));
-    REQUIRE(positionOffset.get<Elevation>() == Approx(15.0f));
+    REQUIRE(positionOffset.get<AzimuthOffset>() == Approx(30.0f));
+    REQUIRE(positionOffset.get<ElevationOffset>() == Approx(15.0f));
     REQUIRE(positionOffset.get<DistanceOffset>() == Approx(0.9f));
   }
 
@@ -128,8 +128,8 @@ TEST_CASE("xml_parser/audio_object_position_offset") {
     REQUIRE(audioObject->has<CartesianPositionOffset>() == true);
 
     auto positionOffset = audioObject->get<CartesianPositionOffset>();
-    REQUIRE(positionOffset.get<X>() == Approx(-0.2f));
-    REQUIRE(positionOffset.get<Y>() == Approx(0.1f));
-    REQUIRE(positionOffset.get<Z>() == Approx(-0.5f));
+    REQUIRE(positionOffset.get<XOffset>() == Approx(-0.2f));
+    REQUIRE(positionOffset.get<YOffset>() == Approx(0.1f));
+    REQUIRE(positionOffset.get<ZOffset>() == Approx(-0.5f));
   }
 }
