@@ -79,7 +79,7 @@ namespace adm {
    * `AudioTrackUids` should be added to and whose common definition ADM
    * elements should be used.
    * @param name Name that will be used for the created `AudioObject`.
-   * @param spakerLayout Speaker layout which will be created. For possible
+   * @param speakerLayout Speaker layout which will be created. For possible
    * values @see adm::audioPackFormatLookupTable
    */
   ADM_EXPORT SimpleCommonDefinitionsObjectHolder
