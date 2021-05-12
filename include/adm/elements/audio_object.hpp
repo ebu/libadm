@@ -243,7 +243,6 @@ namespace adm {
     }
 
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Start>::tag) const;
-
     ADM_EXPORT void unset(detail::ParameterTraits<Start>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<DialogueId>::tag);

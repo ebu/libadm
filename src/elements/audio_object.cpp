@@ -47,6 +47,14 @@ namespace adm {
       detail::ParameterTraits<AudioObjectInteraction>::tag) const {
     return audioObjectInteraction_.get();
   }
+  PositionOffset AudioObject::get(
+      detail::ParameterTraits<PositionOffset>::tag) const {
+    if (has<SphericalPositionOffset>()) {
+      return get<SphericalPositionOffset>();
+    } else {
+      return get<CartesianPositionOffset>();
+    }
+  }
   SphericalPositionOffset AudioObject::get(
       detail::ParameterTraits<SphericalPositionOffset>::tag) const {
     return sphericalPositionOffset_.get();
@@ -84,6 +92,9 @@ namespace adm {
   bool AudioObject::has(
       detail::ParameterTraits<AudioObjectInteraction>::tag) const {
     return audioObjectInteraction_ != boost::none;
+  }
+  bool AudioObject::has(detail::ParameterTraits<PositionOffset>::tag) const {
+    return has<SphericalPositionOffset>() || has<CartesianPositionOffset>();
   }
   bool AudioObject::has(
       detail::ParameterTraits<SphericalPositionOffset>::tag) const {

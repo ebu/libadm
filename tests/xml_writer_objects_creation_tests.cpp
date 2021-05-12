@@ -55,7 +55,7 @@ TEST_CASE("write_objects_with_position_offset") {
   auto sphericalOffset = SphericalPositionOffset(Azimuth(30.0), Elevation(0.0),
                                                  DistanceOffset(-0.5));
   auto sphericalOffsetObject = AudioObject::create(
-      AudioObjectName("SphericalOffsetObject"), sphericalOffset);
+      AudioObjectName("CartesianOffsetObject"), sphericalOffset);
   document->add(sphericalOffsetObject);
 
   std::stringstream xml;
