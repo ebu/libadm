@@ -21,9 +21,9 @@ namespace adm {
     typedef SphericalPositionOffsetTag tag;
 
     /// @brief Constructor without optional parameters
-    ADM_EXPORT SphericalPositionOffset(Azimuth azimuth = Azimuth(0.f),
-                                       Elevation elevation = Elevation(0.f),
-                                       Distance distance = Distance(0.f));
+    ADM_EXPORT SphericalPositionOffset(
+        Azimuth azimuth = Azimuth(0.f), Elevation elevation = Elevation(0.f),
+        DistanceOffset distance = DistanceOffset(0.f));
 
     /**
      * @brief Constructor template
@@ -66,8 +66,8 @@ namespace adm {
     ADM_EXPORT void set(Azimuth azimuth);
     /// @brief Elevation setter
     ADM_EXPORT void set(Elevation elevation);
-    /// @brief Distance setter
-    ADM_EXPORT void set(Distance distance);
+    /// @brief DistanceOffset setter
+    ADM_EXPORT void set(DistanceOffset distance);
 
     /**
      * @brief ADM parameter unset template
@@ -87,11 +87,12 @@ namespace adm {
    private:
     ADM_EXPORT Azimuth get(detail::ParameterTraits<Azimuth>::tag) const;
     ADM_EXPORT Elevation get(detail::ParameterTraits<Elevation>::tag) const;
-    ADM_EXPORT Distance get(detail::ParameterTraits<Distance>::tag) const;
+    ADM_EXPORT DistanceOffset
+        get(detail::ParameterTraits<DistanceOffset>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<Azimuth>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Elevation>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Distance>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<DistanceOffset>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -100,7 +101,7 @@ namespace adm {
 
     Azimuth azimuth_;
     Elevation elevation_;
-    Distance distance_;
+    DistanceOffset distance_;
   };
 
   /// @brief Tag for CartesianPositionOffset class

@@ -118,7 +118,7 @@ TEST_CASE("xml_parser/audio_object_position_offset") {
     auto positionOffset = audioObject->get<SphericalPositionOffset>();
     REQUIRE(positionOffset.get<Azimuth>() == Approx(30.0f));
     REQUIRE(positionOffset.get<Elevation>() == Approx(15.0f));
-    REQUIRE(positionOffset.get<Distance>() == Approx(0.9f));
+    REQUIRE(positionOffset.get<DistanceOffset>() == Approx(0.9f));
   }
 
   {

@@ -7,7 +7,7 @@ namespace adm {
   // ---- Constructor ---- //
   SphericalPositionOffset::SphericalPositionOffset(Azimuth azimuth,
                                                    Elevation elevation,
-                                                   Distance distance)
+                                                   DistanceOffset distance)
       : azimuth_(azimuth), elevation_(elevation), distance_(distance){};
 
   // ---- Getter ---- //
@@ -19,8 +19,8 @@ namespace adm {
       detail::ParameterTraits<Elevation>::tag) const {
     return elevation_;
   }
-  Distance SphericalPositionOffset::get(
-      detail::ParameterTraits<Distance>::tag) const {
+  DistanceOffset SphericalPositionOffset::get(
+      detail::ParameterTraits<DistanceOffset>::tag) const {
     return distance_;
   }
 
@@ -34,7 +34,7 @@ namespace adm {
     return true;
   }
   bool SphericalPositionOffset::has(
-      detail::ParameterTraits<Distance>::tag) const {
+      detail::ParameterTraits<DistanceOffset>::tag) const {
     return true;
   }
 
@@ -43,7 +43,9 @@ namespace adm {
   void SphericalPositionOffset::set(Elevation elevation) {
     elevation_ = elevation;
   }
-  void SphericalPositionOffset::set(Distance distance) { distance_ = distance; }
+  void SphericalPositionOffset::set(DistanceOffset distance) {
+    distance_ = distance;
+  }
 
   // ---- CARTESIAN POSITION ---- //
 

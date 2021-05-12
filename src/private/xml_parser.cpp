@@ -696,7 +696,7 @@ namespace adm {
         } else if (coordinate == "elevation") {
           setValue<Elevation>(element, position);
         } else if (coordinate == "distance") {
-          setValue<Distance>(element, position);
+          setValue<DistanceOffset>(element, position);
         }
       }
       return position;

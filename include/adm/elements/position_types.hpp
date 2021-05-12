@@ -91,6 +91,16 @@ namespace adm {
    */
   using DistanceMax =
       detail::NamedType<float, DistanceMaxTag, detail::RangeValidator<0, 1>>;
+  /// @brief Tag for NamedType ::DistanceOffset
+  struct DistanceOffsetTag {};
+  /**
+   * @brief NamedType for the distance parameter of the position offset
+   * element
+   *
+   * Valid values are in the range [-1, 1]
+   */
+  using DistanceOffset = detail::NamedType<float, DistanceOffsetTag,
+                                           detail::RangeValidator<-1, 1>>;
   /// @brief Tag for NamedType ::X
   struct XTag {};
   /**
