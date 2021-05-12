@@ -3,7 +3,6 @@
 #include "adm/elements/gain.hpp"
 #include "adm/elements/importance.hpp"
 #include "adm/elements/time.hpp"
-#include "adm/export.h"
 
 namespace adm {
   namespace detail {
@@ -17,11 +16,11 @@ namespace adm {
       return Gain::fromLinear(1.0);
     }
 
-    extern template class ADM_EXPORT DefaultedBase<Gain>;
+    extern template class DefaultedBase<Gain>;
 
-    extern template class ADM_EXPORT DefaultedBase<Importance>;
+    extern template class DefaultedBase<Importance>;
 
-    extern template class ADM_EXPORT DefaultedBase<Rtime>;
-    extern template class ADM_EXPORT OptionalBase<Duration>;
+    extern template class DefaultedBase<Rtime>;
+    extern template class OptionalBase<Duration>;
   }  // namespace detail
 }  // namespace adm

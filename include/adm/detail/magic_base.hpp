@@ -129,9 +129,13 @@ namespace adm {
      public:
       static constexpr bool has_get_set_has = true;
 
-      T get(typename detail::ParameterTraits<T>::tag) const { return value_; }
-      void set(T value) { value_ = value; }
-      bool has(typename detail::ParameterTraits<T>::tag) const { return true; }
+      ADM_EXPORT T get(typename detail::ParameterTraits<T>::tag) const {
+        return value_;
+      }
+      ADM_EXPORT void set(T value) { value_ = value; }
+      ADM_EXPORT bool has(typename detail::ParameterTraits<T>::tag) const {
+        return true;
+      }
 
      private:
       T value_;
@@ -146,17 +150,18 @@ namespace adm {
       static constexpr bool has_get_set_has = true;
       static constexpr bool has_isDefault_unset = true;
 
-      T get(typename detail::ParameterTraits<T>::tag) const {
+      ADM_EXPORT T get(typename detail::ParameterTraits<T>::tag) const {
         return value_.get();
       }
-      void set(T value) { value_ = value; }
-      bool has(typename detail::ParameterTraits<T>::tag) const {
+      ADM_EXPORT void set(T value) { value_ = value; }
+      ADM_EXPORT bool has(typename detail::ParameterTraits<T>::tag) const {
         return value_ != boost::none;
       }
-      bool isDefault(typename detail::ParameterTraits<T>::tag) const {
+      ADM_EXPORT bool isDefault(
+          typename detail::ParameterTraits<T>::tag) const {
         return false;
       }
-      void unset(typename detail::ParameterTraits<T>::tag) {
+      ADM_EXPORT void unset(typename detail::ParameterTraits<T>::tag) {
         value_ = boost::none;
       }
 
@@ -173,15 +178,18 @@ namespace adm {
       static constexpr bool has_get_set_has = true;
       static constexpr bool has_isDefault_unset = true;
 
-      T get(typename detail::ParameterTraits<T>::tag) const {
+      ADM_EXPORT T get(typename detail::ParameterTraits<T>::tag) const {
         return boost::get_optional_value_or(value_, getDefault<T>());
       }
-      void set(T value) { value_ = value; }
-      bool has(typename detail::ParameterTraits<T>::tag) const { return true; }
-      bool isDefault(typename detail::ParameterTraits<T>::tag) const {
+      ADM_EXPORT void set(T value) { value_ = value; }
+      ADM_EXPORT bool has(typename detail::ParameterTraits<T>::tag) const {
+        return true;
+      }
+      ADM_EXPORT bool isDefault(
+          typename detail::ParameterTraits<T>::tag) const {
         return value_ == boost::none;
       }
-      void unset(typename detail::ParameterTraits<T>::tag) {
+      ADM_EXPORT void unset(typename detail::ParameterTraits<T>::tag) {
         value_ = boost::none;
       }
 
