@@ -39,7 +39,7 @@ release = '0.10.0'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['breathe', 'm2r']
+extensions = ['breathe', 'm2r2']
 breathe_projects = {'libadm': '.build/doxygenxml/'}
 breathe_default_project = 'libadm'
 breathe_default_members = ('members', 'undoc-members')
@@ -67,7 +67,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path .
-exclude_patterns = []
+exclude_patterns = ["env"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'

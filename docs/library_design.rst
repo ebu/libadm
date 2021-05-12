@@ -47,7 +47,7 @@ avoided.
 As we don't want to manually write a class for each type, named types are
 declared using the templated class :cpp:class:`adm::detail::NamedType`.
 This makes declaring a new named type quite simple. The declaration for the
-:cpp:class:`adm::AudioContentName` for example looks like this.
+:cpp:type:`adm::AudioContentName` for example looks like this.
 
 .. code-block:: cpp
 
@@ -56,7 +56,7 @@ This makes declaring a new named type quite simple. The declaration for the
 
 But the named types offer even more functionality. We can add a validator to it.
 Some basic validators are already implemented. E. g. the
-:cpp:class:`adm::Importance` within the ADM can only have values between 0 and
+:cpp:type:`adm::Importance` within the ADM can only have values between 0 and
 10. To achieve this we add a :cpp:class:`adm::detail::RangeValidator`
 to the type declaration.
 
@@ -101,7 +101,7 @@ functions of the :cpp:class:`adm::Document` have to be used.
 
 As you have maybe noticed the ``AudioBlockFormats`` are not part of the previous
 list of main ADM Elements. That's because they are more like a special attribute
-of the the :cpp:class:`adm::AudioChannelFormat`. As the main ADM elements they
+of the :cpp:class:`adm::AudioChannelFormat`. As the main ADM elements they
 also can only be created as ``std::shared_ptr<>`` s, but instead of the
 :cpp:class:`adm::Document` they are managed by the
 :cpp:class:`adm::AudioChannelFormat` they belong to. The same principles as for
@@ -170,8 +170,8 @@ example.
     auto speechContentDe = AudioContent::create(AudioContentName("Speech"),
                                                 AudioContentLanguage("de"));
 
-We can simply reorder :cpp:class:`adm::AudioContentName` and
-:cpp:class:`adm::AudioContentLanguage` and have the same result.
+We can simply reorder :cpp:type:`adm::AudioContentName` and
+:cpp:type:`adm::AudioContentLanguage` and have the same result.
 
 .. code-block:: cpp
 
