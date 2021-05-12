@@ -101,7 +101,7 @@ functions of the :cpp:class:`adm::Document` have to be used.
 
 As you have maybe noticed the ``AudioBlockFormats`` are not part of the previous
 list of main ADM Elements. That's because they are more like a special attribute
-of the the :cpp:class:`adm::AudioChannelFormat`. As the main ADM elements they
+of the :cpp:class:`adm::AudioChannelFormat`. As the main ADM elements they
 also can only be created as ``std::shared_ptr<>`` s, but instead of the
 :cpp:class:`adm::Document` they are managed by the
 :cpp:class:`adm::AudioChannelFormat` they belong to. The same principles as for

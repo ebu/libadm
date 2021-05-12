@@ -48,7 +48,7 @@ the class representation of a whole ADM file.
       </coreMetadata>
     </ebuCoreMain>
 
-As our ADM document is still empty the output is no suprise: the
+As our ADM document is still empty the output is no surprise: the
 ``audioFormatExtended`` node does not contain any ADM elements, but the basic
 ``ebuCore`` structure is already there.
 
@@ -114,7 +114,7 @@ value until it finds an ID which is not used yet.
       auto admDocument = adm::Document::create();
 
       auto admProgramme = adm::AudioProgramme::create(
-          adm::AudioProgrammeName("Alice and Bob talking in the forrest"));
+          adm::AudioProgrammeName("Alice and Bob talking in the forest"));
       auto speechContent = adm::AudioContent::create(adm::AudioContentName("Speech"));
       auto atmoContent = adm::AudioContent::create(adm::AudioContentName("Atmo"));
       auto aliceHolder = adm::createSimpleObject("Alice");
@@ -200,7 +200,7 @@ The output of our programme is now as follows:
 But wait, we only added the audioObject to our document and all the elements
 created by :cpp:func:`adm::createSimpleObject()` are now also part of the
 document. This is because the :cpp:func:`adm::Document::add()` function
-automatically adds all referenced ADM elements too. Knowning this we can
+automatically adds all referenced ADM elements too. Knowing this we can
 simplify our programme, while still getting the exact same output. We just add
 all our references first and only add the audioProgramme to the document.
 
@@ -215,7 +215,7 @@ all our references first and only add the audioProgramme to the document.
       auto admDocument = adm::Document::create();
 
       auto admProgramme = adm::AudioProgramme::create(
-          adm::AudioProgrammeName("Alice and Bob talking in the forrest"));
+          adm::AudioProgrammeName("Alice and Bob talking in the forest"));
       auto speechContent = adm::AudioContent::create(adm::AudioContentName("Speech"));
       auto atmoContent = adm::AudioContent::create(adm::AudioContentName("Atmo"));
       auto aliceHolder = adm::createSimpleObject("Alice");
@@ -252,7 +252,7 @@ and right channel.
 
 .. code-block:: cpp
 
-    auto atmoObject = adm::AudioObject::create(adm::AudioObjectName("Forrest Atmo"));
+    auto atmoObject = adm::AudioObject::create(adm::AudioObjectName("Forest Atmo"));
     auto trackUidLeft = adm::AudioTrackUid::create();
     auto trackUidRight = adm::AudioTrackUid::create();
 
@@ -296,7 +296,7 @@ That's it. We are done.
       auto admDocument = adm::Document::create();
 
       auto admProgramme = adm::AudioProgramme::create(
-          adm::AudioProgrammeName("Alice and Bob talking in the forrest"));
+          adm::AudioProgrammeName("Alice and Bob talking in the forest"));
       auto speechContent = adm::AudioContent::create(adm::AudioContentName("Speech"));
       auto atmoContent = adm::AudioContent::create(adm::AudioContentName("Atmo"));
       auto aliceHolder = adm::createSimpleObject("Alice");
@@ -421,7 +421,7 @@ In practice, however, it can be very hard to determine the duration of an
 ``adm::AudioBlockFormat`` during its creation or setup. This is due to the fact
 that an :cpp:class:`adm::AudioChannelFormat`, and thus its blocks and their
 durations, is bound to the parent :cpp:class:`adm::AudioObject` duration. The
-lifetime of the :cpp:class:`adm::AudioObject`, if not given explictily, is
+lifetime of the :cpp:class:`adm::AudioObject`, if not given explicitly, is
 bound to the length of the :cpp:class:`adm::AudioProgramme` or, if that's not
 set either, to the length of the file.
 
