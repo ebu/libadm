@@ -153,10 +153,10 @@ TEST_CASE("audio_object_position_offset") {
 
   {
     // Cartesian offsetPosition
-    auto offsetPosition =
+    PositionOffset offsetPosition =
         CartesianPositionOffset(XOffset(0.0f), YOffset(-1.0f), ZOffset(0.5f));
-    auto audioObject =
-        AudioObject::create(AudioObjectName("MyAudioObject"), offsetPosition);
+    auto audioObject = AudioObject::create(AudioObjectName("MyAudioObject"));
+    audioObject->set(offsetPosition);
 
     REQUIRE(audioObject->has<CartesianPositionOffset>() == true);
     REQUIRE(audioObject->has<SphericalPositionOffset>() == false);
@@ -172,10 +172,10 @@ TEST_CASE("audio_object_position_offset") {
 
   {
     // Spherical offsetPosition
-    auto offsetPosition = SphericalPositionOffset(
+    PositionOffset offsetPosition = SphericalPositionOffset(
         AzimuthOffset(0.0f), ElevationOffset(-90.0f), DistanceOffset(0.5f));
-    auto audioObject =
-        AudioObject::create(AudioObjectName("MyAudioObject"), offsetPosition);
+    auto audioObject = AudioObject::create(AudioObjectName("MyAudioObject"));
+    audioObject->set(offsetPosition);
 
     REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
     REQUIRE(audioObject->has<SphericalPositionOffset>() == true);
