@@ -515,26 +515,26 @@ namespace adm {
       if (isSpherical(positionOffset)) {
         auto sphericalPosition =
             boost::get<SphericalPositionOffset>(positionOffset);
-        parentNode.addElement(
-            sphericalPosition.get<AzimuthOffset>(), name,
+        parentNode.addOptionalElement<AzimuthOffset>(
+            &sphericalPosition, name,
             detail::formatMultiElementAttribute("coordinate", "azimuth"));
-        parentNode.addElement(
-            sphericalPosition.get<ElevationOffset>(), name,
+        parentNode.addOptionalElement<ElevationOffset>(
+            &sphericalPosition, name,
             detail::formatMultiElementAttribute("coordinate", "elevation"));
-        parentNode.addElement(
-            sphericalPosition.get<DistanceOffset>(), name,
+        parentNode.addOptionalElement<DistanceOffset>(
+            &sphericalPosition, name,
             detail::formatMultiElementAttribute("coordinate", "distance"));
       } else {
         auto cartesianPosition =
             boost::get<CartesianPositionOffset>(positionOffset);
-        parentNode.addElement(
-            cartesianPosition.get<XOffset>(), name,
+        parentNode.addOptionalElement<XOffset>(
+            &cartesianPosition, name,
             detail::formatMultiElementAttribute("coordinate", "X"));
-        parentNode.addElement(
-            cartesianPosition.get<YOffset>(), name,
+        parentNode.addOptionalElement<YOffset>(
+            &cartesianPosition, name,
             detail::formatMultiElementAttribute("coordinate", "Y"));
-        parentNode.addElement(
-            cartesianPosition.get<ZOffset>(), name,
+        parentNode.addOptionalElement<ZOffset>(
+            &cartesianPosition, name,
             detail::formatMultiElementAttribute("coordinate", "Z"));
       }
     }

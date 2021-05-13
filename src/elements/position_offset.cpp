@@ -56,7 +56,7 @@ namespace adm {
   // ---- isDefault ---- //
   bool SphericalPositionOffset::isDefault(
       detail::ParameterTraits<AzimuthOffset>::tag) const {
-    return distance_ == boost::none;
+    return azimuth_ == boost::none;
   }
   bool SphericalPositionOffset::isDefault(
       detail::ParameterTraits<ElevationOffset>::tag) const {
