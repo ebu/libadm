@@ -11,9 +11,9 @@ TEST_CASE("position_offset") {
     REQUIRE(offset.has<ElevationOffset>() == true);
     REQUIRE(offset.has<DistanceOffset>() == true);
 
-    REQUIRE(offset.isDefault<AzimuthOffset>() == false);
-    REQUIRE(offset.isDefault<ElevationOffset>() == false);
-    REQUIRE(offset.isDefault<DistanceOffset>() == false);
+    REQUIRE(offset.isDefault<AzimuthOffset>() == true);
+    REQUIRE(offset.isDefault<ElevationOffset>() == true);
+    REQUIRE(offset.isDefault<DistanceOffset>() == true);
 
     REQUIRE(offset.get<AzimuthOffset>() == Approx(0.f));
     REQUIRE(offset.get<ElevationOffset>() == Approx(0.f));
@@ -25,9 +25,9 @@ TEST_CASE("position_offset") {
     REQUIRE(offset.has<YOffset>() == true);
     REQUIRE(offset.has<ZOffset>() == true);
 
-    REQUIRE(offset.isDefault<XOffset>() == false);
-    REQUIRE(offset.isDefault<YOffset>() == false);
-    REQUIRE(offset.isDefault<ZOffset>() == false);
+    REQUIRE(offset.isDefault<XOffset>() == true);
+    REQUIRE(offset.isDefault<YOffset>() == true);
+    REQUIRE(offset.isDefault<ZOffset>() == true);
 
     REQUIRE(offset.get<XOffset>() == Approx(0.f));
     REQUIRE(offset.get<YOffset>() == Approx(0.f));

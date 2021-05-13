@@ -21,12 +21,6 @@ namespace adm {
    public:
     typedef SphericalPositionOffsetTag tag;
 
-    /// @brief Constructor without optional parameters
-    ADM_EXPORT SphericalPositionOffset(
-        AzimuthOffset azimuth = AzimuthOffset(0.f),
-        ElevationOffset elevation = ElevationOffset(0.f),
-        DistanceOffset distance = DistanceOffset(0.f));
-
     /**
      * @brief Constructor template
      *
@@ -102,10 +96,24 @@ namespace adm {
     bool isDefault(Tag) const {
       return false;
     }
+    ADM_EXPORT bool isDefault(
+        detail::ParameterTraits<AzimuthOffset>::tag) const;
+    ADM_EXPORT bool isDefault(
+        detail::ParameterTraits<ElevationOffset>::tag) const;
+    ADM_EXPORT bool isDefault(
+        detail::ParameterTraits<DistanceOffset>::tag) const;
 
-    AzimuthOffset azimuth_;
-    ElevationOffset elevation_;
-    DistanceOffset distance_;
+    ADM_EXPORT void unset(detail::ParameterTraits<AzimuthOffset>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ElevationOffset>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<DistanceOffset>::tag);
+
+    boost::optional<AzimuthOffset> azimuth_;
+    boost::optional<ElevationOffset> elevation_;
+    boost::optional<DistanceOffset> distance_;
+
+    static const AzimuthOffset azimuthDefault_;
+    static const ElevationOffset elevationDefault_;
+    static const DistanceOffset distanceDefault_;
   };
 
   /// @brief Tag for CartesianPositionOffset class
@@ -114,11 +122,6 @@ namespace adm {
   class CartesianPositionOffset {
    public:
     typedef CartesianPositionOffsetTag tag;
-
-    /// @brief Constructor without optional parameters
-    ADM_EXPORT CartesianPositionOffset(XOffset x = XOffset(0.f),
-                                       YOffset y = YOffset(0.f),
-                                       ZOffset z = ZOffset(0.f));
 
     /**
      * @brief Constructor template
@@ -193,9 +196,21 @@ namespace adm {
       return false;
     }
 
-    XOffset x_;
-    YOffset y_;
-    ZOffset z_;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<XOffset>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<YOffset>::tag) const;
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<ZOffset>::tag) const;
+
+    ADM_EXPORT void unset(detail::ParameterTraits<XOffset>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<YOffset>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<ZOffset>::tag);
+
+    boost::optional<XOffset> x_;
+    boost::optional<YOffset> y_;
+    boost::optional<ZOffset> z_;
+
+    static const XOffset xDefault_;
+    static const YOffset yDefault_;
+    static const ZOffset zDefault_;
   };
 
   ///@brief Type to hold a SphericalPositionOffset or CartesianPositionOffset

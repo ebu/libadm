@@ -5,23 +5,27 @@ namespace adm {
   // ---- SPHERICAL POSITION OFFSET ---- //
 
   // ---- Constructor ---- //
-  SphericalPositionOffset::SphericalPositionOffset(AzimuthOffset azimuth,
-                                                   ElevationOffset elevation,
-                                                   DistanceOffset distance)
-      : azimuth_(azimuth), elevation_(elevation), distance_(distance){};
+
+  // ---- Defaults ---- //
+  const AzimuthOffset SphericalPositionOffset::azimuthDefault_ =
+      AzimuthOffset(0.f);
+  const ElevationOffset SphericalPositionOffset::elevationDefault_ =
+      ElevationOffset(0.f);
+  const DistanceOffset SphericalPositionOffset::distanceDefault_ =
+      DistanceOffset(0.f);
 
   // ---- Getter ---- //
   AzimuthOffset SphericalPositionOffset::get(
       detail::ParameterTraits<AzimuthOffset>::tag) const {
-    return azimuth_;
+    return boost::get_optional_value_or(azimuth_, azimuthDefault_);
   }
   ElevationOffset SphericalPositionOffset::get(
       detail::ParameterTraits<ElevationOffset>::tag) const {
-    return elevation_;
+    return boost::get_optional_value_or(elevation_, elevationDefault_);
   }
   DistanceOffset SphericalPositionOffset::get(
       detail::ParameterTraits<DistanceOffset>::tag) const {
-    return distance_;
+    return boost::get_optional_value_or(distance_, distanceDefault_);
   }
 
   // ---- Has ---- //
@@ -49,25 +53,55 @@ namespace adm {
     distance_ = distance;
   }
 
-  // ---- CARTESIAN POSITION ---- //
+  // ---- isDefault ---- //
+  bool SphericalPositionOffset::isDefault(
+      detail::ParameterTraits<AzimuthOffset>::tag) const {
+    return distance_ == boost::none;
+  }
+  bool SphericalPositionOffset::isDefault(
+      detail::ParameterTraits<ElevationOffset>::tag) const {
+    return elevation_ == boost::none;
+  }
+  bool SphericalPositionOffset::isDefault(
+      detail::ParameterTraits<DistanceOffset>::tag) const {
+    return distance_ == boost::none;
+  }
+
+  // --- Unsetter --- //
+  void SphericalPositionOffset::unset(
+      detail::ParameterTraits<AzimuthOffset>::tag) {
+    azimuth_ = boost::none;
+  }
+  void SphericalPositionOffset::unset(
+      detail::ParameterTraits<ElevationOffset>::tag) {
+    elevation_ = boost::none;
+  }
+  void SphericalPositionOffset::unset(
+      detail::ParameterTraits<DistanceOffset>::tag) {
+    distance_ = boost::none;
+  }
+
+  // ---- CARTESIAN POSITION OFFSET ---- //
 
   // ---- Constructor ---- //
-  CartesianPositionOffset::CartesianPositionOffset(XOffset x, YOffset y,
-                                                   ZOffset z)
-      : x_(x), y_(y), z_(z){};
+
+  // ---- Defaults ---- //
+  const XOffset CartesianPositionOffset::xDefault_ = XOffset(0.f);
+  const YOffset CartesianPositionOffset::yDefault_ = YOffset(0.f);
+  const ZOffset CartesianPositionOffset::zDefault_ = ZOffset(0.f);
 
   // ---- Getter ---- //
   XOffset CartesianPositionOffset::get(
       detail::ParameterTraits<XOffset>::tag) const {
-    return x_;
+    return boost::get_optional_value_or(x_, xDefault_);
   }
   YOffset CartesianPositionOffset::get(
       detail::ParameterTraits<YOffset>::tag) const {
-    return y_;
+    return boost::get_optional_value_or(y_, yDefault_);
   }
   ZOffset CartesianPositionOffset::get(
       detail::ParameterTraits<ZOffset>::tag) const {
-    return z_;
+    return boost::get_optional_value_or(z_, zDefault_);
   }
 
   // ---- Has ---- //
@@ -88,6 +122,31 @@ namespace adm {
   void CartesianPositionOffset::set(XOffset x) { x_ = x; }
   void CartesianPositionOffset::set(YOffset y) { y_ = y; }
   void CartesianPositionOffset::set(ZOffset z) { z_ = z; }
+
+  // ---- isDefault ---- //
+  bool CartesianPositionOffset::isDefault(
+      detail::ParameterTraits<XOffset>::tag) const {
+    return x_ == boost::none;
+  }
+  bool CartesianPositionOffset::isDefault(
+      detail::ParameterTraits<YOffset>::tag) const {
+    return y_ == boost::none;
+  }
+  bool CartesianPositionOffset::isDefault(
+      detail::ParameterTraits<ZOffset>::tag) const {
+    return z_ == boost::none;
+  }
+
+  // --- Unsetter --- //
+  void CartesianPositionOffset::unset(detail::ParameterTraits<XOffset>::tag) {
+    x_ = boost::none;
+  }
+  void CartesianPositionOffset::unset(detail::ParameterTraits<YOffset>::tag) {
+    y_ = boost::none;
+  }
+  void CartesianPositionOffset::unset(detail::ParameterTraits<ZOffset>::tag) {
+    z_ = boost::none;
+  }
 
   // ---- FREE FUNCTIONS ---- //
 
