@@ -59,6 +59,11 @@ TEST_CASE("write_objects_with_position_offset") {
       AudioObjectName("SphericalOffsetObject"), sphericalOffset);
   document->add(sphericalOffsetObject);
 
+  auto optionalOffset = SphericalPositionOffset(AzimuthOffset(-10.f));
+  auto optionalOffsetObject = AudioObject::create(
+      AudioObjectName("OptionalOffsetObject"), optionalOffset);
+  document->add(optionalOffsetObject);
+
   std::stringstream xml;
   writeXml(xml, document);
 

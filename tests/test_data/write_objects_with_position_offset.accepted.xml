@@ -13,6 +13,9 @@
 					<positionOffset coordinate="elevation">0.000000</positionOffset>
 					<positionOffset coordinate="distance">-0.500000</positionOffset>
 				</audioObject>
+				<audioObject audioObjectID="AO_1003" audioObjectName="OptionalOffsetObject">
+					<positionOffset coordinate="azimuth">-10.000000</positionOffset>
+				</audioObject>
 			</audioFormatExtended>
 		</format>
 	</coreMetadata>
