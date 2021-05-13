@@ -28,6 +28,9 @@ namespace adm {
   using AudioContentLanguage =
       detail::NamedType<std::string, AudioContentLanguageTag>;
 
+  using LoudnessMetadatas = std::vector<LoudnessMetadata>;
+  ADD_TRAIT(LoudnessMetadatas, LoudnessMetadatasTag);
+
   /// @brief Tag for AudioContent
   struct AudioContentTag {};
   /**
@@ -102,7 +105,7 @@ namespace adm {
     /// @brief AudioContentLanguage setter
     ADM_EXPORT void set(AudioContentLanguage language);
     /// @brief LoudnessMetadata setter
-    ADM_EXPORT void set(LoudnessMetadata loudnessMetadata);
+    ADM_EXPORT void set(LoudnessMetadatas loudnessMetadatas);
     ///@{
 
     /**
@@ -136,6 +139,11 @@ namespace adm {
      */
     template <typename Parameter>
     void unset();
+
+    /// @brief Add loudnessMetadata
+    ADM_EXPORT void add(LoudnessMetadata loudnessMetadata);
+    /// @brief remove loudnessMetadata
+    ADM_EXPORT void remove(LoudnessMetadata loudnessMetadata);
 
     /// @brief Add reference to an AudioObject
     ADM_EXPORT bool addReference(std::shared_ptr<AudioObject> object);
@@ -198,8 +206,8 @@ namespace adm {
         get(detail::ParameterTraits<AudioContentName>::tag) const;
     ADM_EXPORT AudioContentLanguage
         get(detail::ParameterTraits<AudioContentLanguage>::tag) const;
-    ADM_EXPORT LoudnessMetadata
-        get(detail::ParameterTraits<LoudnessMetadata>::tag) const;
+    ADM_EXPORT LoudnessMetadatas
+        get(detail::ParameterTraits<LoudnessMetadatas>::tag) const;
     ADM_EXPORT DialogueId get(detail::ParameterTraits<DialogueId>::tag) const;
     ADM_EXPORT ContentKind get(detail::ParameterTraits<ContentKind>::tag) const;
     ADM_EXPORT NonDialogueContentKind
@@ -213,7 +221,7 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<AudioContentName>::tag) const;
     ADM_EXPORT bool has(
         detail::ParameterTraits<AudioContentLanguage>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<LoudnessMetadata>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<LoudnessMetadatas>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<DialogueId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ContentKind>::tag) const;
     ADM_EXPORT bool has(
@@ -228,7 +236,7 @@ namespace adm {
     }
 
     ADM_EXPORT void unset(detail::ParameterTraits<AudioContentLanguage>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<LoudnessMetadata>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<LoudnessMetadatas>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<DialogueId>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ContentKind>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<NonDialogueContentKind>::tag);
@@ -252,7 +260,7 @@ namespace adm {
     AudioContentName name_;
     boost::optional<AudioContentLanguage> language_;
     std::vector<std::shared_ptr<AudioObject>> audioObjects_;
-    boost::optional<LoudnessMetadata> loudnessMetadata_;
+    boost::optional<LoudnessMetadatas> loudnessMetadatas_;
     boost::optional<DialogueId> dialogueId_;
     boost::optional<NonDialogueContentKind> nonDialogueContentKind_;
     boost::optional<DialogueContentKind> dialogueContentKind_;
