@@ -125,7 +125,6 @@ namespace adm {
      *
      * Compares each loudnessMetadata parameter
      */
-    // XXX is this necessary? Also, the implementation might be dodgy so check...
     ADM_EXPORT bool operator==(const LoudnessMetadata& other) const;
 
     /**
