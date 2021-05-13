@@ -139,7 +139,9 @@ namespace adm {
 
   // ---- Operators ---- //
   bool LoudnessMetadata::operator==(const LoudnessMetadata& other) const {
-    return get<LoudnessMethod>() == other.get<LoudnessMethod>();
+    return get<LoudnessMethod>() == other.get<LoudnessMethod>() &&
+           get<LoudnessRecType>() == other.get<LoudnessRecType>() &&
+           get<LoudnessCorrectionType>() == other.get<LoudnessCorrectionType>();
   }
 
   void LoudnessMetadata::print(std::ostream &os) const {
