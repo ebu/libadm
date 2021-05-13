@@ -121,6 +121,14 @@ namespace adm {
     void unset();
 
     /**
+     * @brief Operator overload
+     *
+     * Compares each loudnessMetadata parameter
+     */
+    // XXX is this necessary? Also, the implementation might be dodgy so check...
+    ADM_EXPORT bool operator==(const LoudnessMetadata& other) const;
+
+    /**
      * @brief Print overview to ostream
      */
     void print(std::ostream &os) const;
