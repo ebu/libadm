@@ -45,11 +45,12 @@ namespace adm {
   struct AudioBlockFormatObjectsTag {};
 
   namespace detail {
-    extern template class RequiredBase<AudioBlockFormatId>;
-    extern template class DefaultedBase<Width>;
-    extern template class DefaultedBase<Height>;
-    extern template class DefaultedBase<Depth>;
-    extern template class DefaultedBase<Diffuse>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        RequiredBase<AudioBlockFormatId>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Width>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Height>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Depth>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Diffuse>;
 
     using AudioBlockFormatObjectsBase =
         CombineBase<RequiredBase<AudioBlockFormatId>, DefaultedBase<Rtime>,

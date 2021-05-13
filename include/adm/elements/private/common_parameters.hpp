@@ -16,11 +16,11 @@ namespace adm {
       return Gain::fromLinear(1.0);
     }
 
-    extern template class DefaultedBase<Gain>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Gain>;
 
-    extern template class DefaultedBase<Importance>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Importance>;
 
-    extern template class DefaultedBase<Rtime>;
-    extern template class OptionalBase<Duration>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Rtime>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS OptionalBase<Duration>;
   }  // namespace detail
 }  // namespace adm
