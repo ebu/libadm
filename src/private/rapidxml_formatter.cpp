@@ -81,6 +81,14 @@ namespace adm {
                                                 "dialogueLoudness");
     }
 
+    void formatLoudnessMetadatas(XmlNode &node, const std::string &name,
+                                 const LoudnessMetadatas loudnessMetadatas) {
+      for (const auto &loudnessMetadata : loudnessMetadatas) {
+        auto loudnessMetadataNode = node.addNode(name);
+        formatLoudnessMetadata(loudnessMetadataNode, loudnessMetadata);
+      }
+    }
+
     void formatAudioContent(XmlNode &node,
                             std::shared_ptr<const AudioContent> content) {
       // clang-format off
@@ -88,7 +96,7 @@ namespace adm {
       node.addOptionalAttribute<AudioContentName>(content, "audioContentName");
       node.addOptionalAttribute<AudioContentLanguage>(content, "audioContentLanguage");
       node.addReferences<AudioObject, AudioObjectId>(content, "audioObjectIDRef");
-      node.addOptionalElement<LoudnessMetadata>(content, "loudnessMetadata", &formatLoudnessMetadata);
+      node.addOptionalMultiElement<LoudnessMetadatas>(content, "loudnessMetadata", &formatLoudnessMetadatas);
       node.addOptionalElement<NonDialogueContentKind>(content, "dialogue", &formatNonDialogueContentKind);
       node.addOptionalElement<DialogueContentKind>(content, "dialogue", &formatDialogueContentKind);
       node.addOptionalElement<MixedContentKind>(content, "dialogue", &formatMixedContentKind);
