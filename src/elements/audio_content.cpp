@@ -215,7 +215,6 @@ namespace adm {
     }
   }
 
-  // XXX is this the right place to put this operator overload? Also not sure this is the right way of doing this
   std::ostream& operator<<(std::ostream& stream, const LoudnessMetadatas& loudnessMetaDatas) {
     // Iterate over loudnessMetaDatas
     for (auto i = loudnessMetaDatas.begin(); i != loudnessMetaDatas.end(); ++i)
