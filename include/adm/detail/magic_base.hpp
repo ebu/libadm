@@ -124,18 +124,15 @@ namespace adm {
 
     /// base class with set/get/has methods for a required parameter of type T
     /// combine these together using CombineBase
-    template <typename T>
+    template <typename T,
+              typename Tag = typename detail::ParameterTraits<T>::tag>
     class RequiredBase : public Flags {
      public:
       static constexpr bool has_get_set_has = true;
 
-      ADM_EXPORT T get(typename detail::ParameterTraits<T>::tag) const {
-        return value_;
-      }
+      ADM_EXPORT T get(Tag) const { return value_; }
       ADM_EXPORT void set(T value) { value_ = value; }
-      ADM_EXPORT bool has(typename detail::ParameterTraits<T>::tag) const {
-        return true;
-      }
+      ADM_EXPORT bool has(Tag) const { return true; }
 
      private:
       T value_;
@@ -144,26 +141,18 @@ namespace adm {
     /// base class with set/get/has/isDefault/unset methods for an optional
     /// parameter of type T with no default. combine these together using
     /// CombineBase
-    template <typename T>
+    template <typename T,
+              typename Tag = typename detail::ParameterTraits<T>::tag>
     class OptionalBase : public Flags {
      public:
       static constexpr bool has_get_set_has = true;
       static constexpr bool has_isDefault_unset = true;
 
-      ADM_EXPORT T get(typename detail::ParameterTraits<T>::tag) const {
-        return value_.get();
-      }
+      ADM_EXPORT T get(Tag) const { return value_.get(); }
       ADM_EXPORT void set(T value) { value_ = value; }
-      ADM_EXPORT bool has(typename detail::ParameterTraits<T>::tag) const {
-        return value_ != boost::none;
-      }
-      ADM_EXPORT bool isDefault(
-          typename detail::ParameterTraits<T>::tag) const {
-        return false;
-      }
-      ADM_EXPORT void unset(typename detail::ParameterTraits<T>::tag) {
-        value_ = boost::none;
-      }
+      ADM_EXPORT bool has(Tag) const { return value_ != boost::none; }
+      ADM_EXPORT bool isDefault(Tag) const { return false; }
+      ADM_EXPORT void unset(Tag) { value_ = boost::none; }
 
      private:
       boost::optional<T> value_;
@@ -172,26 +161,20 @@ namespace adm {
     /// base class with set/get/has/isDefault/unset methods for an optional
     /// parameter of type T, which has a default provided by DefaultParameter.
     /// combine these together using CombineBase
-    template <typename T>
+    template <typename T,
+              typename Tag = typename detail::ParameterTraits<T>::tag>
     class DefaultedBase : public Flags {
      public:
       static constexpr bool has_get_set_has = true;
       static constexpr bool has_isDefault_unset = true;
 
-      ADM_EXPORT T get(typename detail::ParameterTraits<T>::tag) const {
+      ADM_EXPORT T get(Tag) const {
         return boost::get_optional_value_or(value_, getDefault<T>());
       }
       ADM_EXPORT void set(T value) { value_ = value; }
-      ADM_EXPORT bool has(typename detail::ParameterTraits<T>::tag) const {
-        return true;
-      }
-      ADM_EXPORT bool isDefault(
-          typename detail::ParameterTraits<T>::tag) const {
-        return value_ == boost::none;
-      }
-      ADM_EXPORT void unset(typename detail::ParameterTraits<T>::tag) {
-        value_ = boost::none;
-      }
+      ADM_EXPORT bool has(Tag) const { return true; }
+      ADM_EXPORT bool isDefault(Tag) const { return value_ == boost::none; }
+      ADM_EXPORT void unset(Tag) { value_ = boost::none; }
 
      private:
       boost::optional<T> value_;
