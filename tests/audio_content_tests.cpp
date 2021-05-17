@@ -10,7 +10,7 @@ TEST_CASE("audio_content") {
     audioContent->set(AudioContentId(AudioContentIdValue(1)));
     audioContent->set(AudioContentName("MyNewContent"));
     audioContent->set(AudioContentLanguage("de"));
-    audioContent->set(LoudnessMetadatas());
+    audioContent->add(LoudnessMetadata());
     audioContent->set(Dialogue::NON_DIALOGUE);
 
     REQUIRE(audioContent->has<AudioContentId>() == true);

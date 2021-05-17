@@ -260,7 +260,7 @@ namespace adm {
     AudioContentName name_;
     boost::optional<AudioContentLanguage> language_;
     std::vector<std::shared_ptr<AudioObject>> audioObjects_;
-    boost::optional<LoudnessMetadatas> loudnessMetadatas_;
+    LoudnessMetadatas loudnessMetadatas_;
     boost::optional<DialogueId> dialogueId_;
     boost::optional<NonDialogueContentKind> nonDialogueContentKind_;
     boost::optional<DialogueContentKind> dialogueContentKind_;

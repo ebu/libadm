@@ -25,7 +25,7 @@ namespace adm {
   }
   LoudnessMetadatas AudioContent::get(
       detail::ParameterTraits<LoudnessMetadatas>::tag) const {
-    return loudnessMetadatas_.get();
+    return loudnessMetadatas_;
   }
   DialogueId AudioContent::get(detail::ParameterTraits<DialogueId>::tag) const {
     return dialogueId_.get();
@@ -65,7 +65,7 @@ namespace adm {
     return language_ != boost::none;
   }
   bool AudioContent::has(detail::ParameterTraits<LoudnessMetadatas>::tag) const {
-    return loudnessMetadatas_ != boost::none;
+    return !loudnessMetadatas_.empty();
   }
   bool AudioContent::has(detail::ParameterTraits<DialogueId>::tag) const {
     return dialogueId_ != boost::none;
@@ -149,7 +149,7 @@ namespace adm {
     language_ = boost::none;
   }
   void AudioContent::unset(detail::ParameterTraits<LoudnessMetadatas>::tag) {
-    loudnessMetadatas_ = boost::none;
+    loudnessMetadatas_.clear();
   }
   void AudioContent::unset(detail::ParameterTraits<DialogueId>::tag) {
     dialogueId_ = boost::none;
@@ -201,17 +201,15 @@ namespace adm {
 
     // ---- Add ---- //
   void AudioContent::add(LoudnessMetadata loudnessMetadata) {
-    if (!loudnessMetadatas_)
-      loudnessMetadatas_ = LoudnessMetadatas();
-    loudnessMetadatas_.get().push_back(loudnessMetadata);
+    loudnessMetadatas_.push_back(loudnessMetadata);
   }
 
   // ---- Remove ---- //
   void AudioContent::remove(LoudnessMetadata loudnessMetadata) {
     auto it =
-        std::find(loudnessMetadatas_.get().begin(), loudnessMetadatas_.get().end(), loudnessMetadata);
-    if (it != loudnessMetadatas_.get().end()) {
-      loudnessMetadatas_.get().erase(it);
+        std::find(loudnessMetadatas_.begin(), loudnessMetadatas_.end(), loudnessMetadata);
+    if (it != loudnessMetadatas_.end()) {
+      loudnessMetadatas_.erase(it);
     }
   }
 
