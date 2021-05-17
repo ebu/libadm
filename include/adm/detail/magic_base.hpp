@@ -54,15 +54,9 @@ namespace adm {
     };
 
     /// a subclass of Base, with using declarations for set, get and has in A
-    /// and B if defined_in_both
-    template <typename A, typename B, bool defined_in_both, typename Base>
-    struct CombineGetSetHas;
-
+    /// and B
     template <typename A, typename B, typename Base>
-    struct CombineGetSetHas<A, B, false, Base> : public Base {};
-
-    template <typename A, typename B, typename Base>
-    struct CombineGetSetHas<A, B, true, Base> : public Base {
+    struct CombineGetSetHas : public Base {
       using A::get;
       using B::get;
 
@@ -74,21 +68,38 @@ namespace adm {
     };
 
     /// a subclass of Base, with using declarations for isDefault and unset in A
-    /// and B if defined_in_both
-    template <typename A, typename B, bool defined_in_both, typename Base>
-    struct CombineIsDefaultUnset;
-
+    /// and B
     template <typename A, typename B, typename Base>
-    struct CombineIsDefaultUnset<A, B, false, Base> : public Base {};
-
-    template <typename A, typename B, typename Base>
-    struct CombineIsDefaultUnset<A, B, true, Base> : public Base {
+    struct CombineIsDefaultUnset : public Base {
       using A::isDefault;
       using B::isDefault;
 
       using A::unset;
       using B::unset;
     };
+
+    /// Combine A and B using F is defined_in_both
+    template <bool defined_in_both,
+              template <typename A, typename B, typename Base> class F,
+              typename A, typename B, typename Base>
+    struct ApplyIfT;
+
+    template <template <typename A, typename B, typename Base> class F,
+              typename A, typename B, typename Base>
+    struct ApplyIfT<false, F, A, B, Base> {
+      using type = Base;
+    };
+
+    template <template <typename A, typename B, typename Base> class F,
+              typename A, typename B, typename Base>
+    struct ApplyIfT<true, F, A, B, Base> {
+      using type = F<A, B, Base>;
+    };
+
+    template <bool defined_in_both,
+              template <typename A, typename B, typename Base> class F,
+              typename A, typename B, typename Base>
+    using ApplyIf = typename ApplyIfT<defined_in_both, F, A, B, Base>::type;
 
     /// subclass of A and B
     template <typename A, typename B>
@@ -97,11 +108,10 @@ namespace adm {
     /// a subclass of A and B, with methods according to their Flags
     template <typename A, typename B>
     struct Combine
-        : public CombineGetSetHas<
-              A, B, A::has_get_set_has && B::has_get_set_has,
-              CombineIsDefaultUnset<
-                  A, B, A::has_isDefault_unset && B::has_isDefault_unset,
-                  CombineRaw<A, B>>> {
+        : public ApplyIf<
+              A::has_get_set_has && B::has_get_set_has, CombineGetSetHas, A, B,
+              ApplyIf<A::has_isDefault_unset && B::has_isDefault_unset,
+                      CombineIsDefaultUnset, A, B, CombineRaw<A, B>>> {
       static constexpr bool has_get_set_has =
           A::has_get_set_has || B::has_get_set_has;
       static constexpr bool has_isDefault_unset =
