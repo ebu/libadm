@@ -1,5 +1,7 @@
 include(${PROJECT_SOURCE_DIR}/submodules/catch2.cmake)
 
+list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
+
 # --- unit tests ---
 function(add_adm_test name)
   add_executable(${name} ${name}.cpp)
@@ -13,8 +15,12 @@ function(add_adm_test name)
   )
   add_test(
     NAME ${name}
-    COMMAND $<TARGET_FILE:${name}>
     WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/test_data"
+    COMMAND ${CMAKE_COMMAND} 
+		-DTESTEXE=$<TARGET_FILE:${name}>
+		-DTESTEXEDIR=$<TARGET_FILE_DIR:${name}>
+		-DADMLIB=$<TARGET_FILE:adm>
+		-P ${CMAKE_CURRENT_SOURCE_DIR}/runtest.cmake
   )
 endfunction()
 
