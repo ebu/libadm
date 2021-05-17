@@ -72,3 +72,29 @@ TEST_CASE("Write fully specified ") {
     CHECK_THAT(xml, EqualsXmlFile("write_specified_cartesian_speaker"));
   }
 }
+
+TEST_CASE("Write partially specified  ") {
+  auto doc = Document::create();
+  auto channelFormat = AudioChannelFormat::create(
+      AudioChannelFormatName("Test"), TypeDefinition::OBJECTS);
+  doc->add(channelFormat);
+  SECTION("Spherical Object block ") {
+    auto blockFormat = AudioBlockFormatObjects(
+        SphericalPosition{Azimuth(60.0f), Elevation(30.0f)},
+        Rtime(std::chrono::seconds{1}), Duration(std::chrono::seconds{1}));
+    channelFormat->add(blockFormat);
+    auto xml = getXml(doc);
+    REQUIRE(!xml.empty());
+    CHECK_THAT(xml, EqualsXmlFile("write_partially_specified_spherical"));
+  }
+
+  SECTION("Cartesian Object block ") {
+    auto blockFormat = AudioBlockFormatObjects(
+        CartesianPosition{X(0.0f), Y(0.0f)}, Rtime(std::chrono::seconds{1}),
+        Duration(std::chrono::seconds{1}));
+    channelFormat->add(blockFormat);
+    auto xml = getXml(doc);
+    REQUIRE(!xml.empty());
+    CHECK_THAT(xml, EqualsXmlFile("write_partially_specified_cartesian"));
+  }
+}
