@@ -13,6 +13,11 @@ function(add_adm_test name)
   target_include_directories(${name} PRIVATE
     ${PROJECT_SOURCE_DIR}/submodules
   )
+  if(${BUILD_SHARED_LIBS})
+    add_custom_command(TARGET ${name} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:adm>" "$<TARGET_FILE_DIR:${name}>"
+    )
+  endif()
   add_test(
     NAME ${name}
     WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/test_data"
