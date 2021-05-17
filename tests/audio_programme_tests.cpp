@@ -12,7 +12,7 @@ TEST_CASE("audio_programme") {
     audioProgramme->set(AudioProgrammeLanguage("de"));
     audioProgramme->set(Start(std::chrono::seconds(0)));
     audioProgramme->set(End(std::chrono::seconds(10)));
-    audioProgramme->set(LoudnessMetadata());
+    audioProgramme->add(LoudnessMetadata());
     audioProgramme->set(MaxDuckingDepth(-30));
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // audioProgramme->set(AudioProgrammeReferenceScreen());
@@ -22,7 +22,7 @@ TEST_CASE("audio_programme") {
     REQUIRE(audioProgramme->has<AudioProgrammeLanguage>());
     REQUIRE(audioProgramme->has<Start>());
     REQUIRE(audioProgramme->has<End>());
-    REQUIRE(audioProgramme->has<LoudnessMetadata>());
+    REQUIRE(audioProgramme->has<LoudnessMetadatas>());
     REQUIRE(audioProgramme->has<MaxDuckingDepth>());
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // REQUIRE(audioProgramme->has<AudioProgrammeReferenceScreen>());
@@ -41,7 +41,7 @@ TEST_CASE("audio_programme") {
     audioProgramme->unset<AudioProgrammeLanguage>();
     audioProgramme->unset<Start>();
     audioProgramme->unset<End>();
-    audioProgramme->unset<LoudnessMetadata>();
+    audioProgramme->unset<LoudnessMetadatas>();
     audioProgramme->unset<MaxDuckingDepth>();
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // audioProgramme->unset<AudioProgrammeReferenceScreen>();
@@ -49,7 +49,7 @@ TEST_CASE("audio_programme") {
     REQUIRE(!audioProgramme->has<AudioProgrammeLanguage>());
     REQUIRE(audioProgramme->has<Start>());
     REQUIRE(!audioProgramme->has<End>());
-    REQUIRE(!audioProgramme->has<LoudnessMetadata>());
+    REQUIRE(!audioProgramme->has<LoudnessMetadatas>());
     REQUIRE(!audioProgramme->has<MaxDuckingDepth>());
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // REQUIRE(!audioProgramme->has<AudioProgrammeReferenceScreen>());
