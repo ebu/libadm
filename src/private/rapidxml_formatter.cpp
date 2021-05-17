@@ -58,7 +58,7 @@ namespace adm {
       node.addOptionalAttribute<End>(programme, "end");
       node.addOptionalAttribute<MaxDuckingDepth>(programme, "maxDuckingDepth");
       node.addReferences<AudioContent, AudioContentId>(programme, "audioContentIDRef");
-      node.addOptionalElement<LoudnessMetadata>(programme, "loudnessMetadata", &formatLoudnessMetadata);
+      node.addOptionalMultiElement<LoudnessMetadatas>(programme, "loudnessMetadata", &formatLoudnessMetadatas);
       // clang-format on
     }
 

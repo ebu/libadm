@@ -146,7 +146,7 @@ namespace adm {
       setOptionalAttribute<End>(node, "end", audioProgramme, &parseTimecode);
       setOptionalAttribute<MaxDuckingDepth>(node, "maxDuckingDepth", audioProgramme);
 
-      setOptionalElement<LoudnessMetadata>(node, "loudnessMetadata", audioProgramme, &parseLoudnessMetadata);
+      setOptionalMultiElement<LoudnessMetadatas>(node, "loudnessMetadata", audioProgramme, &parseLoudnessMetadatas);
       setOptionalElement<AudioProgrammeReferenceScreen>(node, "audioProgrammeReferenceScreen", audioProgramme, &parseAudioProgrammeReferenceScreen);
 
       addOptionalReferences<AudioContentId>(node, "audioContentIDRef", audioProgramme, programmeContentRefs_, &parseAudioContentId);
