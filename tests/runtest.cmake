@@ -1,8 +1,11 @@
 if(${BUILD_SHARED_LIBS})
-	file(COPY ${ADMLIB} DESTINATION ${TESTEXEDIR})
+	execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${ADMLIB} ${TESTEXEDIR} RESULT_VARIABLE CMD_RESULT)
+	if(CMD_RESULT)
+		message(FATAL_ERROR "Error performing shared lib copy: \n${CMD_RESULT}: \n${RESULT_VARIABLE}:")
+	endif()
 endif()
 
 execute_process(COMMAND ${TESTEXE} RESULT_VARIABLE CMD_RESULT)
 if(CMD_RESULT)
-	message(FATAL_ERROR "Error running ${CMD}")
+	message(FATAL_ERROR "Error running ${TESTEXE}: \n${CMD_RESULT}: \n${RESULT_VARIABLE}:")
 endif()
