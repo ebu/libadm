@@ -17,16 +17,25 @@ function(add_adm_test name)
     add_custom_command(TARGET ${name} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:adm>" "$<TARGET_FILE_DIR:${name}>"
     )
+    add_test(
+      NAME ${name}
+      WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/test_data"
+      COMMAND ${CMAKE_COMMAND} 
+	    -DTEST_EXE=$<TARGET_FILE:${name}>
+	    -DTEST_EXE_DIR=$<TARGET_FILE_DIR:${name}>
+	    -DADM_SHARED_LIB=$<TARGET_FILE:adm>
+	    -P ${CMAKE_CURRENT_SOURCE_DIR}/runtest.cmake
+      )
+  else()
+    add_test(
+      NAME ${name}
+      WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/test_data"
+      COMMAND ${CMAKE_COMMAND} 
+	    -DTEST_EXE=$<TARGET_FILE:${name}>
+	    -DTEST_EXE_DIR=$<TARGET_FILE_DIR:${name}>
+	    -P ${CMAKE_CURRENT_SOURCE_DIR}/runtest.cmake
+      )
   endif()
-  add_test(
-    NAME ${name}
-    WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/test_data"
-    COMMAND ${CMAKE_COMMAND} 
-		-DTESTEXE=$<TARGET_FILE:${name}>
-		-DTESTEXEDIR=$<TARGET_FILE_DIR:${name}>
-		-DADMLIB=$<TARGET_FILE:adm>
-		-P ${CMAKE_CURRENT_SOURCE_DIR}/runtest.cmake
-  )
 endfunction()
 
 # copy test files so unit test can find them relative to their running location
