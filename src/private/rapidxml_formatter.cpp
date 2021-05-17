@@ -82,7 +82,7 @@ namespace adm {
     }
 
     void formatLoudnessMetadatas(XmlNode &node, const std::string &name,
-                                 const LoudnessMetadatas loudnessMetadatas) {
+                                 const LoudnessMetadatas &loudnessMetadatas) {
       for (const auto &loudnessMetadata : loudnessMetadatas) {
         auto loudnessMetadataNode = node.addNode(name);
         formatLoudnessMetadata(loudnessMetadataNode, loudnessMetadata);
