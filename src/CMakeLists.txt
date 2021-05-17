@@ -48,6 +48,7 @@ add_library(adm
   elements/loudness_metadata.cpp
   elements/object_divergence.cpp
   elements/position.cpp
+  elements/position_offset.cpp
   elements/position_interaction_range.cpp
   elements/screen_edge_lock.cpp
   elements/speaker_position.cpp
