@@ -3,7 +3,6 @@
 #include <algorithm>
 
 namespace adm {
-
   namespace {
     const Rtime rtimeDefault{std::chrono::seconds(0)};
   }

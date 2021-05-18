@@ -31,6 +31,7 @@
 						<objectDivergence azimuthRange="45.000000" positionRange="0.000000">0.000000</objectDivergence>
 						<jumpPosition interpolationLength="0.00000">1</jumpPosition>
 						<screenRef>0</screenRef>
+						<headphoneVirtualise bypass="0" DRR="130.000000"/>
 						<importance>10</importance>
 					</audioBlockFormat>
 					<audioBlockFormat audioBlockFormatID="AB_00031001_00000002" rtime="00:00:03.000000000">
@@ -47,6 +48,7 @@
 						<objectDivergence azimuthRange="45.000000" positionRange="0.000000">0.000000</objectDivergence>
 						<jumpPosition interpolationLength="1.00000">1</jumpPosition>
 						<screenRef>0</screenRef>
+						<headphoneVirtualise bypass="0" DRR="130.000000"/>
 						<importance>10</importance>
 					</audioBlockFormat>
 					<audioBlockFormat audioBlockFormatID="AB_00031001_00000003" rtime="00:00:06.000000000">
@@ -63,6 +65,7 @@
 						<objectDivergence azimuthRange="45.000000" positionRange="0.000000">0.000000</objectDivergence>
 						<jumpPosition interpolationLength="0.00000">0</jumpPosition>
 						<screenRef>0</screenRef>
+						<headphoneVirtualise bypass="0" DRR="130.000000"/>
 						<importance>10</importance>
 					</audioBlockFormat>
 					<audioBlockFormat audioBlockFormatID="AB_00031001_00000004" rtime="00:00:09.000000000">
@@ -79,6 +82,7 @@
 						<objectDivergence azimuthRange="45.000000" positionRange="0.000000">0.000000</objectDivergence>
 						<jumpPosition interpolationLength="0.00000">0</jumpPosition>
 						<screenRef>0</screenRef>
+						<headphoneVirtualise bypass="0" DRR="130.000000"/>
 						<importance>10</importance>
 					</audioBlockFormat>
 				</audioChannelFormat>

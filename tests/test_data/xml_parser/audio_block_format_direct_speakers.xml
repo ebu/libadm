@@ -9,6 +9,7 @@
             <position coordinate="azimuth">30.0</position>
             <position coordinate="elevation">0.0</position>
             <position coordinate="distance">1.0</position>
+            <headphoneVirtualise bypass="0" DRR="60" />
           </audioBlockFormat>
         </audioChannelFormat>
       </audioFormatExtended>"

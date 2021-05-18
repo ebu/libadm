@@ -1,7 +1,6 @@
 #include "adm/elements/audio_block_format_matrix.hpp"
 
 namespace adm {
-
   namespace {
     const Rtime rtimeDefault{std::chrono::seconds(0)};
   }

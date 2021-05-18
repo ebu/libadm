@@ -57,7 +57,8 @@ namespace adm {
                       DefaultParameter<Rtime>, OptionalParameter<Duration>,
                       DefaultParameter<Width>, DefaultParameter<Height>,
                       DefaultParameter<Depth>, DefaultParameter<Diffuse>,
-                      DefaultParameter<Gain>, DefaultParameter<Importance>>;
+                      DefaultParameter<Gain>, DefaultParameter<Importance>,
+                      DefaultParameter<HeadphoneVirtualise>>;
   }  // namespace detail
 
   /**
