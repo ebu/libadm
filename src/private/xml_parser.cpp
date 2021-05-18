@@ -216,9 +216,9 @@ namespace adm {
         auto bound =
             parseAttribute<GainInteractionBoundValue>(element, "bound");
         if (bound.get() == "min") {
-          setValue<GainInteractionMin>(element, gainInteraction);
+          gainInteraction.set(GainInteractionMin(parseGain(element)));
         } else if (bound.get() == "max") {
-          setValue<GainInteractionMax>(element, gainInteraction);
+          gainInteraction.set(GainInteractionMax(parseGain(element)));
         }
       }
       return gainInteraction;

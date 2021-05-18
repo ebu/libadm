@@ -8,13 +8,13 @@ TEST_CASE("gain_interaction_range") {
   REQUIRE(gainRange.has<GainInteractionMin>() == false);
   REQUIRE(gainRange.has<GainInteractionMax>() == false);
 
-  gainRange.set(GainInteractionMin(0.5f));
-  gainRange.set(GainInteractionMax(1.5f));
+  gainRange.set(GainInteractionMin(Gain::fromLinear(0.5f)));
+  gainRange.set(GainInteractionMax(Gain::fromLinear(1.5f)));
 
   REQUIRE(gainRange.has<GainInteractionMin>() == true);
   REQUIRE(gainRange.has<GainInteractionMax>() == true);
-  REQUIRE(gainRange.get<GainInteractionMin>() == Approx(0.5f));
-  REQUIRE(gainRange.get<GainInteractionMax>() == Approx(1.5f));
+  REQUIRE(gainRange.get<GainInteractionMin>().get().asLinear() == Approx(0.5f));
+  REQUIRE(gainRange.get<GainInteractionMax>().get().asLinear() == Approx(1.5f));
 
   gainRange.unset<GainInteractionMin>();
   gainRange.unset<GainInteractionMax>();

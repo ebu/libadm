@@ -13,7 +13,8 @@ TEST_CASE("write_audio_object_interaction") {
   audioObjectSpherical->set(Interact(true));
   audioObjectSpherical->set(AudioObjectInteraction(
       OnOffInteract(true), GainInteract(true), PositionInteract(true),
-      GainInteractionRange(GainInteractionMin(0.5f), GainInteractionMax(1.5f)),
+      GainInteractionRange(GainInteractionMin(Gain::fromLinear(0.5)),
+                           GainInteractionMax(Gain::fromLinear(1.5))),
       PositionInteractionRange(
           AzimuthInteractionMin(-30.f), ElevationInteractionMin(-45.f),
           DistanceInteractionMin(0.5f), AzimuthInteractionMax(30.f),
@@ -23,7 +24,8 @@ TEST_CASE("write_audio_object_interaction") {
   audioObjectCartesian->set(Interact(true));
   audioObjectCartesian->set(AudioObjectInteraction(
       OnOffInteract(true), GainInteract(true), PositionInteract(true),
-      GainInteractionRange(GainInteractionMin(0.5f), GainInteractionMax(1.5f)),
+      GainInteractionRange(GainInteractionMin(Gain::fromLinear(0.5)),
+                           GainInteractionMax(Gain::fromLinear(1.5))),
       PositionInteractionRange(XInteractionMin(-1.f), YInteractionMin(-1.f),
                                ZInteractionMin(-1.f), XInteractionMax(1.f),
                                YInteractionMax(1.f), ZInteractionMax(1.f))));

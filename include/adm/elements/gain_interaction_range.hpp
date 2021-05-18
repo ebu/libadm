@@ -8,6 +8,7 @@
 #include "adm/elements/position_types.hpp"
 #include "adm/elements/screen_edge_lock.hpp"
 #include "adm/detail/type_traits.hpp"
+#include "adm/elements/gain.hpp"
 #include "adm/export.h"
 #ifndef M_PI
 #define M_PI 3.14159265359f
@@ -17,11 +18,11 @@ namespace adm {
 
   struct GainInteractionMinTag {};
   /// @brief NamedType for the minimum gain parameter
-  using GainInteractionMin = detail::NamedType<float, GainInteractionMinTag>;
+  using GainInteractionMin = detail::NamedType<Gain, GainInteractionMinTag>;
   /// @brief Tag for NamedType ::GainInteractionMax
   struct GainInteractionMaxTag {};
   /// @brief NamedType for the maximum gain parameter
-  using GainInteractionMax = detail::NamedType<float, GainInteractionMaxTag>;
+  using GainInteractionMax = detail::NamedType<Gain, GainInteractionMaxTag>;
 
   /// @brief Tag for NamedType ::GainInteractionBoundValue
   struct GainInteractionBoundValueTag {};

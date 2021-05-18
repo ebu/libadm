@@ -56,8 +56,10 @@ TEST_CASE("xml_parser/audio_object_interaction") {
   auto gain_interaction_0 = interaction_0.get<GainInteractionRange>();
   REQUIRE(gain_interaction_0.has<GainInteractionMin>() == true);
   REQUIRE(gain_interaction_0.has<GainInteractionMax>() == true);
-  REQUIRE(gain_interaction_0.get<GainInteractionMin>() == Approx(0.5f));
-  REQUIRE(gain_interaction_0.get<GainInteractionMax>() == Approx(1.5f));
+  REQUIRE(gain_interaction_0.get<GainInteractionMin>().get().asLinear() ==
+          Approx(0.5f));
+  REQUIRE(gain_interaction_0.get<GainInteractionMax>().get().asLinear() ==
+          Approx(1.5f));
   REQUIRE(interaction_0.has<PositionInteractionRange>() == true);
   auto position_interaction_0 = interaction_0.get<PositionInteractionRange>();
   REQUIRE(position_interaction_0.has<AzimuthInteractionMin>() == true);
@@ -86,8 +88,10 @@ TEST_CASE("xml_parser/audio_object_interaction") {
   auto gain_interaction_1 = interaction_1.get<GainInteractionRange>();
   REQUIRE(gain_interaction_1.has<GainInteractionMin>() == true);
   REQUIRE(gain_interaction_1.has<GainInteractionMax>() == true);
-  REQUIRE(gain_interaction_1.get<GainInteractionMin>() == Approx(0.5f));
-  REQUIRE(gain_interaction_1.get<GainInteractionMax>() == Approx(1.5f));
+  REQUIRE(gain_interaction_1.get<GainInteractionMin>().get().asLinear() ==
+          Approx(0.5f));
+  REQUIRE(gain_interaction_1.get<GainInteractionMax>().get().asLinear() ==
+          Approx(1.5f));
   REQUIRE(interaction_1.has<PositionInteractionRange>() == true);
   auto position_interaction_1 = interaction_1.get<PositionInteractionRange>();
   REQUIRE(position_interaction_1.has<XInteractionMin>() == true);
