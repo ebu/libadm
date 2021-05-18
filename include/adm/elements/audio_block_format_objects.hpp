@@ -9,7 +9,7 @@
 #include "adm/elements/position.hpp"
 #include "adm/elements/private/common_parameters.hpp"
 #include "adm/elements_fwd.hpp"
-#include "adm/detail/magic_base.hpp"
+#include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
@@ -46,18 +46,18 @@ namespace adm {
 
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
-        RequiredBase<AudioBlockFormatId>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Width>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Height>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Depth>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<Diffuse>;
+        RequiredParameter<AudioBlockFormatId>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Width>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Height>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Depth>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Diffuse>;
 
     using AudioBlockFormatObjectsBase =
-        CombineBase<RequiredBase<AudioBlockFormatId>, DefaultedBase<Rtime>,
-                    OptionalBase<Duration>, DefaultedBase<Width>,
-                    DefaultedBase<Height>, DefaultedBase<Depth>,
-                    DefaultedBase<Diffuse>, DefaultedBase<Gain>,
-                    DefaultedBase<Importance>>;
+        HasParameters<RequiredParameter<AudioBlockFormatId>,
+                      DefaultParameter<Rtime>, OptionalParameter<Duration>,
+                      DefaultParameter<Width>, DefaultParameter<Height>,
+                      DefaultParameter<Depth>, DefaultParameter<Diffuse>,
+                      DefaultParameter<Gain>, DefaultParameter<Importance>>;
   }  // namespace detail
 
   /**

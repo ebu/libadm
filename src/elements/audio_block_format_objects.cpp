@@ -11,11 +11,11 @@ namespace adm {
   }  // namespace
 
   namespace detail {
-    template class RequiredBase<AudioBlockFormatId>;
-    template class DefaultedBase<Width>;
-    template class DefaultedBase<Height>;
-    template class DefaultedBase<Depth>;
-    template class DefaultedBase<Diffuse>;
+    template class RequiredParameter<AudioBlockFormatId>;
+    template class DefaultParameter<Width>;
+    template class DefaultParameter<Height>;
+    template class DefaultParameter<Depth>;
+    template class DefaultParameter<Diffuse>;
   }  // namespace detail
 
   // ---- Getter ---- //

@@ -2,11 +2,11 @@
 
 namespace adm {
   namespace detail {
-    template class DefaultedBase<Gain>;
+    template class DefaultParameter<Gain>;
 
-    template class DefaultedBase<Importance>;
+    template class DefaultParameter<Importance>;
 
-    template class DefaultedBase<Rtime>;
-    template class OptionalBase<Duration>;
+    template class DefaultParameter<Rtime>;
+    template class OptionalParameter<Duration>;
   }  // namespace detail
 }  // namespace adm

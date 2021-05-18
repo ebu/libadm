@@ -1,4 +1,5 @@
 #pragma once
+#include "adm/detail/auto_base_detail.hpp"
 #include "adm/detail/type_traits.hpp"
 #include "adm/export.h"
 #include "boost/optional.hpp"
@@ -10,15 +11,15 @@ namespace adm {
     // the parameter, so for example only optional parameters have isDefault
     // and unset methods.
     //
-    // We define some classes below like RequiredBase and DefaultedBase which
-    // define these methods automatically for given parameter types. To use
-    // these, they need to be combined together in such a way that all the
+    // We define some classes below like RequiredParameter and DefaultParameter
+    // which define these methods automatically for given parameter types. To
+    // use these, they need to be combined together in such a way that all the
     // methods for all the parameters we want to define are available in one
     // overload set.
     //
     // This is done using multiple inheritance: given a set of *Base classes,
-    // we can make a derived class using CombineBase which inherits from all of
-    // them.
+    // we can make a derived class using HasParameters which inherits from all
+    // of them.
     //
     // The problem this presents is that the derived class needs a using
     // declaration pointing to each method in the base classes, in order to
@@ -37,15 +38,16 @@ namespace adm {
     // combining A and B we have an inheritance hierarchy like:
     //
     // Combine<A, B>
-    //  -> CombineGetSetHas<A, B, X>
-    //      -> CombineIsDefaultUnset<A, B, Y>
+    //  -> ApplyIf<CombineGetSetHas<A, B>, X>
+    //      -> ApplyIf<CombineIsDefaultUnset<A, B>, Y>
     //          -> CombineRaw<A, B>
     //              -> A
     //              -> B
     //
-    // where X and Y are the flags controlling the specialisations of Combine*
+    // where X and Y are the flags controlling whether Combine* is applied or
+    // not.
     //
-    // Combine is used by CombineBase, which recursively combines many *Base
+    // Combine is used by HasParameters, which recursively combines many *Base
     // classes.
 
     struct Flags {
@@ -78,33 +80,6 @@ namespace adm {
       using B::unset;
     };
 
-    /// Combine A and B using F is defined_in_both
-    template <bool defined_in_both,
-              template <typename A, typename B, typename Base> class F,
-              typename A, typename B, typename Base>
-    struct ApplyIfT;
-
-    template <template <typename A, typename B, typename Base> class F,
-              typename A, typename B, typename Base>
-    struct ApplyIfT<false, F, A, B, Base> {
-      using type = Base;
-    };
-
-    template <template <typename A, typename B, typename Base> class F,
-              typename A, typename B, typename Base>
-    struct ApplyIfT<true, F, A, B, Base> {
-      using type = F<A, B, Base>;
-    };
-
-    template <bool defined_in_both,
-              template <typename A, typename B, typename Base> class F,
-              typename A, typename B, typename Base>
-    using ApplyIf = typename ApplyIfT<defined_in_both, F, A, B, Base>::type;
-
-    /// subclass of A and B
-    template <typename A, typename B>
-    struct CombineRaw : public A, public B {};
-
     /// a subclass of A and B, with methods according to their Flags
     template <typename A, typename B>
     struct Combine
@@ -119,24 +94,25 @@ namespace adm {
     };
 
     /// make a class derived from the given base classes, combining the
-    /// get,set,has,isDefault and unset overloads
+    /// get, set, has, isDefault and unset overloads
     template <typename B, typename... BTail>
-    struct CombineBase : public Combine<B, CombineBase<BTail...>> {};
+    struct HasParameters : public Combine<B, HasParameters<BTail...>> {};
 
     template <typename B>
-    struct CombineBase<B> : public B {};
+    struct HasParameters<B> : public B {};
 
-    /// get the default value of T parameters
+    /// Get the default value of T parameters. Specialise this to add custom
+    /// defaults.
     template <typename T>
     T getDefault() {
       return T{};
     }
 
     /// base class with set/get/has methods for a required parameter of type T
-    /// combine these together using CombineBase
+    /// combine these together using HasParameters
     template <typename T,
               typename Tag = typename detail::ParameterTraits<T>::tag>
-    class RequiredBase : public Flags {
+    class RequiredParameter : public Flags {
      public:
       static constexpr bool has_get_set_has = true;
 
@@ -150,10 +126,10 @@ namespace adm {
 
     /// base class with set/get/has/isDefault/unset methods for an optional
     /// parameter of type T with no default. combine these together using
-    /// CombineBase
+    /// HasParameters
     template <typename T,
               typename Tag = typename detail::ParameterTraits<T>::tag>
-    class OptionalBase : public Flags {
+    class OptionalParameter : public Flags {
      public:
       static constexpr bool has_get_set_has = true;
       static constexpr bool has_isDefault_unset = true;
@@ -170,10 +146,10 @@ namespace adm {
 
     /// base class with set/get/has/isDefault/unset methods for an optional
     /// parameter of type T, which has a default provided by DefaultParameter.
-    /// combine these together using CombineBase
+    /// combine these together using HasParameters
     template <typename T,
               typename Tag = typename detail::ParameterTraits<T>::tag>
-    class DefaultedBase : public Flags {
+    class DefaultParameter : public Flags {
      public:
       static constexpr bool has_get_set_has = true;
       static constexpr bool has_isDefault_unset = true;
@@ -189,6 +165,5 @@ namespace adm {
      private:
       boost::optional<T> value_;
     };
-
   }  // namespace detail
 }  // namespace adm
