@@ -4,6 +4,7 @@
 #include "adm/elements/private/auto_parent.hpp"
 #include "adm/utilities/element_io.hpp"
 #include "adm/utilities/id_assignment.hpp"
+#include "adm/errors.hpp"
 
 namespace adm {
 
@@ -62,6 +63,13 @@ namespace adm {
           "AudioTrackUid cannot refer to an AudioTrackFormat in a different "
           "document");
     }
+
+    if (audioChannelFormat_ != nullptr) {
+      throw adm::error::AudioTrackUidMutuallyExclusiveReferences(
+          audioChannelFormat_->get<AudioChannelFormatId>(),
+          trackFormat->get<AudioTrackFormatId>());
+    }
+
     audioTrackFormat_ = trackFormat;
   }
 
@@ -76,9 +84,32 @@ namespace adm {
     audioPackFormat_ = packFormat;
   }
 
+  void AudioTrackUid::setReference(
+      std::shared_ptr<AudioChannelFormat> channelFormat) {
+    autoParent(shared_from_this(), channelFormat);
+    if (getParent().lock() != channelFormat->getParent().lock()) {
+      throw std::runtime_error(
+          "AudioTrackUid cannot refer to an AudioChannelFormat in a different "
+          "document");
+    }
+
+    if (audioTrackFormat_ != nullptr) {
+      throw adm::error::AudioTrackUidMutuallyExclusiveReferences(
+          channelFormat->get<AudioChannelFormatId>(),
+          audioTrackFormat_->get<AudioTrackFormatId>());
+    }
+
+    audioChannelFormat_ = channelFormat;
+  }
+
   std::shared_ptr<const AudioTrackFormat> AudioTrackUid::getReference(
       detail::ParameterTraits<AudioTrackFormat>::tag) const {
     return audioTrackFormat_;
+  }
+
+  std::shared_ptr<const AudioChannelFormat> AudioTrackUid::getReference(
+      detail::ParameterTraits<AudioChannelFormat>::tag) const {
+    return audioChannelFormat_;
   }
 
   std::shared_ptr<const AudioPackFormat> AudioTrackUid::getReference(
@@ -91,6 +122,11 @@ namespace adm {
     return audioTrackFormat_;
   }
 
+  std::shared_ptr<AudioChannelFormat> AudioTrackUid::getReference(
+      detail::ParameterTraits<AudioChannelFormat>::tag) {
+    return audioChannelFormat_;
+  }
+
   std::shared_ptr<AudioPackFormat> AudioTrackUid::getReference(
       detail::ParameterTraits<AudioPackFormat>::tag) {
     return audioPackFormat_;
@@ -98,12 +134,18 @@ namespace adm {
 
   void AudioTrackUid::disconnectReferences() {
     removeReference<AudioTrackFormat>();
+    removeReference<AudioChannelFormat>();
     removeReference<AudioPackFormat>();
   }
 
   void AudioTrackUid::removeReference(
       detail::ParameterTraits<AudioTrackFormat>::tag) {
     audioTrackFormat_ = nullptr;
+  }
+
+  void AudioTrackUid::removeReference(
+      detail::ParameterTraits<AudioChannelFormat>::tag) {
+    audioChannelFormat_ = nullptr;
   }
 
   void AudioTrackUid::removeReference(

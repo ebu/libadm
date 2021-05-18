@@ -89,30 +89,28 @@ namespace adm {
       return false;
     }
   }
-  bool Document::add(
-          std::shared_ptr<AudioPackFormat> packFormat
-          ) {
-      if (packFormat->getParent().lock() &&
-          packFormat->getParent().lock() != shared_from_this()) {
-        throw std::runtime_error(
-            "AudioPackFormat already belongs to another Document");
+  bool Document::add(std::shared_ptr<AudioPackFormat> packFormat) {
+    if (packFormat->getParent().lock() &&
+        packFormat->getParent().lock() != shared_from_this()) {
+      throw std::runtime_error(
+          "AudioPackFormat already belongs to another Document");
+    }
+    auto it = std::find(audioPackFormats_.begin(), audioPackFormats_.end(),
+                        packFormat);
+    if (it == audioPackFormats_.end()) {
+      idAssigner_.assignId(*packFormat);
+      AudioPackFormatAttorney::setParent(packFormat, shared_from_this());
+      audioPackFormats_.push_back(packFormat);
+      for (auto& reference : packFormat->getReferences<AudioPackFormat>()) {
+        add(reference);
       }
-      auto it = std::find(audioPackFormats_.begin(), audioPackFormats_.end(),
-                          packFormat);
-      if (it == audioPackFormats_.end()) {
-        idAssigner_.assignId(*packFormat);
-        AudioPackFormatAttorney::setParent(packFormat, shared_from_this());
-        audioPackFormats_.push_back(packFormat);
-        for (auto& reference : packFormat->getReferences<AudioPackFormat>()) {
-          add(reference);
-        }
-        for (auto& reference : packFormat->getReferences<AudioChannelFormat>()) {
-          add(reference);
-        }
-        return true;
-      } else {
-        return false;
+      for (auto& reference : packFormat->getReferences<AudioChannelFormat>()) {
+        add(reference);
       }
+      return true;
+    } else {
+      return false;
+    }
   }
 
   bool Document::add(std::shared_ptr<AudioChannelFormat> channelFormat) {
@@ -216,6 +214,10 @@ namespace adm {
       if (audioPackFormat) {
         add(audioPackFormat);
       }
+      auto audioChannelFormat = trackUid->getReference<AudioChannelFormat>();
+      if (audioChannelFormat) {
+        add(audioChannelFormat);
+      }
       return true;
     } else {
       return false;
@@ -298,6 +300,12 @@ namespace adm {
         if (audioStreamFormat->getReference<AudioChannelFormat>() ==
             channelFormat) {
           audioStreamFormat->removeReference<AudioChannelFormat>();
+        }
+      }
+      for (auto& audioTrackUid : audioTrackUids_) {
+        if (audioTrackUid->getReference<AudioChannelFormat>() ==
+            channelFormat) {
+          audioTrackUid->removeReference<AudioChannelFormat>();
         }
       }
       return true;

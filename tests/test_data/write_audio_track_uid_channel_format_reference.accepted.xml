@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioPackFormat audioPackFormatID="AP_00011001" audioPackFormatName="MyPackFormat" typeLabel="0001" typeDefinition="DirectSpeakers"/>
+				<audioChannelFormat audioChannelFormatID="AC_00011001" audioChannelFormatName="MyChannelFormat" typeLabel="0001" typeDefinition="DirectSpeakers"/>
+				<audioTrackFormat audioTrackFormatID="AT_00001001_01" audioTrackFormatName="MyTrackFormat" formatLabel="0001" formatDefinition="PCM"/>
+				<audioTrackUID UID="ATU_00000001">
+					<audioChannelFormatIDRef>AC_00011001</audioChannelFormatIDRef>
+					<audioPackFormatIDRef>AP_00011001</audioPackFormatIDRef>
+				</audioTrackUID>
+				<audioTrackUID UID="ATU_00000002">
+					<audioTrackFormatIDRef>AT_00001001_01</audioTrackFormatIDRef>
+					<audioPackFormatIDRef>AP_00011001</audioPackFormatIDRef>
+				</audioTrackUID>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+

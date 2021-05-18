@@ -587,6 +587,8 @@ namespace adm {
       node.addOptionalAttribute<BitDepth>(trackUid, "bitDepth");
       node.addOptionalReference<AudioTrackFormat, AudioTrackFormatId>(
           trackUid, "audioTrackFormatIDRef");
+      node.addOptionalReference<AudioChannelFormat, AudioChannelFormatId>(
+          trackUid, "audioChannelFormatIDRef");
       node.addOptionalReference<AudioPackFormat, AudioPackFormatId>(
           trackUid, "audioPackFormatIDRef");
     }
