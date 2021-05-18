@@ -1,4 +1,4 @@
-#include "adm/detail/magic_base.hpp"
+#include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_option_helper.hpp"
 
 namespace adm {
@@ -23,14 +23,13 @@ namespace adm {
   }  // namespace detail
 
   namespace detail {
-
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<XOffset>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<YOffset>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultedBase<ZOffset>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<XOffset>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<YOffset>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<ZOffset>;
 
     using CartesianPositionOffsetBase =
-        CombineBase<DefaultedBase<XOffset>, DefaultedBase<YOffset>,
-                    DefaultedBase<ZOffset>>;
+        HasParameters<DefaultParameter<XOffset>, DefaultParameter<YOffset>,
+                      DefaultParameter<ZOffset>>;
   }  // namespace detail
 
   struct CartesianPositionOffsetTag {};

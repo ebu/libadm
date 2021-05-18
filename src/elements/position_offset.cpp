@@ -2,8 +2,8 @@
 
 namespace adm {
   namespace detail {
-    template class DefaultedBase<XOffset>;
-    template class DefaultedBase<YOffset>;
-    template class DefaultedBase<ZOffset>;
+    template class DefaultParameter<XOffset>;
+    template class DefaultParameter<YOffset>;
+    template class DefaultParameter<ZOffset>;
   }  // namespace detail
 }  // namespace adm
