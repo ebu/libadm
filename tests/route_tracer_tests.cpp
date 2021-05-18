@@ -66,6 +66,10 @@ struct FullDepthViaUIDStrategy {
                      std::shared_ptr<const adm::AudioChannelFormat> b) {
     return true;
   }
+  bool shouldRecurse(std::shared_ptr<const adm::AudioTrackUid> a,
+                     std::shared_ptr<const adm::AudioChannelFormat> b) {
+    return true;
+  }
 
   template <typename Element>
   bool shouldAdd(std::shared_ptr<Element>) {
@@ -102,6 +106,37 @@ TEST_CASE("via_uid") {
   expected_route.add(holder.audioTrackFormat);
   expected_route.add(holder.audioStreamFormat);
   expected_route.add(holder.audioChannelFormat);
+
+  REQUIRE(route == expected_route);
+}
+
+TEST_CASE("uid_to_channel_format") {
+  auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+
+  auto content = AudioContent::create(AudioContentName("Content"));
+  programme->addReference(content);
+
+  auto object = AudioObject::create(AudioObjectName("Object"));
+  content->addReference(object);
+
+  auto trackUid = AudioTrackUid::create();
+  object->addReference(trackUid);
+
+  auto channelFormat = AudioChannelFormat::create(
+      AudioChannelFormatName("Channel Format"), TypeDefinition::OBJECTS);
+  trackUid->setReference(channelFormat);
+
+  detail::GenericRouteTracer<adm::Route, FullDepthViaUIDStrategy> tracer;
+  auto routes = tracer.run(programme);
+  REQUIRE(routes.size() == 1);
+  Route &route = routes[0];
+
+  Route expected_route;
+  expected_route.add(programme);
+  expected_route.add(content);
+  expected_route.add(object);
+  expected_route.add(trackUid);
+  expected_route.add(channelFormat);
 
   REQUIRE(route == expected_route);
 }

@@ -115,6 +115,13 @@ namespace adm {
      */
     ADM_EXPORT void setReference(std::shared_ptr<AudioTrackFormat> trackFormat);
     /**
+     * @brief Set reference to an AudioChannelFormat
+     *
+     * A pending unresolved reference will be removed.
+     */
+    ADM_EXPORT void setReference(
+        std::shared_ptr<AudioChannelFormat> channelFormat);
+    /**
      * @brief Set reference to an AudioPackFormat
      *
      * A pending unresolved reference will be removed.
@@ -178,15 +185,21 @@ namespace adm {
 
     ADM_EXPORT std::shared_ptr<const AudioTrackFormat> getReference(
         detail::ParameterTraits<AudioTrackFormat>::tag) const;
+    ADM_EXPORT std::shared_ptr<const AudioChannelFormat> getReference(
+        detail::ParameterTraits<AudioChannelFormat>::tag) const;
     ADM_EXPORT std::shared_ptr<const AudioPackFormat> getReference(
         detail::ParameterTraits<AudioPackFormat>::tag) const;
     ADM_EXPORT std::shared_ptr<AudioTrackFormat> getReference(
         detail::ParameterTraits<AudioTrackFormat>::tag);
+    ADM_EXPORT std::shared_ptr<AudioChannelFormat> getReference(
+        detail::ParameterTraits<AudioChannelFormat>::tag);
     ADM_EXPORT std::shared_ptr<AudioPackFormat> getReference(
         detail::ParameterTraits<AudioPackFormat>::tag);
 
     ADM_EXPORT void removeReference(
         detail::ParameterTraits<AudioTrackFormat>::tag);
+    ADM_EXPORT void removeReference(
+        detail::ParameterTraits<AudioChannelFormat>::tag);
     ADM_EXPORT void removeReference(
         detail::ParameterTraits<AudioPackFormat>::tag);
 
@@ -200,6 +213,7 @@ namespace adm {
     boost::optional<SampleRate> sampleRate_;
 
     std::shared_ptr<AudioTrackFormat> audioTrackFormat_;
+    std::shared_ptr<AudioChannelFormat> audioChannelFormat_;
     std::shared_ptr<AudioPackFormat> audioPackFormat_;
   };
 

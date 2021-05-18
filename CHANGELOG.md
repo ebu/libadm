@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+- Added support for AudioChannelFormatIDRef in AudioTrackUID as per BS.2076-2
+
 ### Changed
 - updated required C++ standard from C++11 to C++14
 
