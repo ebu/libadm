@@ -108,8 +108,20 @@ endif()
 set_target_properties(adm PROPERTIES CXX_EXTENSIONS OFF)
 
 include(GenerateExportHeader)
+set(EXPORT_EXTRA_CONTENT
+    "
+// use on an extern class template instantiation to force exporting of methods;
+// not required on MSVC where exported methods of explicitly instantiated class
+// templates are actually exported
+#ifdef _MSC_VER
+#define ADM_EXPORT_TEMPLATE_METHODS
+#else
+#define ADM_EXPORT_TEMPLATE_METHODS ADM_EXPORT
+#endif
+")
 generate_export_header(adm
   EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/adm/export.h
+  CUSTOM_CONTENT_FROM_VARIABLE EXPORT_EXTRA_CONTENT
 )
 
 ############################################################
