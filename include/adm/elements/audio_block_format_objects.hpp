@@ -67,7 +67,9 @@ namespace adm {
    * @warning This class has unsupported parameters
    *   - ZoneExclusion
    */
-  class AudioBlockFormatObjects : private detail::AudioBlockFormatObjectsBase {
+  class AudioBlockFormatObjects
+      : public detail::AddWrapperMethods<AudioBlockFormatObjects>,
+        private detail::AudioBlockFormatObjectsBase {
    public:
     typedef AudioBlockFormatObjectsTag tag;
     /// Type that holds the id for this element;
@@ -86,16 +88,6 @@ namespace adm {
         const AudioBlockFormatObjects&) = default;
     ADM_EXPORT AudioBlockFormatObjects& operator=(AudioBlockFormatObjects&&) =
         default;
-
-    /**
-     * @brief ADM parameter getter template
-     *
-     * Templated getter with the wanted ADM parameter type as template
-     * argument. If currently no value is available trying to get the adm
-     * parameter will result in an exception. Check with the has method before
-     */
-    template <typename Parameter>
-    Parameter get() const;
 
     /**
      * @brief ADM parameter has template
@@ -170,6 +162,8 @@ namespace adm {
     template <typename Parameter>
     void unset();
 
+    using detail::AddWrapperMethods<AudioBlockFormatObjects>::get;
+
    private:
     using detail::AudioBlockFormatObjectsBase::get;
     using detail::AudioBlockFormatObjectsBase::has;
@@ -230,6 +224,8 @@ namespace adm {
     boost::optional<ObjectDivergence> objectDivergence_;
     boost::optional<JumpPosition> jumpPosition_;
     boost::optional<ScreenRef> screenRef_;
+
+    friend class detail::AddWrapperMethods<AudioBlockFormatObjects>;
   };
 
   // ---- Implementation ---- //
@@ -248,12 +244,6 @@ namespace adm {
     set(position);
     detail::setNamedOptionHelper(
         this, std::forward<Parameters>(optionalNamedArgs)...);
-  }
-
-  template <typename Parameter>
-  Parameter AudioBlockFormatObjects::get() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return get(Tag());
   }
 
   template <typename Parameter>

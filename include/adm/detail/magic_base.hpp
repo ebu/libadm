@@ -190,5 +190,20 @@ namespace adm {
       boost::optional<T> value_;
     };
 
+    template <typename T>
+    struct AddWrapperMethods {
+      /**
+       * @brief ADM parameter getter template
+       *
+       * Templated getter with the wanted ADM parameter type as template
+       * argument. If currently no value is available trying to get the adm
+       * parameter will result in an exception. Check with the has method before
+       */
+      template <typename Parameter>
+      Parameter get() const {
+        typedef typename detail::ParameterTraits<Parameter>::tag Tag;
+        return static_cast<const T*>(this)->get(Tag());
+      }
+    };
   }  // namespace detail
 }  // namespace adm
