@@ -66,6 +66,7 @@ namespace adm {
                          const Frequency &frequency);
     void formatPosition(XmlNode &parentNode, const std::string &name,
                         const Position &position);
+    void formatGain(XmlNode &node, const Gain &gain);
     void formatChannelLock(XmlNode &node, const ChannelLock &channelLock);
     void formatObjectDivergence(XmlNode &node,
                                 const ObjectDivergence &objectDivergence);
