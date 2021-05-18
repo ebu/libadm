@@ -41,7 +41,7 @@ TEST_CASE("audio_block_format_objects") {
     REQUIRE(blockFormat.get<Width>() == 0.f);
     REQUIRE(blockFormat.get<Height>() == 0.f);
     REQUIRE(blockFormat.get<Depth>() == 0.f);
-    REQUIRE(blockFormat.get<Gain>() == 1.f);
+    REQUIRE(blockFormat.get<Gain>().asLinear() == 1.f);
     REQUIRE(blockFormat.get<Diffuse>() == 0.f);
     REQUIRE(blockFormat.get<ChannelLock>().get<ChannelLockFlag>() == false);
     REQUIRE(blockFormat.get<ObjectDivergence>().get<Divergence>() == 0.f);
@@ -57,7 +57,7 @@ TEST_CASE("audio_block_format_objects") {
     blockFormat.set(Width(45.f));
     blockFormat.set(Height(20.f));
     blockFormat.set(Depth(0.2f));
-    blockFormat.set(Gain(2.5f));
+    blockFormat.set(Gain::fromLinear(2.5f));
     blockFormat.set(Diffuse(0.5f));
     blockFormat.set(ChannelLock(ChannelLockFlag(true)));
     blockFormat.set(ObjectDivergence(Divergence(0.2f)));
@@ -73,7 +73,7 @@ TEST_CASE("audio_block_format_objects") {
     REQUIRE(blockFormat.get<Width>() == 45.f);
     REQUIRE(blockFormat.get<Height>() == 20.f);
     REQUIRE(blockFormat.get<Depth>() == 0.2f);
-    REQUIRE(blockFormat.get<Gain>() == 2.5f);
+    REQUIRE(blockFormat.get<Gain>().asLinear() == 2.5f);
     REQUIRE(blockFormat.get<Diffuse>() == 0.5f);
     REQUIRE(blockFormat.get<ChannelLock>().get<ChannelLockFlag>() == true);
     REQUIRE(blockFormat.get<ObjectDivergence>().get<Divergence>().get() ==

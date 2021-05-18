@@ -1,14 +1,10 @@
 #pragma once
 #include "adm/detail/auto_base.hpp"
+#include "adm/elements/gain.hpp"
 #include "adm/elements/importance.hpp"
 #include "adm/elements/time.hpp"
 
 namespace adm {
-  /// @brief Tag for NamedType ::Gain
-  struct GainTag {};
-  /// @brief NamedType for gain parameter
-  using Gain = detail::NamedType<float, GainTag>;
-
   namespace detail {
     template <>
     inline Importance getDefault<Importance>() {
@@ -17,7 +13,7 @@ namespace adm {
 
     template <>
     inline Gain getDefault<Gain>() {
-      return Gain{1.0f};
+      return Gain::fromLinear(1.0);
     }
 
     template <>

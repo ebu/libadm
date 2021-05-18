@@ -5,6 +5,7 @@
 ### Added
 - Added support for Cartesian speaker positions.
 - Added support for AudioChannelFormatIDRef in AudioTrackUID as per BS.2076-2
+- Added support for dB gains. `Gain{1.0}` should be replaced with `Gain::fromLinear(1.0)`, and `b.get<Gain>().get()` should be replaced with `b.get<Gain>().asLinear()`.
 
 ### Changed
 - SpeakerPosition is now a boost::variant that can be either a CartesianSpeakerPosition or a SphericalSpeakerPosition
