@@ -17,9 +17,10 @@ int main() {
       AudioContent::create(AudioContentName("Foreground 2"));
   auto backgroundGroupObject = AudioObject::create(
       AudioObjectName("BackgroundGroup"),
-      AudioObjectInteraction(OnOffInteract(false), GainInteract(true),
-                             GainInteractionRange(GainInteractionMin(0.5f),
-                                                  GainInteractionMax(1.f))));
+      AudioObjectInteraction(
+          OnOffInteract(false), GainInteract(true),
+          GainInteractionRange(GainInteractionMin(Gain::fromLinear(0.5)),
+                               GainInteractionMax(Gain::fromLinear(1.0)))));
   auto backgroundHolder_1 = createSimpleObject("Background Object 1");
   auto backgroundHolder_2 = createSimpleObject("Background Object 2");
   auto foregroundHolder_1 = createSimpleObject("Foreground Object 1");
