@@ -75,6 +75,17 @@ namespace adm {
       std::string formatMessage(const std::string& id);
     };
 
+    class ADM_EXPORT XmlParsingUnexpectedAttrError : public XmlParsingError {
+     public:
+      XmlParsingUnexpectedAttrError(const std::string& attr,
+                                    const std::string& value,
+                                    boost::optional<int> line = boost::none);
+
+     private:
+      static std::string formatMessage(const std::string& attr,
+                                       const std::string& value);
+    };
+
     namespace detail {
 
       /**
