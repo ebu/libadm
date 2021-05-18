@@ -14,6 +14,7 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 #include "adm/elements/screen_ref.hpp"
+#include "adm/elements/headphone_virtualise.hpp"
 
 namespace adm {
 
@@ -51,13 +52,16 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Height>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Depth>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Diffuse>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        DefaultParameter<HeadphoneVirtualise>;
 
     using AudioBlockFormatObjectsBase =
         HasParameters<RequiredParameter<AudioBlockFormatId>,
                       DefaultParameter<Rtime>, OptionalParameter<Duration>,
                       DefaultParameter<Width>, DefaultParameter<Height>,
                       DefaultParameter<Depth>, DefaultParameter<Diffuse>,
-                      DefaultParameter<Gain>, DefaultParameter<Importance>>;
+                      DefaultParameter<Gain>, DefaultParameter<Importance>,
+                      DefaultParameter<HeadphoneVirtualise>>;
   }  // namespace detail
 
   /**

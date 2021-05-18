@@ -11,6 +11,7 @@
             <nfcRefDist>2.0</nfcRefDist>
             <screenRef>0</screenRef>
             <equation>cos(A)*sin(E)</equation>
+            <headphoneVirtualise DRR="60" bypass="0" />
           </audioBlockFormat>
           <audioBlockFormat audioBlockFormatID="AB_00041001_00000002">
             <order>1</order>
@@ -18,6 +19,7 @@
             <normalization>N3D</normalization>
             <nfcRefDist>2.0</nfcRefDist>
             <screenRef>1</screenRef>
+            <headphoneVirtualise DRR="60" bypass="0" />
           </audioBlockFormat>
         </audioChannelFormat>
       </audioFormatExtended>

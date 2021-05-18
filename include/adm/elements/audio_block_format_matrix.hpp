@@ -8,10 +8,20 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
+#include "adm/elements/headphone_virtualise.hpp"
+#include "adm/detail/auto_base.hpp"
 
 namespace adm {
 
   class Document;
+
+  namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        DefaultParameter<HeadphoneVirtualise>;
+
+    using AudioBlockFormatMatrixBase =
+        HasParameters<DefaultParameter<HeadphoneVirtualise>>;
+  }  // namespace detail
 
   /// @brief Tag for AudioBlockFormatMatrix
   struct AudioBlockFormatMatrixTag {};
@@ -25,7 +35,7 @@ namespace adm {
    *   - inputPackFormatIDRef
    *   - outputPackFormatIDRef
    */
-  class AudioBlockFormatMatrix {
+  class AudioBlockFormatMatrix : private detail::AudioBlockFormatMatrixBase {
    public:
     typedef AudioBlockFormatMatrixTag tag;
     /// Type that holds the id for this element;
@@ -77,6 +87,7 @@ namespace adm {
     /// @brief Duration setter
     ADM_EXPORT void set(Duration duration);
 
+    using detail::AudioBlockFormatMatrixBase::set;
     /**
      * @brief ADM parameter unset template
      *
@@ -88,6 +99,11 @@ namespace adm {
     void unset();
 
    private:
+    using detail::AudioBlockFormatMatrixBase::get;
+    using detail::AudioBlockFormatMatrixBase::has;
+    using detail::AudioBlockFormatMatrixBase::isDefault;
+    using detail::AudioBlockFormatMatrixBase::unset;
+
     ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;

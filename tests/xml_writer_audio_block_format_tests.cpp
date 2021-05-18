@@ -72,3 +72,71 @@ TEST_CASE("Write fully specified ") {
     CHECK_THAT(xml, EqualsXmlFile("write_specified_cartesian_speaker"));
   }
 }
+
+TEST_CASE("Write specified headphoneVirtualise") {
+  auto doc = Document::create();
+
+  // Objects
+  {
+    auto channelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName("TestObjects"), TypeDefinition::OBJECTS);
+    doc->add(channelFormat);
+
+    auto blockFormat = AudioBlockFormatObjects(
+        CartesianPosition(X(0), Y(0), Z(0)),
+        HeadphoneVirtualise(Bypass(false), DirectToReverberantRatio(30)));
+    channelFormat->add(blockFormat);
+  }
+
+  // Direct Speakers
+  {
+    auto channelFormat =
+        AudioChannelFormat::create(AudioChannelFormatName("TestDirectSpeakers"),
+                                   TypeDefinition::DIRECT_SPEAKERS);
+    doc->add(channelFormat);
+
+    auto blockFormat = AudioBlockFormatDirectSpeakers(
+        CartesianSpeakerPosition(),
+        HeadphoneVirtualise(Bypass(false), DirectToReverberantRatio(30)));
+    channelFormat->add(blockFormat);
+  }
+
+  // HOA
+  {
+    auto channelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName("TestHoa"), TypeDefinition::HOA);
+    doc->add(channelFormat);
+
+    auto blockFormat = AudioBlockFormatHoa(
+        Order(1), Degree(0),
+        HeadphoneVirtualise(Bypass(false), DirectToReverberantRatio(30)));
+    channelFormat->add(blockFormat);
+  }
+
+  // Matrix
+  {
+    auto channelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName("TestMatrix"), TypeDefinition::MATRIX);
+    doc->add(channelFormat);
+
+    auto blockFormat = AudioBlockFormatMatrix(
+        HeadphoneVirtualise(Bypass(false), DirectToReverberantRatio(30)));
+    channelFormat->add(blockFormat);
+  }
+
+  // Binaural
+  {
+    auto channelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName("TestBinaural"), TypeDefinition::BINAURAL);
+    doc->add(channelFormat);
+
+    auto blockFormat = AudioBlockFormatBinaural(
+        HeadphoneVirtualise(Bypass(false), DirectToReverberantRatio(30)));
+    channelFormat->add(blockFormat);
+  }
+
+  auto xml = getXml(doc);
+  REQUIRE(!xml.empty());
+
+  CHECK_THAT(xml, EqualsXmlFile("write_specified_headphone_virtualise"));
+}

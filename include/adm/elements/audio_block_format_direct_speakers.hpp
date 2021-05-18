@@ -11,6 +11,8 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/type_traits.hpp"
 #include "adm/export.h"
+#include "adm/elements/headphone_virtualise.hpp"
+#include "adm/detail/auto_base.hpp"
 
 namespace adm {
 
@@ -30,13 +32,22 @@ namespace adm {
   struct SpeakerPositionTag {};
   ADD_TRAIT(SpeakerPosition, SpeakerPostionTag);
 
+  namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        DefaultParameter<HeadphoneVirtualise>;
+
+    using AudioBlockFormatDirectSpeakersBase =
+        HasParameters<DefaultParameter<HeadphoneVirtualise>>;
+  }  // namespace detail
+
   /// @brief Tag for AudioBlockFormatDirectSpeakers
   struct AudioBlockFormatDirectSpeakersTag {};
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "DirectSpeakers"
    */
-  class AudioBlockFormatDirectSpeakers {
+  class AudioBlockFormatDirectSpeakers
+      : private detail::AudioBlockFormatDirectSpeakersBase {
    public:
     typedef AudioBlockFormatDirectSpeakersTag tag;
 
@@ -94,6 +105,8 @@ namespace adm {
     /// @brief SpeakerPosition setter
     ADM_EXPORT void set(SpeakerPosition speakerPosition);
 
+    using detail::AudioBlockFormatDirectSpeakersBase::set;
+
     /**
      * @brief ADM parameter unset template
      *
@@ -110,6 +123,11 @@ namespace adm {
     ADM_EXPORT void remove(SpeakerLabel label);
 
    private:
+    using detail::AudioBlockFormatDirectSpeakersBase::get;
+    using detail::AudioBlockFormatDirectSpeakersBase::has;
+    using detail::AudioBlockFormatDirectSpeakersBase::isDefault;
+    using detail::AudioBlockFormatDirectSpeakersBase::unset;
+
     ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
