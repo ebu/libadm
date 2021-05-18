@@ -28,8 +28,6 @@ namespace adm {
   using AudioContentLanguage =
       detail::NamedType<std::string, AudioContentLanguageTag>;
 
-  using LoudnessMetadatas = std::vector<LoudnessMetadata>;
-  ADD_TRAIT(LoudnessMetadatas, LoudnessMetadatasTag);
 
   /// @brief Tag for AudioContent
   struct AudioContentTag {};
