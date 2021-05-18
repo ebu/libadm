@@ -21,6 +21,7 @@ TEST_CASE("audio_block_format_objects") {
     REQUIRE(blockFormat.has<JumpPosition>() == true);
     REQUIRE(blockFormat.has<ScreenRef>() == true);
     REQUIRE(blockFormat.has<Importance>() == true);
+    REQUIRE(blockFormat.has<HeadphoneVirtualise>() == true);
 
     REQUIRE(blockFormat.isDefault<AudioBlockFormatId>() == false);
     REQUIRE(blockFormat.isDefault<Rtime>() == true);
@@ -36,6 +37,7 @@ TEST_CASE("audio_block_format_objects") {
     REQUIRE(blockFormat.isDefault<JumpPosition>() == true);
     REQUIRE(blockFormat.isDefault<ScreenRef>() == true);
     REQUIRE(blockFormat.isDefault<Importance>() == true);
+    REQUIRE(blockFormat.isDefault<HeadphoneVirtualise>() == true);
 
     REQUIRE(blockFormat.get<Rtime>().get() == std::chrono::seconds(0));
     REQUIRE(blockFormat.get<Width>() == 0.f);
@@ -50,6 +52,9 @@ TEST_CASE("audio_block_format_objects") {
     REQUIRE(blockFormat.get<JumpPosition>().get<JumpPositionFlag>() == false);
     REQUIRE(blockFormat.get<JumpPosition>().get<InterpolationLength>().get() ==
             std::chrono::seconds(0));
+    REQUIRE(blockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
+    REQUIRE(blockFormat.get<HeadphoneVirtualise>()
+                .get<DirectToReverberantRatio>() == 130);
 
     blockFormat.set(Rtime(std::chrono::seconds(2)));
     blockFormat.set(Duration(std::chrono::seconds(10)));
@@ -66,6 +71,8 @@ TEST_CASE("audio_block_format_objects") {
                      InterpolationLength(std::chrono::milliseconds(20))));
     blockFormat.set(ScreenRef(true));
     blockFormat.set(Importance(10));
+    blockFormat.set(
+        HeadphoneVirtualise(Bypass(true), DirectToReverberantRatio(60)));
 
     REQUIRE(blockFormat.get<Rtime>().get() == std::chrono::seconds(2));
     REQUIRE(blockFormat.get<Duration>().get() == std::chrono::seconds(10));
@@ -83,6 +90,9 @@ TEST_CASE("audio_block_format_objects") {
             std::chrono::milliseconds(20));
     REQUIRE(blockFormat.get<ScreenRef>() == true);
     REQUIRE(blockFormat.get<Importance>() == 10);
+    REQUIRE(blockFormat.get<HeadphoneVirtualise>().get<Bypass>() == true);
+    REQUIRE(blockFormat.get<HeadphoneVirtualise>()
+                .get<DirectToReverberantRatio>() == 60);
 
     REQUIRE(blockFormat.isDefault<AudioBlockFormatId>() == false);
     REQUIRE(blockFormat.isDefault<Rtime>() == false);
@@ -98,6 +108,7 @@ TEST_CASE("audio_block_format_objects") {
     REQUIRE(blockFormat.isDefault<JumpPosition>() == false);
     REQUIRE(blockFormat.isDefault<ScreenRef>() == false);
     REQUIRE(blockFormat.isDefault<Importance>() == false);
+    REQUIRE(blockFormat.isDefault<HeadphoneVirtualise>() == false);
 
     blockFormat.unset<Rtime>();
     blockFormat.unset<Duration>();
@@ -112,6 +123,7 @@ TEST_CASE("audio_block_format_objects") {
     blockFormat.unset<JumpPosition>();
     blockFormat.unset<ScreenRef>();
     blockFormat.unset<Importance>();
+    blockFormat.unset<HeadphoneVirtualise>();
 
     REQUIRE(blockFormat.isDefault<AudioBlockFormatId>() == false);
     REQUIRE(blockFormat.isDefault<Rtime>() == true);
@@ -127,6 +139,7 @@ TEST_CASE("audio_block_format_objects") {
     REQUIRE(blockFormat.isDefault<JumpPosition>() == true);
     REQUIRE(blockFormat.isDefault<ScreenRef>() == true);
     REQUIRE(blockFormat.isDefault<Importance>() == true);
+    REQUIRE(blockFormat.isDefault<HeadphoneVirtualise>() == true);
   }
 }
 

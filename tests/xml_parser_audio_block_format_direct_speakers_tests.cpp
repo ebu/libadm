@@ -27,6 +27,9 @@ TEST_CASE("xml_parser/audio_block_format_direct_speakers") {
           30.0f);
   REQUIRE(firstBlockFormat.get<SphericalSpeakerPosition>().get<Elevation>() ==
           0.0f);
+  REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
+  REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>()
+              .get<DirectToReverberantRatio>() == Approx(60));
 }
 
 TEST_CASE("xml_parser/audio_block_format_direct_speakers_cartesian") {

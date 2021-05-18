@@ -54,6 +54,7 @@ namespace adm {
             cartesianCoordinates);
     SpeakerPosition parseSpeakerPosition(std::vector<NodePtr> node);
     SpeakerLabel parseSpeakerLabel(NodePtr node);
+    HeadphoneVirtualise parseHeadphoneVirtualise(NodePtr node);
     AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node);
 
     NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr root);

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="TestObjects" typeLabel="0003" typeDefinition="Objects">
+					<audioBlockFormat audioBlockFormatID="AB_00031001_00000001">
+						<position coordinate="X">0.000000</position>
+						<position coordinate="Y">0.000000</position>
+						<position coordinate="Z">0.000000</position>
+						<cartesian>1</cartesian>
+						<headphoneVirtualise bypass="0" DRR="30.000000"/>
+					</audioBlockFormat>
+				</audioChannelFormat>
+				<audioChannelFormat audioChannelFormatID="AC_00011001" audioChannelFormatName="TestDirectSpeakers" typeLabel="0001" typeDefinition="DirectSpeakers">
+					<audioBlockFormat audioBlockFormatID="AB_00011001_00000001">
+						<position coordinate="X">0.000000</position>
+						<position coordinate="Y">0.000000</position>
+						<headphoneVirtualise bypass="0" DRR="30.000000"/>
+					</audioBlockFormat>
+				</audioChannelFormat>
+				<audioChannelFormat audioChannelFormatID="AC_00041001" audioChannelFormatName="TestHoa" typeLabel="0004" typeDefinition="HOA">
+					<audioBlockFormat audioBlockFormatID="AB_00041001_00000001">
+						<order>1</order>
+						<degree>0</degree>
+						<headphoneVirtualise bypass="0" DRR="30.000000"/>
+					</audioBlockFormat>
+				</audioChannelFormat>
+				<audioChannelFormat audioChannelFormatID="AC_00021001" audioChannelFormatName="TestMatrix" typeLabel="0002" typeDefinition="Matrix">
+					<audioBlockFormat audioBlockFormatID="AB_00021001_00000001">
+						<headphoneVirtualise bypass="0" DRR="30.000000"/>
+					</audioBlockFormat>
+				</audioChannelFormat>
+				<audioChannelFormat audioChannelFormatID="AC_00051001" audioChannelFormatName="TestBinaural" typeLabel="0005" typeDefinition="Binaural">
+					<audioBlockFormat audioBlockFormatID="AB_00051001_00000001">
+						<headphoneVirtualise bypass="0" DRR="30.000000"/>
+					</audioBlockFormat>
+				</audioChannelFormat>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+

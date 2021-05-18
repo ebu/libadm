@@ -47,6 +47,9 @@ TEST_CASE("xml/audio_block_format_objects") {
   REQUIRE(firstBlockFormat.get<ScreenRef>() == true);
   // TODO: add zoneExclusion test
   REQUIRE(firstBlockFormat.get<Importance>() == 10);
+  REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
+  REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>()
+              .get<DirectToReverberantRatio>() == -60);
 
   auto secondBlockFormat = *blocksIter++;
   REQUIRE(secondBlockFormat.get<ScreenRef>() == false);
@@ -58,6 +61,10 @@ TEST_CASE("xml/audio_block_format_objects") {
   auto thirdBlockFormat = *blocksIter++;
   REQUIRE(thirdBlockFormat.get<Gain>().isLinear());
   REQUIRE(thirdBlockFormat.get<Gain>().asLinear() == 0.5);
+
+  REQUIRE(secondBlockFormat.get<HeadphoneVirtualise>().get<Bypass>() == true);
+  REQUIRE(secondBlockFormat.get<HeadphoneVirtualise>()
+              .get<DirectToReverberantRatio>() == 60);
 
   SECTION("writer") {
     std::stringstream xml;

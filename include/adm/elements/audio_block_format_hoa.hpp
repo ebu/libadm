@@ -11,6 +11,8 @@
 #include "adm/elements/screen_ref.hpp"
 #include "adm/elements/nfc_ref_dist.hpp"
 #include "adm/elements/normalization.hpp"
+#include "adm/elements/headphone_virtualise.hpp"
+#include "adm/detail/auto_base.hpp"
 
 namespace adm {
 
@@ -31,19 +33,26 @@ namespace adm {
   /// @brief NamedType for a equation parameter
   using Equation = detail::NamedType<std::string, EquationTag>;
 
+  namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        DefaultParameter<HeadphoneVirtualise>;
+
+    using AudioBlockFormatHoaBase =
+        HasParameters<DefaultParameter<HeadphoneVirtualise>>;
+  }  // namespace detail
+
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "HOA"
    */
-  class AudioBlockFormatHoa {
+  class AudioBlockFormatHoa : private detail::AudioBlockFormatHoaBase {
    public:
     typedef AudioBlockFormatHoaTag tag;
     /// Type that holds the id for this element;
     typedef AudioBlockFormatId id_type;
 
     template <typename... Parameters>
-    AudioBlockFormatHoa(Order order,
-                        Degree degree,
+    AudioBlockFormatHoa(Order order, Degree degree,
                         Parameters... optionalNamedArgs);
 
     ADM_EXPORT AudioBlockFormatHoa(const AudioBlockFormatHoa&) = default;
@@ -106,6 +115,8 @@ namespace adm {
     /// @brief Equation setter
     ADM_EXPORT void set(Equation equation);
 
+    using detail::AudioBlockFormatHoaBase::set;
+
     /**
      * @brief ADM parameter unset template
      *
@@ -117,6 +128,11 @@ namespace adm {
     void unset();
 
    private:
+    using detail::AudioBlockFormatHoaBase::get;
+    using detail::AudioBlockFormatHoaBase::has;
+    using detail::AudioBlockFormatHoaBase::isDefault;
+    using detail::AudioBlockFormatHoaBase::unset;
+
     ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
@@ -125,7 +141,8 @@ namespace adm {
     ADM_EXPORT Degree get(detail::ParameterTraits<Degree>::tag) const;
     ADM_EXPORT NfcRefDist get(detail::ParameterTraits<NfcRefDist>::tag) const;
     ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT Normalization get(detail::ParameterTraits<Normalization>::tag) const;
+    ADM_EXPORT Normalization
+        get(detail::ParameterTraits<Normalization>::tag) const;
     ADM_EXPORT Equation get(detail::ParameterTraits<Equation>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
@@ -145,7 +162,8 @@ namespace adm {
     ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<NfcRefDist>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Normalization>::tag) const;
+    ADM_EXPORT bool isDefault(
+        detail::ParameterTraits<Normalization>::tag) const;
 
     ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
@@ -167,8 +185,8 @@ namespace adm {
   // ---- Implementation ---- //
 
   template <typename... Parameters>
-  AudioBlockFormatHoa::AudioBlockFormatHoa(Order order,
-      Degree degree, Parameters... optionalNamedArgs) {
+  AudioBlockFormatHoa::AudioBlockFormatHoa(Order order, Degree degree,
+                                           Parameters... optionalNamedArgs) {
     set(order);
     set(degree);
     detail::setNamedOptionHelper(

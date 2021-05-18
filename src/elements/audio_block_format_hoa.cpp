@@ -1,6 +1,9 @@
 #include "adm/elements/audio_block_format_hoa.hpp"
 
 namespace adm {
+  namespace detail {
+    template class DefaultParameter<HeadphoneVirtualise>;
+  }
 
   // ---- Defaults ---- //
   namespace {
@@ -10,7 +13,7 @@ namespace adm {
     const ScreenRef screenRefDefualt{false};
     const Equation equationDefault{
         ""};  // Optional value - does not contain default
-  }
+  }  // namespace
 
   // ---- Getter ---- //
   AudioBlockFormatId AudioBlockFormatHoa::get(
@@ -24,29 +27,27 @@ namespace adm {
       detail::ParameterTraits<Duration>::tag) const {
     return duration_.get();
   }
-  Order AudioBlockFormatHoa::get(
-      detail::ParameterTraits<Order>::tag) const {
+  Order AudioBlockFormatHoa::get(detail::ParameterTraits<Order>::tag) const {
     return order_.get();
   }
-  Degree AudioBlockFormatHoa::get(
-      detail::ParameterTraits<Degree>::tag) const {
+  Degree AudioBlockFormatHoa::get(detail::ParameterTraits<Degree>::tag) const {
     return degree_.get();
   }
   NfcRefDist AudioBlockFormatHoa::get(
-          detail::ParameterTraits<NfcRefDist>::tag) const {
-      return boost::get_optional_value_or(nfcRefDist_, nfcRefDistDefault);
+      detail::ParameterTraits<NfcRefDist>::tag) const {
+    return boost::get_optional_value_or(nfcRefDist_, nfcRefDistDefault);
   }
   ScreenRef AudioBlockFormatHoa::get(
-          detail::ParameterTraits<ScreenRef>::tag) const {
-      return boost::get_optional_value_or(screenRef_, screenRefDefualt);
+      detail::ParameterTraits<ScreenRef>::tag) const {
+    return boost::get_optional_value_or(screenRef_, screenRefDefualt);
   }
   Normalization AudioBlockFormatHoa::get(
-          detail::ParameterTraits<Normalization>::tag) const {
-      return boost::get_optional_value_or(normalization_, normalizationDefault);
+      detail::ParameterTraits<Normalization>::tag) const {
+    return boost::get_optional_value_or(normalization_, normalizationDefault);
   }
   Equation AudioBlockFormatHoa::get(
-          detail::ParameterTraits<Equation>::tag) const {
-      return boost::get_optional_value_or(equation_, equationDefault);
+      detail::ParameterTraits<Equation>::tag) const {
+    return boost::get_optional_value_or(equation_, equationDefault);
   }
 
   // ---- Has ---- //
@@ -66,17 +67,19 @@ namespace adm {
   bool AudioBlockFormatHoa::has(detail::ParameterTraits<Degree>::tag) const {
     return degree_ != boost::none;
   }
-  bool AudioBlockFormatHoa::has(detail::ParameterTraits<NfcRefDist>::tag) const {
-      return nfcRefDist_ != boost::none;
+  bool AudioBlockFormatHoa::has(
+      detail::ParameterTraits<NfcRefDist>::tag) const {
+    return nfcRefDist_ != boost::none;
   }
   bool AudioBlockFormatHoa::has(detail::ParameterTraits<ScreenRef>::tag) const {
-      return screenRef_ != boost::none;
+    return screenRef_ != boost::none;
   }
-  bool AudioBlockFormatHoa::has(detail::ParameterTraits<Normalization>::tag) const {
-      return normalization_ != boost::none;
+  bool AudioBlockFormatHoa::has(
+      detail::ParameterTraits<Normalization>::tag) const {
+    return normalization_ != boost::none;
   }
   bool AudioBlockFormatHoa::has(detail::ParameterTraits<Equation>::tag) const {
-      return equation_ != boost::none;
+    return equation_ != boost::none;
   }
 
   // ---- isDefault ---- //
@@ -103,9 +106,13 @@ namespace adm {
   void AudioBlockFormatHoa::set(Duration duration) { duration_ = duration; }
   void AudioBlockFormatHoa::set(Order order) { order_ = order; }
   void AudioBlockFormatHoa::set(Degree degree) { degree_ = degree; }
-  void AudioBlockFormatHoa::set(NfcRefDist nfcRefDist) { nfcRefDist_ = nfcRefDist; }
+  void AudioBlockFormatHoa::set(NfcRefDist nfcRefDist) {
+    nfcRefDist_ = nfcRefDist;
+  }
   void AudioBlockFormatHoa::set(ScreenRef screenRef) { screenRef_ = screenRef; }
-  void AudioBlockFormatHoa::set(Normalization normalization) { normalization_ = normalization; }
+  void AudioBlockFormatHoa::set(Normalization normalization) {
+    normalization_ = normalization;
+  }
   void AudioBlockFormatHoa::set(Equation equation) { equation_ = equation; }
 
   // ---- Unsetter ---- //
@@ -116,16 +123,16 @@ namespace adm {
     duration_ = boost::none;
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<NfcRefDist>::tag) {
-      nfcRefDist_ = boost::none;
+    nfcRefDist_ = boost::none;
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<ScreenRef>::tag) {
-      screenRef_ = boost::none;
+    screenRef_ = boost::none;
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Normalization>::tag) {
-      normalization_ = boost::none;
+    normalization_ = boost::none;
   }
   void AudioBlockFormatHoa::unset(detail::ParameterTraits<Equation>::tag) {
-      equation_ = boost::none;
+    equation_ = boost::none;
   }
 
 }  // namespace adm
