@@ -292,6 +292,7 @@ namespace adm {
         node.addMultiElement<CartesianSpeakerPosition>(&audioBlock, "position", &formatCartesianSpeakerPosition);
       }
 
+      node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
     }
 
@@ -455,6 +456,7 @@ namespace adm {
       node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
       node.addOptionalAttribute<Duration>(&audioBlock, "duration");
       // TODO: add missing matrix attributes and elements
+      node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
     }
 
@@ -475,6 +477,7 @@ namespace adm {
       node.addOptionalElement<ObjectDivergence>(&audioBlock, "objectDivergence", &formatObjectDivergence);
       node.addOptionalElement<JumpPosition>(&audioBlock, "jumpPosition", &formatJumpPosition);
       node.addOptionalElement<ScreenRef>(&audioBlock, "screenRef");
+      node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
       // TODO: add zoneExclusion
       node.addOptionalElement<Importance>(&audioBlock, "importance");
@@ -549,6 +552,7 @@ namespace adm {
       node.addOptionalElement<ScreenRef>(&audioBlock, "screenRef");
       node.addOptionalElement<Normalization>(&audioBlock, "normalization");
       node.addOptionalElement<Equation>(&audioBlock, "equation");
+      node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
     }
 
@@ -558,6 +562,7 @@ namespace adm {
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
       node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
       node.addOptionalAttribute<Duration>(&audioBlock, "duration");
+      node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // TODO: add missing binaural attributes and elements
       // clang-format on
     }
@@ -585,6 +590,13 @@ namespace adm {
       node.addOptionalAttribute<FormatDescriptor>(trackFormat, "formatDefinition", &formatFormatDefinition);
       node.addOptionalReference<AudioStreamFormat, AudioStreamFormatId>(trackFormat, "audioStreamFormatIDRef");
       // clang-format on
+    }
+
+    void formatHeadphoneVirtualise(
+        XmlNode &node, const HeadphoneVirtualise &headphoneVirtualise) {
+      node.addOptionalAttribute<Bypass>(&headphoneVirtualise, "bypass");
+      node.addOptionalAttribute<DirectToReverberantRatio>(&headphoneVirtualise,
+                                                          "DRR");
     }
 
     void formatAudioTrackUid(XmlNode &node,

@@ -16,14 +16,19 @@ TEST_CASE("audio_block_format_hoa") {
     REQUIRE(blockFormat.has<ScreenRef>() == false);
     REQUIRE(blockFormat.has<Normalization>() == false);
     REQUIRE(blockFormat.has<Equation>() == false);
+    REQUIRE(blockFormat.has<HeadphoneVirtualise>() == true);
 
     REQUIRE(blockFormat.isDefault<Rtime>() == true);
     REQUIRE(blockFormat.isDefault<NfcRefDist>() == true);
     REQUIRE(blockFormat.isDefault<ScreenRef>() == true);
     REQUIRE(blockFormat.isDefault<Normalization>() == true);
+    REQUIRE(blockFormat.isDefault<HeadphoneVirtualise>() == true);
     // Equation has no default value - BS.2076-2 Section 5.4.3.4
 
     REQUIRE(blockFormat.get<Rtime>().get() == std::chrono::seconds(0));
+    REQUIRE(blockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
+    REQUIRE(blockFormat.get<HeadphoneVirtualise>()
+                .get<DirectToReverberantRatio>() == 130);
 
     blockFormat.set(Rtime(std::chrono::seconds(1)));
     blockFormat.set(Duration(std::chrono::seconds(10)));
@@ -34,6 +39,8 @@ TEST_CASE("audio_block_format_hoa") {
     blockFormat.set(ScreenRef(1));
     blockFormat.set(Normalization("SN3D"));
     blockFormat.set(Equation("cos(A)*sin(E)"));
+    blockFormat.set(
+        HeadphoneVirtualise(Bypass(true), DirectToReverberantRatio(60)));
 
     REQUIRE(blockFormat.has<AudioBlockFormatId>() == true);
     REQUIRE(blockFormat.has<Rtime>() == true);
@@ -51,6 +58,7 @@ TEST_CASE("audio_block_format_hoa") {
     REQUIRE(blockFormat.isDefault<ScreenRef>() == false);
     REQUIRE(blockFormat.isDefault<Normalization>() == false);
     // Equation has no default value - BS.2076-2 Section 5.4.3.4
+    REQUIRE(blockFormat.isDefault<HeadphoneVirtualise>() == false);
 
     REQUIRE(blockFormat.get<Rtime>().get() == std::chrono::seconds(1));
     REQUIRE(blockFormat.get<Duration>().get() == std::chrono::seconds(10));
@@ -60,6 +68,9 @@ TEST_CASE("audio_block_format_hoa") {
     REQUIRE(blockFormat.get<ScreenRef>() == true);
     REQUIRE(blockFormat.get<Normalization>() == "SN3D");
     REQUIRE(blockFormat.get<Equation>() == "cos(A)*sin(E)");
+    REQUIRE(blockFormat.get<HeadphoneVirtualise>().get<Bypass>() == true);
+    REQUIRE(blockFormat.get<HeadphoneVirtualise>()
+                .get<DirectToReverberantRatio>() == 60);
 
     blockFormat.unset<Rtime>();
     blockFormat.unset<Duration>();
@@ -67,6 +78,7 @@ TEST_CASE("audio_block_format_hoa") {
     blockFormat.unset<ScreenRef>();
     blockFormat.unset<Normalization>();
     blockFormat.unset<Equation>();
+    blockFormat.unset<HeadphoneVirtualise>();
 
     REQUIRE(blockFormat.has<Rtime>() == true);
     REQUIRE(blockFormat.has<Duration>() == false);
@@ -78,6 +90,7 @@ TEST_CASE("audio_block_format_hoa") {
     REQUIRE(blockFormat.has<Equation>() == false);
 
     REQUIRE(blockFormat.isDefault<Rtime>() == true);
+    REQUIRE(blockFormat.isDefault<HeadphoneVirtualise>() == true);
 
     REQUIRE(blockFormat.get<Rtime>().get() == std::chrono::seconds(0));
   }

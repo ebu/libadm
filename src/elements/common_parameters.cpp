@@ -8,5 +8,7 @@ namespace adm {
 
     template class DefaultParameter<Rtime>;
     template class OptionalParameter<Duration>;
+
+    template class DefaultParameter<HeadphoneVirtualise>;
   }  // namespace detail
 }  // namespace adm

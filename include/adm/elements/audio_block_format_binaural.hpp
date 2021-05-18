@@ -4,14 +4,21 @@
 #include <boost/optional.hpp>
 #include "adm/elements/time.hpp"
 #include "adm/elements/audio_block_format_id.hpp"
+#include "adm/elements/private/common_parameters.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
+#include "adm/detail/auto_base.hpp"
 
 namespace adm {
 
   class Document;
+
+  namespace detail {
+    using AudioBlockFormatBinauralBase =
+        HasParameters<DefaultParameter<HeadphoneVirtualise>>;
+  }  // namespace detail
 
   /// @brief Tag for AudioBlockFormatBinaural
   struct AudioBlockFormatBinauralTag {};
@@ -19,7 +26,8 @@ namespace adm {
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "Binaural"
    */
-  class AudioBlockFormatBinaural {
+  class AudioBlockFormatBinaural
+      : private detail::AudioBlockFormatBinauralBase {
    public:
     typedef AudioBlockFormatBinauralTag tag;
     /// Type that holds the id for this element;
@@ -71,6 +79,8 @@ namespace adm {
     /// @brief Duration setter
     ADM_EXPORT void set(Duration duration);
 
+    using detail::AudioBlockFormatBinauralBase::set;
+
     /**
      * @brief ADM parameter unset template
      *
@@ -82,6 +92,11 @@ namespace adm {
     void unset();
 
    private:
+    using detail::AudioBlockFormatBinauralBase::get;
+    using detail::AudioBlockFormatBinauralBase::has;
+    using detail::AudioBlockFormatBinauralBase::isDefault;
+    using detail::AudioBlockFormatBinauralBase::unset;
+
     ADM_EXPORT AudioBlockFormatId
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
