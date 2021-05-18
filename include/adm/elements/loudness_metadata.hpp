@@ -50,6 +50,9 @@ namespace adm {
   /// @brief Tag for LoudnessMetadata class
   struct LoudnessMetadataTag {};
 
+  using LoudnessMetadatas = std::vector<LoudnessMetadata>;
+  ADD_TRAIT(LoudnessMetadatas, LoudnessMetadatasTag);
+
   class LoudnessMetadata {
    public:
     typedef LoudnessMetadataTag tag;
