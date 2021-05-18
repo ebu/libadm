@@ -5,6 +5,7 @@
 #include <boost/optional.hpp>
 #include <string>
 #include <ostream>
+#include <vector>
 
 namespace adm {
 
