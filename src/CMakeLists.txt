@@ -36,6 +36,7 @@ add_library(adm
   elements/audio_block_format_binaural.cpp
   elements/audio_object_interaction.cpp
   elements/audio_pack_format_hoa.cpp
+  elements/common_parameters.cpp
   elements/time.cpp
   elements/channel_lock.cpp
   elements/frequency.cpp
