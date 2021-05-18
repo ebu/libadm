@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="MyChannelFormat" typeLabel="0003" typeDefinition="Objects">
+          <audioBlockFormat audioBlockFormatID="AB_00031001_00000001">
+            <position coordinate="azimuth">30.0</position>
+            <position coordinate="elevation">0.0</position>
+            <position coordinate="distance">1.0</position>
+            <gain gainUnit="foo">0.8</gain>
+          </audioBlockFormat>
+        </audioChannelFormat>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

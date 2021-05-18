@@ -589,7 +589,7 @@ namespace adm {
       setOptionalElement<Width>(node, "width", audioBlockFormat);
       setOptionalElement<Height>(node, "height", audioBlockFormat);
       setOptionalElement<Depth>(node, "depth", audioBlockFormat);
-      setOptionalElement<Gain>(node, "gain", audioBlockFormat);
+      setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Diffuse>(node, "diffuse", audioBlockFormat);
       setOptionalElement<ChannelLock>(node, "channelLock", audioBlockFormat, &parseChannelLock);
       setOptionalElement<ObjectDivergence>(node, "objectDivergence", audioBlockFormat, &parseObjectDivergence);
@@ -598,6 +598,22 @@ namespace adm {
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
       // clang-format on
       return audioBlockFormat;
+    }
+
+    Gain parseGain(NodePtr node) {
+      auto unitAttr = node->first_attribute("gainUnit");
+      double value = std::stod(node->value());
+      if (unitAttr) {
+        std::string unitAttrStr{unitAttr->value()};
+        if (unitAttrStr == "linear")
+          return Gain::fromLinear(value);
+        else if (unitAttrStr == "dB")
+          return Gain::fromDb(value);
+        else
+          throw error::XmlParsingUnexpectedAttrError("gainUnit", unitAttrStr,
+                                                     getDocumentLine(unitAttr));
+      } else
+        return Gain::fromLinear(value);
     }
 
     ChannelLock parseChannelLock(NodePtr node) {
