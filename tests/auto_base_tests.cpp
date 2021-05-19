@@ -1,5 +1,10 @@
-#include <catch2/catch.hpp>
+// ensure that *Parameter methods are not declared as __declspec(dllimport) on
+// windows -- we want them to be defined in this unit, as they are not defined
+// in libadm
+#define ADM_BASE_EXPORT
 #include "adm/detail/auto_base.hpp"
+
+#include <catch2/catch.hpp>
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/type_traits.hpp"
 #include <vector>
