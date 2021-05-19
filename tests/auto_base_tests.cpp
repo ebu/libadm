@@ -26,6 +26,11 @@ namespace adm {
       return Default{42};
     }
 
+    template class RequiredParameter<Required>;
+    template class OptionalParameter<Optional>;
+    template class DefaultParameter<Default>;
+    template class VectorParameter<Vectors>;
+
     using Base =
         HasParameters<RequiredParameter<Required>, OptionalParameter<Optional>,
                       DefaultParameter<Default>, VectorParameter<Vectors>>;
