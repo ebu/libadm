@@ -7,9 +7,7 @@ namespace adm {
     namespace detail {
 
       std::string toString(const std::string &string) { return string; }
-      std::string toString(const Time &time) {
-        return formatTimecode(time);
-      }
+      std::string toString(const Time &time) { return formatTimecode(time); }
       std::string toString(const AudioProgrammeId &id) { return formatId(id); }
       std::string toString(const AudioContentId &id) { return formatId(id); }
       std::string toString(const AudioObjectId &id) { return formatId(id); }
