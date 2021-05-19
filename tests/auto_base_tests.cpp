@@ -1,6 +1,7 @@
 #include <catch2/catch.hpp>
 #include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_option_helper.hpp"
+#include "adm/detail/type_traits.hpp"
 #include <vector>
 
 namespace adm {
