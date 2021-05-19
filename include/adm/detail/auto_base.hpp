@@ -3,6 +3,7 @@
 #include "adm/detail/type_traits.hpp"
 #include "adm/export.h"
 #include "boost/optional.hpp"
+#include <algorithm>
 
 namespace adm {
   namespace detail {
