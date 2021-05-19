@@ -3,6 +3,7 @@
 #include "adm/detail/type_traits.hpp"
 #include "adm/export.h"
 #include "boost/optional.hpp"
+#include <algorithm>
 
 namespace adm {
   namespace detail {
@@ -53,6 +54,7 @@ namespace adm {
     struct Flags {
       static constexpr bool has_get_set_has = false;
       static constexpr bool has_isDefault_unset = false;
+      static constexpr bool has_add_remove = false;
     };
 
     /// a subclass of Base, with using declarations for set, get and has in A
@@ -80,17 +82,32 @@ namespace adm {
       using B::unset;
     };
 
+    /// a subclass of Base, with using declarations for add and remove in A and
+    /// B
+    template <typename A, typename B, typename Base>
+    struct CombineAddRemove : public Base {
+      using A::add;
+      using B::add;
+
+      using A::remove;
+      using B::remove;
+    };
+
     /// a subclass of A and B, with methods according to their Flags
     template <typename A, typename B>
     struct Combine
         : public ApplyIf<
-              A::has_get_set_has && B::has_get_set_has, CombineGetSetHas, A, B,
-              ApplyIf<A::has_isDefault_unset && B::has_isDefault_unset,
-                      CombineIsDefaultUnset, A, B, CombineRaw<A, B>>> {
+              A::has_add_remove && B::has_add_remove, CombineAddRemove, A, B,
+              ApplyIf<A::has_get_set_has && B::has_get_set_has,
+                      CombineGetSetHas, A, B,
+                      ApplyIf<A::has_isDefault_unset && B::has_isDefault_unset,
+                              CombineIsDefaultUnset, A, B, CombineRaw<A, B>>>> {
       static constexpr bool has_get_set_has =
           A::has_get_set_has || B::has_get_set_has;
       static constexpr bool has_isDefault_unset =
           A::has_isDefault_unset || B::has_isDefault_unset;
+      static constexpr bool has_add_remove =
+          A::has_add_remove || B::has_add_remove;
     };
 
     /// make a class derived from the given base classes, combining the
@@ -165,5 +182,44 @@ namespace adm {
      private:
       boost::optional<T> value_;
     };
+
+    /// base class for storage of multiple elements in a std::vector.
+    /// T should be a std::vector<Something>, as this is what the tag is
+    /// associated with.
+    template <typename T,
+              typename Tag = typename detail::ParameterTraits<T>::tag>
+    class VectorParameter : public Flags {
+      using Value = typename T::value_type;
+
+     public:
+      static constexpr bool has_get_set_has = true;
+      static constexpr bool has_isDefault_unset = true;
+      static constexpr bool has_add_remove = true;
+
+      ADM_EXPORT T get(Tag) const { return value_; }
+      ADM_EXPORT void set(T value) { value_ = value; }
+      ADM_EXPORT bool has(Tag) const { return value_.size() > 0; }
+      ADM_EXPORT bool isDefault(Tag) const { return value_.size() == 0; }
+      ADM_EXPORT void unset(Tag) { value_.clear(); }
+
+      ADM_EXPORT bool add(Value item) {
+        auto it = std::find(value_.begin(), value_.end(), item);
+        if (it == value_.end()) {
+          value_.push_back(item);
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      ADM_EXPORT void remove(Value item) {
+        auto it = std::find(value_.begin(), value_.end(), item);
+        if (it != value_.end()) value_.erase(it);
+      }
+
+     private:
+      T value_;
+    };
+
   }  // namespace detail
 }  // namespace adm
