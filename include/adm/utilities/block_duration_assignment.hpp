@@ -34,8 +34,8 @@ namespace adm {
    * @param fileLength The length of the BW64 audio file
    * @sa void updateBlockFormatDurations(std::shared_ptr<Document>)
    */
-  ADM_EXPORT void updateBlockFormatDurations(
-      std::shared_ptr<Document> document, const Time& fileLength);
+  ADM_EXPORT void updateBlockFormatDurations(std::shared_ptr<Document> document,
+                                             const Time& fileLength);
 
   /**
    * @brief Set or update durations of all `AudioBlockFormats`
