@@ -5,6 +5,11 @@
 #include "boost/optional.hpp"
 #include <algorithm>
 
+// want to be able to override this from the tests
+#ifndef ADM_BASE_EXPORT
+#define ADM_BASE_EXPORT ADM_EXPORT
+#endif
+
 namespace adm {
   namespace detail {
     // libadm elements typically have some overloaded methods corresponding to
@@ -133,9 +138,9 @@ namespace adm {
      public:
       static constexpr bool has_get_set_has = true;
 
-      ADM_EXPORT T get(Tag) const { return value_; }
-      ADM_EXPORT void set(T value) { value_ = value; }
-      ADM_EXPORT bool has(Tag) const { return true; }
+      ADM_BASE_EXPORT T get(Tag) const { return value_; }
+      ADM_BASE_EXPORT void set(T value) { value_ = value; }
+      ADM_BASE_EXPORT bool has(Tag) const { return true; }
 
      private:
       T value_;
@@ -151,11 +156,11 @@ namespace adm {
       static constexpr bool has_get_set_has = true;
       static constexpr bool has_isDefault_unset = true;
 
-      ADM_EXPORT T get(Tag) const { return value_.get(); }
-      ADM_EXPORT void set(T value) { value_ = value; }
-      ADM_EXPORT bool has(Tag) const { return value_ != boost::none; }
-      ADM_EXPORT bool isDefault(Tag) const { return false; }
-      ADM_EXPORT void unset(Tag) { value_ = boost::none; }
+      ADM_BASE_EXPORT T get(Tag) const { return value_.get(); }
+      ADM_BASE_EXPORT void set(T value) { value_ = value; }
+      ADM_BASE_EXPORT bool has(Tag) const { return value_ != boost::none; }
+      ADM_BASE_EXPORT bool isDefault(Tag) const { return false; }
+      ADM_BASE_EXPORT void unset(Tag) { value_ = boost::none; }
 
      private:
       boost::optional<T> value_;
@@ -171,13 +176,15 @@ namespace adm {
       static constexpr bool has_get_set_has = true;
       static constexpr bool has_isDefault_unset = true;
 
-      ADM_EXPORT T get(Tag) const {
+      ADM_BASE_EXPORT T get(Tag) const {
         return boost::get_optional_value_or(value_, getDefault<T>());
       }
-      ADM_EXPORT void set(T value) { value_ = value; }
-      ADM_EXPORT bool has(Tag) const { return true; }
-      ADM_EXPORT bool isDefault(Tag) const { return value_ == boost::none; }
-      ADM_EXPORT void unset(Tag) { value_ = boost::none; }
+      ADM_BASE_EXPORT void set(T value) { value_ = value; }
+      ADM_BASE_EXPORT bool has(Tag) const { return true; }
+      ADM_BASE_EXPORT bool isDefault(Tag) const {
+        return value_ == boost::none;
+      }
+      ADM_BASE_EXPORT void unset(Tag) { value_ = boost::none; }
 
      private:
       boost::optional<T> value_;
@@ -196,13 +203,13 @@ namespace adm {
       static constexpr bool has_isDefault_unset = true;
       static constexpr bool has_add_remove = true;
 
-      ADM_EXPORT T get(Tag) const { return value_; }
-      ADM_EXPORT void set(T value) { value_ = value; }
-      ADM_EXPORT bool has(Tag) const { return value_.size() > 0; }
-      ADM_EXPORT bool isDefault(Tag) const { return value_.size() == 0; }
-      ADM_EXPORT void unset(Tag) { value_.clear(); }
+      ADM_BASE_EXPORT T get(Tag) const { return value_; }
+      ADM_BASE_EXPORT void set(T value) { value_ = value; }
+      ADM_BASE_EXPORT bool has(Tag) const { return value_.size() > 0; }
+      ADM_BASE_EXPORT bool isDefault(Tag) const { return value_.size() == 0; }
+      ADM_BASE_EXPORT void unset(Tag) { value_.clear(); }
 
-      ADM_EXPORT bool add(Value item) {
+      ADM_BASE_EXPORT bool add(Value item) {
         auto it = std::find(value_.begin(), value_.end(), item);
         if (it == value_.end()) {
           value_.push_back(item);
@@ -212,7 +219,7 @@ namespace adm {
         }
       }
 
-      ADM_EXPORT void remove(Value item) {
+      ADM_BASE_EXPORT void remove(Value item) {
         auto it = std::find(value_.begin(), value_.end(), item);
         if (it != value_.end()) value_.erase(it);
       }
