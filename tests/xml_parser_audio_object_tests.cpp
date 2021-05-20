@@ -30,6 +30,10 @@ TEST_CASE("xml_parser/audio_object") {
   REQUIRE(audioObject->get<Importance>() == 10);
   REQUIRE(audioObject->get<Interact>() == false);
   REQUIRE(audioObject->get<DisableDucking>() == true);
+
+  REQUIRE(audioObject->has<PositionOffset>() == false);
+  REQUIRE(audioObject->has<SphericalPositionOffset>() == false);
+  REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
 }
 
 TEST_CASE("xml_parser/audio_object_duplicate_id") {
@@ -112,6 +116,7 @@ TEST_CASE("xml_parser/audio_object_position_offset") {
   {
     // Spherical position offset
     auto audioObject = document->lookup(parseAudioObjectId("AO_1001"));
+    REQUIRE(audioObject->has<PositionOffset>() == true);
     REQUIRE(audioObject->has<SphericalPositionOffset>() == true);
     REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
 
@@ -124,6 +129,7 @@ TEST_CASE("xml_parser/audio_object_position_offset") {
   {
     // Cartesian position offset
     auto audioObject = document->lookup(parseAudioObjectId("AO_1002"));
+    REQUIRE(audioObject->has<PositionOffset>() == true);
     REQUIRE(audioObject->has<SphericalPositionOffset>() == false);
     REQUIRE(audioObject->has<CartesianPositionOffset>() == true);
 
