@@ -10,6 +10,10 @@
 
 namespace adm {
 
+  namespace detail {
+    template class VectorParameter<LoudnessMetadatas>;
+  } // namespace detail
+
   // ---- Getter ---- //
   AudioContentId AudioContent::get(
       detail::ParameterTraits<AudioContentId>::tag) const {
@@ -22,10 +26,6 @@ namespace adm {
   AudioContentLanguage AudioContent::get(
       detail::ParameterTraits<AudioContentLanguage>::tag) const {
     return language_.get();
-  }
-  LoudnessMetadatas AudioContent::get(
-      detail::ParameterTraits<LoudnessMetadatas>::tag) const {
-    return loudnessMetadatas_;
   }
   DialogueId AudioContent::get(detail::ParameterTraits<DialogueId>::tag) const {
     return dialogueId_.get();
@@ -64,9 +64,6 @@ namespace adm {
       detail::ParameterTraits<AudioContentLanguage>::tag) const {
     return language_ != boost::none;
   }
-  bool AudioContent::has(detail::ParameterTraits<LoudnessMetadatas>::tag) const {
-    return !loudnessMetadatas_.empty();
-  }
   bool AudioContent::has(detail::ParameterTraits<DialogueId>::tag) const {
     return dialogueId_ != boost::none;
   }
@@ -101,9 +98,6 @@ namespace adm {
   void AudioContent::set(AudioContentName name) { name_ = name; }
   void AudioContent::set(AudioContentLanguage language) {
     language_ = language;
-  }
-  void AudioContent::set(LoudnessMetadatas loudnessMetadatas) {
-    loudnessMetadatas_ = loudnessMetadatas;
   }
   void AudioContent::set(DialogueId id) {
     if (dialogueId_ && dialogueId_.get() == id) {
@@ -147,9 +141,6 @@ namespace adm {
   // ---- Unsetter ---- //
   void AudioContent::unset(detail::ParameterTraits<AudioContentLanguage>::tag) {
     language_ = boost::none;
-  }
-  void AudioContent::unset(detail::ParameterTraits<LoudnessMetadatas>::tag) {
-    loudnessMetadatas_.clear();
   }
   void AudioContent::unset(detail::ParameterTraits<DialogueId>::tag) {
     dialogueId_ = boost::none;
@@ -197,20 +188,6 @@ namespace adm {
   void AudioContent::clearReferences(
       detail::ParameterTraits<AudioObject>::tag) {
     return audioObjects_.clear();
-  }
-
-    // ---- Add ---- //
-  void AudioContent::add(LoudnessMetadata loudnessMetadata) {
-    loudnessMetadatas_.push_back(loudnessMetadata);
-  }
-
-  // ---- Remove ---- //
-  void AudioContent::remove(LoudnessMetadata loudnessMetadata) {
-    auto it =
-        std::find(loudnessMetadatas_.begin(), loudnessMetadatas_.end(), loudnessMetadata);
-    if (it != loudnessMetadatas_.end()) {
-      loudnessMetadatas_.erase(it);
-    }
   }
 
   std::ostream& operator<<(std::ostream& stream, const LoudnessMetadatas& loudnessMetaDatas) {

@@ -18,6 +18,10 @@ namespace adm {
     const Start startDefault{std::chrono::seconds(0)};
   }  // namespace
 
+  namespace detail {
+    template class VectorParameter<LoudnessMetadatas>;
+  } // namespace detail
+
   // ---- Getter ---- //
   AudioProgrammeId AudioProgramme::get(
       detail::ParameterTraits<AudioProgrammeId>::tag) const {
@@ -36,10 +40,6 @@ namespace adm {
   }
   End AudioProgramme::get(detail::ParameterTraits<End>::tag) const {
     return end_.get();
-  }
-  LoudnessMetadatas AudioProgramme::get(
-      detail::ParameterTraits<LoudnessMetadatas>::tag) const {
-    return loudnessMetadatas_;
   }
   MaxDuckingDepth AudioProgramme::get(
       detail::ParameterTraits<MaxDuckingDepth>::tag) const {
@@ -68,9 +68,6 @@ namespace adm {
   }
   bool AudioProgramme::has(detail::ParameterTraits<End>::tag) const {
     return end_ != boost::none;
-  }
-  bool AudioProgramme::has(detail::ParameterTraits<LoudnessMetadatas>::tag) const {
-    return !loudnessMetadatas_.empty();
   }
   bool AudioProgramme::has(
       detail::ParameterTraits<MaxDuckingDepth>::tag) const {
@@ -104,9 +101,6 @@ namespace adm {
   }
   void AudioProgramme::set(Start start) { start_ = start; }
   void AudioProgramme::set(End end) { end_ = end; }
-  void AudioProgramme::set(LoudnessMetadatas loudnessMetadatas) {
-    loudnessMetadatas_ = loudnessMetadatas;
-  }
   void AudioProgramme::set(MaxDuckingDepth depth) { maxDuckingDepth_ = depth; }
   void AudioProgramme::set(AudioProgrammeReferenceScreen refScreen) {
     refScreen_ = refScreen;
@@ -123,29 +117,12 @@ namespace adm {
   void AudioProgramme::unset(detail::ParameterTraits<End>::tag) {
     end_ = boost::none;
   }
-  void AudioProgramme::unset(detail::ParameterTraits<LoudnessMetadatas>::tag) {
-    loudnessMetadatas_.clear();
-  }
   void AudioProgramme::unset(detail::ParameterTraits<MaxDuckingDepth>::tag) {
     maxDuckingDepth_ = boost::none;
   }
   void AudioProgramme::unset(
       detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag) {
     refScreen_ = boost::none;
-  }
-
-  // ---- Add ---- //
-  void AudioProgramme::add(LoudnessMetadata loudnessMetadata) {
-    loudnessMetadatas_.push_back(loudnessMetadata);
-  }
-
-  // ---- Remove ---- //
-  void AudioProgramme::remove(LoudnessMetadata loudnessMetadata) {
-    auto it =
-        std::find(loudnessMetadatas_.begin(), loudnessMetadatas_.end(), loudnessMetadata);
-    if (it != loudnessMetadatas_.end()) {
-      loudnessMetadatas_.erase(it);
-    }
   }
 
   // ---- References ---- //
