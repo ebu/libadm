@@ -151,19 +151,11 @@ namespace adm {
   // ---- FREE FUNCTIONS ---- //
 
   bool isSpherical(const PositionOffset& offset) {
-    if (offset.which() == 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return offset.type() == typeid(SphericalPositionOffset);
   }
 
   bool isCartesian(const PositionOffset& offset) {
-    if (offset.which() == 1) {
-      return true;
-    } else {
-      return false;
-    }
+    return offset.type() == typeid(CartesianPositionOffset);
   }
 
 }  // namespace adm
