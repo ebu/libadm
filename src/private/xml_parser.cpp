@@ -195,10 +195,10 @@ namespace adm {
       addOptionalReferences<AudioTrackUidId>(node, "audioTrackUIDRef", audioObject, objectTrackUidRefs_, &parseAudioTrackUidId);
       setOptionalElement<AudioObjectInteraction>(node, "audioObjectInteraction", audioObject, &parseAudioObjectInteraction);
 
-      if(guessCartesianFlag(node, "positionOffset") == false) {
-        setOptionalMultiElement<SphericalPositionOffset>(node, "positionOffset", audioObject, &parseSphericalPositionOffset);
-      } else {
+      if(guessCartesianFlag(node, "positionOffset") == Cartesian(true)) {
         setOptionalMultiElement<CartesianPositionOffset>(node, "positionOffset", audioObject, &parseCartesianPositionOffset);
+      } else {
+        setOptionalMultiElement<SphericalPositionOffset>(node, "positionOffset", audioObject, &parseSphericalPositionOffset);
       }
 
       // clang-format on
@@ -633,7 +633,7 @@ namespace adm {
       return frequency;
     }
 
-    Cartesian guessCartesianFlag(NodePtr node, std::string elementName) {
+    Cartesian guessCartesianFlag(NodePtr node, const std::string& elementName) {
       auto element = detail::findElement(node, elementName);
       if (element) {
         auto coordinate = element->first_attribute("coordinate");

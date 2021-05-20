@@ -32,11 +32,13 @@ namespace adm {
     Frequency parseFrequency(std::vector<NodePtr> nodes);
     DialogueId parseDialogueId(NodePtr node);
     ContentKind parseContentKind(NodePtr node);
-    Cartesian guessCartesianFlag(NodePtr node, std::string elementName);
+    Cartesian guessCartesianFlag(NodePtr node, const std::string& elementName);
     SphericalPosition parseSphericalPosition(std::vector<NodePtr> nodes);
     CartesianPosition parseCartesianPosition(std::vector<NodePtr> nodes);
-    SphericalPositionOffset parseSphericalPositionOffset(std::vector<NodePtr> nodes);
-    CartesianPositionOffset parseCartesianPositionOffset(std::vector<NodePtr> nodes);
+    SphericalPositionOffset parseSphericalPositionOffset(
+        std::vector<NodePtr> nodes);
+    CartesianPositionOffset parseCartesianPositionOffset(
+        std::vector<NodePtr> nodes);
     LoudnessMetadata parseLoudnessMetadata(NodePtr node);
     AudioProgrammeReferenceScreen parseAudioProgrammeReferenceScreen(
         NodePtr node);
