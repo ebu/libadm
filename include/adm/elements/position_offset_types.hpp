@@ -10,7 +10,7 @@ namespace adm {
    * Valid values are in the range [-180, 180]
    */
   using AzimuthOffset = detail::NamedType<float, AzimuthOffsetTag,
-                                          detail::RangeValidator<-180, 180>>;
+                                          detail::RangeValidator<-360, 360>>;
   /// @brief Tag for NamedType ::Elevation
   struct ElevationOffsetTag {};
   /**
@@ -19,7 +19,7 @@ namespace adm {
    * Valid values are in the range [-90, 90]
    */
   using ElevationOffset = detail::NamedType<float, ElevationOffsetTag,
-                                            detail::RangeValidator<-90, 90>>;
+                                            detail::RangeValidator<-180, 180>>;
   /// @brief Tag for NamedType ::DistanceOffset
   struct DistanceOffsetTag {};
   /**
@@ -28,8 +28,7 @@ namespace adm {
    *
    * Valid values are in the range [-1, 1]
    */
-  using DistanceOffset = detail::NamedType<float, DistanceOffsetTag,
-                                           detail::RangeValidator<-1, 1>>;
+  using DistanceOffset = detail::NamedType<float, DistanceOffsetTag>;
   /// @brief Tag for NamedType ::X
   struct XOffsetTag {};
   /**
