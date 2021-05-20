@@ -67,7 +67,7 @@ namespace adm {
     void formatPosition(XmlNode &parentNode, const std::string &name,
                         const Position &position);
     void formatPositionOffset(XmlNode &parentNode, const std::string &name,
-                        const PositionOffset &position);
+                              const PositionOffset &position);
     void formatChannelLock(XmlNode &node, const ChannelLock &channelLock);
     void formatObjectDivergence(XmlNode &node,
                                 const ObjectDivergence &objectDivergence);
