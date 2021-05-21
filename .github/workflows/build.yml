@@ -3,8 +3,8 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
+    name: '${{ matrix.os }} shared=${{ matrix.shared }} ${{ matrix.build_type }}'
+    runs-on: ${{ matrix.os }}
     env:
       CCACHE_COMPRESS: 'true'
       CCACHE_COMPRESSLEVEL: '6'
@@ -13,31 +13,20 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: 10.12
     strategy:
       matrix:
-        config:
-          - name: "Windows Latest MSVC"
-            os: windows-latest
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        shared: [true, false]
+        build_type: [Release]
+        include:
+          - os: windows-latest
             triplet: x64-windows
-            cmake_config: >-
-              -DCMAKE_C_COMPILER_LAUNCHER=ccache
-              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-              -DCMAKE_BUILD_TYPE=Release
-              -GNinja
-          - name: "macOS Latest Clang"
-            os: macos-latest
+          - os: macos-latest
             triplet: x64-osx
-            cmake_config: >-
-              -DCMAKE_C_COMPILER_LAUNCHER=ccache
-              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-              -DCMAKE_BUILD_TYPE=Release
-              -GNinja
-          - name: "Ubuntu Latest GCC"
-            os: ubuntu-latest
+          - os: ubuntu-latest
             triplet: x64-linux
-            cmake_config: >-
-              -DCMAKE_C_COMPILER_LAUNCHER=ccache
-              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-              -DCMAKE_BUILD_TYPE=Release
-              -GNinja
+
+          - os: ubuntu-latest
+            shared: true
+            build_type: Coverage
     steps:
       # checkout to workspace
       - uses: actions/checkout@v2
@@ -52,16 +41,16 @@ jobs:
         id: runvcpkg
         with:
           vcpkgArguments: 'boost-variant boost-optional boost-format boost-functional boost-range boost-iterator'
-          vcpkgTriplet: '${{ matrix.config.triplet }}'
+          vcpkgTriplet: '${{ matrix.triplet }}'
           vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
           vcpkgGitCommitId: '5568f110b509a9fd90711978a7cb76bae75bb092'
 
       - name: 'Install ubuntu dependencies'
-        if: matrix.config.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get install -y ccache
 
       - name: 'Install ccache on windows'
-        if: matrix.config.os == 'windows-latest'
+        if: matrix.os == 'windows-latest'
         shell: cmake -P {0}
         run: |
           set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v$ENV{CCACHE_WIN_VERSION}/Windows.tar.xz")
@@ -70,7 +59,7 @@ jobs:
         working-directory: ${{ runner.workspace }}
 
       - name: 'Install ccache on macos'
-        if: matrix.config.os == 'macos-latest'
+        if: matrix.os == 'macos-latest'
         run: |
           brew install ccache
 
@@ -92,9 +81,9 @@ jobs:
         uses: actions/cache@v1.1.0
         with:
           path: ${{ github.workspace }}/.ccache
-          key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          key: ${{ matrix.os }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
           restore-keys: |
-              ${{ matrix.config.name }}-ccache-
+              ${{ matrix.os }}-ccache-
 
       - name: 'zero ccache stats'
         run: ccache -z
@@ -109,10 +98,20 @@ jobs:
           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           useVcpkgToolchainFile: true
           buildDirectory: '${{ runner.workspace }}/b/ninja'
-          cmakeAppendedArgs: '${{ matrix.config.cmake_config }}'
+          cmakeAppendedArgs: >-
+            -GNinja
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+            -DBUILD_SHARED_LIBS=${{ matrix.shared }}
 
       - name: 'print ccache stats'
         run: ccache -s
+
+      - name: Add library directory to PATH for Tests
+        if: matrix.os == 'windows-latest'
+        run: 'echo "${{ runner.workspace }}/b/ninja/src" >> $GITHUB_PATH'
+        shell: bash
 
       - name: 'Run tests'
         run: ctest . --output-on-failure
