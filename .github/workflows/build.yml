@@ -1,0 +1,123 @@
+name: Build
+on: [workflow_dispatch, pull_request]
+
+jobs:
+  build:
+    name: '${{ matrix.os }} shared=${{ matrix.shared }} ${{ matrix.build_type }}'
+    runs-on: ${{ matrix.os }}
+    env:
+      CCACHE_COMPRESS: 'true'
+      CCACHE_COMPRESSLEVEL: '6'
+      CCACHE_MAXSIZE: '500M'
+      CCACHE_WIN_VERSION: 4.2.1
+      CCACHE_KEY: 'ccache-${{ matrix.os }}-${{ matrix.shared }}-${{ matrix.build_type }}'
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        shared: [true, false]
+        build_type: [Release]
+        include:
+          - os: windows-latest
+            triplet: x64-windows
+          - os: macos-latest
+            triplet: x64-osx
+          - os: ubuntu-latest
+            triplet: x64-linux
+
+          - os: ubuntu-latest
+            shared: true
+            build_type: Coverage
+    steps:
+      # checkout to workspace
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Get CMake and ninja
+        uses: lukka/get-cmake@v3.20.1
+
+      - name: Restore artifacts, or run vcpkg, build and cache artifacts
+        uses: lukka/run-vcpkg@main
+        id: runvcpkg
+        with:
+          vcpkgArguments: 'boost-variant boost-optional boost-format boost-functional boost-range boost-iterator'
+          vcpkgTriplet: '${{ matrix.triplet }}'
+          vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
+          vcpkgGitCommitId: '5568f110b509a9fd90711978a7cb76bae75bb092'
+
+      - name: 'Install ubuntu dependencies'
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install -y ccache
+
+      - name: 'Install ccache on windows'
+        if: matrix.os == 'windows-latest'
+        shell: cmake -P {0}
+        run: |
+          set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v$ENV{CCACHE_WIN_VERSION}/Windows.tar.xz")
+          file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
+        working-directory: ${{ runner.workspace }}
+
+      - name: 'Install ccache on macos'
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install ccache
+
+      - name: 'Config env for ccache'
+        run: |
+          echo "${{ runner.workspace }}" >> $GITHUB_PATH
+          echo "CCACHE_BASEDIR=${{ github.workspace }}" >> $GITHUB_ENV
+          echo "CCACHE_DIR=${{ github.workspace }}/.ccache" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Prepare ccache timestamp
+        id: ccache_cache_timestamp
+        shell: cmake -P {0}
+        run: |
+          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
+          message("::set-output name=timestamp::${current_date}")
+
+      - name: ccache cache files
+        uses: actions/cache@v1.1.0
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ${{ env.CCACHE_KEY }}-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          restore-keys: ${{ env.CCACHE_KEY }}-
+
+      - name: 'zero ccache stats'
+        run: ccache -z
+
+      - name: 'print ccache config'
+        run: ccache -p
+
+      - name: 'Build with CMake and Ninja'
+        uses: lukka/run-cmake@v3
+        with:
+          cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
+          useVcpkgToolchainFile: true
+          buildDirectory: '${{ runner.workspace }}/b/ninja'
+          cmakeAppendedArgs: >-
+            -GNinja
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+            -DBUILD_SHARED_LIBS=${{ matrix.shared }}
+
+      - name: 'print ccache stats'
+        run: ccache -s
+
+      - name: Add library directory to PATH for Tests
+        if: matrix.os == 'windows-latest'
+        run: 'echo "${{ runner.workspace }}/b/ninja/src" >> $GITHUB_PATH'
+        shell: bash
+
+      - name: 'Run tests'
+        run: ctest . --output-on-failure
+        working-directory: '${{ runner.workspace }}/b/ninja'
+
+      - uses: codecov/codecov-action@v1
+        if: matrix.build_type == 'Coverage'
+        with:
+          root_dir: '${{ github.workspace }}'
+          working-directory: '${{ runner.workspace }}/b/ninja'
