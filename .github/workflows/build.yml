@@ -116,3 +116,6 @@ jobs:
       - name: 'Run tests'
         run: ctest . --output-on-failure
         working-directory: '${{ runner.workspace }}/b/ninja'
+
+      - uses: codecov/codecov-action@v1
+        if: matrix.build_type == 'Coverage'
