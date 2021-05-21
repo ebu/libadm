@@ -1,0 +1,15 @@
+name: Build
+on: [push, pull_request]
+
+jobs:
+  check_format:
+    name: Check Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: format code
+        run: ./format.sh
+
+      - name: check diff
+        run: git diff --exit-code
