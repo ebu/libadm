@@ -52,7 +52,7 @@ jobs:
         id: runvcpkg
         with:
           vcpkgArguments: 'boost-variant boost-optional boost-format boost-functional boost-range boost-iterator'
-          vcpkgTriplet: '${{ matrix.triplet }}'
+          vcpkgTriplet: '${{ matrix.config.triplet }}'
           vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
           vcpkgGitCommitId: '5568f110b509a9fd90711978a7cb76bae75bb092'
 
