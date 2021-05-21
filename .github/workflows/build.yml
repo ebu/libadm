@@ -69,24 +69,17 @@ jobs:
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
         working-directory: ${{ runner.workspace }}
 
-      - name: 'Config env for ccache on windows'
-        if: matrix.config.os == 'windows-latest'
-        run: |
-          echo "${{ runner.workspace }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "CCACHE_BASEDIR=${{ github.workspace }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          echo "CCACHE_DIR=${{ github.workspace }}/.ccache" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
       - name: 'Install ccache on macos'
         if: matrix.config.os == 'macos-latest'
         run: |
           brew install ccache
 
-      - name: 'Config env for ccache on macos'
-        if: matrix.config.os == 'macos-latest'
+      - name: 'Config env for ccache'
         run: |
           echo "${{ runner.workspace }}" >> $GITHUB_PATH
           echo "CCACHE_BASEDIR=${{ github.workspace }}" >> $GITHUB_ENV
           echo "CCACHE_DIR=${{ github.workspace }}/.ccache" >> $GITHUB_ENV
+        shell: bash
 
       - name: Prepare ccache timestamp
         id: ccache_cache_timestamp
@@ -110,12 +103,6 @@ jobs:
         run: ccache -p
 
       - name: 'Build with CMake and Ninja'
-        env:
-          CCACHE_BASEDIR: '${{ github.workspace }}'
-          CCACHE_DIR: '${{ runner.workspace }}/.ccache'
-          CCACHE_COMPRESS: 'true'
-          CCACHE_COMPRESSLEVEL: '6'
-          CCACHE_MAXSIZE: '500M'
         uses: lukka/run-cmake@v3
         with:
           cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
