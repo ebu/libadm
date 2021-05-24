@@ -10,6 +10,7 @@ jobs:
       CCACHE_COMPRESSLEVEL: '6'
       CCACHE_MAXSIZE: '500M'
       CCACHE_WIN_VERSION: 4.2.1
+      CCACHE_KEY: 'ccache-${{ matrix.os }}-${{ matrix.shared }}-${{ matrix.build_type }}'
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
@@ -80,9 +81,8 @@ jobs:
         uses: actions/cache@v1.1.0
         with:
           path: ${{ github.workspace }}/.ccache
-          key: ${{ matrix.os }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
-          restore-keys: |
-              ${{ matrix.os }}-ccache-
+          key: ${{ env.CCACHE_KEY }}-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          restore-keys: ${{ env.CCACHE_KEY }}-
 
       - name: 'zero ccache stats'
         run: ccache -z
