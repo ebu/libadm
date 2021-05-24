@@ -123,4 +123,4 @@ jobs:
       - uses: codecov/codecov-action@v1
         if: matrix.build_type == 'Coverage'
         with:
-          root_dir:  '${{ runner.workspace }}/b/ninja'
+          gcov_root_dir: '${{ runner.workspace }}/b/ninja'
