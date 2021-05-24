@@ -8,6 +8,7 @@ src/elements/audio_track_format_id.cpp
 src/elements/audio_block_format_id.cpp
 src/elements/audio_block_format_hoa.cpp
 src/document.cpp
+src/private/xml_parser.cpp
 include/adm/elements/audio_block_format_hoa.hpp
 include/adm/elements/audio_pack_format.hpp
 include/adm/elements/audio_channel_format.hpp
@@ -18,6 +19,7 @@ tests/hex_values_tests.cpp
 tests/adm_common_definitions_tests.cpp
 tests/audio_pack_format_hoa_tests.cpp
 tests/xml_parser_audio_block_format_hoa_tests.cpp
+tests/xml_parser_audio_block_format_objects_tests.cpp
 tests/xml_parser_audio_pack_format_tests.cpp
 "
 
