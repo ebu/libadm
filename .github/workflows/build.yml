@@ -124,3 +124,4 @@ jobs:
         if: matrix.build_type == 'Coverage'
         with:
           directory: '${{ runner.workspace }}/b/ninja'
+          gcov_path_include: '${{ runner.workspace }}/b/ninja'
