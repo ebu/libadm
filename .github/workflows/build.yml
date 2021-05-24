@@ -10,7 +10,6 @@ jobs:
       CCACHE_COMPRESSLEVEL: '6'
       CCACHE_MAXSIZE: '500M'
       CCACHE_WIN_VERSION: 4.2.1
-      MACOSX_DEPLOYMENT_TARGET: 10.12
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
