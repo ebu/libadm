@@ -36,6 +36,7 @@ namespace adm {
     SphericalPosition parseSphericalPosition(std::vector<NodePtr> nodes);
     CartesianPosition parseCartesianPosition(std::vector<NodePtr> nodes);
     LoudnessMetadata parseLoudnessMetadata(NodePtr node);
+    LoudnessMetadatas parseLoudnessMetadatas(const std::vector<NodePtr>& nodes);
     AudioProgrammeReferenceScreen parseAudioProgrammeReferenceScreen(
         NodePtr node);
     AudioBlockFormatObjects parseAudioBlockFormatObjects(NodePtr node);
