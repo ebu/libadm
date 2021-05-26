@@ -29,7 +29,6 @@ namespace adm {
   using AudioContentLanguage =
       detail::NamedType<std::string, AudioContentLanguageTag>;
 
-
   /// @brief Tag for AudioContent
   struct AudioContentTag {};
 
@@ -189,24 +188,24 @@ namespace adm {
     /**
      * @brief Print overview to ostream
      */
-    void print(std::ostream &os) const;
+    void print(std::ostream& os) const;
 
     /// Get adm::Document this element belongs to
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
-    using detail::AudioContentBase::get;
-    using detail::AudioContentBase::set;
-    using detail::AudioContentBase::has;
-    using detail::AudioContentBase::unset;
     using detail::AudioContentBase::add;
+    using detail::AudioContentBase::get;
+    using detail::AudioContentBase::has;
     using detail::AudioContentBase::remove;
+    using detail::AudioContentBase::set;
+    using detail::AudioContentBase::unset;
 
    private:
     friend class AudioContentAttorney;
 
     ADM_EXPORT AudioContent(AudioContentName name);
-    ADM_EXPORT AudioContent(const AudioContent &) = default;
-    ADM_EXPORT AudioContent(AudioContent &&) = default;
+    ADM_EXPORT AudioContent(const AudioContent&) = default;
+    ADM_EXPORT AudioContent(AudioContent&&) = default;
 
     ADM_EXPORT AudioContentId
         get(detail::ParameterTraits<AudioContentId>::tag) const;
@@ -270,7 +269,8 @@ namespace adm {
     boost::optional<MixedContentKind> mixedContentKind_;
   };
 
-  std::ostream& operator<<(std::ostream& stream, const LoudnessMetadatas& loudnessMetaDatas);
+  std::ostream& operator<<(std::ostream& stream,
+                           const LoudnessMetadatas& loudnessMetaDatas);
 
   // ---- Implementation ---- //
 

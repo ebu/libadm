@@ -144,7 +144,7 @@ namespace adm {
            get<LoudnessCorrectionType>() == other.get<LoudnessCorrectionType>();
   }
 
-  void LoudnessMetadata::print(std::ostream &os) const {
+  void LoudnessMetadata::print(std::ostream& os) const {
     os << "(";
     if (has<LoudnessMethod>()) {
       os << "loudnessMethod=" << get<LoudnessMethod>() << ", ";

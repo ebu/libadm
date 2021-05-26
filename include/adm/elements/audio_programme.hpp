@@ -155,7 +155,6 @@ namespace adm {
     template <typename Element>
     ElementRange<Element> getReferences();
 
-
     /**
      * @brief Get references to ADM elements template
      *
@@ -187,12 +186,12 @@ namespace adm {
     /// Get adm::Document this element belongs to
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
-    using detail::AudioProgrammeBase::get;
-    using detail::AudioProgrammeBase::set;
-    using detail::AudioProgrammeBase::has;
-    using detail::AudioProgrammeBase::unset;
     using detail::AudioProgrammeBase::add;
+    using detail::AudioProgrammeBase::get;
+    using detail::AudioProgrammeBase::has;
     using detail::AudioProgrammeBase::remove;
+    using detail::AudioProgrammeBase::set;
+    using detail::AudioProgrammeBase::unset;
 
    private:
     friend class AudioProgrammeAttorney;

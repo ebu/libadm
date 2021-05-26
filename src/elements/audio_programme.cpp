@@ -20,7 +20,7 @@ namespace adm {
 
   namespace detail {
     template class VectorParameter<LoudnessMetadatas>;
-  } // namespace detail
+  }  // namespace detail
 
   // ---- Getter ---- //
   AudioProgrammeId AudioProgramme::get(

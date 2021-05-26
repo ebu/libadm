@@ -134,7 +134,7 @@ namespace adm {
     /**
      * @brief Print overview to ostream
      */
-    void print(std::ostream &os) const;
+    void print(std::ostream& os) const;
 
    private:
     ADM_EXPORT LoudnessMethod

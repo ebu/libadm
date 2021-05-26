@@ -12,7 +12,7 @@ namespace adm {
 
   namespace detail {
     template class VectorParameter<LoudnessMetadatas>;
-  } // namespace detail
+  }  // namespace detail
 
   // ---- Getter ---- //
   AudioContentId AudioContent::get(
@@ -190,7 +190,8 @@ namespace adm {
     return audioObjects_.clear();
   }
 
-  std::ostream& operator<<(std::ostream& stream, const LoudnessMetadatas& loudnessMetaDatas) {
+  std::ostream& operator<<(std::ostream& stream,
+                           const LoudnessMetadatas& loudnessMetaDatas) {
     // Iterate over loudnessMetaDatas
     for (auto i = loudnessMetaDatas.begin(); i != loudnessMetaDatas.end(); ++i)
       stream << *i << ' ';
