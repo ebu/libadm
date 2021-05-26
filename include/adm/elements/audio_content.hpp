@@ -194,11 +194,8 @@ namespace adm {
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
     using detail::AudioContentBase::add;
-    using detail::AudioContentBase::get;
-    using detail::AudioContentBase::has;
     using detail::AudioContentBase::remove;
     using detail::AudioContentBase::set;
-    using detail::AudioContentBase::unset;
 
    private:
     friend class AudioContentAttorney;
@@ -206,6 +203,11 @@ namespace adm {
     ADM_EXPORT AudioContent(AudioContentName name);
     ADM_EXPORT AudioContent(const AudioContent&) = default;
     ADM_EXPORT AudioContent(AudioContent&&) = default;
+
+    using detail::AudioContentBase::get;
+    using detail::AudioContentBase::has;
+    using detail::AudioContentBase::isDefault;
+    using detail::AudioContentBase::unset;
 
     ADM_EXPORT AudioContentId
         get(detail::ParameterTraits<AudioContentId>::tag) const;
