@@ -187,11 +187,8 @@ namespace adm {
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
     using detail::AudioProgrammeBase::add;
-    using detail::AudioProgrammeBase::get;
-    using detail::AudioProgrammeBase::has;
     using detail::AudioProgrammeBase::remove;
     using detail::AudioProgrammeBase::set;
-    using detail::AudioProgrammeBase::unset;
 
    private:
     friend class AudioProgrammeAttorney;
@@ -199,6 +196,10 @@ namespace adm {
     ADM_EXPORT AudioProgramme(AudioProgrammeName name);
     ADM_EXPORT AudioProgramme(const AudioProgramme &) = default;
     ADM_EXPORT AudioProgramme(AudioProgramme &&) = default;
+
+    using detail::AudioProgrammeBase::get;
+    using detail::AudioProgrammeBase::has;
+    using detail::AudioProgrammeBase::unset;
 
     ADM_EXPORT AudioProgrammeId
         get(detail::ParameterTraits<AudioProgrammeId>::tag) const;
