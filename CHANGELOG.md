@@ -10,6 +10,7 @@
 ### Changed
 - updated required C++ standard from C++11 to C++14
 - implemented fractional time format from BS.2076-2
+- audioProgramme and audioContent may now have multiple loudnessMetadata elements, as per BS.2076-2
 
 ## 0.13.0 (February 15, 2022)
 
