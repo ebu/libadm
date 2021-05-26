@@ -14,6 +14,7 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
+#include "adm/detail/auto_base.hpp"
 
 namespace adm {
 
@@ -42,6 +43,15 @@ namespace adm {
 
   /// @brief Tag for AudioProgramme
   struct AudioProgrammeTag {};
+
+  namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        VectorParameter<LoudnessMetadatas>;
+
+    using AudioProgrammeBase =
+        HasParameters<VectorParameter<LoudnessMetadatas>>;
+  }  // namespace detail
+
   /**
    * @brief Class representation of the audioProgramme ADM element
    *
@@ -50,7 +60,8 @@ namespace adm {
    *
    * @headerfile audio_programme.hpp <adm/elements/audio_programme.hpp>
    */
-  class AudioProgramme : public std::enable_shared_from_this<AudioProgramme> {
+  class AudioProgramme : public std::enable_shared_from_this<AudioProgramme>,
+                         private detail::AudioProgrammeBase {
    public:
     typedef AudioProgrammeTag tag;
     /// @brief Type that holds the id for this element;
@@ -116,8 +127,6 @@ namespace adm {
     ADM_EXPORT void set(Start start);
     /// @brief End setter
     ADM_EXPORT void set(End end);
-    /// @brief LoudnessMetadata setter
-    ADM_EXPORT void set(LoudnessMetadata loudnessMetadata);
     /// @brief MaxDuckingDepth setter
     ADM_EXPORT void set(MaxDuckingDepth depth);
     /// @brief AudioProgrammeReferenceScreen setter
@@ -145,6 +154,7 @@ namespace adm {
      */
     template <typename Element>
     ElementRange<Element> getReferences();
+
 
     /**
      * @brief Get references to ADM elements template
@@ -177,6 +187,13 @@ namespace adm {
     /// Get adm::Document this element belongs to
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
+    using detail::AudioProgrammeBase::get;
+    using detail::AudioProgrammeBase::set;
+    using detail::AudioProgrammeBase::has;
+    using detail::AudioProgrammeBase::unset;
+    using detail::AudioProgrammeBase::add;
+    using detail::AudioProgrammeBase::remove;
+
    private:
     friend class AudioProgrammeAttorney;
 
@@ -192,8 +209,6 @@ namespace adm {
         get(detail::ParameterTraits<AudioProgrammeLanguage>::tag) const;
     ADM_EXPORT Start get(detail::ParameterTraits<Start>::tag) const;
     ADM_EXPORT End get(detail::ParameterTraits<End>::tag) const;
-    ADM_EXPORT LoudnessMetadata
-        get(detail::ParameterTraits<LoudnessMetadata>::tag) const;
     ADM_EXPORT MaxDuckingDepth
         get(detail::ParameterTraits<MaxDuckingDepth>::tag) const;
     ADM_EXPORT AudioProgrammeReferenceScreen
@@ -205,7 +220,6 @@ namespace adm {
         detail::ParameterTraits<AudioProgrammeLanguage>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Start>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<End>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<LoudnessMetadata>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<MaxDuckingDepth>::tag) const;
     ADM_EXPORT bool has(
         detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag) const;
@@ -220,7 +234,6 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<AudioProgrammeLanguage>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Start>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<End>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<LoudnessMetadata>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<MaxDuckingDepth>::tag);
     ADM_EXPORT void unset(
         detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag);
@@ -244,7 +257,6 @@ namespace adm {
     boost::optional<Start> start_;
     boost::optional<End> end_;
     std::vector<std::shared_ptr<AudioContent>> audioContents_;
-    boost::optional<LoudnessMetadata> loudnessMetadata_;
     boost::optional<MaxDuckingDepth> maxDuckingDepth_;
     boost::optional<AudioProgrammeReferenceScreen> refScreen_;
   };

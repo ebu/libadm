@@ -137,6 +137,13 @@ namespace adm {
     dialogueLoudness_ = boost::none;
   }
 
+  // ---- Operators ---- //
+  bool LoudnessMetadata::operator==(const LoudnessMetadata& other) const {
+    return get<LoudnessMethod>() == other.get<LoudnessMethod>() &&
+           get<LoudnessRecType>() == other.get<LoudnessRecType>() &&
+           get<LoudnessCorrectionType>() == other.get<LoudnessCorrectionType>();
+  }
+
   void LoudnessMetadata::print(std::ostream &os) const {
     os << "(";
     if (has<LoudnessMethod>()) {

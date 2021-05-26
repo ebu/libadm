@@ -12,6 +12,7 @@
 #include "adm/helper/element_range.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/export.h"
+#include "adm/detail/auto_base.hpp"
 
 namespace adm {
 
@@ -28,14 +29,24 @@ namespace adm {
   using AudioContentLanguage =
       detail::NamedType<std::string, AudioContentLanguageTag>;
 
+
   /// @brief Tag for AudioContent
   struct AudioContentTag {};
+
+  namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        VectorParameter<LoudnessMetadatas>;
+
+    using AudioContentBase = HasParameters<VectorParameter<LoudnessMetadatas>>;
+  }  // namespace detail
+
   /**
    * @brief Class representation of the audioContent ADM element
    *
    * @headerfile audio_content.hpp <adm/elements/audio_content.hpp>
    */
-  class AudioContent : public std::enable_shared_from_this<AudioContent> {
+  class AudioContent : public std::enable_shared_from_this<AudioContent>,
+                       private detail::AudioContentBase {
    public:
     typedef AudioContentTag tag;
     /// Type that holds the id for this element;
@@ -101,8 +112,6 @@ namespace adm {
     ADM_EXPORT void set(AudioContentName name);
     /// @brief AudioContentLanguage setter
     ADM_EXPORT void set(AudioContentLanguage language);
-    /// @brief LoudnessMetadata setter
-    ADM_EXPORT void set(LoudnessMetadata loudnessMetadata);
     ///@{
 
     /**
@@ -185,6 +194,13 @@ namespace adm {
     /// Get adm::Document this element belongs to
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
 
+    using detail::AudioContentBase::get;
+    using detail::AudioContentBase::set;
+    using detail::AudioContentBase::has;
+    using detail::AudioContentBase::unset;
+    using detail::AudioContentBase::add;
+    using detail::AudioContentBase::remove;
+
    private:
     friend class AudioContentAttorney;
 
@@ -198,8 +214,6 @@ namespace adm {
         get(detail::ParameterTraits<AudioContentName>::tag) const;
     ADM_EXPORT AudioContentLanguage
         get(detail::ParameterTraits<AudioContentLanguage>::tag) const;
-    ADM_EXPORT LoudnessMetadata
-        get(detail::ParameterTraits<LoudnessMetadata>::tag) const;
     ADM_EXPORT DialogueId get(detail::ParameterTraits<DialogueId>::tag) const;
     ADM_EXPORT ContentKind get(detail::ParameterTraits<ContentKind>::tag) const;
     ADM_EXPORT NonDialogueContentKind
@@ -213,7 +227,6 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<AudioContentName>::tag) const;
     ADM_EXPORT bool has(
         detail::ParameterTraits<AudioContentLanguage>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<LoudnessMetadata>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<DialogueId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ContentKind>::tag) const;
     ADM_EXPORT bool has(
@@ -228,7 +241,6 @@ namespace adm {
     }
 
     ADM_EXPORT void unset(detail::ParameterTraits<AudioContentLanguage>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<LoudnessMetadata>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<DialogueId>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ContentKind>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<NonDialogueContentKind>::tag);
@@ -252,12 +264,13 @@ namespace adm {
     AudioContentName name_;
     boost::optional<AudioContentLanguage> language_;
     std::vector<std::shared_ptr<AudioObject>> audioObjects_;
-    boost::optional<LoudnessMetadata> loudnessMetadata_;
     boost::optional<DialogueId> dialogueId_;
     boost::optional<NonDialogueContentKind> nonDialogueContentKind_;
     boost::optional<DialogueContentKind> dialogueContentKind_;
     boost::optional<MixedContentKind> mixedContentKind_;
   };
+
+  std::ostream& operator<<(std::ostream& stream, const LoudnessMetadatas& loudnessMetaDatas);
 
   // ---- Implementation ---- //
 

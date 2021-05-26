@@ -18,6 +18,10 @@ namespace adm {
     const Start startDefault{std::chrono::seconds(0)};
   }  // namespace
 
+  namespace detail {
+    template class VectorParameter<LoudnessMetadatas>;
+  } // namespace detail
+
   // ---- Getter ---- //
   AudioProgrammeId AudioProgramme::get(
       detail::ParameterTraits<AudioProgrammeId>::tag) const {
@@ -36,10 +40,6 @@ namespace adm {
   }
   End AudioProgramme::get(detail::ParameterTraits<End>::tag) const {
     return end_.get();
-  }
-  LoudnessMetadata AudioProgramme::get(
-      detail::ParameterTraits<LoudnessMetadata>::tag) const {
-    return loudnessMetadata_.get();
   }
   MaxDuckingDepth AudioProgramme::get(
       detail::ParameterTraits<MaxDuckingDepth>::tag) const {
@@ -68,10 +68,6 @@ namespace adm {
   }
   bool AudioProgramme::has(detail::ParameterTraits<End>::tag) const {
     return end_ != boost::none;
-  }
-  bool AudioProgramme::has(
-      detail::ParameterTraits<LoudnessMetadata>::tag) const {
-    return loudnessMetadata_ != boost::none;
   }
   bool AudioProgramme::has(
       detail::ParameterTraits<MaxDuckingDepth>::tag) const {
@@ -105,9 +101,6 @@ namespace adm {
   }
   void AudioProgramme::set(Start start) { start_ = start; }
   void AudioProgramme::set(End end) { end_ = end; }
-  void AudioProgramme::set(LoudnessMetadata loudnessMetadata) {
-    loudnessMetadata_ = loudnessMetadata;
-  }
   void AudioProgramme::set(MaxDuckingDepth depth) { maxDuckingDepth_ = depth; }
   void AudioProgramme::set(AudioProgrammeReferenceScreen refScreen) {
     refScreen_ = refScreen;
@@ -123,9 +116,6 @@ namespace adm {
   }
   void AudioProgramme::unset(detail::ParameterTraits<End>::tag) {
     end_ = boost::none;
-  }
-  void AudioProgramme::unset(detail::ParameterTraits<LoudnessMetadata>::tag) {
-    loudnessMetadata_ = boost::none;
   }
   void AudioProgramme::unset(detail::ParameterTraits<MaxDuckingDepth>::tag) {
     maxDuckingDepth_ = boost::none;
@@ -182,8 +172,8 @@ namespace adm {
     if (has<End>()) {
       os << ", end=" << formatTimecode(get<End>().get());
     }
-    if (has<LoudnessMetadata>()) {
-      os << ", loudnessMetadata=" << get<LoudnessMetadata>();
+    if (has<LoudnessMetadatas>()) {
+      os << ", loudnessMetadata=" << get<LoudnessMetadatas>();
     }
     if (has<MaxDuckingDepth>()) {
       os << ", maxDuckingDepth=" << get<MaxDuckingDepth>();

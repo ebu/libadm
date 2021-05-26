@@ -10,6 +10,10 @@
 
 namespace adm {
 
+  namespace detail {
+    template class VectorParameter<LoudnessMetadatas>;
+  } // namespace detail
+
   // ---- Getter ---- //
   AudioContentId AudioContent::get(
       detail::ParameterTraits<AudioContentId>::tag) const {
@@ -22,10 +26,6 @@ namespace adm {
   AudioContentLanguage AudioContent::get(
       detail::ParameterTraits<AudioContentLanguage>::tag) const {
     return language_.get();
-  }
-  LoudnessMetadata AudioContent::get(
-      detail::ParameterTraits<LoudnessMetadata>::tag) const {
-    return loudnessMetadata_.get();
   }
   DialogueId AudioContent::get(detail::ParameterTraits<DialogueId>::tag) const {
     return dialogueId_.get();
@@ -64,9 +64,6 @@ namespace adm {
       detail::ParameterTraits<AudioContentLanguage>::tag) const {
     return language_ != boost::none;
   }
-  bool AudioContent::has(detail::ParameterTraits<LoudnessMetadata>::tag) const {
-    return loudnessMetadata_ != boost::none;
-  }
   bool AudioContent::has(detail::ParameterTraits<DialogueId>::tag) const {
     return dialogueId_ != boost::none;
   }
@@ -101,9 +98,6 @@ namespace adm {
   void AudioContent::set(AudioContentName name) { name_ = name; }
   void AudioContent::set(AudioContentLanguage language) {
     language_ = language;
-  }
-  void AudioContent::set(LoudnessMetadata loudnessMetadata) {
-    loudnessMetadata_ = loudnessMetadata;
   }
   void AudioContent::set(DialogueId id) {
     if (dialogueId_ && dialogueId_.get() == id) {
@@ -147,9 +141,6 @@ namespace adm {
   // ---- Unsetter ---- //
   void AudioContent::unset(detail::ParameterTraits<AudioContentLanguage>::tag) {
     language_ = boost::none;
-  }
-  void AudioContent::unset(detail::ParameterTraits<LoudnessMetadata>::tag) {
-    loudnessMetadata_ = boost::none;
   }
   void AudioContent::unset(detail::ParameterTraits<DialogueId>::tag) {
     dialogueId_ = boost::none;
@@ -199,6 +190,13 @@ namespace adm {
     return audioObjects_.clear();
   }
 
+  std::ostream& operator<<(std::ostream& stream, const LoudnessMetadatas& loudnessMetaDatas) {
+    // Iterate over loudnessMetaDatas
+    for (auto i = loudnessMetaDatas.begin(); i != loudnessMetaDatas.end(); ++i)
+      stream << *i << ' ';
+    return stream;
+  }
+
   // ---- Common ---- //
   void AudioContent::print(std::ostream& os) const {
     os << get<AudioContentId>();
@@ -207,8 +205,8 @@ namespace adm {
     if (has<AudioContentLanguage>()) {
       os << ", audioContentLanguage=" << get<AudioContentLanguage>();
     }
-    if (has<LoudnessMetadata>()) {
-      os << ", loudnessMetadata=" << get<LoudnessMetadata>();
+    if (has<LoudnessMetadatas>()) {
+      os << ", loudnessMetadata=" << get<LoudnessMetadatas>();
     }
     if (has<DialogueId>()) {
       os << ", dialogueId=" << get<DialogueId>();
