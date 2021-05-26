@@ -1,10 +1,12 @@
 #pragma once
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
+#include "adm/detail/auto_base.hpp"
 #include "adm/export.h"
 #include <boost/optional.hpp>
 #include <string>
 #include <ostream>
+#include <vector>
 
 namespace adm {
 
@@ -49,6 +51,14 @@ namespace adm {
 
   /// @brief Tag for LoudnessMetadata class
   struct LoudnessMetadataTag {};
+
+  using LoudnessMetadatas = std::vector<LoudnessMetadata>;
+  ADD_TRAIT(LoudnessMetadatas, LoudnessMetadatasTag);
+
+  namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        VectorParameter<LoudnessMetadatas>;
+  }
 
   class LoudnessMetadata {
    public:
@@ -121,9 +131,16 @@ namespace adm {
     void unset();
 
     /**
+     * @brief Operator overload
+     *
+     * Compares each loudnessMetadata parameter
+     */
+    ADM_EXPORT bool operator==(const LoudnessMetadata& other) const;
+
+    /**
      * @brief Print overview to ostream
      */
-    ADM_EXPORT void print(std::ostream &os) const;
+    ADM_EXPORT void print(std::ostream& os) const;
 
    private:
     ADM_EXPORT LoudnessMethod

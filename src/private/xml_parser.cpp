@@ -151,7 +151,7 @@ namespace adm {
       setOptionalAttribute<End>(node, "end", audioProgramme, &parseTimecode);
       setOptionalAttribute<MaxDuckingDepth>(node, "maxDuckingDepth", audioProgramme);
 
-      setOptionalElement<LoudnessMetadata>(node, "loudnessMetadata", audioProgramme, &parseLoudnessMetadata);
+      setOptionalMultiElement<LoudnessMetadatas>(node, "loudnessMetadata", audioProgramme, &parseLoudnessMetadatas);
       setOptionalElement<AudioProgrammeReferenceScreen>(node, "audioProgrammeReferenceScreen", audioProgramme, &parseAudioProgrammeReferenceScreen);
 
       addOptionalReferences<AudioContentId>(node, "audioContentIDRef", audioProgramme, programmeContentRefs_, &parseAudioContentId);
@@ -170,7 +170,7 @@ namespace adm {
 
       setOptionalAttribute<AudioContentLanguage>(node, "audioContentLanguage", audioContent);
 
-      setOptionalElement<LoudnessMetadata>(node, "loudnessMetadata", audioContent, &parseLoudnessMetadata);
+      setOptionalMultiElement<LoudnessMetadatas>(node, "loudnessMetadata", audioContent, &parseLoudnessMetadatas);
       setOptionalElement<ContentKind>(node, "dialogue", audioContent, &parseContentKind);
 
       addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", audioContent, contentObjectRefs_, &parseAudioObjectId);
@@ -734,6 +734,16 @@ namespace adm {
       setOptionalElement<DialogueLoudness>(node, "dialogueLoudness",
                                            loudnessMetadata);
       return loudnessMetadata;
+    }
+
+    LoudnessMetadatas parseLoudnessMetadatas(
+        std::vector<NodePtr> const& nodes) {
+      LoudnessMetadatas loudnessMetatatas;
+      for (auto& element : nodes) {
+        auto loudnessMetadata = parseLoudnessMetadata(element);
+        loudnessMetatatas.push_back(loudnessMetadata);
+      }
+      return loudnessMetatatas;
     }
 
     DialogueId parseDialogueId(NodePtr node) {

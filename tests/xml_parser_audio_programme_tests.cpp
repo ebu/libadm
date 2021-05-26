@@ -17,7 +17,7 @@ TEST_CASE("xml_parser/audio_programme") {
     REQUIRE(audioProgramme->has<Start>() == true);
     REQUIRE(audioProgramme->has<End>() == true);
     REQUIRE(audioProgramme->has<MaxDuckingDepth>() == true);
-    REQUIRE(audioProgramme->has<LoudnessMetadata>() == true);
+    REQUIRE(audioProgramme->has<LoudnessMetadatas>() == true);
     REQUIRE(audioProgramme->has<AudioProgrammeReferenceScreen>() == false);
 
     REQUIRE(audioProgramme->get<AudioProgrammeName>() == "MyProgramme");
@@ -28,7 +28,7 @@ TEST_CASE("xml_parser/audio_programme") {
     REQUIRE(audioProgramme->get<Start>().get() == std::chrono::seconds(0));
     REQUIRE(audioProgramme->get<End>().get() == std::chrono::seconds(10));
     REQUIRE(audioProgramme->get<MaxDuckingDepth>() == -15);
-    auto loudnessMetadata = audioProgramme->get<LoudnessMetadata>();
+    auto loudnessMetadata = audioProgramme->get<LoudnessMetadatas>().at(0);
     REQUIRE(loudnessMetadata.get<LoudnessMethod>() == "ITU-R BS.1770");
     REQUIRE(loudnessMetadata.get<LoudnessRecType>() == "EBU R128");
     REQUIRE(loudnessMetadata.get<LoudnessCorrectionType>() == "File-based");
