@@ -12,7 +12,7 @@ TEST_CASE("write_audio_object_interaction") {
   auto audioContent = AudioContent::create(AudioContentName("MyContent"));
   audioContent->set(AudioContentId(AudioContentIdValue(0x1001)));
   audioContent->set(AudioContentLanguage("de"));
-  audioContent->set(LoudnessMetadata(
+  audioContent->add(LoudnessMetadata(
       LoudnessMethod("ITU-R BS.1770"), LoudnessRecType("EBU R128"),
       LoudnessCorrectionType("File-based"), IntegratedLoudness(-23.f),
       LoudnessRange(10.f), MaxTruePeak(-2.3f), MaxMomentary(-19.f),

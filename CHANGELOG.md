@@ -19,6 +19,7 @@
 - fixed erroneous test acceptance data
 - updated required C++ standard from C++11 to C++14
 - implemented fractional time format from BS.2076-2
+- audioProgramme and audioContent may now have multiple loudnessMetadata elements, as per BS.2076-2
 
 ### Fixed
 - updateBlockFormatDurations now throws an exception when given an audioChannelFormat with no audioBlockFormats, rather than segfaulting

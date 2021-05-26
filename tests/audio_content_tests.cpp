@@ -10,13 +10,13 @@ TEST_CASE("audio_content") {
     audioContent->set(AudioContentId(AudioContentIdValue(1)));
     audioContent->set(AudioContentName("MyNewContent"));
     audioContent->set(AudioContentLanguage("de"));
-    audioContent->set(LoudnessMetadata());
+    audioContent->add(LoudnessMetadata());
     audioContent->set(Dialogue::NON_DIALOGUE);
 
     REQUIRE(audioContent->has<AudioContentId>() == true);
     REQUIRE(audioContent->has<AudioContentName>() == true);
     REQUIRE(audioContent->has<AudioContentLanguage>() == true);
-    REQUIRE(audioContent->has<LoudnessMetadata>() == true);
+    REQUIRE(audioContent->has<LoudnessMetadatas>() == true);
     REQUIRE(audioContent->has<DialogueId>() == true);
     REQUIRE(audioContent->has<NonDialogueContentKind>() == true);
     REQUIRE(audioContent->has<DialogueContentKind>() == false);
@@ -29,11 +29,11 @@ TEST_CASE("audio_content") {
     REQUIRE(audioContent->get<DialogueId>() == Dialogue::NON_DIALOGUE);
 
     audioContent->unset<AudioContentLanguage>();
-    audioContent->unset<LoudnessMetadata>();
+    audioContent->unset<LoudnessMetadatas>();
     audioContent->unset<DialogueId>();
 
     REQUIRE(audioContent->has<AudioContentLanguage>() == false);
-    REQUIRE(audioContent->has<LoudnessMetadata>() == false);
+    REQUIRE(audioContent->has<LoudnessMetadatas>() == false);
     REQUIRE(audioContent->has<DialogueId>() == false);
     REQUIRE(audioContent->has<NonDialogueContentKind>() == false);
     REQUIRE(audioContent->has<DialogueContentKind>() == false);
