@@ -199,8 +199,8 @@ namespace adm {
 
     using detail::AudioProgrammeBase::get;
     using detail::AudioProgrammeBase::has;
-    using detail::AudioProgrammeBase::unset;
     using detail::AudioProgrammeBase::isDefault;
+    using detail::AudioProgrammeBase::unset;
 
     ADM_EXPORT AudioProgrammeId
         get(detail::ParameterTraits<AudioProgrammeId>::tag) const;
