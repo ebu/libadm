@@ -4,6 +4,10 @@
 
 namespace adm {
 
+  namespace detail {
+    template class VectorParameter<LoudnessMetadatas>;
+  }
+
   // ---- Getter ---- //
   LoudnessMethod LoudnessMetadata::get(
       detail::ParameterTraits<LoudnessMethod>::tag) const {

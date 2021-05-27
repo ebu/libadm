@@ -45,9 +45,6 @@ namespace adm {
   struct AudioProgrammeTag {};
 
   namespace detail {
-    extern template class ADM_EXPORT_TEMPLATE_METHODS
-        VectorParameter<LoudnessMetadatas>;
-
     using AudioProgrammeBase =
         HasParameters<VectorParameter<LoudnessMetadatas>>;
   }  // namespace detail

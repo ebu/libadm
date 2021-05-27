@@ -10,10 +10,6 @@
 
 namespace adm {
 
-  namespace detail {
-    template class VectorParameter<LoudnessMetadatas>;
-  }  // namespace detail
-
   // ---- Getter ---- //
   AudioContentId AudioContent::get(
       detail::ParameterTraits<AudioContentId>::tag) const {

@@ -18,10 +18,6 @@ namespace adm {
     const Start startDefault{std::chrono::seconds(0)};
   }  // namespace
 
-  namespace detail {
-    template class VectorParameter<LoudnessMetadatas>;
-  }  // namespace detail
-
   // ---- Getter ---- //
   AudioProgrammeId AudioProgramme::get(
       detail::ParameterTraits<AudioProgrammeId>::tag) const {
