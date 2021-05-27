@@ -13,7 +13,6 @@ TEST_CASE("xml_parser/audio_content") {
   REQUIRE(audioContent->has<AudioContentName>() == true);
   REQUIRE(audioContent->has<AudioContentId>() == true);
   REQUIRE(audioContent->has<AudioContentLanguage>() == true);
-  REQUIRE(audioContent->has<LoudnessMetadatas>() == true);
   REQUIRE(audioContent->has<DialogueId>() == true);
 
   REQUIRE(audioContent->get<AudioContentName>() == "MyContent");
