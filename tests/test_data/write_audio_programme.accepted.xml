@@ -3,16 +3,7 @@
 	<coreMetadata>
 		<format>
 			<audioFormatExtended>
-				<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme" audioProgrammeLanguage="de" start="00:00:00.000000000" end="00:00:10.000000000" maxDuckingDepth="-30.000000">
-					<loudnessMetadata loudnessMethod="ITU-R BS.1770" loudnessRecType="EBU R128" loudnessCorrectionType="File-based">
-						<integratedLoudness>-23.000000</integratedLoudness>
-						<loudnessRange>10.000000</loudnessRange>
-						<maxTruePeak>-2.300000</maxTruePeak>
-						<maxMomentary>-19.000000</maxMomentary>
-						<maxShortTerm>-21.200001</maxShortTerm>
-						<dialogueLoudness>-24.000000</dialogueLoudness>
-					</loudnessMetadata>
-				</audioProgramme>
+				<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme" audioProgrammeLanguage="de" start="00:00:00.000000000" end="00:00:10.000000000" maxDuckingDepth="-30.000000"/>
 			</audioFormatExtended>
 		</format>
 	</coreMetadata>

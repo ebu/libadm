@@ -4,14 +4,6 @@
     <format>
       <audioFormatExtended>
         <audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme" audioProgrammeLanguage="en" start="00:00:00.00000" end="00:00:10.00000" maxDuckingDepth="-15">
-          <loudnessMetadata loudnessMethod="ITU-R BS.1770" loudnessRecType="EBU R128" loudnessCorrectionType="File-based">
-            <integratedLoudness>-23.0</integratedLoudness>
-            <loudnessRange>10.0</loudnessRange>
-            <maxTruePeak>-2.3</maxTruePeak>
-            <maxMomentary>-19.0</maxMomentary>
-            <maxShortTerm>-21.2</maxShortTerm>
-            <dialogueLoudness>-24.0</dialogueLoudness>
-          </loudnessMetadata>
         </audioProgramme>
       </audioFormatExtended>
     </format>
