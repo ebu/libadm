@@ -5,14 +5,6 @@
       <audioFormatExtended>
         <audioContent audioContentID="ACO_1001" audioContentName="MyContent" audioContentLanguage="en">
           <dialogue dialogueContentKind="2">1</dialogue>
-          <loudnessMetadata loudnessMethod="BS.1770" loudnessRecType="R128" loudnessCorrectionType="R128">
-            <integratedLoudness>-23.0</integratedLoudness>
-            <loudnessRange>10.0</loudnessRange>
-            <maxTruePeak>-2.3</maxTruePeak>
-            <maxMomentary>-19.0</maxMomentary>
-            <maxShortTerm>-21.2</integratedLoudness>
-            <dialogueLoudness>-24.0</dialogueLoudness>
-          </loudnessMetadata>
         </audioContent>
       </audioFormatExtended>
     </format>

@@ -4,14 +4,6 @@
 		<format>
 			<audioFormatExtended>
 				<audioContent audioContentID="ACO_1001" audioContentName="MyContent" audioContentLanguage="de">
-					<loudnessMetadata loudnessMethod="ITU-R BS.1770" loudnessRecType="EBU R128" loudnessCorrectionType="File-based">
-						<integratedLoudness>-23.000000</integratedLoudness>
-						<loudnessRange>10.000000</loudnessRange>
-						<maxTruePeak>-2.300000</maxTruePeak>
-						<maxMomentary>-19.000000</maxMomentary>
-						<maxShortTerm>-21.200001</maxShortTerm>
-						<dialogueLoudness>-24.000000</dialogueLoudness>
-					</loudnessMetadata>
 					<dialogue dialogueContentKind="4">1</dialogue>
 				</audioContent>
 			</audioFormatExtended>
