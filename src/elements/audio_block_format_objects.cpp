@@ -181,6 +181,9 @@ namespace adm {
   // ---- Unsetter ---- //
   void AudioBlockFormatObjects::unset(detail::ParameterTraits<Cartesian>::tag) {
     cartesian_ = boost::none;
+    if (!has<SphericalPosition>()) {
+      set(SphericalPosition{});
+    }
   }
   void AudioBlockFormatObjects::unset(
       detail::ParameterTraits<detail::ParameterTraits<Position>>::tag) {
