@@ -2,27 +2,9 @@
 #include <catch2/catch.hpp>
 #include "adm/elements/time.hpp"
 #include "adm/utilities/time_conversion.hpp"
+#include "helper/ostream_operators.hpp"
 
 using namespace adm;
-
-namespace adm {
-  std::ostream& operator<<(std::ostream& stream, const FractionalTime& time) {
-    return stream << "FractionalTime{" << time.numerator() << ", "
-                  << time.denominator() << "}";
-  }
-
-  // required because catch2 stringify doesn't know about boost::variants
-  std::ostream& operator<<(std::ostream& stream,
-                           const std::chrono::nanoseconds& time) {
-    return stream << "nanoseconds{" << time.count() << "}";
-  }
-
-  std::ostream& operator<<(std::ostream& stream, const Time& time) {
-    return boost::apply_visitor(
-        [&](const auto& t) -> std::ostream& { return stream << t; },
-        time.asVariant());
-  }
-}  // namespace adm
 
 TEST_CASE("adm_time") {
   // different accuracy
