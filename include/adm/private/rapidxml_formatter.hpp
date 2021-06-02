@@ -71,7 +71,8 @@ namespace adm {
     void formatObjectDivergence(XmlNode &node,
                                 const ObjectDivergence &objectDivergence);
     void formatJumpPosition(XmlNode &node, const JumpPosition &jumpPosition);
-    void formatHeadphoneVirtualise(XmlNode &node, const HeadphoneVirtualise &headphoneVirtualise);
+    void formatHeadphoneVirtualise(
+        XmlNode &node, const HeadphoneVirtualise &headphoneVirtualise);
 
     namespace detail {
       std::string toString(const std::string &string);
