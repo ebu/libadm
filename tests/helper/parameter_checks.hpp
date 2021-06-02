@@ -8,7 +8,7 @@ namespace adm_test {
   namespace detail {
 
     template <typename ParamT, typename ElementT, typename ValueT>
-    void check_required_impl(ElementT element, ValueT expectedInitial,
+    void check_required_impl(ElementT& element, ValueT expectedInitial,
                              ValueT expectedAfterSet) {
       using boost::typeindex::type_id;
       INFO("element type: " << type_id<ElementT>().pretty_name());
@@ -27,7 +27,7 @@ namespace adm_test {
     }
 
     template <typename ParamT, typename ElementT, typename ValueT>
-    void check_default_impl(ElementT element, ValueT expectedDefault,
+    void check_default_impl(ElementT& element, ValueT expectedDefault,
                             ValueT expectedAfterSet) {
       using boost::typeindex::type_id;
       INFO("element type: " << type_id<ElementT>().pretty_name());
@@ -52,7 +52,7 @@ namespace adm_test {
     }
 
     template <typename ParamT, typename ElementT, typename ValueT>
-    void check_optional_impl(ElementT element, ValueT expectedAfterSet) {
+    void check_optional_impl(ElementT& element, ValueT expectedAfterSet) {
       using boost::typeindex::type_id;
       INFO("element type: " << type_id<ElementT>().pretty_name());
       INFO("parameter type: " << type_id<ParamT>().pretty_name());
@@ -102,10 +102,24 @@ namespace adm_test {
   }
 
   template <typename ParamT, typename ElementT, typename ValueT>
+  void check_required_param(std::shared_ptr<ElementT> element,
+                            detail::HasDefaultOf<ValueT> defaultVal,
+                            detail::CanBeSetTo<ValueT> modifiedVal) {
+    detail::check_required_impl<ParamT>(*element, defaultVal.get(),
+                                        modifiedVal.get());
+  }
+  template <typename ParamT, typename ElementT, typename ValueT>
   void check_defaulted_param(ElementT element,
                              detail::HasDefaultOf<ValueT> defaultVal,
                              detail::CanBeSetTo<ValueT> modifiedVal) {
     detail::check_default_impl<ParamT>(element, defaultVal.get(),
+                                       modifiedVal.get());
+  }
+  template <typename ParamT, typename ElementT, typename ValueT>
+  void check_defaulted_param(std::shared_ptr<ElementT> element,
+                             detail::HasDefaultOf<ValueT> defaultVal,
+                             detail::CanBeSetTo<ValueT> modifiedVal) {
+    detail::check_default_impl<ParamT>(*element, defaultVal.get(),
                                        modifiedVal.get());
   }
 
@@ -113,6 +127,11 @@ namespace adm_test {
   void check_optional_param(ElementT element,
                             detail::CanBeSetTo<ValueT> modifiedVal) {
     detail::check_optional_impl<ParamT>(element, modifiedVal.get());
+  }
+  template <typename ParamT, typename ElementT, typename ValueT>
+  void check_optional_param(std::shared_ptr<ElementT> element,
+                            detail::CanBeSetTo<ValueT> modifiedVal) {
+    detail::check_optional_impl<ParamT>(*element, modifiedVal.get());
   }
 
   template <typename T>
