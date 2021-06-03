@@ -3,10 +3,6 @@
 #include <algorithm>
 
 namespace adm {
-  namespace detail {
-    template class DefaultParameter<HeadphoneVirtualise>;
-  }
-
   namespace {
     const Rtime rtimeDefault{std::chrono::seconds(0)};
   }
