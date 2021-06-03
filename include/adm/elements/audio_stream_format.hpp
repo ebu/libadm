@@ -250,7 +250,7 @@ namespace adm {
     /**
      * @brief Print overview to ostream
      */
-    void print(std::ostream &os) const;
+    ADM_EXPORT void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
