@@ -87,7 +87,7 @@ namespace adm {
     /**
      * @brief Print overview to ostream
      */
-    void print(std::ostream& os) const;
+    ADM_EXPORT void print(std::ostream& os) const;
 
    private:
     ADM_EXPORT AudioTrackUidIdValue
