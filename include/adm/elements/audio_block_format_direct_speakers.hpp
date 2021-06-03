@@ -5,13 +5,13 @@
 #include <boost/variant.hpp>
 #include "adm/elements/time.hpp"
 #include "adm/elements/audio_block_format_id.hpp"
+#include "adm/elements/private/common_parameters.hpp"
 #include "adm/elements/speaker_position.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/type_traits.hpp"
 #include "adm/export.h"
-#include "adm/elements/headphone_virtualise.hpp"
 #include "adm/detail/auto_base.hpp"
 
 namespace adm {
@@ -33,9 +33,6 @@ namespace adm {
   ADD_TRAIT(SpeakerPosition, SpeakerPostionTag);
 
   namespace detail {
-    extern template class ADM_EXPORT_TEMPLATE_METHODS
-        DefaultParameter<HeadphoneVirtualise>;
-
     using AudioBlockFormatDirectSpeakersBase =
         HasParameters<DefaultParameter<HeadphoneVirtualise>>;
   }  // namespace detail

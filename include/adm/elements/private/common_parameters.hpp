@@ -1,6 +1,7 @@
 #pragma once
 #include "adm/detail/auto_base.hpp"
 #include "adm/elements/gain.hpp"
+#include "adm/elements/headphone_virtualise.hpp"
 #include "adm/elements/importance.hpp"
 #include "adm/elements/time.hpp"
 
@@ -29,5 +30,8 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Rtime>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<Duration>;
+
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        DefaultParameter<HeadphoneVirtualise>;
   }  // namespace detail
 }  // namespace adm
