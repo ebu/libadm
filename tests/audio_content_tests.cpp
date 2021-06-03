@@ -38,6 +38,12 @@ TEST_CASE("audio_content") {
     REQUIRE(audioContent->has<NonDialogueContentKind>() == false);
     REQUIRE(audioContent->has<DialogueContentKind>() == false);
     REQUIRE(audioContent->has<MixedContentKind>() == false);
+
+    // TODO: replace with check_vector_parameter
+    audioContent->add(Label(LabelValue("ohai")));
+    REQUIRE(audioContent->has<Labels>());
+    audioContent->remove(Label(LabelValue("ohai")));
+    REQUIRE(!audioContent->has<Labels>());
   }
   // References
   {

@@ -15,6 +15,10 @@ namespace adm {
     const Start startDefault{std::chrono::seconds(0)};
   }  // namespace
 
+  namespace detail {
+    template class VectorParameter<AudioComplementaryObjectGroupLabels>;
+  }
+
   // ---- Getter ---- //
   AudioObjectId AudioObject::get(
       detail::ParameterTraits<AudioObjectId>::tag) const {

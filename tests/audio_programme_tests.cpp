@@ -53,6 +53,12 @@ TEST_CASE("audio_programme") {
     REQUIRE(!audioProgramme->has<MaxDuckingDepth>());
     // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
     // REQUIRE(!audioProgramme->has<AudioProgrammeReferenceScreen>());
+
+    // TODO: replace with check_vector_parameter
+    audioProgramme->add(Label(LabelValue("ohai")));
+    REQUIRE(audioProgramme->has<Labels>());
+    audioProgramme->remove(Label(LabelValue("ohai")));
+    REQUIRE(!audioProgramme->has<Labels>());
   }
   // References
   {

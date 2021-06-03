@@ -4,6 +4,7 @@
 #include <boost/optional.hpp>
 #include <memory>
 #include <vector>
+#include "adm/elements/label.hpp"
 #include "adm/elements/time.hpp"
 #include "adm/elements/audio_content.hpp"
 #include "adm/elements/audio_programme_id.hpp"
@@ -11,6 +12,7 @@
 #include "adm/elements/loudness_metadata.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
+#include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
@@ -40,6 +42,10 @@ namespace adm {
   using MaxDuckingDepth = detail::NamedType<double, MaxDuckingDepthTag,
                                             detail::RangeValidator<-62, 0>>;
 
+  namespace detail {
+    using AudioProgrammeBase = HasParameters<VectorParameter<Labels>>;
+  }
+
   /// @brief Tag for AudioProgramme
   struct AudioProgrammeTag {};
   /**
@@ -50,7 +56,8 @@ namespace adm {
    *
    * @headerfile audio_programme.hpp <adm/elements/audio_programme.hpp>
    */
-  class AudioProgramme : public std::enable_shared_from_this<AudioProgramme> {
+  class AudioProgramme : public std::enable_shared_from_this<AudioProgramme>,
+                         private detail::AudioProgrammeBase {
    public:
     typedef AudioProgrammeTag tag;
     /// @brief Type that holds the id for this element;
@@ -105,6 +112,10 @@ namespace adm {
      */
     template <typename Parameter>
     bool isDefault() const;
+
+    using detail::AudioProgrammeBase::add;
+    using detail::AudioProgrammeBase::remove;
+    using detail::AudioProgrammeBase::set;
 
     /// @brief AudioProgrammeId setter
     ADM_EXPORT void set(AudioProgrammeId id);
@@ -183,6 +194,11 @@ namespace adm {
     ADM_EXPORT AudioProgramme(AudioProgrammeName name);
     ADM_EXPORT AudioProgramme(const AudioProgramme &) = default;
     ADM_EXPORT AudioProgramme(AudioProgramme &&) = default;
+
+    using detail::AudioProgrammeBase::get;
+    using detail::AudioProgrammeBase::has;
+    using detail::AudioProgrammeBase::isDefault;
+    using detail::AudioProgrammeBase::unset;
 
     ADM_EXPORT AudioProgrammeId
         get(detail::ParameterTraits<AudioProgrammeId>::tag) const;

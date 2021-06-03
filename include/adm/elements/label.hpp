@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 #include "adm/detail/auto_base.hpp"
@@ -47,6 +48,17 @@ namespace adm {
     using detail::AddWrapperMethods<Label>::isDefault;
     using detail::AddWrapperMethods<Label>::unset;
 
+    // TODO: replace this with something more generic
+    bool operator==(const Label& other) const {
+      if (get<LabelValue>() != other.get<LabelValue>()) return false;
+      if (has<LabelLanguage>() != other.has<LabelLanguage>()) return false;
+      if (has<LabelLanguage>() &&
+          get<LabelLanguage>() != other.get<LabelLanguage>())
+        return false;
+      return true;
+    }
+    bool operator!=(const Label& other) const { return !(*this != other); }
+
    private:
     using detail::LabelBase::get;
     using detail::LabelBase::has;
@@ -55,4 +67,14 @@ namespace adm {
 
     friend class detail::AddWrapperMethods<Label>;
   };
+
+  /// Tag for Label
+  struct LabelsTag {};
+  /// Represents multiple labels with different languages
+  using Labels = std::vector<Label>;
+  ADD_TRAIT(Labels, LabelsTag);
+
+  namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS VectorParameter<Labels>;
+  }
 }  // namespace adm

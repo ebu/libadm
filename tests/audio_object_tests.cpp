@@ -56,6 +56,19 @@ TEST_CASE("audio_object_basic") {
   REQUIRE(audioObject->has<Interact>() == false);
   REQUIRE(audioObject->has<DisableDucking>() == false);
   REQUIRE(audioObject->has<AudioObjectInteraction>() == false);
+
+  // TODO: replace with check_vector_parameter
+  audioObject->add(Label(LabelValue("ohai")));
+  REQUIRE(audioObject->has<Labels>());
+  audioObject->remove(Label(LabelValue("ohai")));
+  REQUIRE(!audioObject->has<Labels>());
+
+  audioObject->add(
+      AudioComplementaryObjectGroupLabel(Label(LabelValue("ohai"))));
+  REQUIRE(audioObject->has<AudioComplementaryObjectGroupLabels>());
+  audioObject->remove(
+      AudioComplementaryObjectGroupLabel(Label(LabelValue("ohai"))));
+  REQUIRE(!audioObject->has<AudioComplementaryObjectGroupLabels>());
 }
 
 TEST_CASE("audio_object_references") {

@@ -7,9 +7,11 @@
 #include "adm/elements/audio_content_id.hpp"
 #include "adm/elements/audio_object.hpp"
 #include "adm/elements/dialogue.hpp"
+#include "adm/elements/label.hpp"
 #include "adm/elements/loudness_metadata.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
+#include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/export.h"
 
@@ -28,6 +30,10 @@ namespace adm {
   using AudioContentLanguage =
       detail::NamedType<std::string, AudioContentLanguageTag>;
 
+  namespace detail {
+    using AudioContentBase = HasParameters<VectorParameter<Labels>>;
+  }
+
   /// @brief Tag for AudioContent
   struct AudioContentTag {};
   /**
@@ -35,7 +41,8 @@ namespace adm {
    *
    * @headerfile audio_content.hpp <adm/elements/audio_content.hpp>
    */
-  class AudioContent : public std::enable_shared_from_this<AudioContent> {
+  class AudioContent : public std::enable_shared_from_this<AudioContent>,
+                       private detail::AudioContentBase {
    public:
     typedef AudioContentTag tag;
     /// Type that holds the id for this element;
@@ -94,6 +101,10 @@ namespace adm {
      */
     template <typename Parameter>
     bool isDefault() const;
+
+    using detail::AudioContentBase::add;
+    using detail::AudioContentBase::remove;
+    using detail::AudioContentBase::set;
 
     /// @brief AudioContentId setter
     ADM_EXPORT void set(AudioContentId id);
@@ -191,6 +202,11 @@ namespace adm {
     ADM_EXPORT AudioContent(AudioContentName name);
     ADM_EXPORT AudioContent(const AudioContent &) = default;
     ADM_EXPORT AudioContent(AudioContent &&) = default;
+
+    using detail::AudioContentBase::get;
+    using detail::AudioContentBase::has;
+    using detail::AudioContentBase::isDefault;
+    using detail::AudioContentBase::unset;
 
     ADM_EXPORT AudioContentId
         get(detail::ParameterTraits<AudioContentId>::tag) const;
