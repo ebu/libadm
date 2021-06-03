@@ -13,6 +13,8 @@
             <maxShortTerm>-21.2</integratedLoudness>
             <dialogueLoudness>-24.0</dialogueLoudness>
           </loudnessMetadata>
+          <audioContentLabel language="en">My Content</audioContentLabel>
+          <audioContentLabel language="deu">Mein Inhalt</audioContentLabel>
         </audioContent>
       </audioFormatExtended>
     </format>
