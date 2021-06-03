@@ -92,6 +92,10 @@ namespace adm {
       void addElements(const Source &src, const std::string &name,
                        Callable formatter);
 
+      template <typename ElementType, typename Source, typename Callable>
+      void addVectorElements(const Source &src, const std::string &name,
+                             Callable formatter);
+
       template <typename ElementType, typename ElementTypeId, typename Source,
                 typename Callable>
       void addBaseElements(const Source &src, const std::string &name,
@@ -233,6 +237,14 @@ namespace adm {
     void XmlNode::addElements(const Source &src, const std::string &name,
                               Callable formatter) {
       for (auto &element : src->template getElements<ElementType>()) {
+        addElement(element, name, formatter);
+      }
+    }
+
+    template <typename ElementType, typename Source, typename Callable>
+    void XmlNode::addVectorElements(const Source &src, const std::string &name,
+                                    Callable formatter) {
+      for (auto &element : src->template get<ElementType>()) {
         addElement(element, name, formatter);
       }
     }
