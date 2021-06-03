@@ -228,5 +228,71 @@ namespace adm {
       T value_;
     };
 
+    /// Helper containing templated wrapper methods like `has<Param>()` around
+    /// overloaded `has(ParamTag)` type methods defined in T.
+    ///
+    /// This should be used from a class `C` CRTP-style, by privately
+    /// inheriting from `AddWrapperMethods<C>` in `C`, making
+    /// `AddWrapperMethods<C>` a friend class of `C`, and adding public using
+    /// declarations for the methods you need.
+    template <typename T>
+    class AddWrapperMethods {
+     public:
+      /**
+       * @brief ADM parameter getter template
+       *
+       * Templated getter with the wanted ADM parameter type as template
+       * argument. If currently no value is available trying to get the adm
+       * parameter will result in an exception. Check with the has method before
+       */
+      template <typename Parameter>
+      Parameter get() const {
+        using Tag = typename detail::ParameterTraits<Parameter>::tag;
+        return static_cast<const T*>(this)->get(Tag());
+      }
+
+      /**
+       * @brief ADM parameter has template
+       *
+       * Templated has method with the ADM parameter type as template argument.
+       * Returns true if the ADM parameter is set or has a default value.
+       */
+      template <typename Parameter>
+      bool has() const {
+        using Tag = typename detail::ParameterTraits<Parameter>::tag;
+        return static_cast<const T*>(this)->has(Tag());
+      }
+
+      template <typename Tag>
+      bool isDefault(Tag) const {
+        return false;
+      }
+
+      /**
+       * @brief ADM parameter isDefault template
+       *
+       * Templated isDefault method with the ADM parameter type as template
+       * argument. Returns true if the ADM parameter is the default value.
+       */
+      template <typename Parameter>
+      bool isDefault() const {
+        using Tag = typename detail::ParameterTraits<Parameter>::tag;
+        return static_cast<const T*>(this)->isDefault(Tag());
+      }
+
+      /**
+       * @brief ADM parameter unset template
+       *
+       * Templated unset method with the ADM parameter type as template
+       * argument. Removes an ADM parameter if it is optional or resets it to
+       * the default value if there is one.
+       */
+      template <typename Parameter>
+      void unset() {
+        using Tag = typename detail::ParameterTraits<Parameter>::tag;
+        static_cast<T*>(this)->unset(Tag());
+      }
+    };
+
   }  // namespace detail
 }  // namespace adm
