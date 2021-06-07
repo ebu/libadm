@@ -9,4 +9,4 @@ Utilities
 
 .. doxygenfunction:: adm::updateBlockFormatDurations(std::shared_ptr<Document>)
 
-.. doxygenfunction:: adm::updateBlockFormatDurations(std::shared_ptr<Document>, std::chrono::nanoseconds)
+.. doxygenfunction:: adm::updateBlockFormatDurations(std::shared_ptr<Document>, const Time &)
