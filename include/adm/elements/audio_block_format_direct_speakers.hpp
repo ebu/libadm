@@ -44,6 +44,36 @@ namespace adm {
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "DirectSpeakers"
+   *
+   * Supported parameters are as follows:
+   *
+   * \rst
+   * +---------------------+------------------------------------+----------------------------+
+   * | ADM Parameter       | Parameter Type                     | Pattern Type               |
+   * +=====================+====================================+============================+
+   * | audioBlockFormatId  | :class:`AudioBlockFormatId`        | :class:`RequiredParameter` |
+   * +---------------------+------------------------------------+----------------------------+
+   * | rtime               | :type:`Rtime`                      | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------------+----------------------------+
+   * | duration            | :type:`Duration`                   | :class:`OptionalParameter` |
+   * +---------------------+------------------------------------+----------------------------+
+   * | position            | - :type:`SpeakerPosition`          | :class:`VariantParameter`  |
+   * |                     | - :type:`SphericalSpeakerPosition` |                            |
+   * |                     | - :type:`CartesianSpeakerPosition` | :class:`RequiredParameter` |
+   * +---------------------+------------------------------------+----------------------------+
+   * | gain                | :class:`Gain`                      | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------------+----------------------------+
+   * | importance          | :type:`Importance`                 | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------------+----------------------------+
+   * | headLocked          | :type:`HeadLocked`                 | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------------+----------------------------+
+   * | headphoneVirtualise | :class:`HeadphoneVirtualise`       | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------------+----------------------------+
+   * | speakerLabel        | :type:`SpeakerLabels`              | :class:`VectorParameter`   |
+   * +---------------------+------------------------------------+----------------------------+
+   * \endrst
+   *
+   * @warning not all methods are implemented for speakerLabel
    */
   class AudioBlockFormatDirectSpeakers
       : private detail::AudioBlockFormatDirectSpeakersBase {

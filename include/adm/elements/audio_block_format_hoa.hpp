@@ -44,6 +44,43 @@ namespace adm {
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "HOA"
+   *
+   * Supported parameters are as follows:
+   *
+   * \rst
+   * +---------------------+------------------------------+----------------------------+
+   * | ADM Parameter       | Parameter Type               | Pattern Type               |
+   * +=====================+==============================+============================+
+   * | audioBlockFormatId  | :class:`AudioBlockFormatId`  | :class:`RequiredParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | rtime               | :type:`Rtime`                | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | duration            | :type:`Duration`             | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | order               | :type:`Order`                | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | degree              | :type:`Degree`               | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | normalization       | :type:`Normalization`        | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | nfcRefDist          | :type:`NfcRefDist`           | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | gain                | :class:`Gain`                | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | importance          | :type:`Importance`           | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | headLocked          | :type:`HeadLocked`           | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | headphoneVirtualise | :class:`HeadphoneVirtualise` | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | screenRef           | :type:`ScreenRef`            | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | equation            | :type:`Equation`             | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * \endrst
+   *
+   * Note that while order and degree are technically optional, in practice
+   * they must always be specified.
    */
   class AudioBlockFormatHoa : private detail::AudioBlockFormatHoaBase {
    public:

@@ -55,10 +55,33 @@ namespace adm {
   /**
    * @brief Class representation of the audioProgramme ADM element
    *
-   * @warning This class has unsupported parameters:
-   *   - AudioProgrammeReferenceScreen
+   * \rst
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * | ADM Parameter                 | Parameter Type                        | Pattern Type               |
+   * +===============================+=======================================+============================+
+   * | audioProgrammeID              | :class:`AudioProgrammeId`             | :class:`RequiredParameter` |
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * | audioProgrammeName            | :type:`AudioProgrammeName`            | :class:`RequiredParameter` |
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * | audioProgrammeLanguage        | :type:`AudioProgrammeLanguage`        | :class:`OptionalParameter` |
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * | start                         | :type:`Start`                         | :class:`DefaultParameter`  |
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * | end                           | :type:`End`                           | :class:`OptionalParameter` |
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * | audioProgrammeLabel           | :type:`Labels`                        | :class:`VectorParameter`   |
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * | loudnessMetadata              | :type:`LoudnessMetadatas`             | :class:`VectorParameter`   |
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * | maxDuckingDepth               | :type:`MaxDuckingDepth`               | :class:`OptionalParameter` |
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * | audioProgrammeReferenceScreen | :type:`AudioProgrammeReferenceScreen` | :class:`OptionalParameter` |
+   * +-------------------------------+---------------------------------------+----------------------------+
+   * \endrst
    *
-   * @headerfile audio_programme.hpp <adm/elements/audio_programme.hpp>
+   * Note that start has a default time of 0, contrary to BS.2076-2 which does
+   * not define a default. ``isDefault<Start>()`` should be used in place of of
+   * ``has<Start>()``.
    */
   class AudioProgramme : public std::enable_shared_from_this<AudioProgramme>,
                          private detail::AudioProgrammeBase {

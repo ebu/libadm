@@ -67,6 +67,57 @@ namespace adm {
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "Objects"
    *
+   * Supported parameters are as follows:
+   *
+   * \rst
+   * +---------------------+------------------------------+----------------------------+
+   * | ADM Parameter       | Parameter Type               | Pattern Type               |
+   * +=====================+==============================+============================+
+   * | audioBlockFormatId  | :class:`AudioBlockFormatId`  | :class:`RequiredParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | rtime               | :type:`Rtime`                | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | duration            | :type:`Duration`             | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | cartesian           | :type:`Cartesian`            | custom, see below          |
+   * +---------------------+------------------------------+                            |
+   * | position            | - :type:`Position`           |                            |
+   * |                     | - :type:`SphericalPosition`  |                            |
+   * |                     | - :type:`CartesianPosition`  |                            |
+   * +---------------------+------------------------------+----------------------------+
+   * | width               | :type:`Width`                | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | height              | :type:`Height`               | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | depth               | :type:`Depth`                | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | diffuse             | :type:`Diffuse`              | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | gain                | :class:`Gain`                | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | importance          | :type:`Importance`           | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | headLocked          | :type:`HeadLocked`           | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | headphoneVirtualise | :class:`HeadphoneVirtualise` | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | screenEdgeLock      | :class:`ScreenEdgeLock`      | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | channelLock         | :class:`ChannelLock`         | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | objectDivergence    | :class:`ObjectDivergence`    | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | jumpPosition        | :class:`JumpPosition`        | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | screenRef           | :type:`ScreenRef`            | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   *
+   * ``cartesian`` and ``position`` attributes are linked; see :func:`void
+   * set(Cartesian)`, :func:`void set(Position)`, :func:`void
+   * set(CartesianPosition)` and :func:`void set(SphericalPosition)`.
+   *
+   * \endrst
+   *
    * @warning This class has unsupported parameters
    *   - ZoneExclusion
    */
