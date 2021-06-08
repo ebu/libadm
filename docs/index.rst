@@ -23,6 +23,7 @@ libadm – ITU-R BS.2076 Library
   :caption: Reference
 
   reference_document
+  element_api
   reference_elements
   reference_helpers
   reference_utilities
