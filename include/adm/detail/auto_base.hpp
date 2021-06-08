@@ -83,6 +83,8 @@ namespace adm {
     //  -> VariantTypeParameter<P, B>
     //      -> P
 
+#ifndef IN_DOXYGEN
+
     struct Flags {
       static constexpr bool has_get_set_has = false;
       static constexpr bool has_isDefault_unset = false;
@@ -392,6 +394,8 @@ namespace adm {
         static_cast<T*>(this)->unset(Tag());
       }
     };
+
+#endif
 
   }  // namespace detail
 }  // namespace adm
