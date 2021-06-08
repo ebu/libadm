@@ -10,6 +10,23 @@ namespace adm {
 
     class Document;
 
+    /**
+     * @brief Class representation of the audioPackFormat ADM element for HOA
+     *
+     * \rst
+     * Supported parameters are those from :class:`AudioPackFormat`, as well as:
+     *
+     * +---------------+-----------------------+---------------------------+
+     * | ADM Parameter | Parameter Type        | Pattern Type              |
+     * +===============+=======================+===========================+
+     * | normalization | :type:`Normalization` | :class:`DefaultParameter` |
+     * +---------------+-----------------------+---------------------------+
+     * | nfcRefDist    | :type:`NfcRefDist`    | :class:`DefaultParameter` |
+     * +---------------+-----------------------+---------------------------+
+     * | screenRef     | :type:`ScreenRef`     | :class:`DefaultParameter` |
+     * +---------------+-----------------------+---------------------------+
+     * \endrst
+     */
     class AudioPackFormatHoa : public AudioPackFormat {
      public:
       template <typename... Parameters>

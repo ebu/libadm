@@ -54,8 +54,24 @@ namespace adm {
   /**
    * @brief Class representation of the audioChannelFormat ADM element
    *
-   * @headerfile audio_channel_format.hpp \
-   * <adm/elements/audio_channel_format.hpp>
+   * \rst
+   * Supported parameters are as follows:
+   *
+   * +------------------------+--------------------------------+----------------------------+
+   * | ADM Parameter          | Parameter Type                 | Pattern Type               |
+   * +========================+================================+============================+
+   * | audioChannelFormatID   | :class:`AudioChannelFormatId`  | :class:`RequiredParameter` |
+   * +------------------------+--------------------------------+----------------------------+
+   * | audioChannelFormatName | :type:`AudioChannelFormatName` | :class:`RequiredParameter` |
+   * +------------------------+--------------------------------+----------------------------+
+   * | - typeDefinition       | :type:`TypeDescriptor`         | :class:`RequiredParameter` |
+   * | - typeLabel            |                                |                            |
+   * +------------------------+--------------------------------+----------------------------+
+   * | frequency              | :type:`Frequency`              | :class:`OptionalParameter` |
+   * +------------------------+--------------------------------+----------------------------+
+   * \endrst
+   *
+   * Note that TypeDescriptor can only be set in the constructor.
    */
   class AudioChannelFormat
       : public std::enable_shared_from_this<AudioChannelFormat> {
