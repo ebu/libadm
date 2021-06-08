@@ -13,7 +13,7 @@ EXPAND_ONLY_PREDEF     = YES
 EXPAND_AS_DEFINED      = ADM_EXPORT
 PREDEFINED             = ADM_EXPORT=
 
-ALIASES                = "rst=\verbatim embed:rst"
+ALIASES                = "rst=\verbatim embed:rst:leading-asterisk"
 ALIASES               += "endrst=\endverbatim"
 
 QUIET                  = YES
