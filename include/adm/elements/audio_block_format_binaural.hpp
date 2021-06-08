@@ -25,6 +25,24 @@ namespace adm {
   /**
    * @brief Class representation for ADM element audioBlockFormat if
    * audioChannelFormat.typeDefinition == "Binaural"
+   *
+   * Supported parameters are as follows:
+   *
+   * \rst
+   * +---------------------+------------------------------+----------------------------+
+   * | ADM Parameter       | Parameter Type               | Pattern Type               |
+   * +=====================+==============================+============================+
+   * | audioBlockFormatId  | :class:`AudioBlockFormatId`  | :class:`RequiredParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | rtime               | :type:`Rtime`                | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | duration            | :type:`Duration`             | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | gain                | :class:`Gain`                | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * | importance          | :type:`Importance`           | :class:`DefaultParameter`  |
+   * +---------------------+------------------------------+----------------------------+
+   * \endrst
    */
   class AudioBlockFormatBinaural
       : private detail::AudioBlockFormatBinauralBase {

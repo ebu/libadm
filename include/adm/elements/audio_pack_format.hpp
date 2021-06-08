@@ -31,8 +31,26 @@ namespace adm {
   /**
    * @brief Class representation of the audioPackFormat ADM element
    *
-   * @headerfile audio_pack_format.hpp \
-   * <adm/elements/audio_pack_format.hpp>
+   * \rst
+   * Supported parameters are as follows:
+   *
+   * +---------------------+-----------------------------+----------------------------+
+   * | ADM Parameter       | Parameter Type              | Pattern Type               |
+   * +=====================+=============================+============================+
+   * | audioPackFormatID   | :class:`AudioPackFormatId`  | :class:`RequiredParameter` |
+   * +---------------------+-----------------------------+----------------------------+
+   * | audioPackFormatName | :type:`AudioPackFormatName` | :class:`RequiredParameter` |
+   * +---------------------+-----------------------------+----------------------------+
+   * | importance          | :type:`Importance`          | :class:`OptionalParameter` |
+   * +---------------------+-----------------------------+----------------------------+
+   * | absoluteDistance    | :type:`AbsoluteDistance`    | :class:`OptionalParameter` |
+   * +---------------------+-----------------------------+----------------------------+
+   * | - typeDefinition    | :type:`TypeDescriptor`      | :class:`RequiredParameter` |
+   * | - typeLabel         |                             |                            |
+   * +---------------------+-----------------------------+----------------------------+
+   * \endrst
+   *
+   * Note that TypeDescriptor can only be set in the constructor.
    */
   class AudioPackFormat : public std::enable_shared_from_this<AudioPackFormat> {
    public:

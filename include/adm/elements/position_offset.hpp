@@ -43,6 +43,20 @@ namespace adm {
   struct SphericalPositionOffsetTag {};
 
   /// @brief ADM parameter class to specify a spherical position offset
+  ///
+  /// Supported parameters are as follows:
+  ///
+  /// \rst
+  /// +----------------------------------------+-------------------------+----------------------------+
+  /// | ADM Parameter                          | Parameter Type          | Pattern Type               |
+  /// +========================================+=========================+============================+
+  /// | positionOffset, coordinate="azimuth"   | :type:`AzimuthOffset`   | :class:`RequiredParameter` |
+  /// +----------------------------------------+-------------------------+----------------------------+
+  /// | positionOffset, coordinate="elevation" | :type:`ElevationOffset` | :class:`RequiredParameter` |
+  /// +----------------------------------------+-------------------------+----------------------------+
+  /// | positionOffset, coordinate="distance"  | :type:`DistanceOffset`  | :class:`RequiredParameter` |
+  /// +----------------------------------------+-------------------------+----------------------------+
+  /// \endrst
   class SphericalPositionOffset
       : private detail::SphericalPositionOffsetBase,
         private detail::AddWrapperMethods<SphericalPositionOffset> {
@@ -78,6 +92,20 @@ namespace adm {
   struct CartesianPositionOffsetTag {};
 
   /// @brief ADM parameter class to specify a cartesian position offset
+  ///
+  /// Supported parameters are as follows:
+  ///
+  /// \rst
+  /// +--------------------------------+-----------------+----------------------------+
+  /// | ADM Parameter                  | Parameter Type  | Pattern Type               |
+  /// +================================+=================+============================+
+  /// | positionOffset, coordinate="X" | :type:`XOffset` | :class:`RequiredParameter` |
+  /// +--------------------------------+-----------------+----------------------------+
+  /// | positionOffset, coordinate="Y" | :type:`YOffset` | :class:`RequiredParameter` |
+  /// +--------------------------------+-----------------+----------------------------+
+  /// | positionOffset, coordinate="Z" | :type:`ZOffset` | :class:`RequiredParameter` |
+  /// +--------------------------------+-----------------+----------------------------+
+  /// \endrst
   class CartesianPositionOffset
       : private detail::CartesianPositionOffsetBase,
         private detail::AddWrapperMethods<CartesianPositionOffset> {

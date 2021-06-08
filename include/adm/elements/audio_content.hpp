@@ -41,7 +41,29 @@ namespace adm {
   /**
    * @brief Class representation of the audioContent ADM element
    *
-   * @headerfile audio_content.hpp <adm/elements/audio_content.hpp>
+   * \rst
+   * +--------------------------+----------------------------------+----------------------------+
+   * | ADM Parameter            | Parameter Type                   | Pattern Type               |
+   * +==========================+==================================+============================+
+   * | audioContentID           | :class:`AudioContentId`          | :class:`RequiredParameter` |
+   * +--------------------------+----------------------------------+----------------------------+
+   * | audioContentName         | :type:`AudioContentName`         | :class:`RequiredParameter` |
+   * +--------------------------+----------------------------------+----------------------------+
+   * | audioContentLanguage     | :type:`AudioContentLanguage`     | :class:`OptionalParameter` |
+   * +--------------------------+----------------------------------+----------------------------+
+   * | audioContentLabel        | :type:`Labels`                   | :class:`VectorParameter`   |
+   * +--------------------------+----------------------------------+----------------------------+
+   * | loudnessMetadata         | :type:`LoudnessMetadatas`        | :class:`VectorParameter`   |
+   * +--------------------------+----------------------------------+----------------------------+
+   * | - dialogue               | - :type:`DialogueId`             | custom                     |
+   * | - nonDialogueContentKind | - :type:`ContentKind`            |                            |
+   * | - dialogueContentKind    | - :type:`NonDialogueContentKind` |                            |
+   * | - mixedContentKind       | - :type:`DialogueContentKind`    |                            |
+   * |                          | - :type:`MixedContentKind`       |                            |
+   * +--------------------------+----------------------------------+----------------------------+
+   * \endrst
+   *
+   * For the behaviour of dialogue elements, see set(DialogueId).
    */
   class AudioContent : public std::enable_shared_from_this<AudioContent>,
                        private detail::AudioContentBase {

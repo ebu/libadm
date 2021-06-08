@@ -76,7 +76,51 @@ namespace adm {
   /**
    * @brief Class representation of the audioObject ADM element
    *
-   * @headerfile audio_object.hpp <adm/elements/audio_object.hpp>
+   * \rst
+   * .. |aCOGL| replace:: audioComplementaryObjectGroupLabel
+   * .. |ACOGL| replace:: :type:`ACOGL<AudioComplementaryObjectGroupLabels>`
+   *
+   * +------------------------+--------------------------------+------------------------------+
+   * | ADM Parameter          | Parameter Type                 | Pattern Type                 |
+   * +========================+================================+==============================+
+   * | audioObjectID          | :class:`AudioObjectId`         | :class:`RequiredParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | audioObjectName        | :type:`AudioObjectName`        | :class:`RequiredParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | start                  | :type:`Start`                  | :class:`DefaultParameter`    |
+   * +------------------------+--------------------------------+------------------------------+
+   * | duration               | :type:`Duration`               | :class:`OptionalParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | dialogue               | :type:`DialogueId`             | :class:`OptionalParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | importance             | :type:`Importance`             | :class:`OptionalParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | interact               | :type:`Interact`               | :class:`OptionalParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | disableDucking         | :type:`DisableDucking`         | :class:`OptionalParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | audioObjectLabel       | :type:`Labels`                 | :class:`VectorParameter`     |
+   * +------------------------+--------------------------------+------------------------------+
+   * | |aCOGL|                | |ACOGL|                        | :class:`VectorParameter`     |
+   * +------------------------+--------------------------------+------------------------------+
+   * | audioObjectInteraction | :type:`AudioObjectInteraction` | :class:`OptionalParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | gain                   | :type:`Gain`                   | :class:`DefaultParameter`    |
+   * +------------------------+--------------------------------+------------------------------+
+   * | headLocked             | :type:`HeadLocked`             | :class:`DefaultParameter`    |
+   * +------------------------+--------------------------------+------------------------------+
+   * | positionOffset         | :type:`PositionOffset`         | - :class:`VariantParameter`  |
+   * |                        |                                | - :class:`OptionalParameter` |
+   * +------------------------+--------------------------------+------------------------------+
+   * | mute                   | :type:`Mute`                   | :class:`DefaultParameter`    |
+   * +------------------------+--------------------------------+------------------------------+
+   * \endrst
+   *
+   * Note that:
+   * - dialogue is defined in BS.2076-2 as having a default of 2.
+   * - importance is defined in BS.2076-2 as having a default of 10.
+   * - interact is defined in BS.2076-2 as having a default of 0 (false).
+   * - disableDucking is defined in BS.2076-2 as having a default of 0 (false).
    */
   class AudioObject : public std::enable_shared_from_this<AudioObject>,
                       private detail::AudioObjectBase {
