@@ -2,3 +2,4 @@ BasedOnStyle: Google
 NamespaceIndentation: All
 AlignTrailingComments: false
 SortIncludes: false
+ReflowComments: false
