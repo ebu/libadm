@@ -190,6 +190,11 @@ namespace adm {
       boost::optional<T> value_;
     };
 
+    template <typename T>
+    struct ParameterCompare {
+      static bool compare(T const& lhs, T const& rhs) { return lhs == rhs; }
+    };
+
     /// base class for storage of multiple elements in a std::vector.
     /// T should be a std::vector<Something>, as this is what the tag is
     /// associated with.
@@ -210,7 +215,7 @@ namespace adm {
       ADM_BASE_EXPORT void unset(Tag) { value_.clear(); }
 
       ADM_BASE_EXPORT bool add(Value item) {
-        auto it = std::find(value_.begin(), value_.end(), item);
+        auto it = find_item(item);
         if (it == value_.end()) {
           value_.push_back(item);
           return true;
@@ -220,13 +225,18 @@ namespace adm {
       }
 
       ADM_BASE_EXPORT void remove(Value item) {
-        auto it = std::find(value_.begin(), value_.end(), item);
+        auto it = find_item(item);
         if (it != value_.end()) value_.erase(it);
       }
 
      private:
       T value_;
+      ADM_BASE_EXPORT typename T::iterator find_item(Value const& item) {
+        return std::find_if(
+            value_.begin(), value_.end(), [&item, this](Value const& val) {
+              return ParameterCompare<Value>::compare(item, val);
+            });
+      }
     };
-
   }  // namespace detail
 }  // namespace adm
