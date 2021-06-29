@@ -2,6 +2,7 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/auto_base.hpp"
+#include "adm/detail/optional_comparison.hpp"
 #include "adm/export.h"
 #include <boost/optional.hpp>
 #include <string>
@@ -71,7 +72,7 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    LoudnessMetadata(Parameters... optionalNamedArgs);
+    explicit LoudnessMetadata(Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template
@@ -129,13 +130,6 @@ namespace adm {
      */
     template <typename Parameter>
     void unset();
-
-    /**
-     * @brief Operator overload
-     *
-     * Compares each loudnessMetadata parameter
-     */
-    ADM_EXPORT bool operator==(const LoudnessMetadata& other) const;
 
     /**
      * @brief Print overview to ostream
@@ -229,4 +223,15 @@ namespace adm {
     typedef typename detail::ParameterTraits<Parameter>::tag Tag;
     return unset(Tag());
   }
+
+  namespace detail {
+    template <>
+    struct ParameterCompare<LoudnessMetadata> {
+      static bool compare(LoudnessMetadata const& lhs,
+                          LoudnessMetadata const& rhs) {
+        return compareOptionals<LoudnessRecType, LoudnessMethod,
+                                LoudnessCorrectionType>(lhs, rhs);
+      }
+    };
+  }  // namespace detail
 }  // namespace adm
