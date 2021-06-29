@@ -73,6 +73,34 @@ namespace adm_test {
       }
     }
 
+    template <typename ParamT, typename ElementT, typename VectorT>
+    void check_vector_impl(ElementT& element, VectorT parameter_vector) {
+      SECTION("test should be supplied with non-empty vector") {
+        using ValueT = typename VectorT::value_type;
+        // if it's an optional vector, set to empty vector
+        if (!element.template has<VectorT>()) {
+          element.set(VectorT{});
+        }
+      }
+      SECTION("Check add & remove") {
+        auto items = element.template get<ParamT>();
+        REQUIRE(items.empty());
+        for (auto const& i : parameter_vector) {
+          element.add(i);
+        }
+        items = element.template get<ParamT>();
+        REQUIRE(items.size() == parameter_vector.size());
+        for (auto i = 0u; i != items.size(); ++i) {
+          REQUIRE(items[i] == parameter_vector[i]);
+        }
+        for (auto i = 0u; i != items.size(); ++i) {
+          element.remove(items[i]);
+        }
+        items = element.template get<ParamT>();
+        REQUIRE(items.empty());
+      }
+    }
+
     template <typename T>
     class HasDefaultOf {
      public:
@@ -125,6 +153,13 @@ namespace adm_test {
                             detail::CanBeSetTo<ValueT> modifiedVal) {
     detail::check_optional_impl<ParamT>(detail::get_from_shared(element),
                                         modifiedVal.get());
+  }
+
+  template <typename ParamT, typename ElementT, typename VectorT>
+  void check_vector_param(std::shared_ptr<ElementT> element,
+                          detail::CanBeSetTo<VectorT> modifiedVal) {
+    detail::check_vector_impl<ParamT>(detail::get_from_shared(element),
+                                      modifiedVal.get());
   }
 
   template <typename T>
