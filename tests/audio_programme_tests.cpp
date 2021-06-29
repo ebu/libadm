@@ -1,79 +1,72 @@
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #include <catch2/catch.hpp>
 #include "adm/elements/audio_programme.hpp"
+#include "helper/parameter_checks.hpp"
+#include "helper/ostream_operators.hpp"
 
-TEST_CASE("audio_programme") {
-  using namespace adm;
-  // Attributes / Elements
-  {
-    auto audioProgramme =
-        AudioProgramme::create(AudioProgrammeName("MyProgramme"));
-    audioProgramme->set(AudioProgrammeId(AudioProgrammeIdValue(1)));
-    audioProgramme->set(AudioProgrammeLanguage("de"));
-    audioProgramme->set(Start(std::chrono::seconds(0)));
-    audioProgramme->set(End(std::chrono::seconds(10)));
-    audioProgramme->add(LoudnessMetadata());
-    audioProgramme->set(MaxDuckingDepth(-30));
-    // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
-    // audioProgramme->set(AudioProgrammeReferenceScreen());
+using namespace adm;
+using namespace adm_test;
 
-    REQUIRE(audioProgramme->has<AudioProgrammeId>());
-    REQUIRE(audioProgramme->has<AudioProgrammeName>());
-    REQUIRE(audioProgramme->has<AudioProgrammeLanguage>());
-    REQUIRE(audioProgramme->has<Start>());
-    REQUIRE(audioProgramme->has<End>());
-    REQUIRE(audioProgramme->has<LoudnessMetadatas>());
-    REQUIRE(audioProgramme->has<MaxDuckingDepth>());
-    // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
-    // REQUIRE(audioProgramme->has<AudioProgrammeReferenceScreen>());
-
-    REQUIRE(
-        audioProgramme->get<AudioProgrammeId>().get<AudioProgrammeIdValue>() ==
-        1u);
-    REQUIRE(audioProgramme->get<AudioProgrammeName>() == "MyProgramme");
-    REQUIRE(audioProgramme->get<AudioProgrammeLanguage>() == "de");
-    REQUIRE(audioProgramme->get<Start>().get() == std::chrono::seconds(0));
-    REQUIRE(audioProgramme->get<End>().get() == std::chrono::seconds(10));
-    REQUIRE(audioProgramme->get<MaxDuckingDepth>() == -30);
-    // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
-    // REQUIRE(audioProgramme->get<AudioProgrammeReferenceScreen>() == ???);
-
-    audioProgramme->unset<AudioProgrammeLanguage>();
-    audioProgramme->unset<Start>();
-    audioProgramme->unset<End>();
-    audioProgramme->unset<LoudnessMetadatas>();
-    audioProgramme->unset<MaxDuckingDepth>();
-    // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
-    // audioProgramme->unset<AudioProgrammeReferenceScreen>();
-
-    REQUIRE(!audioProgramme->has<AudioProgrammeLanguage>());
-    REQUIRE(audioProgramme->has<Start>());
-    REQUIRE(!audioProgramme->has<End>());
-    REQUIRE(!audioProgramme->has<LoudnessMetadatas>());
-    REQUIRE(!audioProgramme->has<MaxDuckingDepth>());
-    // NOTE: AudioProgrammeReferenceScreen is not yet implemented.
-    // REQUIRE(!audioProgramme->has<AudioProgrammeReferenceScreen>());
+TEST_CASE("audio_programme parameters") {
+  using std::chrono::seconds;
+  auto audioProgramme =
+      AudioProgramme::create(AudioProgrammeName("MyProgramme"));
+  SECTION("AudioProgrammeName") {
+    check_required_param<AudioProgrammeName>(audioProgramme,
+                                             hasDefaultOf("MyProgramme"),
+                                             canBeSetTo("SomethingElse"));
   }
-  // References
-  {
-    auto audioProgramme =
-        AudioProgramme::create(AudioProgrammeName("MyProgramme"));
-
-    auto referencedAudioContent =
-        AudioContent::create(AudioContentName("MyContent"));
-
-    // add references
-    audioProgramme->addReference(referencedAudioContent);
-    audioProgramme->addReference(referencedAudioContent);
-    REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 1);
-
-    // remove references
-    audioProgramme->removeReference(referencedAudioContent);
-    REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 0);
-
-    // clear references
-    audioProgramme->addReference(referencedAudioContent);
-    audioProgramme->clearReferences<AudioContent>();
-    REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 0);
+  SECTION("AudioProgrammeId") {
+    check_required_param<AudioProgrammeId>(
+        audioProgramme, hasDefaultOf(AudioProgrammeIdValue{}),
+        canBeSetTo(AudioProgrammeIdValue(2u)));
   }
+  SECTION("AudioProgrammeLanguage") {
+    check_optional_param<AudioProgrammeLanguage>(audioProgramme,
+                                                 canBeSetTo("fr"));
+  }
+  SECTION("Start") {
+    check_defaulted_param<Start>(audioProgramme, hasDefaultOf(seconds{0}),
+                                 canBeSetTo(seconds{1}));
+  }
+  SECTION("End") {
+    check_optional_param<End>(audioProgramme, canBeSetTo(seconds(10)));
+  }
+  SECTION("LoudnessMetadatas") {
+    LoudnessMetadatas loudness = LoudnessMetadatas{
+        LoudnessMetadata{}, LoudnessMetadata{LoudnessMethod{"Guess"}}};
+    SECTION("check get/set") {
+      check_optional_param<LoudnessMetadatas>(audioProgramme,
+                                              canBeSetTo(loudness));
+    }
+    SECTION("add/remove") {
+      check_vector_param<LoudnessMetadatas>(audioProgramme,
+                                            canBeSetTo(loudness));
+    }
+  }
+  SECTION("MaxDuckingDepth") {
+    check_optional_param<MaxDuckingDepth>(audioProgramme, canBeSetTo(-30.0));
+  }
+}
+
+TEST_CASE("audio_programme references") {
+  auto audioProgramme =
+      AudioProgramme::create(AudioProgrammeName("MyProgramme"));
+
+  auto referencedAudioContent =
+      AudioContent::create(AudioContentName("MyContent"));
+
+  // add references
+  audioProgramme->addReference(referencedAudioContent);
+  audioProgramme->addReference(referencedAudioContent);
+  REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 1);
+
+  // remove references
+  audioProgramme->removeReference(referencedAudioContent);
+  REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 0);
+
+  // clear references
+  audioProgramme->addReference(referencedAudioContent);
+  audioProgramme->clearReferences<AudioContent>();
+  REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 0);
 }
