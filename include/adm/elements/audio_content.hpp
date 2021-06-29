@@ -267,8 +267,8 @@ namespace adm {
     boost::optional<MixedContentKind> mixedContentKind_;
   };
 
-  std::ostream& operator<<(std::ostream& stream,
-                           const LoudnessMetadatas& loudnessMetaDatas);
+  ADM_EXPORT std::ostream& operator<<(
+      std::ostream& stream, const LoudnessMetadatas& loudnessMetaDatas);
 
   // ---- Implementation ---- //
 
