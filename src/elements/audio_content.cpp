@@ -144,6 +144,11 @@ namespace adm {
     dialogueContentKind_ = boost::none;
     mixedContentKind_ = boost::none;
   }
+  void AudioContent::unset(detail::ParameterTraits<ContentKind>::tag) {
+    unset<NonDialogueContentKind>();
+    unset<DialogueContentKind>();
+    unset<MixedContentKind>();
+  }
   void AudioContent::unset(
       detail::ParameterTraits<NonDialogueContentKind>::tag) {
     unset<DialogueId>();
