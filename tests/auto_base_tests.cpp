@@ -145,7 +145,7 @@ TEST_CASE("vector") {
   TestElement e;
   REQUIRE(!e.has<Vectors>());
   REQUIRE(e.get<Vectors>() == Vectors{});
-  REQUIRE(e.isDefault<Vectors>());
+  REQUIRE(!e.isDefault<Vectors>());
 
   e.set(Vectors{{Vector{5}}});
   REQUIRE(e.has<Vectors>());
@@ -165,5 +165,5 @@ TEST_CASE("vector") {
   e.unset<Vectors>();
   REQUIRE(!e.has<Vectors>());
   REQUIRE(e.get<Vectors>() == Vectors{});
-  REQUIRE(e.isDefault<Vectors>());
+  REQUIRE(!e.isDefault<Vectors>());
 }
