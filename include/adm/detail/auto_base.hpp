@@ -211,7 +211,7 @@ namespace adm {
       ADM_BASE_EXPORT T get(Tag) const { return value_; }
       ADM_BASE_EXPORT void set(T value) { value_ = value; }
       ADM_BASE_EXPORT bool has(Tag) const { return value_.size() > 0; }
-      ADM_BASE_EXPORT bool isDefault(Tag) const { return value_.size() == 0; }
+      ADM_BASE_EXPORT bool isDefault(Tag) const { return false; }
       ADM_BASE_EXPORT void unset(Tag) { value_.clear(); }
 
       ADM_BASE_EXPORT bool add(Value item) {
