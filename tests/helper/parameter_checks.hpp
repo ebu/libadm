@@ -99,6 +99,13 @@ namespace adm_test {
         items = element.template get<ParamT>();
         REQUIRE(items.empty());
       }
+      SECTION("Check double add only adds once") {
+        REQUIRE(element.template get<ParamT>().empty());
+        REQUIRE(element.add(parameter_vector.front()));
+        REQUIRE(element.template get<ParamT>().size() == 1);
+        REQUIRE(!element.add(parameter_vector.front()));
+        REQUIRE(element.template get<ParamT>().size() == 1);
+      }
     }
 
     template <typename T>
