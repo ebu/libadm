@@ -107,6 +107,11 @@ namespace adm {
         return tmp;
       }
 
+      T* operator->() { return &value_; }
+      T const* operator->() const { return &value_; }
+      T& operator*() { return value_; }
+      T const& operator*() const { return value_; }
+
      private:
       T value_;
     };
