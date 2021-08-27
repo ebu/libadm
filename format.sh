@@ -1,5 +1,5 @@
 #!/bin/bash
-DIRS="examples include src tests tools"
+DIRS="examples include src tests"
 
 IGNORE="
 src/elements/time.cpp
