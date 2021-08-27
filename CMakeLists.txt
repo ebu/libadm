@@ -61,7 +61,6 @@ configure_file(
 # add targets
 ############################################################
 add_subdirectory(src)
-add_subdirectory(tools)
 if(ADM_EXAMPLES)
   add_subdirectory(examples)
 endif()
