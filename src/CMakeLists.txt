@@ -2,14 +2,11 @@
 
 include(${PROJECT_SOURCE_DIR}/submodules/rapidxml.cmake)
 
-add_custom_command(
-  OUTPUT ${PROJECT_BINARY_DIR}/resources.hpp
-  COMMAND resource_embedder common_definitions.xml > ${PROJECT_BINARY_DIR}/resources.hpp
-  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources
-  DEPENDS resource_embedder ${PROJECT_SOURCE_DIR}/resources/common_definitions.xml
-  COMMENT "Running resource embedder."
-  VERBATIM
-)
+include(embed_resource)
+embed_resource(
+        NAMESPACE adm
+        BASE_NAME resources
+        RESOURCE_FILES ${PROJECT_SOURCE_DIR}/resources/common_definitions.xml)
 
 add_library(adm
   document.cpp
@@ -70,10 +67,13 @@ add_library(adm
   detail/id_assigner.cpp
   parse.cpp
   write.cpp
-  ${PROJECT_BINARY_DIR}/resources.hpp
+  ${CMAKE_CURRENT_BINARY_DIR}/resources.hpp
+  ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp
 )
 
 target_include_directories(adm
+  PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> # resources.hpp
   PUBLIC
   # Headers used from source/build location:
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

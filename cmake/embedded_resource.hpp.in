@@ -1,0 +1,10 @@
+// WARNING This file is auto-generated during configuration by the cmake
+// function embed_resource(). Do not manually edit as changes will be lost
+
+#pragma once
+#include <string>
+#include <ostream>
+
+namespace @EMBED_NAMESPACE@ {
+    bool getEmbeddedFile(std::string const& fileName, std::ostream& stream);
+}
