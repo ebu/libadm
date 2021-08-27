@@ -1,0 +1,13 @@
+// WARNING This file is auto-generated during configuration by the cmake
+// function embed_resource(). Do not manually edit as changes will be lost
+
+#include "@EMBED_BASE_NAME@.hpp"
+
+namespace {
+@EMBED_BYTE_ARRAYS@
+}
+
+bool @EMBED_NAMESPACE@::getEmbeddedFile(std::string const& fileName, std::ostream& stream) {
+@EMBED_LOOKUPS@
+  return false;
+}
