@@ -1,4 +1,5 @@
 #include "adm/elements/time.hpp"
+#include <adm/utilities/time_conversion.hpp>
 #include <boost/integer/common_factor.hpp>
 #include <boost/format.hpp>
 #include <iomanip>
@@ -40,6 +41,44 @@ namespace adm {
 
   FractionalTime Time::asFractional() const {
     return boost::apply_visitor(AsFractionalVisitor(), time);
+  }
+
+  Time Time::operator+(const Time& secondTime) const {
+      // both nanoseconds -> return nanoseconds
+      if (isNanoseconds() && secondTime.isNanoseconds())
+          return asNanoseconds() + secondTime.asNanoseconds();
+
+      // both fractional with same denominator -> keep denominator
+      if (isFractional() && secondTime.isFractional()) {
+          FractionalTime firstFrac = asFractional();
+          FractionalTime secondFrac = secondTime.asFractional();
+
+          if (firstFrac.denominator() == secondFrac.denominator())
+              return FractionalTime{firstFrac.numerator() + secondFrac.numerator(),
+              firstFrac.denominator()};
+      }
+
+      // mixed, or different denominators
+      return asTime(asRational(*this) + asRational(secondTime));
+  }
+
+  Time Time::operator-(const Time& secondTime) const {
+      // both nanoseconds -> return nanoseconds
+      if (isNanoseconds() && secondTime.isNanoseconds())
+          return asNanoseconds() - secondTime.asNanoseconds();
+
+      // both fractional with same denominator -> keep denominator
+      if (isFractional() && secondTime.isFractional()) {
+          FractionalTime firstFrac = asFractional();
+          FractionalTime secondFrac = secondTime.asFractional();
+
+          if (firstFrac.denominator() == secondFrac.denominator())
+              return FractionalTime{firstFrac.numerator() - secondFrac.numerator(),
+              firstFrac.denominator()};
+      }
+
+      // mixed, or different denominators
+      return asTime(asRational(*this) - asRational(secondTime));
   }
 
   Time parseTimecode(const std::string& timecode) {

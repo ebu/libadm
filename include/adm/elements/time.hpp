@@ -64,6 +64,8 @@ namespace adm {
 
     bool operator==(const Time& other) const { return time == other.time; }
     bool operator!=(const Time& other) const { return time != other.time; }
+    Time operator+(const Time& other) const;
+    Time operator-(const Time& other) const;
 
    private:
     Variant time;
