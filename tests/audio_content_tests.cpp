@@ -68,62 +68,25 @@ TEST_CASE("audio_content parameters") {
   }
 }
 
-TEST_CASE("audio_content") {
-  {
-    auto audioContent = AudioContent::create(AudioContentName("MyContent"));
-    audioContent->set(AudioContentId(AudioContentIdValue(1)));
-    audioContent->set(AudioContentName("MyNewContent"));
-    audioContent->set(AudioContentLanguage("de"));
-    audioContent->add(LoudnessMetadata());
-    audioContent->set(Dialogue::NON_DIALOGUE);
+TEST_CASE("audio_content_references") {
+  auto audioContent = AudioContent::create(AudioContentName("MyContent"));
 
-    REQUIRE(audioContent->has<AudioContentId>() == true);
-    REQUIRE(audioContent->has<AudioContentName>() == true);
-    REQUIRE(audioContent->has<AudioContentLanguage>() == true);
-    REQUIRE(audioContent->has<LoudnessMetadatas>() == true);
-    REQUIRE(audioContent->has<DialogueId>() == true);
-    REQUIRE(audioContent->has<NonDialogueContentKind>() == true);
-    REQUIRE(audioContent->has<DialogueContentKind>() == false);
-    REQUIRE(audioContent->has<MixedContentKind>() == false);
+  auto referencedAudioObject =
+      AudioObject::create(AudioObjectName("MyReferencedObject"));
 
-    REQUIRE(audioContent->get<AudioContentId>().get<AudioContentIdValue>() ==
-            1u);
-    REQUIRE(audioContent->get<AudioContentName>() == "MyNewContent");
-    REQUIRE(audioContent->get<AudioContentLanguage>() == "de");
-    REQUIRE(audioContent->get<DialogueId>() == Dialogue::NON_DIALOGUE);
+  // add references
+  audioContent->addReference(referencedAudioObject);
+  audioContent->addReference(referencedAudioObject);
+  REQUIRE(audioContent->getReferences<AudioObject>().size() == 1);
 
-    audioContent->unset<AudioContentLanguage>();
-    audioContent->unset<LoudnessMetadatas>();
-    audioContent->unset<DialogueId>();
+  // remove references
+  audioContent->removeReference(referencedAudioObject);
+  REQUIRE(audioContent->getReferences<AudioObject>().size() == 0);
 
-    REQUIRE(audioContent->has<AudioContentLanguage>() == false);
-    REQUIRE(audioContent->has<LoudnessMetadatas>() == false);
-    REQUIRE(audioContent->has<DialogueId>() == false);
-    REQUIRE(audioContent->has<NonDialogueContentKind>() == false);
-    REQUIRE(audioContent->has<DialogueContentKind>() == false);
-    REQUIRE(audioContent->has<MixedContentKind>() == false);
-  }
-  // References
-  {
-    auto audioContent = AudioContent::create(AudioContentName("MyContent"));
-
-    auto referencedAudioObject =
-        AudioObject::create(AudioObjectName("MyReferencedObject"));
-
-    // add references
-    audioContent->addReference(referencedAudioObject);
-    audioContent->addReference(referencedAudioObject);
-    REQUIRE(audioContent->getReferences<AudioObject>().size() == 1);
-
-    // remove references
-    audioContent->removeReference(referencedAudioObject);
-    REQUIRE(audioContent->getReferences<AudioObject>().size() == 0);
-
-    // clear references
-    audioContent->addReference(referencedAudioObject);
-    audioContent->clearReferences<AudioObject>();
-    REQUIRE(audioContent->getReferences<AudioObject>().size() == 0);
-  }
+  // clear references
+  audioContent->addReference(referencedAudioObject);
+  audioContent->clearReferences<AudioObject>();
+  REQUIRE(audioContent->getReferences<AudioObject>().size() == 0);
 }
 
 TEST_CASE("audio_content_dialogue_interdependencies") {
