@@ -4,6 +4,7 @@
 #include <boost/optional.hpp>
 #include <memory>
 #include <vector>
+#include "adm/elements/label.hpp"
 #include "adm/elements/time.hpp"
 #include "adm/elements/audio_content.hpp"
 #include "adm/elements/audio_programme_id.hpp"
@@ -47,7 +48,8 @@ namespace adm {
 
   namespace detail {
     using AudioProgrammeBase =
-        HasParameters<VectorParameter<LoudnessMetadatas>>;
+        HasParameters<VectorParameter<Labels>,
+                      VectorParameter<LoudnessMetadatas>>;
   }  // namespace detail
 
   /**
