@@ -7,6 +7,7 @@
 #include "adm/elements/audio_content_id.hpp"
 #include "adm/elements/audio_object.hpp"
 #include "adm/elements/dialogue.hpp"
+#include "adm/elements/label.hpp"
 #include "adm/elements/loudness_metadata.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
@@ -33,7 +34,8 @@ namespace adm {
   struct AudioContentTag {};
 
   namespace detail {
-    using AudioContentBase = HasParameters<VectorParameter<LoudnessMetadatas>>;
+    using AudioContentBase = HasParameters<VectorParameter<Labels>,
+                                           VectorParameter<LoudnessMetadatas>>;
   }  // namespace detail
 
   /**
