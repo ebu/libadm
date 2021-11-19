@@ -16,6 +16,8 @@ TEST_CASE("write_audio_object_interaction") {
   audioProgramme->set(Start(std::chrono::seconds(0)));
   audioProgramme->set(End(std::chrono::seconds(10)));
   audioProgramme->set(MaxDuckingDepth(-30));
+  audioProgramme->add(Label(LabelLanguage("en"), LabelValue("My Programme")));
+  audioProgramme->add(Label(LabelLanguage("deu"), LabelValue("Mein Programm")));
 
   auto document = Document::create();
   document->add(audioProgramme);

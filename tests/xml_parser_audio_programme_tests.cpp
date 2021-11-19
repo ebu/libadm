@@ -27,6 +27,13 @@ TEST_CASE("xml_parser/audio_programme") {
     REQUIRE(audioProgramme->get<Start>().get() == std::chrono::seconds(0));
     REQUIRE(audioProgramme->get<End>().get() == std::chrono::seconds(10));
     REQUIRE(audioProgramme->get<MaxDuckingDepth>() == -15);
+
+    auto labels = audioProgramme->get<Labels>();
+    REQUIRE(labels.size() == 2);
+    REQUIRE(labels[0].get<LabelLanguage>() == "en");
+    REQUIRE(labels[0].get<LabelValue>() == "Good morning");
+    REQUIRE(labels[1].get<LabelLanguage>() == "fr");
+    REQUIRE(labels[1].get<LabelValue>() == "Bonjour");
   }
 }
 

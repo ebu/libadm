@@ -3,7 +3,10 @@
 	<coreMetadata>
 		<format>
 			<audioFormatExtended>
-				<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme" audioProgrammeLanguage="de" start="00:00:00.000000000" end="00:00:10.000000000" maxDuckingDepth="-30.000000"/>
+				<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme" audioProgrammeLanguage="de" start="00:00:00.000000000" end="00:00:10.000000000" maxDuckingDepth="-30.000000">
+					<audioProgrammeLabel language="en">My Programme</audioProgrammeLabel>
+					<audioProgrammeLabel language="deu">Mein Programm</audioProgrammeLabel>
+				</audioProgramme>
 			</audioFormatExtended>
 		</format>
 	</coreMetadata>
