@@ -5,6 +5,8 @@
 			<audioFormatExtended>
 				<audioContent audioContentID="ACO_1001" audioContentName="MyContent" audioContentLanguage="de">
 					<dialogue dialogueContentKind="4">1</dialogue>
+					<audioContentLabel language="en">My Content</audioContentLabel>
+					<audioContentLabel language="deu">Mein Inhalt</audioContentLabel>
 				</audioContent>
 			</audioFormatExtended>
 		</format>
