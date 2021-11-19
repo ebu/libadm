@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme">
+          <audioProgrammeLabel language="en">My Programme</audioProgrammeLabel>
+          <audioProgrammeLabel language="deu">Mein Programm</audioProgrammeLabel>
+          <audioProgrammeLabel language="fr" />
+          <audioProgrammeLabel language="es"></audioProgrammeLabel>
+          <audioProgrammeLabel>Undefined Language</audioProgrammeLabel>
+          <audioProgrammeLabel></audioProgrammeLabel>
+          <audioProgrammeLabel />
+        </audioProgramme>
+        <audioContent audioContentID="ACO_1001" audioContentName="MyContent">
+          <audioContentLabel language="en">My Content</audioContentLabel>
+          <audioContentLabel language="deu">Mein Inhalt</audioContentLabel>
+          <audioContentLabel language="fr" />
+          <audioContentLabel language="es"></audioContentLabel>
+          <audioContentLabel>Undefined Language</audioContentLabel>
+          <audioContentLabel></audioContentLabel>
+          <audioContentLabel />
+        </audioContent>
+        <audioObject audioObjectID="AO_1001" audioObjectName="MyObject">
+          <audioObjectLabel language="en">My Object</audioObjectLabel>
+          <audioObjectLabel language="deu">Mein Objekt</audioObjectLabel>
+          <audioObjectLabel language="fr" />
+          <audioObjectLabel language="es"></audioObjectLabel>
+          <audioObjectLabel>Undefined Language</audioObjectLabel>
+          <audioObjectLabel></audioObjectLabel>
+          <audioObjectLabel />
+          <audioComplementaryObjectGroupLabel language="en">My Object</audioComplementaryObjectGroupLabel>
+          <audioComplementaryObjectGroupLabel language="deu">Mein Objekt</audioComplementaryObjectGroupLabel>
+          <audioComplementaryObjectGroupLabel language="fr" />
+          <audioComplementaryObjectGroupLabel language="es"></audioComplementaryObjectGroupLabel>
+          <audioComplementaryObjectGroupLabel>Undefined Language</audioComplementaryObjectGroupLabel>
+          <audioComplementaryObjectGroupLabel></audioComplementaryObjectGroupLabel>
+          <audioComplementaryObjectGroupLabel />
+        </audioObject>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
