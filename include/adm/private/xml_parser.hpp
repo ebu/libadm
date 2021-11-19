@@ -39,6 +39,7 @@ namespace adm {
     LoudnessMetadatas parseLoudnessMetadatas(const std::vector<NodePtr>& nodes);
     AudioProgrammeReferenceScreen parseAudioProgrammeReferenceScreen(
         NodePtr node);
+    Label parseLabel(NodePtr node);
     AudioBlockFormatObjects parseAudioBlockFormatObjects(NodePtr node);
     Gain parseGain(NodePtr node);
     ChannelLock parseChannelLock(NodePtr node);
