@@ -48,6 +48,10 @@ namespace adm {
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         VectorParameter<AudioComplementaryObjectGroupLabels>;
+
+    using AudioObjectBase =
+        HasParameters<VectorParameter<Labels>,
+                      VectorParameter<AudioComplementaryObjectGroupLabels>>;
   }  // namespace detail
 
   /// @brief Tag for AudioObject
@@ -57,7 +61,8 @@ namespace adm {
    *
    * @headerfile audio_object.hpp <adm/elements/audio_object.hpp>
    */
-  class AudioObject : public std::enable_shared_from_this<AudioObject> {
+  class AudioObject : public std::enable_shared_from_this<AudioObject>,
+                      private detail::AudioObjectBase {
    public:
     typedef AudioObjectTag tag;
     /// Type that holds the id for this element;
@@ -111,6 +116,10 @@ namespace adm {
      */
     template <typename Parameter>
     bool isDefault() const;
+
+    using detail::AudioObjectBase::add;
+    using detail::AudioObjectBase::remove;
+    using detail::AudioObjectBase::set;
 
     /// @brief AudioObjectId setter
     ADM_EXPORT void set(AudioObjectId id);
@@ -210,6 +219,11 @@ namespace adm {
     ADM_EXPORT AudioObject(AudioObjectName name);
     ADM_EXPORT AudioObject(const AudioObject &) = default;
     ADM_EXPORT AudioObject(AudioObject &&) = default;
+
+    using detail::AudioObjectBase::get;
+    using detail::AudioObjectBase::has;
+    using detail::AudioObjectBase::isDefault;
+    using detail::AudioObjectBase::unset;
 
     ADM_EXPORT AudioObjectId
         get(detail::ParameterTraits<AudioObjectId>::tag) const;
