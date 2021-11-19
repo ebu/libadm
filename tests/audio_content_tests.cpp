@@ -57,6 +57,15 @@ TEST_CASE("audio_content parameters") {
       check_vector_param<LoudnessMetadatas>(audioContent, canBeSetTo(loudness));
     }
   }
+  SECTION("Labels") {
+    Labels labels{Label(LabelValue("ohai"))};
+    SECTION("get/set") {
+      check_optional_param<Labels>(audioContent, canBeSetTo(labels));
+    }
+    SECTION("add/remove") {
+      check_vector_param<Labels>(audioContent, canBeSetTo(labels));
+    }
+  }
 }
 
 TEST_CASE("audio_content") {
