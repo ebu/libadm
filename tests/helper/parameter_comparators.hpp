@@ -2,6 +2,7 @@
 #include <adm/detail/optional_comparison.hpp>
 #include <adm/elements_fwd.hpp>
 #include <adm/elements/loudness_metadata.hpp>
+#include <adm/elements/audio_object.hpp>
 
 namespace adm {
   bool operator==(ChannelLock const& lhs, ChannelLock const& rhs) {
@@ -36,5 +37,23 @@ namespace adm {
       return lhs.asDb() == rhs.asDb();
     }
     return lhs.asLinear() == rhs.asLinear();
+  }
+  bool operator==(GainInteractionRange const& lhs,
+                  GainInteractionRange const& rhs) {
+    return detail::compareOptionals<GainInteractionMin, GainInteractionMax>(
+        lhs, rhs);
+  }
+  bool operator==(PositionInteractionRange const& lhs,
+                  PositionInteractionRange const& rhs) {
+    return detail::compareOptionals<
+        AzimuthInteractionMin, AzimuthInteractionMax, ElevationInteractionMin,
+        ElevationInteractionMax, DistanceInteractionMin,
+        DistanceInteractionMax>(lhs, rhs);
+  }
+  bool operator==(AudioObjectInteraction const& lhs,
+                  AudioObjectInteraction const& rhs) {
+    return detail::compareOptionals<OnOffInteract, GainInteract,
+                                    PositionInteract, GainInteractionRange,
+                                    PositionInteractionRange>(lhs, rhs);
   }
 }  // namespace adm
