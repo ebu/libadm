@@ -6,6 +6,7 @@
 - Added support for AudioChannelFormatIDRef in AudioTrackUID as per BS.2076-2
 - Added support for dB gains. `Gain{1.0}` should be replaced with `Gain::fromLinear(1.0)`, and `b.get<Gain>().get()` should be replaced with `b.get<Gain>().asLinear()`.
 - Added support for headphoneVirtualise in audioBlockFormat as per BS.2076-2.
+- Added support for Label elements in AudioProgramme, AudioContent and AudioObject, and AudioComplementaryObjectGroupLabel elements in AudioObject.
 
 ### Changed
 - updated required C++ standard from C++11 to C++14
