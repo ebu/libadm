@@ -115,6 +115,10 @@ namespace adm {
     template <typename Parameter>
     bool isDefault() const;
 
+    using detail::AudioProgrammeBase::add;
+    using detail::AudioProgrammeBase::remove;
+    using detail::AudioProgrammeBase::set;
+
     /// @brief AudioProgrammeId setter
     ADM_EXPORT void set(AudioProgrammeId id);
     /// @brief AudioProgrammeName setter
@@ -183,10 +187,6 @@ namespace adm {
 
     /// Get adm::Document this element belongs to
     ADM_EXPORT std::weak_ptr<Document> getParent() const;
-
-    using detail::AudioProgrammeBase::add;
-    using detail::AudioProgrammeBase::remove;
-    using detail::AudioProgrammeBase::set;
 
    private:
     friend class AudioProgrammeAttorney;
