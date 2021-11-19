@@ -13,6 +13,8 @@ TEST_CASE("write_audio_object_interaction") {
   audioContent->set(AudioContentId(AudioContentIdValue(0x1001)));
   audioContent->set(AudioContentLanguage("de"));
   audioContent->set(DialogueContent::AUDIO_DESCRIPTION);
+  audioContent->add(Label(LabelLanguage("en"), LabelValue("My Content")));
+  audioContent->add(Label(LabelLanguage("deu"), LabelValue("Mein Inhalt")));
 
   auto document = Document::create();
   document->add(audioContent);
