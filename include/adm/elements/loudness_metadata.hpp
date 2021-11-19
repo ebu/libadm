@@ -56,11 +56,6 @@ namespace adm {
   using LoudnessMetadatas = std::vector<LoudnessMetadata>;
   ADD_TRAIT(LoudnessMetadatas, LoudnessMetadatasTag);
 
-  namespace detail {
-    extern template class ADM_EXPORT_TEMPLATE_METHODS
-        VectorParameter<LoudnessMetadatas>;
-  }
-
   class LoudnessMetadata {
    public:
     typedef LoudnessMetadataTag tag;
@@ -233,5 +228,7 @@ namespace adm {
                                 LoudnessCorrectionType>(lhs, rhs);
       }
     };
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        VectorParameter<LoudnessMetadatas>;
   }  // namespace detail
 }  // namespace adm
