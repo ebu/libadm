@@ -4,58 +4,61 @@
 #include "adm/elements/audio_pack_format.hpp"
 #include "adm/elements/audio_track_uid.hpp"
 #include "adm/errors.hpp"
+#include "helper/parameter_checks.hpp"
+#include "helper/ostream_operators.hpp"
 
-TEST_CASE("audio_object_basic") {
-  using namespace adm;
+using namespace adm;
+using namespace adm_test;
 
-  auto audioObject = AudioObject::create(AudioObjectName("MyObject"));
+TEST_CASE("audio_object parameter checks") {
+  using namespace std::chrono_literals;
 
-  audioObject->set(AudioObjectId(AudioObjectIdValue(1)));
-  audioObject->set(AudioObjectName("MyNewObject"));
-  audioObject->set(Start(std::chrono::seconds(0)));
-  audioObject->set(Duration(std::chrono::seconds(10)));
-  audioObject->set(Dialogue::NON_DIALOGUE);
-  audioObject->set(Importance(10));
-  audioObject->set(Interact(false));
-  audioObject->set(DisableDucking(true));
-  audioObject->set(AudioObjectInteraction(OnOffInteract(true)));
-
-  REQUIRE(audioObject->has<AudioObjectId>() == true);
-  REQUIRE(audioObject->has<AudioObjectName>() == true);
-  REQUIRE(audioObject->has<Start>() == true);
-  REQUIRE(audioObject->has<Duration>() == true);
-  REQUIRE(audioObject->has<DialogueId>() == true);
-  REQUIRE(audioObject->has<Importance>() == true);
-  REQUIRE(audioObject->has<Interact>() == true);
-  REQUIRE(audioObject->has<DisableDucking>() == true);
-  REQUIRE(audioObject->has<AudioObjectInteraction>() == true);
-
-  REQUIRE(audioObject->get<AudioObjectId>().get<AudioObjectIdValue>() == 1u);
-  REQUIRE(audioObject->get<AudioObjectName>() == "MyNewObject");
-  REQUIRE(audioObject->get<Start>().get() == std::chrono::seconds(0));
-  REQUIRE(audioObject->get<Duration>().get() == std::chrono::seconds(10));
-  REQUIRE(audioObject->get<DialogueId>() == Dialogue::NON_DIALOGUE);
-  REQUIRE(audioObject->get<Importance>() == 10);
-  REQUIRE(audioObject->get<Interact>() == false);
-  REQUIRE(audioObject->get<DisableDucking>() == true);
-  REQUIRE(audioObject->get<AudioObjectInteraction>().get<OnOffInteract>() ==
-          true);
-
-  audioObject->unset<Start>();
-  audioObject->unset<Duration>();
-  audioObject->unset<DialogueId>();
-  audioObject->unset<Importance>();
-  audioObject->unset<Interact>();
-  audioObject->unset<DisableDucking>();
-  audioObject->unset<AudioObjectInteraction>();
-
-  REQUIRE(audioObject->has<Start>() == true);
-  REQUIRE(audioObject->has<Duration>() == false);
-  REQUIRE(audioObject->has<DialogueId>() == false);
-  REQUIRE(audioObject->has<Importance>() == false);
-  REQUIRE(audioObject->has<Interact>() == false);
-  REQUIRE(audioObject->has<DisableDucking>() == false);
-  REQUIRE(audioObject->has<AudioObjectInteraction>() == false);
+  std::string const name{"MyObject"};
+  auto audioObject = AudioObject::create(AudioObjectName(name));
+  SECTION("AudioObjectId") {
+    check_required_param<AudioObjectId>(audioObject,
+                                        hasDefaultOf(AudioObjectIdValue()),
+                                        canBeSetTo(AudioObjectIdValue(1u)));
+  }
+  SECTION("AudioObjectName") {
+    check_required_param<AudioObjectName>(
+        audioObject, hasDefaultOf(AudioObjectName(name)),
+        canBeSetTo(AudioObjectName("SomethingElse")));
+  }
+  SECTION("Start") {
+    check_defaulted_param<Start>(audioObject, hasDefaultOf(Start(0s)),
+                                 canBeSetTo(Start(10s)));
+  }
+  SECTION("Duration") {
+    check_optional_param<Duration>(audioObject, canBeSetTo(Duration(10s)));
+  }
+  SECTION("Dialogue") {
+    check_optional_param<DialogueId>(audioObject,
+                                     canBeSetTo(Dialogue::NON_DIALOGUE));
+  }
+  SECTION("Importance") {
+    check_optional_param<Importance>(audioObject, canBeSetTo(10));
+  }
+  SECTION("Interact") {
+    check_optional_param<Interact>(audioObject, canBeSetTo(false));
+  }
+  SECTION("DisableDucking") {
+    check_optional_param<DisableDucking>(audioObject, canBeSetTo(true));
+  }
+  SECTION("AudioObjectInteraction") {
+    check_optional_param<AudioObjectInteraction>(
+        audioObject, canBeSetTo(OnOffInteract(true)));
+  }
+  SECTION("Labels") {
+    check_vector_param<Labels>(audioObject,
+                               canBeSetTo(Labels{Label(LabelValue("ohai"))}));
+  }
+  SECTION("AudioComplimentaryGroupLabels") {
+    check_vector_param<AudioComplementaryObjectGroupLabels>(
+        audioObject,
+        canBeSetTo(AudioComplementaryObjectGroupLabels{
+            AudioComplementaryObjectGroupLabel{Label{LabelValue("ohai")}}}));
+  }
 }
 
 TEST_CASE("audio_object_references") {
