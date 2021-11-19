@@ -155,6 +155,8 @@ namespace adm {
       setOptionalElement<AudioProgrammeReferenceScreen>(node, "audioProgrammeReferenceScreen", audioProgramme, &parseAudioProgrammeReferenceScreen);
 
       addOptionalReferences<AudioContentId>(node, "audioContentIDRef", audioProgramme, programmeContentRefs_, &parseAudioContentId);
+
+      addOptionalElements<Label>(node, "audioProgrammeLabel", audioProgramme, &parseLabel);
       // clang-format on
       return audioProgramme;
     }
@@ -174,6 +176,8 @@ namespace adm {
       setOptionalElement<ContentKind>(node, "dialogue", audioContent, &parseContentKind);
 
       addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", audioContent, contentObjectRefs_, &parseAudioObjectId);
+
+      addOptionalElements<Label>(node, "audioContentLabel", audioContent, &parseLabel);
       // clang-format on
       return audioContent;
     }
@@ -198,6 +202,9 @@ namespace adm {
       addOptionalReferences<AudioPackFormatId>(node, "audioPackFormatIDRef", audioObject, objectPackFormatRefs_, &parseAudioPackFormatId);
       addOptionalReferences<AudioTrackUidId>(node, "audioTrackUIDRef", audioObject, objectTrackUidRefs_, &parseAudioTrackUidId);
       setOptionalElement<AudioObjectInteraction>(node, "audioObjectInteraction", audioObject, &parseAudioObjectInteraction);
+      addOptionalElements<Label>(node, "audioObjectLabel", audioObject, &parseLabel);
+      addOptionalElements<AudioComplementaryObjectGroupLabel>(node, "audioComplementaryObjectGroupLabel", audioObject, &parseLabel);
+
       // clang-format on
       return audioObject;
     }
@@ -624,6 +631,13 @@ namespace adm {
                                                      getDocumentLine(unitAttr));
       } else
         return Gain::fromLinear(value);
+    }
+
+    Label parseLabel(NodePtr node) {
+      Label label;
+      setValue<LabelValue>(node, label);
+      setOptionalAttribute<LabelLanguage>(node, "language", label);
+      return label;
     }
 
     ChannelLock parseChannelLock(NodePtr node) {
