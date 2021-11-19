@@ -29,7 +29,6 @@ namespace adm {
   /// audioContent element
   using AudioContentLanguage =
       detail::NamedType<std::string, AudioContentLanguageTag>;
-
   /// @brief Tag for AudioContent
   struct AudioContentTag {};
 
