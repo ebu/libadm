@@ -4,6 +4,8 @@
     <format>
       <audioFormatExtended>
         <audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme" audioProgrammeLanguage="en" start="00:00:00.00000" end="00:00:10.00000" maxDuckingDepth="-15">
+          <audioProgrammeLabel language="en">Good morning</audioProgrammeLabel>
+          <audioProgrammeLabel language="fr">Bonjour</audioProgrammeLabel>
         </audioProgramme>
       </audioFormatExtended>
     </format>
