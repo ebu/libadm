@@ -10,8 +10,10 @@
 #include "adm/elements/audio_track_uid.hpp"
 #include "adm/elements/dialogue.hpp"
 #include "adm/elements/importance.hpp"
+#include "adm/elements/label.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
+#include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
@@ -32,6 +34,21 @@ namespace adm {
   struct DisableDuckingTag {};
   /// @brief NamedType for the disableDucking attribute
   using DisableDucking = detail::NamedType<bool, DisableDuckingTag>;
+
+  struct AudioComplementaryObjectGroupLabelTag {};
+  using AudioComplementaryObjectGroupLabel =
+      detail::NamedType<Label, AudioComplementaryObjectGroupLabelTag>;
+
+  struct AudioComplementaryObjectGroupLabelsTag {};
+  using AudioComplementaryObjectGroupLabels =
+      std::vector<AudioComplementaryObjectGroupLabel>;
+  ADD_TRAIT(AudioComplementaryObjectGroupLabels,
+            AudioComplementaryObjectGroupLabelsTag);
+
+  namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        VectorParameter<AudioComplementaryObjectGroupLabels>;
+  }  // namespace detail
 
   /// @brief Tag for AudioObject
   struct AudioObjectTag {};
