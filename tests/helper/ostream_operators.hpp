@@ -2,6 +2,7 @@
 #include <adm/elements/time.hpp>
 #include <adm/elements/jump_position.hpp>
 #include <adm/elements/gain.hpp>
+#include <adm/elements/label.hpp>
 
 namespace adm {
   std::ostream& operator<<(std::ostream& stream, const FractionalTime& time) {
@@ -33,5 +34,10 @@ namespace adm {
       stream << gain.asLinear();
     }
     return stream;
+  }
+
+  std::ostream& operator<<(std::ostream& os, const Label& label) {
+    label.print(os);
+    return os;
   }
 }  // namespace adm
