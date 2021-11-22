@@ -10,6 +10,7 @@
 		<audioObject audioObjectID="AO_1001" audioObjectName="MainObject" start="00:00:00.000000000">
 			<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
 			<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+			<gain>1.000000</gain>
 		</audioObject>
 		<audioPackFormat audioPackFormatID="AP_00031001" audioPackFormatName="MainObject" typeLabel="0003" typeDefinition="Objects">
 			<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>

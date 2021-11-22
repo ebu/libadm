@@ -36,6 +36,8 @@ TEST_CASE("xml_parser/audio_object") {
   REQUIRE(labels[0].get<LabelValue>() == "My Object");
   REQUIRE(labels[1].get<LabelLanguage>() == "deu");
   REQUIRE(labels[1].get<LabelValue>() == "Mein Objekt");
+
+  REQUIRE(audioObject->get<Gain>().asLinear() == 0.5);
 }
 
 TEST_CASE("xml_parser/audio_object_duplicate_id") {
