@@ -59,6 +59,11 @@ TEST_CASE("audio_object parameter checks") {
         canBeSetTo(AudioComplementaryObjectGroupLabels{
             AudioComplementaryObjectGroupLabel{Label{LabelValue("ohai")}}}));
   }
+  SECTION("Gain") {
+    check_defaulted_param<Gain>(audioObject,
+                                hasDefaultOf(Gain::fromLinear(1.0f)),
+                                canBeSetTo(Gain::fromLinear(2.5f)));
+  }
 }
 
 TEST_CASE("audio_object_references") {
