@@ -76,7 +76,6 @@ namespace adm_test {
     template <typename ParamT, typename ElementT, typename VectorT>
     void check_vector_impl(ElementT& element, VectorT parameter_vector) {
       SECTION("test should be supplied with non-empty vector") {
-        using ValueT = typename VectorT::value_type;
         // if it's an optional vector, set to empty vector
         if (!element.template has<VectorT>()) {
           element.set(VectorT{});
