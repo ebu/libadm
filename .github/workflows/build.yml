@@ -37,7 +37,7 @@ jobs:
         uses: lukka/get-cmake@v3.20.1
 
       - name: Restore artifacts, or run vcpkg, build and cache artifacts
-        uses: lukka/run-vcpkg@main
+        uses: lukka/run-vcpkg@v7
         id: runvcpkg
         with:
           vcpkgArguments: 'boost-variant boost-optional boost-format boost-functional boost-range boost-iterator boost-rational'
