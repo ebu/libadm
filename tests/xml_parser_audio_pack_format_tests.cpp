@@ -5,10 +5,11 @@
 #include "adm/elements/audio_pack_format.hpp"
 #include "adm/parse.hpp"
 #include "adm/errors.hpp"
+#include "test_config.hpp"
 
 TEST_CASE("xml_parser/audio_pack_format") {
   using namespace adm;
-  auto document = parseXml("../test_data/xml_parser/audio_pack_format.xml");
+  auto document = parseXml(data_file("xml_parser/audio_pack_format.xml"));
   auto audioPackFormat =
       document->lookup(parseAudioPackFormatId("AP_00011001"));
 
@@ -26,14 +27,13 @@ TEST_CASE("xml_parser/audio_pack_format") {
 
 TEST_CASE("xml_parser/audio_pack_format_duplicate_id") {
   REQUIRE_THROWS_AS(
-      adm::parseXml("../test_data/xml_parser/audio_pack_format_duplicate_id.xml"),
+      adm::parseXml(data_file("xml_parser/audio_pack_format_duplicate_id.xml")),
       adm::error::XmlParsingDuplicateId);
 }
 
-
 TEST_CASE("xml_parser/audio_pack_format_hoa") {
   using namespace adm;
-  auto document = parseXml("../test_data/xml_parser/audio_pack_format_hoa.xml");
+  auto document = parseXml(data_file("xml_parser/audio_pack_format_hoa.xml"));
   auto audioPackFormatGeneric =
       document->lookup(parseAudioPackFormatId("AP_00041001"));
 

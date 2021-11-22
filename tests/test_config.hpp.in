@@ -1,0 +1,9 @@
+#pragma once
+#include <string>
+
+#cmakedefine TEST_DATA_DIR "${TEST_DATA_DIR}"
+
+inline std::string data_file(const std::string &fname) {
+  // use macro form so we get an error if it's not defined in cmake
+  return TEST_DATA_DIR "/" + fname;
+}

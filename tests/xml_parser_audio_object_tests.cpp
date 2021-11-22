@@ -5,10 +5,11 @@
 #include "adm/elements/audio_object.hpp"
 #include "adm/parse.hpp"
 #include "adm/errors.hpp"
+#include "test_config.hpp"
 
 TEST_CASE("xml_parser/audio_object") {
   using namespace adm;
-  auto document = parseXml("xml_parser/audio_object.xml");
+  auto document = parseXml(data_file("xml_parser/audio_object.xml"));
   auto audioObject = document->lookup(parseAudioObjectId("AO_1001"));
 
   REQUIRE(audioObject->has<AudioObjectName>() == true);
@@ -32,13 +33,15 @@ TEST_CASE("xml_parser/audio_object") {
 }
 
 TEST_CASE("xml_parser/audio_object_duplicate_id") {
-  REQUIRE_THROWS_AS(adm::parseXml("xml_parser/audio_object_duplicate_id.xml"),
-                    adm::error::XmlParsingDuplicateId);
+  REQUIRE_THROWS_AS(
+      adm::parseXml(data_file("xml_parser/audio_object_duplicate_id.xml")),
+      adm::error::XmlParsingDuplicateId);
 }
 
 TEST_CASE("xml_parser/audio_object_interaction") {
   using namespace adm;
-  auto document = adm::parseXml("xml_parser/audio_object_interaction.xml");
+  auto document =
+      adm::parseXml(data_file("xml_parser/audio_object_interaction.xml"));
   auto audioObjects = document->getElements<AudioObject>();
   REQUIRE(audioObjects.size() == 2);
 

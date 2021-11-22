@@ -5,11 +5,12 @@
 #include "adm/elements/frequency.hpp"
 #include "adm/parse.hpp"
 #include "adm/errors.hpp"
+#include "test_config.hpp"
 
 TEST_CASE("xml_parser/audio_channel_format") {
   using namespace adm;
   {
-    auto document = parseXml("xml_parser/audio_channel_format.xml");
+    auto document = parseXml(data_file("xml_parser/audio_channel_format.xml"));
     auto channelFormat =
         document->lookup(parseAudioChannelFormatId("AC_00031002"));
 
@@ -27,7 +28,7 @@ TEST_CASE("xml_parser/audio_channel_format") {
 }
 
 TEST_CASE("xml_parser/audio_channel_format_duplicate_id") {
-  REQUIRE_THROWS_AS(
-      adm::parseXml("xml_parser/audio_channel_format_duplicate_id.xml"),
-      adm::error::XmlParsingDuplicateId);
+  REQUIRE_THROWS_AS(adm::parseXml(data_file(
+                        "xml_parser/audio_channel_format_duplicate_id.xml")),
+                    adm::error::XmlParsingDuplicateId);
 }

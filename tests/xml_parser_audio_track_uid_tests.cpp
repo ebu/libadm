@@ -4,10 +4,11 @@
 #include "adm/elements/audio_track_uid.hpp"
 #include "adm/parse.hpp"
 #include "adm/errors.hpp"
+#include "test_config.hpp"
 
 TEST_CASE("xml_parser/audio_track_uid") {
   using namespace adm;
-  auto document = parseXml("xml_parser/audio_track_uid.xml");
+  auto document = parseXml(data_file("xml_parser/audio_track_uid.xml"));
   auto audioTrackUid = document->lookup(parseAudioTrackUidId("ATU_00000001"));
 
   REQUIRE(audioTrackUid->has<AudioTrackUidId>() == true);
@@ -22,6 +23,6 @@ TEST_CASE("xml_parser/audio_track_uid") {
 
 TEST_CASE("xml_parser/audio_track_uid_duplicate_id") {
   REQUIRE_THROWS_AS(
-      adm::parseXml("xml_parser/audio_track_uid_duplicate_id.xml"),
+      adm::parseXml(data_file("xml_parser/audio_track_uid_duplicate_id.xml")),
       adm::error::XmlParsingDuplicateId);
 }
