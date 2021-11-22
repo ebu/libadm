@@ -205,6 +205,7 @@ namespace adm {
       addOptionalElements<Label>(node, "audioObjectLabel", audioObject, &parseLabel);
       addOptionalElements<AudioComplementaryObjectGroupLabel>(node, "audioComplementaryObjectGroupLabel", audioObject, &parseLabel);
 
+      setOptionalElement<Gain>(node, "gain", audioObject, &parseGain);
       // clang-format on
       return audioObject;
     }
