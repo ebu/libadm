@@ -140,6 +140,7 @@ namespace adm {
       node.addVectorElements<AudioComplementaryObjectGroupLabels>(
           object, "audioComplementaryObjectGroupLabel",
           &formatAudioComplementaryObjectGroupLabel);
+      node.addOptionalElement<Gain>(object, "gain", &formatGain);
       // clang-format on
     }
 
