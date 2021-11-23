@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioObject audioObjectID="AO_1001" audioObjectName="CartesianOffsetObject">
+					<positionOffset coordinate="X">0.000000</positionOffset>
+					<positionOffset coordinate="Y">0.100000</positionOffset>
+					<positionOffset coordinate="Z">-0.200000</positionOffset>
+				</audioObject>
+				<audioObject audioObjectID="AO_1002" audioObjectName="SphericalOffsetObject">
+					<positionOffset coordinate="azimuth">30.000000</positionOffset>
+					<positionOffset coordinate="elevation">0.000000</positionOffset>
+					<positionOffset coordinate="distance">-0.500000</positionOffset>
+				</audioObject>
+				<audioObject audioObjectID="AO_1003" audioObjectName="OptionalOffsetObject">
+					<positionOffset coordinate="azimuth">-10.000000</positionOffset>
+				</audioObject>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+
