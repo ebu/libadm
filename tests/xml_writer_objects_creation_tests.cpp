@@ -42,3 +42,30 @@ TEST_CASE("write_simple_common_definitions_object") {
   CHECK_THAT(xml.str(),
              EqualsXmlFile("write_simple_common_definitions_object"));
 }
+
+TEST_CASE("write_objects_with_position_offset") {
+  using namespace adm;
+  auto document = Document::create();
+
+  auto cartesianOffset =
+      CartesianPositionOffset(XOffset(0.0), YOffset(0.1), ZOffset(-.2));
+  auto cartesianOffsetObject = AudioObject::create(
+      AudioObjectName("CartesianOffsetObject"), cartesianOffset);
+  document->add(cartesianOffsetObject);
+
+  auto sphericalOffset = SphericalPositionOffset(
+      AzimuthOffset(30.0), ElevationOffset(0.0), DistanceOffset(-0.5));
+  auto sphericalOffsetObject = AudioObject::create(
+      AudioObjectName("SphericalOffsetObject"), sphericalOffset);
+  document->add(sphericalOffsetObject);
+
+  auto optionalOffset = SphericalPositionOffset(AzimuthOffset(-10.f));
+  auto optionalOffsetObject = AudioObject::create(
+      AudioObjectName("OptionalOffsetObject"), optionalOffset);
+  document->add(optionalOffsetObject);
+
+  std::stringstream xml;
+  writeXml(xml, document);
+
+  CHECK_THAT(xml.str(), EqualsXmlFile("write_objects_with_position_offset"));
+}
