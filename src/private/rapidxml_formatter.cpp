@@ -141,6 +141,7 @@ namespace adm {
           object, "audioComplementaryObjectGroupLabel",
           &formatAudioComplementaryObjectGroupLabel);
       node.addOptionalElement<Gain>(object, "gain", &formatGain);
+      node.addOptionalMultiElement<PositionOffset>(object, "positionOffset", &formatPositionOffset);
       // clang-format on
     }
 
@@ -537,6 +538,35 @@ namespace adm {
       } else {
         node.setValue(gain.asDb());
         node.addAttribute("gainUnit", "dB");
+      }
+    }
+
+    void formatPositionOffset(XmlNode &parentNode, const std::string &name,
+                              const PositionOffset &positionOffset) {
+      if (isSpherical(positionOffset)) {
+        auto sphericalPosition =
+            boost::get<SphericalPositionOffset>(positionOffset);
+        parentNode.addOptionalElement<AzimuthOffset>(
+            &sphericalPosition, name,
+            detail::formatMultiElementAttribute("coordinate", "azimuth"));
+        parentNode.addOptionalElement<ElevationOffset>(
+            &sphericalPosition, name,
+            detail::formatMultiElementAttribute("coordinate", "elevation"));
+        parentNode.addOptionalElement<DistanceOffset>(
+            &sphericalPosition, name,
+            detail::formatMultiElementAttribute("coordinate", "distance"));
+      } else {
+        auto cartesianPosition =
+            boost::get<CartesianPositionOffset>(positionOffset);
+        parentNode.addOptionalElement<XOffset>(
+            &cartesianPosition, name,
+            detail::formatMultiElementAttribute("coordinate", "X"));
+        parentNode.addOptionalElement<YOffset>(
+            &cartesianPosition, name,
+            detail::formatMultiElementAttribute("coordinate", "Y"));
+        parentNode.addOptionalElement<ZOffset>(
+            &cartesianPosition, name,
+            detail::formatMultiElementAttribute("coordinate", "Z"));
       }
     }
 
