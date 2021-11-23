@@ -50,8 +50,16 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         VectorParameter<AudioComplementaryObjectGroupLabels>;
 
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<PositionOffset>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS VariantTypeParameter<
+        OptionalParameter<PositionOffset>, CartesianPositionOffset>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS VariantTypeParameter<
+        OptionalParameter<PositionOffset>, SphericalPositionOffset>;
+
     using AudioObjectBase =
         HasParameters<DefaultParameter<Gain>, VectorParameter<Labels>,
+                      VariantParameter<OptionalParameter<PositionOffset>>,
                       VectorParameter<AudioComplementaryObjectGroupLabels>>;
   }  // namespace detail
 
