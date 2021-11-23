@@ -17,7 +17,13 @@ namespace adm {
 
   namespace detail {
     template class VectorParameter<AudioComplementaryObjectGroupLabels>;
-  }
+
+    template class OptionalParameter<PositionOffset>;
+    template class VariantTypeParameter<OptionalParameter<PositionOffset>,
+                                        CartesianPositionOffset>;
+    template class VariantTypeParameter<OptionalParameter<PositionOffset>,
+                                        SphericalPositionOffset>;
+  }  // namespace detail
 
   // ---- Getter ---- //
   AudioObjectId AudioObject::get(
