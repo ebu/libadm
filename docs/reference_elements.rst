@@ -92,6 +92,9 @@ there are five different ``AudioBlockFormat`` classes.
 
 
 .. doxygenclass:: adm::AudioBlockFormatDirectSpeakers
+.. doxygentypedef:: adm::SpeakerLabel
+.. doxygentypedef:: adm::SpeakerLabels
+.. doxygentypedef:: adm::SpeakerPosition
 .. doxygenclass:: adm::CartesianSpeakerPosition
 .. doxygenclass:: adm::SphericalSpeakerPosition
 
