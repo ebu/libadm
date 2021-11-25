@@ -124,6 +124,11 @@ there are five different ``AudioBlockFormat`` classes.
 .. doxygentypedef:: adm::ScreenRef
 
 .. doxygenclass:: adm::AudioBlockFormatHoa
+.. doxygentypedef:: adm::Order
+.. doxygentypedef:: adm::Degree
+.. doxygentypedef:: adm::Normalization
+.. doxygentypedef:: adm::NfcRefDist
+.. doxygentypedef:: adm::Equation
 
 .. doxygenclass:: adm::AudioBlockFormatBinaural
 
