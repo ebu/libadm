@@ -153,6 +153,7 @@ Shared Elements
 
 .. doxygentypedef:: adm::Start
 .. doxygenclass:: adm::LoudnessMetadata
+.. doxygentypedef:: adm::LoudnessMetadatas
 .. doxygentypedef:: adm::Importance
 .. doxygenclass:: adm::AudioBlockFormatId
 .. doxygentypedef:: adm::Rtime
