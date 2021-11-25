@@ -60,13 +60,6 @@ namespace adm {
     ADM_EXPORT AudioBlockFormatHoa& operator=(const AudioBlockFormatHoa&) =
         default;
     ADM_EXPORT AudioBlockFormatHoa& operator=(AudioBlockFormatHoa&&) = default;
-    /**
-     * @brief Copy AudioBlockFormatHoa
-     *
-     * The actual copy constructor is private to ensure that an
-     * AudioBlockFormatHoa can only be created as a `std::shared_ptr`.
-     */
-    ADM_EXPORT std::shared_ptr<AudioBlockFormatHoa> copy() const;
 
     /**
      * @brief ADM parameter getter template
