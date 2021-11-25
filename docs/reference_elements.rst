@@ -160,5 +160,7 @@ Shared Elements
 .. doxygentypedef:: adm::Duration
 .. doxygenclass:: adm::HeadphoneVirtualise
 .. doxygenclass:: adm::Gain
+.. doxygenclass:: adm::Label
+.. doxygentypedef:: adm::Labels
 .. doxygentypedef:: adm::TypeDescriptor
 .. doxygennamespace:: adm::TypeDefinition
