@@ -142,3 +142,5 @@ Shared Elements
 .. doxygenclass:: adm::AudioBlockFormatId
 .. doxygentypedef:: adm::Rtime
 .. doxygentypedef:: adm::Duration
+.. doxygentypedef:: adm::TypeDescriptor
+.. doxygennamespace:: adm::TypeDefinition
