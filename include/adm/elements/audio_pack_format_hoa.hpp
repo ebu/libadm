@@ -61,11 +61,7 @@ namespace adm {
       template <typename Parameter>
       void unset();
 
-      // ---- Inherited functions ---- //
-      using AudioPackFormat::get;
-      using AudioPackFormat::has;
       using AudioPackFormat::set;
-      using AudioPackFormat::unset;
 
       /**
        * @brief Print overview to ostream
@@ -73,6 +69,10 @@ namespace adm {
       void print(std::ostream &os) const;
 
      private:
+      using AudioPackFormat::get;
+      using AudioPackFormat::has;
+      using AudioPackFormat::unset;
+
       friend class AudioPackFormatHoaAttorney;
 
       ADM_EXPORT AudioPackFormatHoa(AudioPackFormatName name);
