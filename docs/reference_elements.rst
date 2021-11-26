@@ -93,6 +93,8 @@ there are five different ``AudioBlockFormat`` classes.
 
 .. warning:: The ``Matrix`` typeDefinition is not completely supported yet.
 
+DirectSpeakers
+~~~~~~~~~~~~~~
 
 .. doxygenclass:: adm::AudioBlockFormatDirectSpeakers
 .. doxygentypedef:: adm::SpeakerLabel
@@ -101,7 +103,13 @@ there are five different ``AudioBlockFormat`` classes.
 .. doxygenclass:: adm::CartesianSpeakerPosition
 .. doxygenclass:: adm::SphericalSpeakerPosition
 
+Matrix
+~~~~~~
+
 .. doxygenclass:: adm::AudioBlockFormatMatrix
+
+Objects
+~~~~~~~
 
 .. doxygenclass:: adm::AudioBlockFormatObjects
 .. doxygentypedef:: adm::Cartesian
@@ -126,12 +134,18 @@ there are five different ``AudioBlockFormat`` classes.
 .. doxygentypedef:: adm::InterpolationLength
 .. doxygentypedef:: adm::ScreenRef
 
+HOA
+~~~
+
 .. doxygenclass:: adm::AudioBlockFormatHoa
 .. doxygentypedef:: adm::Order
 .. doxygentypedef:: adm::Degree
 .. doxygentypedef:: adm::Normalization
 .. doxygentypedef:: adm::NfcRefDist
 .. doxygentypedef:: adm::Equation
+
+Binaural
+~~~~~~~~
 
 .. doxygenclass:: adm::AudioBlockFormatBinaural
 
