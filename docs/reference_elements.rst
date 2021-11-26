@@ -142,3 +142,5 @@ Shared Elements
 .. doxygentypedef:: adm::Rtime
 .. doxygentypedef:: adm::Duration
 .. doxygenclass:: adm::Gain
+.. doxygentypedef:: adm::TypeDescriptor
+.. doxygennamespace:: adm::TypeDefinition
