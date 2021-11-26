@@ -160,4 +160,3 @@ Shared Elements
 .. doxygenclass:: adm::Gain
 .. doxygentypedef:: adm::TypeDescriptor
 .. doxygennamespace:: adm::TypeDefinition
->>>>>>> 9307380 (replace float gain with Gain class in objects)
