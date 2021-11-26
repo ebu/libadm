@@ -70,6 +70,8 @@ AudioChannelFormat
 .. doxygenclass:: adm::AudioChannelFormatId
 .. doxygentypedef:: adm::AudioChannelFormatName
 .. doxygenclass:: adm::Frequency
+.. doxygentypedef:: adm::LowPass
+.. doxygentypedef:: adm::HighPass
 
 AudioStreamFormat
 -----------------
