@@ -38,7 +38,7 @@ namespace adm {
   /// @brief Tag for Frequency class
   struct FrequencyTag {};
   /**
-   * @brief ADM parameter class to specify a speaker position
+   * @brief ADM parameter class to specify a frequency element in an audioChannelFormat
    */
   class Frequency {
    public:
