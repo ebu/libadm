@@ -72,6 +72,7 @@ exclude_patterns = ["env"]
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+primary_domain = 'cpp'
 
 # -- Options for HTML output -------------------------------------------------
 
