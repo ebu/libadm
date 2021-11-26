@@ -45,6 +45,8 @@ AudioObject
 .. doxygentypedef:: adm::PositionInteract
 .. doxygenclass:: adm::GainInteractionRange
 .. doxygenclass:: adm::PositionInteractionRange
+.. doxygentypedef:: adm::AudioComplementaryObjectGroupLabel
+.. doxygentypedef:: adm::AudioComplementaryObjectGroupLabels
 
 AudioTrackUid
 -------------
