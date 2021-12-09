@@ -10,26 +10,20 @@ TEST_CASE("position_offset") {
   SECTION("SphericalPositionOffset defaults") {
     SphericalPositionOffset offset;
 
-    check_defaulted_param<AzimuthOffset>(offset,
-                                         hasDefaultOf(AzimuthOffset(0.0f)),
-                                         canBeSetTo(AzimuthOffset(1.0f)));
-    check_defaulted_param<ElevationOffset>(offset,
-                                           hasDefaultOf(ElevationOffset(0.0f)),
-                                           canBeSetTo(ElevationOffset(1.0f)));
-    check_defaulted_param<DistanceOffset>(offset,
-                                          hasDefaultOf(DistanceOffset(0.0f)),
-                                          canBeSetTo(DistanceOffset(1.0f)));
+    check_optional_param<AzimuthOffset>(offset,
+                                        canBeSetTo(AzimuthOffset(1.0f)));
+    check_optional_param<ElevationOffset>(offset,
+                                          canBeSetTo(ElevationOffset(1.0f)));
+    check_optional_param<DistanceOffset>(offset,
+                                         canBeSetTo(DistanceOffset(1.0f)));
   }
 
   SECTION("CartesianPositionOffset defaults") {
     CartesianPositionOffset offset;
 
-    check_defaulted_param<XOffset>(offset, hasDefaultOf(XOffset(0.0f)),
-                                   canBeSetTo(XOffset(1.0f)));
-    check_defaulted_param<YOffset>(offset, hasDefaultOf(YOffset(0.0f)),
-                                   canBeSetTo(YOffset(1.0f)));
-    check_defaulted_param<ZOffset>(offset, hasDefaultOf(ZOffset(0.0f)),
-                                   canBeSetTo(ZOffset(1.0f)));
+    check_optional_param<XOffset>(offset, canBeSetTo(XOffset(1.0f)));
+    check_optional_param<YOffset>(offset, canBeSetTo(YOffset(1.0f)));
+    check_optional_param<ZOffset>(offset, canBeSetTo(ZOffset(1.0f)));
   }
 
   SECTION("CartesianPositionOffset constructor") {
@@ -63,7 +57,7 @@ TEST_CASE("position_offset") {
         auto sphericalOffset = SphericalPositionOffset();
         std::stringstream ss;
         sphericalOffset.print(ss);
-        REQUIRE(ss.str() == "(azimuth=0, elevation=0, distance=0)");
+        REQUIRE(ss.str() == "()");
       }
 
       SECTION("full") {
@@ -73,6 +67,14 @@ TEST_CASE("position_offset") {
         sphericalOffset.print(ss);
         REQUIRE(ss.str() == "(azimuth=1, elevation=2, distance=0.3)");
       }
+
+      SECTION("zeros") {
+        auto sphericalOffset = SphericalPositionOffset(
+            AzimuthOffset(0.0f), ElevationOffset(0.0f), DistanceOffset(0.0f));
+        std::stringstream ss;
+        sphericalOffset.print(ss);
+        REQUIRE(ss.str() == "(azimuth=0, elevation=0, distance=0)");
+      }
     }
 
     SECTION("CartesianPositionOffset") {
@@ -80,7 +82,7 @@ TEST_CASE("position_offset") {
         auto cartesianOffset = CartesianPositionOffset();
         std::stringstream ss;
         cartesianOffset.print(ss);
-        REQUIRE(ss.str() == "(X=0, Y=0, Z=0)");
+        REQUIRE(ss.str() == "()");
       }
 
       SECTION("full") {
@@ -89,6 +91,14 @@ TEST_CASE("position_offset") {
         std::stringstream ss;
         cartesianOffset.print(ss);
         REQUIRE(ss.str() == "(X=0.1, Y=0.2, Z=0.3)");
+      }
+
+      SECTION("zeros") {
+        auto cartesianOffset = CartesianPositionOffset(
+            XOffset(0.0f), YOffset(0.0f), ZOffset(0.0f));
+        std::stringstream ss;
+        cartesianOffset.print(ss);
+        REQUIRE(ss.str() == "(X=0, Y=0, Z=0)");
       }
     }
   }

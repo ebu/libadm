@@ -4,13 +4,13 @@
 namespace adm {
 
   namespace detail {
-    template class DefaultParameter<AzimuthOffset>;
-    template class DefaultParameter<ElevationOffset>;
-    template class DefaultParameter<DistanceOffset>;
+    template class OptionalParameter<AzimuthOffset>;
+    template class OptionalParameter<ElevationOffset>;
+    template class OptionalParameter<DistanceOffset>;
 
-    template class DefaultParameter<XOffset>;
-    template class DefaultParameter<YOffset>;
-    template class DefaultParameter<ZOffset>;
+    template class OptionalParameter<XOffset>;
+    template class OptionalParameter<YOffset>;
+    template class OptionalParameter<ZOffset>;
   }  // namespace detail
 
   void SphericalPositionOffset::print(std::ostream& os) const {

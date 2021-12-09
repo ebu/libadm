@@ -15,24 +15,27 @@ namespace adm {
 
   namespace detail {
     using SphericalPositionOffsetBase =
-        HasParameters<DefaultParameter<AzimuthOffset>,
-                      DefaultParameter<ElevationOffset>,
-                      DefaultParameter<DistanceOffset>>;
+        HasParameters<OptionalParameter<AzimuthOffset>,
+                      OptionalParameter<ElevationOffset>,
+                      OptionalParameter<DistanceOffset>>;
 
     using CartesianPositionOffsetBase =
-        HasParameters<DefaultParameter<XOffset>, DefaultParameter<YOffset>,
-                      DefaultParameter<ZOffset>>;
+        HasParameters<OptionalParameter<XOffset>, OptionalParameter<YOffset>,
+                      OptionalParameter<ZOffset>>;
 
     extern template class ADM_EXPORT_TEMPLATE_METHODS
-        DefaultParameter<AzimuthOffset>;
+        OptionalParameter<AzimuthOffset>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS
-        DefaultParameter<ElevationOffset>;
+        OptionalParameter<ElevationOffset>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS
-        DefaultParameter<DistanceOffset>;
+        OptionalParameter<DistanceOffset>;
 
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<XOffset>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<YOffset>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<ZOffset>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<XOffset>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<YOffset>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<ZOffset>;
 
   }  // namespace detail
 
