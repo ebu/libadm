@@ -13,6 +13,14 @@
           <positionOffset coordinate="Y">0.1</positionOffset>
           <positionOffset coordinate="Z">-0.5</positionOffset>
         </audioObject>
+        <audioObject audioObjectID="AO_1003" audioObjectName="defaults polar">
+          <positionOffset coordinate="azimuth">30</positionOffset>
+        </audioObject>
+        <audioObject audioObjectID="AO_1004" audioObjectName="defaults Cartesian">
+          <positionOffset coordinate="X">-0.2</positionOffset>
+        </audioObject>
+        <audioObject audioObjectID="AO_1005" audioObjectName="empty">
+        </audioObject>
       </audioFormatExtended>
     </format>
   </coreMetadata>

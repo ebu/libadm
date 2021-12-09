@@ -151,4 +151,38 @@ TEST_CASE("xml_parser/audio_object_position_offset") {
     REQUIRE(positionOffset.get<YOffset>() == Approx(0.1f));
     REQUIRE(positionOffset.get<ZOffset>() == Approx(-0.5f));
   }
+
+  {
+    // empty spherical position offset
+    auto audioObject = document->lookup(parseAudioObjectId("AO_1003"));
+    REQUIRE(audioObject->has<PositionOffset>() == true);
+    REQUIRE(audioObject->has<SphericalPositionOffset>() == true);
+    REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
+
+    auto positionOffset = audioObject->get<SphericalPositionOffset>();
+    REQUIRE(positionOffset.has<AzimuthOffset>());
+    REQUIRE(positionOffset.get<AzimuthOffset>() == Approx(30.0f));
+    REQUIRE(!positionOffset.has<ElevationOffset>());
+    REQUIRE(!positionOffset.has<DistanceOffset>());
+  }
+
+  {
+    // empty Cartesian position offset
+    auto audioObject = document->lookup(parseAudioObjectId("AO_1004"));
+    REQUIRE(audioObject->has<PositionOffset>() == true);
+    REQUIRE(audioObject->has<SphericalPositionOffset>() == false);
+    REQUIRE(audioObject->has<CartesianPositionOffset>() == true);
+
+    auto positionOffset = audioObject->get<CartesianPositionOffset>();
+    REQUIRE(positionOffset.has<XOffset>());
+    REQUIRE(positionOffset.get<XOffset>() == Approx(-0.2f));
+    REQUIRE(!positionOffset.has<YOffset>());
+    REQUIRE(!positionOffset.has<ZOffset>());
+  }
+
+  {
+    // empty object
+    auto audioObject = document->lookup(parseAudioObjectId("AO_1005"));
+    REQUIRE(audioObject->has<PositionOffset>() == false);
+  }
 }
