@@ -17,8 +17,7 @@ namespace adm {
 
   namespace detail {
     using AudioBlockFormatBinauralBase =
-        HasParameters<DefaultParameter<HeadphoneVirtualise>,
-                      DefaultParameter<Gain>, DefaultParameter<Importance>>;
+        HasParameters<DefaultParameter<Gain>, DefaultParameter<Importance>>;
   }  // namespace detail
 
   /// @brief Tag for AudioBlockFormatBinaural
