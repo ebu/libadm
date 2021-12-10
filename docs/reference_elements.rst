@@ -88,8 +88,7 @@ AudioBlockFormat
 As the audioBlockFormat ADM elements are quite different for each typeDefinition
 there are five different ``AudioBlockFormat`` classes.
 
-.. warning:: The typeDefinitions ``Matrix`` and ``HOA`` are not completely
-  supported yet.
+.. warning:: The ``Matrix`` typeDefinition is not completely supported yet.
 
 
 .. doxygenclass:: adm::AudioBlockFormatDirectSpeakers
