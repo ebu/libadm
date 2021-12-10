@@ -124,17 +124,6 @@ TEST_CASE("Write specified headphoneVirtualise") {
     channelFormat->add(blockFormat);
   }
 
-  // Binaural
-  {
-    auto channelFormat = AudioChannelFormat::create(
-        AudioChannelFormatName("TestBinaural"), TypeDefinition::BINAURAL);
-    doc->add(channelFormat);
-
-    auto blockFormat = AudioBlockFormatBinaural(
-        HeadphoneVirtualise(Bypass(false), DirectToReverberantRatio(30)));
-    channelFormat->add(blockFormat);
-  }
-
   auto xml = getXml(doc);
   REQUIRE(!xml.empty());
 

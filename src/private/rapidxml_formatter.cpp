@@ -613,7 +613,6 @@ namespace adm {
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
       node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
       node.addOptionalAttribute<Duration>(&audioBlock, "duration");
-      node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // TODO: add missing binaural attributes and elements
       // clang-format on
     }
