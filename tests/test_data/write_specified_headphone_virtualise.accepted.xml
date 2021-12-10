@@ -31,11 +31,6 @@
 						<headphoneVirtualise bypass="0" DRR="30.000000"/>
 					</audioBlockFormat>
 				</audioChannelFormat>
-				<audioChannelFormat audioChannelFormatID="AC_00051001" audioChannelFormatName="TestBinaural" typeLabel="0005" typeDefinition="Binaural">
-					<audioBlockFormat audioBlockFormatID="AB_00051001_00000001">
-						<headphoneVirtualise bypass="0" DRR="30.000000"/>
-					</audioBlockFormat>
-				</audioChannelFormat>
 			</audioFormatExtended>
 		</format>
 	</coreMetadata>
