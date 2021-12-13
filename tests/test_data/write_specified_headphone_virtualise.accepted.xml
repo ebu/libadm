@@ -26,11 +26,6 @@
 						<headphoneVirtualise bypass="0" DRR="30.000000"/>
 					</audioBlockFormat>
 				</audioChannelFormat>
-				<audioChannelFormat audioChannelFormatID="AC_00021001" audioChannelFormatName="TestMatrix" typeLabel="0002" typeDefinition="Matrix">
-					<audioBlockFormat audioBlockFormatID="AB_00021001_00000001">
-						<headphoneVirtualise bypass="0" DRR="30.000000"/>
-					</audioBlockFormat>
-				</audioChannelFormat>
 			</audioFormatExtended>
 		</format>
 	</coreMetadata>

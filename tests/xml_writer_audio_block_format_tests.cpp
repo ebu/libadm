@@ -139,17 +139,6 @@ TEST_CASE("Write specified headphoneVirtualise") {
     channelFormat->add(blockFormat);
   }
 
-  // Matrix
-  {
-    auto channelFormat = AudioChannelFormat::create(
-        AudioChannelFormatName("TestMatrix"), TypeDefinition::MATRIX);
-    doc->add(channelFormat);
-
-    auto blockFormat = AudioBlockFormatMatrix(
-        HeadphoneVirtualise(Bypass(false), DirectToReverberantRatio(30)));
-    channelFormat->add(blockFormat);
-  }
-
   auto xml = getXml(doc);
   REQUIRE(!xml.empty());
 
