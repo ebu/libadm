@@ -144,3 +144,36 @@ TEST_CASE("Write specified headphoneVirtualise") {
 
   CHECK_THAT(xml, EqualsXmlFile("write_specified_headphone_virtualise"));
 }
+
+TEST_CASE("write default HOA block") {
+  auto doc = Document::create();
+  auto channelFormat = AudioChannelFormat::create(
+      AudioChannelFormatName("Test"), TypeDefinition::HOA);
+  doc->add(channelFormat);
+  auto blockFormat = AudioBlockFormatHoa{Order{0}, Degree{0}};
+  channelFormat->add(blockFormat);
+
+  auto xml = getXml(doc);
+  CHECK_THAT(xml, EqualsXmlFile("write_default_HOA_block"));
+}
+
+TEST_CASE("write specified HOA block") {
+  auto doc = Document::create();
+  auto channelFormat = AudioChannelFormat::create(
+      AudioChannelFormatName("Test"), TypeDefinition::HOA);
+  doc->add(channelFormat);
+  auto blockFormat = AudioBlockFormatHoa{Order{2},
+                                         Degree{1},
+                                         Rtime{std::chrono::seconds(0)},
+                                         Duration{std::chrono::seconds(1)},
+                                         NfcRefDist{2.0},
+                                         ScreenRef{true},
+                                         Normalization{"N3D"},
+                                         Gain::fromLinear(0.5),
+                                         Importance{5},
+                                         Equation{"do not use equation!"}};
+  channelFormat->add(blockFormat);
+
+  auto xml = getXml(doc);
+  CHECK_THAT(xml, EqualsXmlFile("write_specified_HOA_block"));
+}
