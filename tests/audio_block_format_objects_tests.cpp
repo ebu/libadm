@@ -37,12 +37,6 @@ TEST_CASE("audio_block_format_objects_parameters") {
     check_defaulted_param<Depth>(blockFormat, hasDefaultOf(.0f),
                                  canBeSetTo(.2f));
   }
-  // TODO move to common tests
-  SECTION("Gain") {
-    check_defaulted_param<Gain>(blockFormat,
-                                hasDefaultOf(Gain::fromLinear(1.0f)),
-                                canBeSetTo(Gain::fromLinear(2.5f)));
-  }
   SECTION("Diffuse") {
     check_defaulted_param<Diffuse>(blockFormat, hasDefaultOf(0.0f),
                                    canBeSetTo(0.5f));
@@ -104,11 +98,6 @@ TEST_CASE("audio_block_format_objects_parameters") {
   SECTION("ScreenRef") {
     check_defaulted_param<ScreenRef>(blockFormat, hasDefaultOf(false),
                                      canBeSetTo(true));
-  }
-  // TODO move to common tests
-  SECTION("Importance") {
-    check_defaulted_param<Importance>(blockFormat, hasDefaultOf(10),
-                                      canBeSetTo(1));
   }
   SECTION("Cartesian") {
     check_defaulted_param<Cartesian>(blockFormat, hasDefaultOf(false),
