@@ -19,11 +19,10 @@ namespace adm_test {
   };
 }  // namespace adm_test
 
-TEMPLATE_TEST_CASE("Common audioBlockFormat parameter checks",
-                   "[parameter][template]", adm::AudioBlockFormatObjects,
+TEMPLATE_TEST_CASE("headphone parameter checks", "[parameter][template]",
+                   adm::AudioBlockFormatObjects,
                    adm::AudioBlockFormatDirectSpeakers,
-                   adm::AudioBlockFormatMatrix, adm::AudioBlockFormatHoa,
-                   adm::AudioBlockFormatBinaural) {
+                   adm::AudioBlockFormatHoa) {
   using namespace adm_test;
   using namespace adm;
   auto blockFormat = BlockInitialiser<TestType>::create();
