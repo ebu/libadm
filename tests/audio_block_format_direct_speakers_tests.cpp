@@ -10,17 +10,11 @@ TEST_CASE("DirectSpeakers block format common subelements") {
   REQUIRE(blockFormat.has<Rtime>() == true);
   REQUIRE(blockFormat.has<Duration>() == false);
   REQUIRE(blockFormat.has<SpeakerLabels>() == false);
-  REQUIRE(blockFormat.has<HeadphoneVirtualise>() == true);
 
   REQUIRE(blockFormat.isDefault<Rtime>() == true);
-  REQUIRE(blockFormat.isDefault<HeadphoneVirtualise>() == true);
 
   auto defaultRtime = std::chrono::seconds{0};
   REQUIRE(blockFormat.get<Rtime>().get() == defaultRtime);
-  REQUIRE(blockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
-  REQUIRE(
-      blockFormat.get<HeadphoneVirtualise>().get<DirectToReverberantRatio>() ==
-      130);
 
   auto rTime = std::chrono::seconds{1};
   auto duration = std::chrono::seconds{10};
@@ -29,38 +23,28 @@ TEST_CASE("DirectSpeakers block format common subelements") {
   blockFormat.set(Rtime(rTime));
   blockFormat.set(Duration(duration));
   blockFormat.add(SpeakerLabel(label));
-  blockFormat.set(
-      HeadphoneVirtualise(Bypass(true), DirectToReverberantRatio(60)));
 
   REQUIRE(blockFormat.has<AudioBlockFormatId>() == true);
   REQUIRE(blockFormat.has<Rtime>() == true);
   REQUIRE(blockFormat.has<Duration>() == true);
   REQUIRE(blockFormat.has<SpeakerLabels>() == true);
-  REQUIRE(blockFormat.has<HeadphoneVirtualise>() == true);
 
   REQUIRE(blockFormat.isDefault<Rtime>() == false);
   REQUIRE(blockFormat.isDefault<Duration>() == false);
-  REQUIRE(blockFormat.isDefault<HeadphoneVirtualise>() == false);
 
   REQUIRE(blockFormat.get<Rtime>().get() == rTime);
   REQUIRE(blockFormat.get<Duration>().get() == duration);
   REQUIRE(*blockFormat.get<SpeakerLabels>().begin() == label);
-  REQUIRE(blockFormat.get<HeadphoneVirtualise>().get<Bypass>() == true);
-  REQUIRE(
-      blockFormat.get<HeadphoneVirtualise>().get<DirectToReverberantRatio>() ==
-      60);
 
   blockFormat.unset<Rtime>();
   blockFormat.unset<Duration>();
   blockFormat.unset<SpeakerLabels>();
-  blockFormat.unset<HeadphoneVirtualise>();
 
   REQUIRE(blockFormat.has<Rtime>() == true);
   REQUIRE(blockFormat.has<Duration>() == false);
   REQUIRE(blockFormat.has<SpeakerLabels>() == false);
 
   REQUIRE(blockFormat.isDefault<Rtime>() == true);
-  REQUIRE(blockFormat.isDefault<HeadphoneVirtualise>() == true);
 
   REQUIRE(blockFormat.get<Rtime>().get() == defaultRtime);
 }
