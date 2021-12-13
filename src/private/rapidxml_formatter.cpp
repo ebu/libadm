@@ -478,7 +478,6 @@ namespace adm {
       node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
       node.addOptionalAttribute<Duration>(&audioBlock, "duration");
       // TODO: add missing matrix attributes and elements
-      node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
     }
 
