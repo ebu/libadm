@@ -12,6 +12,8 @@
             <screenRef>0</screenRef>
             <equation>cos(A)*sin(E)</equation>
             <headphoneVirtualise DRR="60" bypass="0" />
+            <gain>0.5</gain>
+            <importance>5</importance>
           </audioBlockFormat>
           <audioBlockFormat audioBlockFormatID="AB_00041001_00000002">
             <order>1</order>

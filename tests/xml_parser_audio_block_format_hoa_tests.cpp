@@ -28,6 +28,8 @@ TEST_CASE("xml_parser/audio_block_format_hoa") {
   REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
   REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>()
               .get<DirectToReverberantRatio>() == Approx(60));
+  REQUIRE(firstBlockFormat.get<Gain>().asLinear() == 0.5);
+  REQUIRE(firstBlockFormat.get<Importance>() == 5);
 
   auto secondBlockFormat =
       *(channelFormat->getElements<AudioBlockFormatHoa>().begin().operator++());
@@ -37,4 +39,6 @@ TEST_CASE("xml_parser/audio_block_format_hoa") {
   REQUIRE(secondBlockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
   REQUIRE(secondBlockFormat.get<HeadphoneVirtualise>()
               .get<DirectToReverberantRatio>() == Approx(60));
+  REQUIRE(secondBlockFormat.get<Gain>().asLinear() == 1.0);
+  REQUIRE(secondBlockFormat.get<Importance>() == 10);
 }

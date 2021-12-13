@@ -837,6 +837,8 @@ namespace adm {
       setOptionalElement<Normalization>(node, "normalization", audioBlockFormat);
       setOptionalElement<Equation>(node, "equation", audioBlockFormat);
       setOptionalElement<HeadphoneVirtualise>(node, "headphoneVirtualise", audioBlockFormat, &parseHeadphoneVirtualise);
+      setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
+      setOptionalElement<Importance>(node, "importance", audioBlockFormat);
       // clang-format on
       return audioBlockFormat;
     }
