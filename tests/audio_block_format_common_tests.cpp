@@ -26,7 +26,7 @@ TEMPLATE_TEST_CASE("headphone parameter checks", "[parameter][template]",
                    adm::AudioBlockFormatDirectSpeakers,
                    adm::AudioBlockFormatHoa) {
   auto blockFormat = BlockInitialiser<TestType>::create();
-  // TODO Gain, Importance, HeadLocked
+  // TODO HeadLocked
   SECTION("HeadphoneVirtualise") {
     HeadphoneVirtualise defaultHeadphoneVirtualise{};
     HeadphoneVirtualise customHeadphoneVirtualise{Bypass{true}};
@@ -34,4 +34,22 @@ TEMPLATE_TEST_CASE("headphone parameter checks", "[parameter][template]",
         blockFormat, hasDefaultOf(defaultHeadphoneVirtualise),
         canBeSetTo(customHeadphoneVirtualise));
   }
+}
+
+TEMPLATE_TEST_CASE("gain parameter", "[parameter][template]",
+                   adm::AudioBlockFormatDirectSpeakers,
+                   adm::AudioBlockFormatMatrix, adm::AudioBlockFormatObjects,
+                   adm::AudioBlockFormatHoa, adm::AudioBlockFormatBinaural) {
+  auto blockFormat = BlockInitialiser<TestType>::create();
+  check_defaulted_param<Gain>(blockFormat, hasDefaultOf(Gain::fromLinear(1.0f)),
+                              canBeSetTo(Gain::fromLinear(2.5f)));
+}
+
+TEMPLATE_TEST_CASE("importance parameter", "[parameter][template]",
+                   adm::AudioBlockFormatDirectSpeakers,
+                   adm::AudioBlockFormatMatrix, adm::AudioBlockFormatObjects,
+                   adm::AudioBlockFormatHoa, adm::AudioBlockFormatBinaural) {
+  auto blockFormat = BlockInitialiser<TestType>::create();
+  check_defaulted_param<Importance>(blockFormat, hasDefaultOf(10),
+                                    canBeSetTo(1));
 }
