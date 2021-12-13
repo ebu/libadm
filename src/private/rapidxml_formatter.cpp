@@ -604,6 +604,8 @@ namespace adm {
       node.addOptionalElement<Equation>(&audioBlock, "equation");
       node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
+      node.addOptionalElement<Gain>(&audioBlock, "gain", &formatGain);
+      node.addOptionalElement<Importance>(&audioBlock, "importance");
     }
 
     void formatBlockFormatBinaural(XmlNode &node,
