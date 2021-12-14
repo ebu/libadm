@@ -16,19 +16,19 @@ namespace {
   }
 }  // namespace
 
-TEST_CASE("Write default ") {
+TEST_CASE("Write default DirectSpeakers block") {
   auto doc = Document::create();
   auto channelFormat = AudioChannelFormat::create(
       AudioChannelFormatName("Test"), TypeDefinition::DIRECT_SPEAKERS);
   doc->add(channelFormat);
-  SECTION("Spherical DirectSpeaker block ") {
+  SECTION("Spherical") {
     auto blockFormat = AudioBlockFormatDirectSpeakers();
     channelFormat->add(blockFormat);
     auto xml = getXml(doc);
     REQUIRE(!xml.empty());
     CHECK_THAT(xml, EqualsXmlFile("write_default_spherical_speaker"));
   }
-  SECTION("Cartesian DirectSpeaker block") {
+  SECTION("Cartesian") {
     auto blockFormat =
         AudioBlockFormatDirectSpeakers(CartesianSpeakerPosition());
     channelFormat->add(blockFormat);
@@ -38,12 +38,12 @@ TEST_CASE("Write default ") {
   }
 }
 
-TEST_CASE("Write fully specified ") {
+TEST_CASE("Write fully specified DirectSpeakers block") {
   auto doc = Document::create();
   auto channelFormat = AudioChannelFormat::create(
       AudioChannelFormatName("Test"), TypeDefinition::DIRECT_SPEAKERS);
   doc->add(channelFormat);
-  SECTION("Spherical DirectSpeaker block ") {
+  SECTION("Spherical") {
     auto blockFormat = AudioBlockFormatDirectSpeakers(
         SphericalSpeakerPosition{
             Azimuth(60.0f), AzimuthMin(58.0f), AzimuthMax(62.0f),
@@ -58,7 +58,7 @@ TEST_CASE("Write fully specified ") {
     CHECK_THAT(xml, EqualsXmlFile("write_specified_spherical_speaker"));
   }
 
-  SECTION("Cartesian DirectSpeaker block ") {
+  SECTION("Cartesian") {
     auto blockFormat = AudioBlockFormatDirectSpeakers(
         CartesianSpeakerPosition{X(0.0f), XMin(-0.1f), XMax(0.1f), Y(0.0f),
                                  YMin(-0.1f), YMax(0.1f), Z(0.5f), ZMin(0.4f),
@@ -73,12 +73,12 @@ TEST_CASE("Write fully specified ") {
   }
 }
 
-TEST_CASE("Write partially specified  ") {
+TEST_CASE("Write partially specified Objects positions") {
   auto doc = Document::create();
   auto channelFormat = AudioChannelFormat::create(
       AudioChannelFormatName("Test"), TypeDefinition::OBJECTS);
   doc->add(channelFormat);
-  SECTION("Spherical Object block ") {
+  SECTION("Spherical Object block") {
     auto blockFormat = AudioBlockFormatObjects(
         SphericalPosition{Azimuth(60.0f), Elevation(30.0f)},
         Rtime(std::chrono::seconds{1}), Duration(std::chrono::seconds{1}));
@@ -88,7 +88,7 @@ TEST_CASE("Write partially specified  ") {
     CHECK_THAT(xml, EqualsXmlFile("write_partially_specified_spherical"));
   }
 
-  SECTION("Cartesian Object block ") {
+  SECTION("Cartesian Object block") {
     auto blockFormat = AudioBlockFormatObjects(
         CartesianPosition{X(0.0f), Y(0.0f)}, Rtime(std::chrono::seconds{1}),
         Duration(std::chrono::seconds{1}));
