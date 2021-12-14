@@ -28,6 +28,11 @@ namespace adm {
         return std::pow(10, _gain / 20.0);
     }
 
+    /// Alias of asLinear
+    double get() const {
+      return asLinear();
+    }
+
     /// Get the gain as a value in dB, converting if necessary.
     double asDb() const {
       if (isDb())
