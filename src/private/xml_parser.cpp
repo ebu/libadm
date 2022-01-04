@@ -790,7 +790,8 @@ namespace adm {
       return loudnessMetadata;
     }
 
-    LoudnessMetadatas parseLoudnessMetadatas(std::vector<NodePtr> const& nodes) {
+    LoudnessMetadatas parseLoudnessMetadatas(
+        std::vector<NodePtr> const& nodes) {
       LoudnessMetadatas loudnessMetatatas;
       for (auto& element : nodes) {
         auto loudnessMetadata = parseLoudnessMetadata(element);
