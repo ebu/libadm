@@ -30,6 +30,8 @@ TEST_CASE("xml_parser/audio_block_format_direct_speakers") {
   REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
   REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>()
               .get<DirectToReverberantRatio>() == Approx(60));
+  REQUIRE(firstBlockFormat.get<Gain>().asLinear() == 0.5);
+  REQUIRE(firstBlockFormat.get<Importance>() == 5);
 }
 
 TEST_CASE("xml_parser/audio_block_format_direct_speakers_cartesian") {

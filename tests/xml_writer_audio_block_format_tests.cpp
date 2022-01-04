@@ -50,7 +50,8 @@ TEST_CASE("Write fully specified DirectSpeakers block") {
             Elevation(30.0f), ElevationMin(29.0f), ElevationMax(31.0f),
             Distance(0.5f), DistanceMin(0.4f), DistanceMax(0.6f),
             ScreenEdgeLock(HorizontalEdge("left"))},
-        Rtime(std::chrono::seconds{1}), Duration(std::chrono::seconds{1}));
+        Rtime(std::chrono::seconds{1}), Duration(std::chrono::seconds{1}),
+        Gain::fromLinear(0.5), Importance{5});
     blockFormat.add(SpeakerLabel("testLabel"));
     channelFormat->add(blockFormat);
     auto xml = getXml(doc);
@@ -64,7 +65,8 @@ TEST_CASE("Write fully specified DirectSpeakers block") {
                                  YMin(-0.1f), YMax(0.1f), Z(0.5f), ZMin(0.4f),
                                  ZMax(0.6f),
                                  ScreenEdgeLock(HorizontalEdge("left"))},
-        Rtime(std::chrono::seconds{1}), Duration(std::chrono::seconds{1}));
+        Rtime(std::chrono::seconds{1}), Duration(std::chrono::seconds{1}),
+        Gain::fromLinear(0.5), Importance{5});
     blockFormat.add(SpeakerLabel("testLabel"));
     channelFormat->add(blockFormat);
     auto xml = getXml(doc);
