@@ -62,6 +62,7 @@ namespace adm {
     SpeakerLabel parseSpeakerLabel(NodePtr node);
     HeadphoneVirtualise parseHeadphoneVirtualise(NodePtr node);
     AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node);
+    AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node);
 
     NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr root);
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
