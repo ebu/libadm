@@ -360,9 +360,9 @@ namespace adm {
         }
       } else if (audioChannelFormat->get<TypeDescriptor>() ==
                  TypeDefinition::BINAURAL) {
-        // for (auto& element : elements) {
-        //    audioChannelFormat->add(parseAudioBlockFormatBinaural(element));
-        // }
+        for (auto& element : elements) {
+          audioChannelFormat->add(parseAudioBlockFormatBinaural(element));
+        }
       }
       return audioChannelFormat;
     }
@@ -829,8 +829,6 @@ namespace adm {
       return AudioProgrammeReferenceScreen();
     }
 
-    /* Below here Hoa */
-
     AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node) {
       AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
       // clang-format off
@@ -850,5 +848,15 @@ namespace adm {
       return audioBlockFormat;
     }
 
+    AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node) {
+      AudioBlockFormatBinaural audioBlockFormat;
+
+      setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
+      setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
+      setOptionalElement<Importance>(node, "importance", audioBlockFormat);
+
+      return audioBlockFormat;
+    }
   }  // namespace xml
 }  // namespace adm
