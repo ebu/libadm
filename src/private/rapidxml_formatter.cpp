@@ -616,8 +616,9 @@ namespace adm {
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
       node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
       node.addOptionalAttribute<Duration>(&audioBlock, "duration");
-      // TODO: add missing binaural attributes and elements
       // clang-format on
+      node.addOptionalElement<Gain>(&audioBlock, "gain", &formatGain);
+      node.addOptionalElement<Importance>(&audioBlock, "importance");
     }
 
     void formatAudioStreamFormat(
