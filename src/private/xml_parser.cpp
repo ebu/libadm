@@ -437,6 +437,8 @@ namespace adm {
       addOptionalElements<SpeakerLabel>(node, "speakerLabel", audioBlockFormat, &parseSpeakerLabel);
       setOptionalElement<HeadphoneVirtualise>(node, "headphoneVirtualise", audioBlockFormat, &parseHeadphoneVirtualise);
       // clang-format on
+      setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
+      setOptionalElement<Importance>(node, "importance", audioBlockFormat);
       return audioBlockFormat;
     }
 

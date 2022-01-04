@@ -316,6 +316,8 @@ namespace adm {
 
       node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
+      node.addOptionalElement<Gain>(&audioBlock, "gain", &formatGain);
+      node.addOptionalElement<Importance>(&audioBlock, "importance");
     }
 
     void formatSpeakerLabels(XmlNode &parentNode, const std::string &name,
