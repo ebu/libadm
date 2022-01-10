@@ -34,7 +34,7 @@ namespace adm {
 
   namespace detail {
     using AudioBlockFormatDirectSpeakersBase =
-        HasParameters<DefaultParameter<Gain>,
+        HasParameters<DefaultParameter<Gain>, DefaultParameter<HeadLocked>,
                       DefaultParameter<HeadphoneVirtualise>,
                       DefaultParameter<Importance>>;
   }  // namespace detail
