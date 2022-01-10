@@ -15,6 +15,7 @@
 						<position coordinate="Z">0.500000</position>
 						<position coordinate="Z" bound="min">0.400000</position>
 						<position coordinate="Z" bound="max">0.600000</position>
+						<headLocked>1</headLocked>
 						<gain>0.500000</gain>
 						<importance>5</importance>
 					</audioBlockFormat>
