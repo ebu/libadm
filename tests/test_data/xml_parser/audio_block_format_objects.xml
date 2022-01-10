@@ -21,6 +21,7 @@
             <screenRef>1</screenRef>
             <importance>10</importance>
             <headphoneVirtualise DRR="-60" bypass="0" />
+            <headLocked>0</headLocked>
           </audioBlockFormat>
           <audioBlockFormat audioBlockFormatID="AB_00031001_00000002">
             <speakerLabel>M+30</speakerLabel>
@@ -39,6 +40,7 @@
             <screenRef>0</screenRef>
             <importance>10</importance>
             <headphoneVirtualise DRR="60" bypass="1" />
+            <headLocked>1</headLocked>
           </audioBlockFormat>
           <audioBlockFormat audioBlockFormatID="AB_00031001_00000003">
             <position coordinate="azimuth">30.0</position>

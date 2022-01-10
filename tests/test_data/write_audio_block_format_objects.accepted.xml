@@ -17,6 +17,7 @@
 						<objectDivergence azimuthRange="60.000000" positionRange="0.250000">0.500000</objectDivergence>
 						<jumpPosition interpolationLength="0.20000">1</jumpPosition>
 						<screenRef>1</screenRef>
+						<headLocked>0</headLocked>
 						<headphoneVirtualise bypass="0" DRR="-60.000000"/>
 						<importance>10</importance>
 					</audioBlockFormat>
@@ -33,6 +34,7 @@
 						<objectDivergence azimuthRange="60.000000" positionRange="0.250000">0.500000</objectDivergence>
 						<jumpPosition>0</jumpPosition>
 						<screenRef>0</screenRef>
+						<headLocked>1</headLocked>
 						<headphoneVirtualise bypass="1" DRR="60.000000"/>
 						<importance>10</importance>
 					</audioBlockFormat>
