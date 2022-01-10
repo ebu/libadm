@@ -14,6 +14,7 @@
             <headphoneVirtualise DRR="60" bypass="0" />
             <gain>0.5</gain>
             <importance>5</importance>
+            <headLocked>1</headLocked>
           </audioBlockFormat>
           <audioBlockFormat audioBlockFormatID="AB_00041001_00000002">
             <order>1</order>
