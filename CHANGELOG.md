@@ -6,8 +6,10 @@
 - Added support for Cartesian speaker positions.
 - Added support for AudioChannelFormatIDRef in AudioTrackUID as per BS.2076-2
 - Added support for dB gains. `Gain{1.0}` should be replaced with `Gain::fromLinear(1.0)`, and `b.get<Gain>().get()` should be replaced with `b.get<Gain>().asLinear()`.
-- Added BS.2076-2 gain attribute to audioObjects.
+- Added BS.2076-2 gain attribute to audioObjects and all audioBlockFormat types.
+- Added BS.2076-2 headLocked attribute to audioObjects and audioBlockFormats.
 - Added support for headphoneVirtualise in audioBlockFormat as per BS.2076-2.
+- Added support for importance in all audioBlockFormat types as per BS.2076-2.
 - Added support for Label elements in AudioProgramme, AudioContent and AudioObject, and AudioComplementaryObjectGroupLabel elements in AudioObject.
 - Added support for PositionOffset sub-element in AudioObject.
 
