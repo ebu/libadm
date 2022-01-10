@@ -2,6 +2,7 @@
 #include "adm/detail/auto_base.hpp"
 #include "adm/elements/gain.hpp"
 #include "adm/elements/headphone_virtualise.hpp"
+#include "adm/elements/head_locked.hpp"
 #include "adm/elements/importance.hpp"
 #include "adm/elements/time.hpp"
 
@@ -22,6 +23,11 @@ namespace adm {
       return Rtime{std::chrono::nanoseconds{0}};
     }
 
+    template <>
+    inline HeadLocked getDefault<HeadLocked>() {
+      return HeadLocked{false};
+    }
+
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Gain>;
 
     extern template class ADM_EXPORT_TEMPLATE_METHODS
@@ -33,5 +39,8 @@ namespace adm {
 
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         DefaultParameter<HeadphoneVirtualise>;
+
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        DefaultParameter<HeadLocked>;
   }  // namespace detail
 }  // namespace adm

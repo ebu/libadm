@@ -10,5 +10,7 @@ namespace adm {
     template class OptionalParameter<Duration>;
 
     template class DefaultParameter<HeadphoneVirtualise>;
+
+    template class DefaultParameter<HeadLocked>;
   }  // namespace detail
 }  // namespace adm
