@@ -58,7 +58,8 @@ namespace adm {
         OptionalParameter<PositionOffset>, SphericalPositionOffset>;
 
     using AudioObjectBase =
-        HasParameters<DefaultParameter<Gain>, VectorParameter<Labels>,
+        HasParameters<DefaultParameter<Gain>, DefaultParameter<HeadLocked>,
+                      VectorParameter<Labels>,
                       VariantParameter<OptionalParameter<PositionOffset>>,
                       VectorParameter<AudioComplementaryObjectGroupLabels>>;
   }  // namespace detail
