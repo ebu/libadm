@@ -65,6 +65,11 @@ TEST_CASE("audio_object parameter checks") {
                                 hasDefaultOf(Gain::fromLinear(1.0f)),
                                 canBeSetTo(Gain::fromLinear(2.5f)));
   }
+  SECTION("HeadLocked") {
+    check_defaulted_param<HeadLocked>(audioObject,
+                                      hasDefaultOf(HeadLocked{false}),
+                                      canBeSetTo(HeadLocked{true}));
+  }
 }
 
 TEST_CASE("audio_object_references") {
