@@ -141,6 +141,7 @@ namespace adm {
           object, "audioComplementaryObjectGroupLabel",
           &formatAudioComplementaryObjectGroupLabel);
       node.addOptionalElement<Gain>(object, "gain", &formatGain);
+      node.addOptionalElement<HeadLocked>(object, "headLocked");
       node.addOptionalMultiElement<PositionOffset>(object, "positionOffset", &formatPositionOffset);
       // clang-format on
     }

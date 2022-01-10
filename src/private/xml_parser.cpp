@@ -203,6 +203,8 @@ namespace adm {
 
       setOptionalElement<Gain>(node, "gain", audioObject, &parseGain);
 
+      setOptionalElement<HeadLocked>(node, "headLocked", audioObject);
+
       if (guessCartesianFlag(node, "positionOffset") == Cartesian(true)) {
         setOptionalMultiElement<CartesianPositionOffset>(node, "positionOffset", audioObject, &parseCartesianPositionOffset);
       } else {
