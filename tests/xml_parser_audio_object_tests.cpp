@@ -30,6 +30,7 @@ TEST_CASE("xml_parser/audio_object") {
   REQUIRE(audioObject->get<Importance>() == 10);
   REQUIRE(audioObject->get<Interact>() == false);
   REQUIRE(audioObject->get<DisableDucking>() == true);
+  REQUIRE(audioObject->get<HeadLocked>() == true);
 
   auto labels = audioObject->get<Labels>();
   REQUIRE(labels.size() == 2);
