@@ -314,6 +314,7 @@ namespace adm {
         node.addMultiElement<CartesianSpeakerPosition>(&audioBlock, "position", &formatCartesianSpeakerPosition);
       }
 
+      node.addOptionalElement<HeadLocked>(&audioBlock, "headLocked");
       node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
       node.addOptionalElement<Gain>(&audioBlock, "gain", &formatGain);
@@ -500,6 +501,7 @@ namespace adm {
       node.addOptionalElement<ObjectDivergence>(&audioBlock, "objectDivergence", &formatObjectDivergence);
       node.addOptionalElement<JumpPosition>(&audioBlock, "jumpPosition", &formatJumpPosition);
       node.addOptionalElement<ScreenRef>(&audioBlock, "screenRef");
+      node.addOptionalElement<HeadLocked>(&audioBlock, "headLocked");
       node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
       // TODO: add zoneExclusion
@@ -604,6 +606,7 @@ namespace adm {
       node.addOptionalElement<ScreenRef>(&audioBlock, "screenRef");
       node.addOptionalElement<Normalization>(&audioBlock, "normalization");
       node.addOptionalElement<Equation>(&audioBlock, "equation");
+      node.addOptionalElement<HeadLocked>(&audioBlock, "headLocked");
       node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);
       // clang-format on
       node.addOptionalElement<Gain>(&audioBlock, "gain", &formatGain);
