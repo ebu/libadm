@@ -50,6 +50,7 @@ TEST_CASE("xml/audio_block_format_objects") {
   REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
   REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>()
               .get<DirectToReverberantRatio>() == -60);
+  REQUIRE(firstBlockFormat.get<HeadLocked>() == false);
 
   auto secondBlockFormat = *blocksIter++;
   REQUIRE(secondBlockFormat.get<ScreenRef>() == false);
@@ -57,6 +58,7 @@ TEST_CASE("xml/audio_block_format_objects") {
           false);
   REQUIRE(secondBlockFormat.get<Gain>().isDb());
   REQUIRE(secondBlockFormat.get<Gain>().asDb() == -6.0);
+  REQUIRE(secondBlockFormat.get<HeadLocked>() == true);
 
   auto thirdBlockFormat = *blocksIter++;
   REQUIRE(thirdBlockFormat.get<Gain>().isLinear());
