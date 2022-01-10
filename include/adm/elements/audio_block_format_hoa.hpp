@@ -37,6 +37,7 @@ namespace adm {
     using AudioBlockFormatHoaBase =
         HasParameters<DefaultParameter<Gain>,
                       DefaultParameter<HeadphoneVirtualise>,
+                      DefaultParameter<HeadLocked>,
                       DefaultParameter<Importance>>;
   }  // namespace detail
 

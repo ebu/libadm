@@ -59,7 +59,8 @@ namespace adm {
                       DefaultParameter<Width>, DefaultParameter<Height>,
                       DefaultParameter<Depth>, DefaultParameter<Diffuse>,
                       DefaultParameter<Gain>, DefaultParameter<Importance>,
-                      DefaultParameter<HeadphoneVirtualise>>;
+                      DefaultParameter<HeadphoneVirtualise>,
+                      DefaultParameter<HeadLocked>>;
   }  // namespace detail
 
   /**
