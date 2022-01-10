@@ -26,13 +26,18 @@ TEMPLATE_TEST_CASE("headphone parameter checks", "[parameter][template]",
                    adm::AudioBlockFormatDirectSpeakers,
                    adm::AudioBlockFormatHoa) {
   auto blockFormat = BlockInitialiser<TestType>::create();
-  // TODO HeadLocked
   SECTION("HeadphoneVirtualise") {
     HeadphoneVirtualise defaultHeadphoneVirtualise{};
     HeadphoneVirtualise customHeadphoneVirtualise{Bypass{true}};
     check_defaulted_param<HeadphoneVirtualise>(
         blockFormat, hasDefaultOf(defaultHeadphoneVirtualise),
         canBeSetTo(customHeadphoneVirtualise));
+  }
+
+  SECTION("headLocked") {
+    check_defaulted_param<HeadLocked>(blockFormat,
+                                      hasDefaultOf(HeadLocked{false}),
+                                      canBeSetTo(HeadLocked{true}));
   }
 }
 
