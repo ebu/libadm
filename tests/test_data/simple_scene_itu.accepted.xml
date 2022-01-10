@@ -11,6 +11,7 @@
 			<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
 			<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
 			<gain>1.000000</gain>
+			<headLocked>0</headLocked>
 		</audioObject>
 		<audioPackFormat audioPackFormatID="AP_00031001" audioPackFormatName="MainObject" typeLabel="0003" typeDefinition="Objects">
 			<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
