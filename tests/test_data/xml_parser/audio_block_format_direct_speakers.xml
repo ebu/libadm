@@ -12,6 +12,7 @@
             <headphoneVirtualise bypass="0" DRR="60" />
             <gain>0.5</gain>
             <importance>5</importance>
+            <headLocked>1</headLocked>
           </audioBlockFormat>
         </audioChannelFormat>
       </audioFormatExtended>"

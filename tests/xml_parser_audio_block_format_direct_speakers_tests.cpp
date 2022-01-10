@@ -32,6 +32,7 @@ TEST_CASE("xml_parser/audio_block_format_direct_speakers") {
               .get<DirectToReverberantRatio>() == Approx(60));
   REQUIRE(firstBlockFormat.get<Gain>().asLinear() == 0.5);
   REQUIRE(firstBlockFormat.get<Importance>() == 5);
+  REQUIRE(firstBlockFormat.get<HeadLocked>() == true);
 }
 
 TEST_CASE("xml_parser/audio_block_format_direct_speakers_cartesian") {
