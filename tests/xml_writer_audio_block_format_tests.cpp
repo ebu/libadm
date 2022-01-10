@@ -147,6 +147,7 @@ TEST_CASE("write specified HOA block") {
                                          Normalization{"N3D"},
                                          Gain::fromLinear(0.5),
                                          Importance{5},
+                                         HeadLocked{true},
                                          Equation{"do not use equation!"}};
   channelFormat->add(blockFormat);
 
