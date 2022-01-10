@@ -435,6 +435,7 @@ namespace adm {
       setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
       setMultiElement<SpeakerPosition>(node, "position", audioBlockFormat, &parseSpeakerPosition);
       addOptionalElements<SpeakerLabel>(node, "speakerLabel", audioBlockFormat, &parseSpeakerLabel);
+      setOptionalElement<HeadLocked>(node, "headLocked", audioBlockFormat);
       setOptionalElement<HeadphoneVirtualise>(node, "headphoneVirtualise", audioBlockFormat, &parseHeadphoneVirtualise);
       // clang-format on
       setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
@@ -622,6 +623,7 @@ namespace adm {
       setOptionalElement<JumpPosition>(node, "jumpPosition", audioBlockFormat, &parseJumpPosition);
       setOptionalElement<ScreenRef>(node, "screenRef", audioBlockFormat);
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
+      setOptionalElement<HeadLocked>(node, "headLocked", audioBlockFormat);
       setOptionalElement<HeadphoneVirtualise>(node, "headphoneVirtualise", audioBlockFormat, &parseHeadphoneVirtualise);
       // clang-format on
       return audioBlockFormat;
@@ -841,6 +843,7 @@ namespace adm {
       setOptionalElement<ScreenRef>(node, "screenRef", audioBlockFormat);
       setOptionalElement<Normalization>(node, "normalization", audioBlockFormat);
       setOptionalElement<Equation>(node, "equation", audioBlockFormat);
+      setOptionalElement<HeadLocked>(node, "headLocked", audioBlockFormat);
       setOptionalElement<HeadphoneVirtualise>(node, "headphoneVirtualise", audioBlockFormat, &parseHeadphoneVirtualise);
       setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
