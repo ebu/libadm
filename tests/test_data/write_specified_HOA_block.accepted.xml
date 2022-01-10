@@ -11,6 +11,7 @@
 						<screenRef>1</screenRef>
 						<normalization>N3D</normalization>
 						<equation>do not use equation!</equation>
+						<headLocked>1</headLocked>
 						<gain>0.500000</gain>
 						<importance>5</importance>
 					</audioBlockFormat>
