@@ -23,6 +23,8 @@ namespace adm {
                                         CartesianPositionOffset>;
     template class VariantTypeParameter<OptionalParameter<PositionOffset>,
                                         SphericalPositionOffset>;
+
+    template class DefaultParameter<Mute>;
   }  // namespace detail
 
   // ---- Getter ---- //
