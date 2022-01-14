@@ -44,6 +44,9 @@ TEST_CASE("xml_parser/audio_object") {
   REQUIRE(audioObject->has<PositionOffset>() == false);
   REQUIRE(audioObject->has<SphericalPositionOffset>() == false);
   REQUIRE(audioObject->has<CartesianPositionOffset>() == false);
+
+  REQUIRE(audioObject->has<Mute>() == true);
+  REQUIRE(audioObject->get<Mute>() == true);
 }
 
 TEST_CASE("xml_parser/audio_object_duplicate_id") {
