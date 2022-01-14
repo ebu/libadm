@@ -70,6 +70,10 @@ TEST_CASE("audio_object parameter checks") {
                                       hasDefaultOf(HeadLocked{false}),
                                       canBeSetTo(HeadLocked{true}));
   }
+  SECTION("Mute") {
+    check_defaulted_param<Mute>(audioObject, hasDefaultOf(Mute{false}),
+                                canBeSetTo(Mute{true}));
+  }
 }
 
 TEST_CASE("audio_object_references") {
