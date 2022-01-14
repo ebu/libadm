@@ -7,6 +7,7 @@
 					<audioObjectLabel>label</audioObjectLabel>
 					<gain>0.500000</gain>
 					<headLocked>1</headLocked>
+					<mute>1</mute>
 				</audioObject>
 			</audioFormatExtended>
 		</format>
