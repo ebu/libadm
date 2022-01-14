@@ -66,7 +66,7 @@ TEST_CASE("write_object_attributes") {
       AudioObjectName("other parameters"), Gain::fromLinear(0.5),
       HeadLocked(true), Labels{Label("label")}, Start(std::chrono::seconds(0)),
       Duration(std::chrono::seconds(10)), Importance(5), Interact(true),
-      DisableDucking(true)));
+      DisableDucking(true), Mute(true)));
 
   std::stringstream xml;
   writeXml(xml, document);
