@@ -57,7 +57,7 @@ TEST_CASE("audio_block_format_hoa") {
     REQUIRE(blockFormat.get<Order>() == 1);
     REQUIRE(blockFormat.get<Degree>() == -2);
     REQUIRE(blockFormat.get<NfcRefDist>() == 2);
-    REQUIRE(blockFormat.get<ScreenRef>() == 1);
+    REQUIRE(blockFormat.get<ScreenRef>() == true);
     REQUIRE(blockFormat.get<Normalization>() == "SN3D");
     REQUIRE(blockFormat.get<Equation>() == "cos(A)*sin(E)");
 
