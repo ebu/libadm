@@ -60,11 +60,13 @@ TEST_CASE("write_complementary_audio_objects") {
 TEST_CASE("write_object_attributes") {
   using namespace adm;
 
-  auto audioObject = AudioObject::create(AudioObjectName("Default"));
-  audioObject->set(Gain::fromLinear(0.5));
-
   auto document = Document::create();
-  document->add(audioObject);
+  // TODO: add Dialogue
+  document->add(AudioObject::create(
+      AudioObjectName("other parameters"), Gain::fromLinear(0.5),
+      HeadLocked(true), Labels{Label("label")}, Start(std::chrono::seconds(0)),
+      Duration(std::chrono::seconds(10)), Importance(5), Interact(true),
+      DisableDucking(true)));
 
   std::stringstream xml;
   writeXml(xml, document);
