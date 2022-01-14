@@ -143,6 +143,7 @@ namespace adm {
       node.addOptionalElement<Gain>(object, "gain", &formatGain);
       node.addOptionalElement<HeadLocked>(object, "headLocked");
       node.addOptionalMultiElement<PositionOffset>(object, "positionOffset", &formatPositionOffset);
+      node.addOptionalElement<Mute>(object, "mute");
       // clang-format on
     }
 
