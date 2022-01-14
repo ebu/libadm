@@ -35,6 +35,10 @@ namespace adm {
   struct DisableDuckingTag {};
   /// @brief NamedType for the disableDucking attribute
   using DisableDucking = detail::NamedType<bool, DisableDuckingTag>;
+  /// @brief Tag for NamedType ::Mute
+  struct MuteTag {};
+  /// @brief NamedType for the mute attribute
+  using Mute = detail::NamedType<bool, MuteTag>;
 
   struct AudioComplementaryObjectGroupLabelTag {};
   using AudioComplementaryObjectGroupLabel =
@@ -57,10 +61,13 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS VariantTypeParameter<
         OptionalParameter<PositionOffset>, SphericalPositionOffset>;
 
+    extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Mute>;
+
     using AudioObjectBase =
         HasParameters<DefaultParameter<Gain>, DefaultParameter<HeadLocked>,
                       VectorParameter<Labels>,
                       VariantParameter<OptionalParameter<PositionOffset>>,
+                      DefaultParameter<Mute>,
                       VectorParameter<AudioComplementaryObjectGroupLabels>>;
   }  // namespace detail
 
