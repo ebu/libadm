@@ -215,6 +215,8 @@ namespace adm {
         setOptionalMultiElement<SphericalPositionOffset>(node, "positionOffset", audioObject, &parseSphericalPositionOffset);
       }
 
+      setOptionalElement<Mute>(node, "mute", audioObject);
+
       // clang-format on
       return audioObject;
     }
