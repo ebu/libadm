@@ -48,7 +48,7 @@ TEST_CASE("position_offset") {
     PositionOffset cartesianPositionOffset(
         CartesianPositionOffset(XOffset(1.f), YOffset(-1.f), ZOffset(0.0f)));
     PositionOffset sphericalPositionOffset(SphericalPositionOffset(
-        AzimuthOffset(30.f), ElevationOffset(45.f), DistanceOffset(-0.2)));
+        AzimuthOffset(30.f), ElevationOffset(45.f), DistanceOffset(-0.2f)));
   }
 
   SECTION("print") {
