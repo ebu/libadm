@@ -276,8 +276,7 @@ namespace adm {
     /// OptionalParameter<boost::variant<...>>, and T should be one of the
     /// types of the variant.
     template <typename VariantParam, typename T>
-    struct VariantTypeParameter : public virtual VariantParam {
-     private:
+    class VariantTypeParameter : public virtual VariantParam {
       using Variant = typename VariantParam::ParameterType;
       using Tag = typename detail::ParameterTraits<T>::tag;
       using VariantTag = typename detail::ParameterTraits<Variant>::tag;
