@@ -126,6 +126,7 @@ namespace adm {
       node.addOptionalAttribute<AudioObjectName>(object, "audioObjectName");
       node.addOptionalAttribute<Start>(object, "start");
       node.addOptionalAttribute<Duration>(object, "duration");
+      node.addOptionalAttribute<DialogueId>(object, "dialogue");
       node.addOptionalAttribute<Importance>(object, "importance");
       node.addOptionalAttribute<Interact>(object, "interact");
       node.addOptionalAttribute<DisableDucking>(object, "disableDucking");
