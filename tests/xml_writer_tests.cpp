@@ -61,12 +61,11 @@ TEST_CASE("write_object_attributes") {
   using namespace adm;
 
   auto document = Document::create();
-  // TODO: add Dialogue
   document->add(AudioObject::create(
       AudioObjectName("other parameters"), Gain::fromLinear(0.5),
       HeadLocked(true), Labels{Label("label")}, Start(std::chrono::seconds(0)),
-      Duration(std::chrono::seconds(10)), Importance(5), Interact(true),
-      DisableDucking(true), Mute(true)));
+      Duration(std::chrono::seconds(10)), Dialogue::DIALOGUE, Importance(5),
+      Interact(true), DisableDucking(true), Mute(true)));
 
   std::stringstream xml;
   writeXml(xml, document);
