@@ -58,6 +58,7 @@ AudioPackFormat
 ---------------
 
 .. doxygenclass:: adm::AudioPackFormat
+.. doxygenclass:: adm::AudioPackFormatHoa
 .. doxygenclass:: adm::AudioPackFormatId
 .. doxygentypedef:: adm::AudioPackFormatName
 .. doxygentypedef:: adm::AbsoluteDistance
