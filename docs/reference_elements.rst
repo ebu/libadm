@@ -56,6 +56,7 @@ AudioObject
 .. doxygentypedef:: adm::ZOffset
 .. doxygenclass:: adm::CartesianPositionOffset
 .. doxygentypedef:: adm::PositionOffset
+.. doxygentypedef:: adm::Mute
 
 AudioTrackUid
 -------------
