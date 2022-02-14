@@ -77,7 +77,7 @@ namespace adm {
         resolveReference(streamFormatPackFormatRef_);
         resolveReferences(streamFormatTrackFormatRefs_);
       } else {
-        throw std::runtime_error("audioFormatExtended node not found");
+        throw error::XmlParsingError("audioFormatExtended node not found");
       }
       return document_;
     }  // namespace xml
@@ -724,7 +724,7 @@ namespace adm {
         return ContentKind(
             parseAttribute<MixedContentKind>(node, "mixedContentKind"));
       } else {
-        throw std::runtime_error("unknown dialogue id");
+        throw error::XmlParsingError("unknown dialogue id", getDocumentLine(node));
       }
     }
 
