@@ -47,6 +47,15 @@ AudioObject
 .. doxygenclass:: adm::PositionInteractionRange
 .. doxygentypedef:: adm::AudioComplementaryObjectGroupLabel
 .. doxygentypedef:: adm::AudioComplementaryObjectGroupLabels
+.. doxygentypedef:: adm::AzimuthOffset
+.. doxygentypedef:: adm::ElevationOffset
+.. doxygentypedef:: adm::DistanceOffset
+.. doxygenclass:: adm::SphericalPositionOffset
+.. doxygentypedef:: adm::XOffset
+.. doxygentypedef:: adm::YOffset
+.. doxygentypedef:: adm::ZOffset
+.. doxygenclass:: adm::CartesianPositionOffset
+.. doxygentypedef:: adm::PositionOffset
 
 AudioTrackUid
 -------------
