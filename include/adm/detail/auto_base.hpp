@@ -266,7 +266,7 @@ namespace adm {
       T value_;
       ADM_BASE_EXPORT typename T::iterator find_item(Value const& item) {
         return std::find_if(
-            value_.begin(), value_.end(), [&item, this](Value const& val) {
+            value_.begin(), value_.end(), [&item](Value const& val) {
               return ParameterCompare<Value>::compare(item, val);
             });
       }
