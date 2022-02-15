@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.13.0 (February 15, 2022)
 
 ### Added
 - Added support for Cartesian speaker positions.
