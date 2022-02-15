@@ -1,6 +1,8 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
+#include <vector>
 #include <boost/range/iterator_range_core.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 
