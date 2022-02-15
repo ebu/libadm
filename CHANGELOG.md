@@ -14,9 +14,11 @@
 - multiple incorrect references to LFE1 changed to LFE in common definitions lookup tables
 - corrected B-045 AudioTrackFormat reference in common definitions lookup table
 - fixed erroneous test acceptance data
+- replaced resource embedder with a cmake function to fix cross-compilation
 
 ### Fixed
 - updateBlockFormatDurations now throws an exception when given an audioChannelFormat with no audioBlockFormats, rather than segfaulting
+- fixed crash when parsing empty ADM documents
 
 ## 0.12.0 (April 18, 2020)
 
