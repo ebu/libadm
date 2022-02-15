@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <streambuf>
+#include <catch2/catch.hpp>
 
 class FileComparator : public Catch::MatcherBase<std::string> {
  public:
