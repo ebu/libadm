@@ -14,6 +14,7 @@
 - Added support for PositionOffset sub-element in AudioObject.
 
 ### Changed
+- Most single-argument constructors have been made explicit. For most code this should not be a problem, but it may sometimes require an extra constructor call when making elements.
 - SpeakerPosition is now a boost::variant that can be either a CartesianSpeakerPosition or a SphericalSpeakerPosition
 - The previous SpeakerPosition type has been renamed to SphericalSpeakerPosition.
 - included mono (0+1+0) to the common definitions lookup tables
