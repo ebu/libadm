@@ -30,7 +30,7 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    AudioContentId(Parameters... optionalNamedArgs);
+    explicit AudioContentId(Parameters... optionalNamedArgs);
 
     // NOLINTNEXTLINE(google-explicit-constructor)
     ADM_EXPORT AudioContentId(AudioContentIdValue);

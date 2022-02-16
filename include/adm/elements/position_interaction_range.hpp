@@ -107,7 +107,7 @@ namespace adm {
      * in random order.
      */
     template <typename... Parameters>
-    PositionInteractionRange(Parameters... optionalNamedArgs);
+    explicit PositionInteractionRange(Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template

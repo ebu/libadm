@@ -92,7 +92,7 @@ namespace adm {
 
       friend class AudioPackFormatHoaAttorney;
 
-      ADM_EXPORT AudioPackFormatHoa(AudioPackFormatName name);
+      ADM_EXPORT explicit AudioPackFormatHoa(AudioPackFormatName name);
       // ADM_EXPORT AudioPackFormatHoa(const AudioPackFormat &) = default;
       // ADM_EXPORT AudioPackFormatHoa(AudioPackFormat &&) = default;
 

@@ -39,7 +39,7 @@ namespace adm {
     typedef HeadphoneVirtualiseTag tag;
 
     template <typename... Parameters>
-    HeadphoneVirtualise(Parameters... optionalNamedArgs);
+    explicit HeadphoneVirtualise(Parameters... optionalNamedArgs);
 
     using detail::HeadphoneVirtualiseBase::get;
     using detail::HeadphoneVirtualiseBase::has;

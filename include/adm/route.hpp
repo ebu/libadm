@@ -76,7 +76,7 @@ namespace adm {
 
    private:
     struct AddVisitor : public boost::static_visitor<> {
-      AddVisitor(Route& admRoute) : admRoute_(admRoute) {}
+      explicit AddVisitor(Route& admRoute) : admRoute_(admRoute) {}
 
       template <typename Element>
       void operator()(std::shared_ptr<Element> element) const {

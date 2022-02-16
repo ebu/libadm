@@ -47,7 +47,7 @@ namespace adm {
   // the future, and this shows how it will typically be used.
   struct TestElement : private detail::Base {
     template <typename... Parameters>
-    TestElement(Parameters... namedArgs) {
+    explicit TestElement(Parameters... namedArgs) {
       detail::setNamedOptionHelper(this,
                                    std::forward<Parameters>(namedArgs)...);
     }

@@ -52,7 +52,7 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    ScreenEdgeLock(Parameters... optionalNamedArgs);
+    explicit ScreenEdgeLock(Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template

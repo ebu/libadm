@@ -68,12 +68,13 @@ namespace adm {
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
     class XmlParser {
      public:
-      XmlParser(const std::string& filename,
-                ParserOptions options = ParserOptions::none,
-                std::shared_ptr<Document> destDocument = Document::create());
-      XmlParser(std::istream& stream,
-                ParserOptions options = ParserOptions::none,
-                std::shared_ptr<Document> destDocument = Document::create());
+      explicit XmlParser(
+          const std::string& filename,
+          ParserOptions options = ParserOptions::none,
+          std::shared_ptr<Document> destDocument = Document::create());
+      explicit XmlParser(
+          std::istream& stream, ParserOptions options = ParserOptions::none,
+          std::shared_ptr<Document> destDocument = Document::create());
 
       std::shared_ptr<Document> parse();
 
