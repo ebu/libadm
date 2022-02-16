@@ -29,3 +29,10 @@ TEST_CASE("Gain Db -inf") {
   Gain g = Gain::fromDb(-std::numeric_limits<double>::infinity());
   CHECK(g.asLinear() == 0.0);
 }
+
+TEST_CASE("Gain NamedType compatibility") {
+  Gain g(1.5);
+  CHECK(g.isLinear());
+  CHECK(g.get() == 1.5);
+  CHECK(*g == 1.5);
+}

@@ -12,6 +12,9 @@ namespace adm {
    public:
     typedef GainTag tag;
 
+    /// alias for Gain::fromLinear for compatibility with existing code
+    explicit Gain(double linearGain) : _gain(linearGain), _isDb(false) {}
+
     /// Make a linear Gain.
     static Gain fromLinear(double linearGain) {
       return Gain{linearGain, false};
@@ -40,6 +43,11 @@ namespace adm {
     bool isLinear() const { return !_isDb; }
     /// Is this gain stored in dB?
     bool isDb() const { return _isDb; }
+
+    /// alias for asLinear for compatibility with existing code
+    double get() const { return asLinear(); }
+    /// alias for asLinear for compatibility with existing code
+    double operator*() const { return asLinear(); }
 
    private:
     Gain(double gain, bool isDb) : _gain(gain), _isDb(isDb) {}
