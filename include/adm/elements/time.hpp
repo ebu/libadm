@@ -46,8 +46,11 @@ namespace adm {
   /// FractionalTime
   class Time {
    public:
+    // non-explicit, as this should act like a variant
     template <typename Rep, typename Period>
+    // NOLINTNEXTLINE(google-explicit-constructor)
     Time(const std::chrono::duration<Rep, Period>& time) : time(time) {}
+    // NOLINTNEXTLINE(google-explicit-constructor)
     Time(const FractionalTime& time) : time(time) {}
 
     /// convert to nanoseconds, rounding down
