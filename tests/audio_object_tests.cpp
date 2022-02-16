@@ -48,7 +48,7 @@ TEST_CASE("audio_object parameter checks") {
   }
   SECTION("AudioObjectInteraction") {
     check_optional_param<AudioObjectInteraction>(
-        audioObject, canBeSetTo(OnOffInteract(true)));
+        audioObject, canBeSetTo(AudioObjectInteraction(OnOffInteract(true))));
   }
   SECTION("Labels") {
     check_vector_param<Labels>(audioObject,
