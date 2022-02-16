@@ -13,6 +13,7 @@
 - Added support for PositionOffset sub-element in AudioObject.
 
 ### Changed
+- Most single-argument constructors have been made explicit. For most code this should not be a problem, but it may sometimes require an extra constructor call when making elements.
 - updated required C++ standard from C++11 to C++14
 - implemented fractional time format from BS.2076-2
 - audioProgramme and audioContent may now have multiple loudnessMetadata elements, as per BS.2076-2
