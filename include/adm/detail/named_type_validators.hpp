@@ -7,16 +7,19 @@
 namespace adm {
 
   struct OutOfRangeError : public std::runtime_error {
-    OutOfRangeError(const char* msg) : std::runtime_error(msg) {}
-    OutOfRangeError(const std::string& msg) : std::runtime_error(msg) {}
+    explicit OutOfRangeError(const char* msg) : std::runtime_error(msg) {}
+    explicit OutOfRangeError(const std::string& msg)
+        : std::runtime_error(msg) {}
   };
   struct InvalidValueError : public std::runtime_error {
-    InvalidValueError(const char* msg) : std::runtime_error(msg) {}
-    InvalidValueError(const std::string& msg) : std::runtime_error(msg) {}
+    explicit InvalidValueError(const char* msg) : std::runtime_error(msg) {}
+    explicit InvalidValueError(const std::string& msg)
+        : std::runtime_error(msg) {}
   };
   struct InvalidStringError : public std::runtime_error {
-    InvalidStringError(const char* msg) : std::runtime_error(msg) {}
-    InvalidStringError(const std::string& msg) : std::runtime_error(msg) {}
+    explicit InvalidStringError(const char* msg) : std::runtime_error(msg) {}
+    explicit InvalidStringError(const std::string& msg)
+        : std::runtime_error(msg) {}
   };
 
   namespace detail {

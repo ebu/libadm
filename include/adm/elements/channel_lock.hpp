@@ -39,7 +39,7 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    ChannelLock(Parameters... optionalNamedArgs);
+    explicit ChannelLock(Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template

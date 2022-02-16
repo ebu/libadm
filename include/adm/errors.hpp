@@ -48,9 +48,9 @@ namespace adm {
 
     class ADM_EXPORT XmlParsingError : public AdmException {
      public:
-      XmlParsingError(const std::string& message,
-                      boost::optional<int> line = boost::none);
-      XmlParsingError(int line);
+      explicit XmlParsingError(const std::string& message,
+                               boost::optional<int> line = boost::none);
+      explicit XmlParsingError(int line);
 
      private:
       std::string formatMessage(const std::string& message,
@@ -69,7 +69,7 @@ namespace adm {
 
     class ADM_EXPORT XmlParsingUnresolvedReference : public XmlParsingError {
      public:
-      XmlParsingUnresolvedReference(const std::string& id);
+      explicit XmlParsingUnresolvedReference(const std::string& id);
 
      private:
       std::string formatMessage(const std::string& id);
