@@ -7,7 +7,7 @@ namespace adm {
 
     class XmlWriter {
      public:
-      XmlWriter(WriterOptions options = WriterOptions::none);
+      explicit XmlWriter(WriterOptions options = WriterOptions::none);
 
       std::ostream& write(std::shared_ptr<const Document> document,
                           std::ostream& stream);

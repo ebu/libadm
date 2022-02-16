@@ -3,7 +3,7 @@
 namespace adm {
 
   struct AddElementVisitor : public boost::static_visitor<> {
-    AddElementVisitor(Path* path) : path_(path) {}
+    explicit AddElementVisitor(Path* path) : path_(path) {}
 
     template <typename T>
     void operator()(T v) const {
@@ -15,7 +15,7 @@ namespace adm {
   };
 
   struct AddIdVisitor : public boost::static_visitor<> {
-    AddIdVisitor(Path* path) : path_(path) {}
+    explicit AddIdVisitor(Path* path) : path_(path) {}
 
     template <typename T>
     void operator()(T v) const {

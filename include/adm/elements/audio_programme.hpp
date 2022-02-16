@@ -216,7 +216,7 @@ namespace adm {
    private:
     friend class AudioProgrammeAttorney;
 
-    ADM_EXPORT AudioProgramme(AudioProgrammeName name);
+    ADM_EXPORT explicit AudioProgramme(AudioProgrammeName name);
     ADM_EXPORT AudioProgramme(const AudioProgramme &) = default;
     ADM_EXPORT AudioProgramme(AudioProgramme &&) = default;
 

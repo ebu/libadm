@@ -128,11 +128,11 @@ namespace adm {
     typedef AudioBlockFormatId id_type;
 
     template <typename... Parameters>
-    AudioBlockFormatObjects(CartesianPosition position,
-                            Parameters... optionalNamedArgs);
+    explicit AudioBlockFormatObjects(CartesianPosition position,
+                                     Parameters... optionalNamedArgs);
     template <typename... Parameters>
-    AudioBlockFormatObjects(SphericalPosition position,
-                            Parameters... optionalNamedArgs);
+    explicit AudioBlockFormatObjects(SphericalPosition position,
+                                     Parameters... optionalNamedArgs);
     ADM_EXPORT AudioBlockFormatObjects(const AudioBlockFormatObjects&) =
         default;
     ADM_EXPORT AudioBlockFormatObjects(AudioBlockFormatObjects&&) = default;

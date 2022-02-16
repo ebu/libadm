@@ -42,8 +42,8 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    AudioObjectInteraction(OnOffInteract onOffInteract,
-                           Parameters... optionalNamedArgs);
+    explicit AudioObjectInteraction(OnOffInteract onOffInteract,
+                                    Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template

@@ -15,7 +15,7 @@ namespace adm {
   template <typename C>
   class AddTo : public boost::static_visitor<> {
    public:
-    AddTo(C& target) : target_(target) {}
+    explicit AddTo(C& target) : target_(target) {}
 
     template <typename T>
     void operator()(const T& element) const {
@@ -100,7 +100,7 @@ namespace adm {
   template <typename Element, typename Parameter>
   class ParameterEqualTo {
    public:
-    ParameterEqualTo(const Element& element)
+    explicit ParameterEqualTo(const Element& element)
         : parameter_(element.template get<Parameter>()){};
 
     inline bool operator()(const Element& other) const {

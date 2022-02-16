@@ -52,7 +52,7 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    Frequency(Parameters... optionalNamedArgs);
+    explicit Frequency(Parameters... optionalNamedArgs);
 
     /**
      * @brief ADM parameter getter template
