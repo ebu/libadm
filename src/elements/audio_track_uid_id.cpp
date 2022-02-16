@@ -6,6 +6,10 @@
 
 namespace adm {
 
+  // ---- Constructor ---- //
+  AudioTrackUidId::AudioTrackUidId(AudioTrackUidIdValue value)
+      : value_(value) {}
+
   // ---- Defaults ---- //
   const AudioTrackUidIdValue AudioTrackUidId::valueDefault_ =
       AudioTrackUidIdValue(0);

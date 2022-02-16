@@ -32,6 +32,9 @@ namespace adm {
     template <typename... Parameters>
     AudioObjectId(Parameters... optionalNamedArgs);
 
+    // NOLINTNEXTLINE(google-explicit-constructor)
+    ADM_EXPORT AudioObjectId(AudioObjectIdValue value);
+
     /**
      * @brief ADM parameter getter template
      *

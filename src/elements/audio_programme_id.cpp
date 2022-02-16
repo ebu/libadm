@@ -6,6 +6,10 @@
 
 namespace adm {
 
+  // ---- Constructor ---- //
+  AudioProgrammeId::AudioProgrammeId(AudioProgrammeIdValue value)
+      : value_(value) {}
+
   // ---- Defaults ---- //
   const AudioProgrammeIdValue AudioProgrammeId::valueDefault_ =
       AudioProgrammeIdValue(0);
