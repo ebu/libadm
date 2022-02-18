@@ -63,7 +63,7 @@ namespace adm {
        * @returns NodePtr to first element or a nullptr if no element could
        * not be found.
        */
-      NodePtr findElement(NodePtr node, const std::string& name) {
+      inline NodePtr findElement(NodePtr node, const std::string& name) {
         for (NodePtr elementNode = node->first_node(); elementNode;
              elementNode = elementNode->next_sibling()) {
           if (std::string(elementNode->name()) == name) {
@@ -79,7 +79,8 @@ namespace adm {
        * @returns a vector of NodePtr or an empty vector if no element could
        * not be found.
        */
-      std::vector<NodePtr> findElements(NodePtr node, const std::string& name) {
+      inline std::vector<NodePtr> findElements(NodePtr node,
+                                               const std::string& name) {
         std::vector<NodePtr> elements;
         for (NodePtr elementNode = node->first_node(); elementNode;
              elementNode = elementNode->next_sibling()) {
@@ -342,7 +343,7 @@ namespace adm {
       }
     }
 
-    FormatDescriptor checkFormat(
+    inline FormatDescriptor checkFormat(
         boost::optional<FormatDescriptor> formatLabel,
         boost::optional<FormatDescriptor> formatDefinition) {
       if (formatLabel != boost::none && formatDefinition != boost::none) {
