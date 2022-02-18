@@ -74,7 +74,7 @@ namespace adm {
 
       bool hasUnresolvedReferences();
 
-     private:
+     protected:
       virtual std::shared_ptr<AudioProgramme> parseAudioProgramme(NodePtr node);
       virtual std::shared_ptr<AudioContent> parseAudioContent(NodePtr node);
       virtual std::shared_ptr<AudioObject> parseAudioObject(NodePtr node);
