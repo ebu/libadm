@@ -46,21 +46,6 @@ namespace adm {
 
     }  // namespace detail
 
-    void formatAudioProgramme(
-        XmlNode &node, const std::shared_ptr<const AudioProgramme> programme) {
-      // clang-format off
-      node.addAttribute<AudioProgrammeId>(programme, "audioProgrammeID");
-      node.addOptionalAttribute<AudioProgrammeName>(programme, "audioProgrammeName");
-      node.addOptionalAttribute<AudioProgrammeLanguage>(programme, "audioProgrammeLanguage");
-      node.addOptionalAttribute<Start>(programme, "start");
-      node.addOptionalAttribute<End>(programme, "end");
-      node.addOptionalAttribute<MaxDuckingDepth>(programme, "maxDuckingDepth");
-      node.addReferences<AudioContent, AudioContentId>(programme, "audioContentIDRef");
-      node.addVectorElements<LoudnessMetadatas>(programme, "loudnessMetadata", &formatLoudnessMetadata);
-      node.addVectorElements<Labels>(programme, "audioProgrammeLabel", &formatLabel);
-      // clang-format on
-    }
-
     void formatLoudnessMetadata(XmlNode &node,
                                 const LoudnessMetadata loudnessMetadata) {
       node.addOptionalAttribute<LoudnessMethod>(&loudnessMetadata,
