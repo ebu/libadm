@@ -44,13 +44,10 @@ namespace adm {
     AudioProgrammeReferenceScreen parseAudioProgrammeReferenceScreen(
         NodePtr node);
     Label parseLabel(NodePtr node);
-    AudioBlockFormatObjects parseAudioBlockFormatObjects(NodePtr node);
     Gain parseGain(NodePtr node);
     ChannelLock parseChannelLock(NodePtr node);
     ObjectDivergence parseObjectDivergence(NodePtr node);
     JumpPosition parseJumpPosition(NodePtr node);
-    AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(
-        NodePtr node);
     SphericalSpeakerPosition parseSphericalSpeakerPosition(
         const std::vector<std::pair<NodePtr, SphericalCoordinateValue>>&
             sphericalCoordinates);
@@ -61,8 +58,6 @@ namespace adm {
     SpeakerPosition parseSpeakerPosition(std::vector<NodePtr> node);
     SpeakerLabel parseSpeakerLabel(NodePtr node);
     HeadphoneVirtualise parseHeadphoneVirtualise(NodePtr node);
-    AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node);
-    AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node);
 
     NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr root);
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
@@ -91,6 +86,14 @@ namespace adm {
           NodePtr node);
       virtual std::shared_ptr<AudioTrackUid> parseAudioTrackUid(NodePtr node);
       virtual std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(
+          NodePtr node);
+
+      virtual AudioBlockFormatObjects parseAudioBlockFormatObjects(
+          NodePtr node);
+      virtual AudioBlockFormatDirectSpeakers
+      parseAudioBlockFormatDirectSpeakers(NodePtr node);
+      virtual AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node);
+      virtual AudioBlockFormatBinaural parseAudioBlockFormatBinaural(
           NodePtr node);
 
      private:

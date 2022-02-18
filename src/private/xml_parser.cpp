@@ -446,8 +446,8 @@ namespace adm {
       return audioTrackUid;
     }
 
-    AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(
-        NodePtr node) {
+    AudioBlockFormatDirectSpeakers
+    XmlParser::parseAudioBlockFormatDirectSpeakers(NodePtr node) {
       AudioBlockFormatDirectSpeakers audioBlockFormat;
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
@@ -616,7 +616,8 @@ namespace adm {
       return headphoneVirtualise;
     }
 
-    AudioBlockFormatObjects parseAudioBlockFormatObjects(NodePtr node) {
+    AudioBlockFormatObjects XmlParser::parseAudioBlockFormatObjects(
+        NodePtr node) {
       AudioBlockFormatObjects audioBlockFormat{SphericalPosition()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
@@ -852,7 +853,7 @@ namespace adm {
       return AudioProgrammeReferenceScreen();
     }
 
-    AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node) {
+    AudioBlockFormatHoa XmlParser::parseAudioBlockFormatHoa(NodePtr node) {
       AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
@@ -872,7 +873,8 @@ namespace adm {
       return audioBlockFormat;
     }
 
-    AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node) {
+    AudioBlockFormatBinaural XmlParser::parseAudioBlockFormatBinaural(
+        NodePtr node) {
       AudioBlockFormatBinaural audioBlockFormat;
 
       setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat,
