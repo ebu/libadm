@@ -68,15 +68,14 @@ namespace adm {
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
     class XmlParser {
      public:
-      explicit XmlParser(
-          const std::string& filename,
-          ParserOptions options = ParserOptions::none,
-          std::shared_ptr<Document> destDocument = Document::create());
-      explicit XmlParser(
-          std::istream& stream, ParserOptions options = ParserOptions::none,
-          std::shared_ptr<Document> destDocument = Document::create());
+      explicit XmlParser(std::shared_ptr<Document> destDocument,
+                         ParserOptions options = ParserOptions::none);
 
-      std::shared_ptr<Document> parse();
+      void parseFile(const std::string& filename);
+      void parseStream(std::istream& stream);
+      void parseString(const std::string& xmlString);
+      void parseXmlFile(rapidxml::file<>& xmlFile);
+      void parseXml(const rapidxml::xml_document<>& xmlDocument);
 
       bool hasUnresolvedReferences();
 
@@ -90,7 +89,6 @@ namespace adm {
       std::shared_ptr<AudioTrackUid> parseAudioTrackUid(NodePtr node);
       std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(NodePtr node);
 
-      rapidxml::file<> xmlFile_;
       ParserOptions options_;
       std::shared_ptr<Document> document_;
 

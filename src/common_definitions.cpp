@@ -158,9 +158,14 @@ namespace adm {
   std::shared_ptr<Document> getCommonDefinitions() {
     std::stringstream commonDefinitions;
     getEmbeddedFile("common_definitions.xml", commonDefinitions);
-    xml::XmlParser parser(commonDefinitions,
+
+    std::shared_ptr<Document> destDocument = Document::create();
+
+    xml::XmlParser parser(destDocument,
                           xml::ParserOptions::recursive_node_search);
-    return parser.parse();
+    parser.parseStream(commonDefinitions);
+
+    return destDocument;
   }
 
   void addCommonDefinitionsTo(std::shared_ptr<Document> document) {

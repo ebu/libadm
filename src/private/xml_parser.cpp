@@ -17,20 +17,37 @@ namespace adm {
       return static_cast<bool>(options & flag);
     }
 
-    XmlParser::XmlParser(const std::string& filename, ParserOptions options,
-                         std::shared_ptr<Document> destDocument)
-        : xmlFile_(filename.c_str()),
-          options_(options),
-          document_(destDocument) {}
+    XmlParser::XmlParser(std::shared_ptr<Document> destDocument,
+                         ParserOptions options)
+        : options_(options), document_(std::move(destDocument)) {}
 
-    XmlParser::XmlParser(std::istream& stream, ParserOptions options,
-                         std::shared_ptr<Document> destDocument)
-        : xmlFile_(stream), options_(options), document_(destDocument) {}
+    void XmlParser::parseFile(const std::string& filename) {
+      rapidxml::file<> xmlFile(filename.c_str());
+      parseXmlFile(xmlFile);
+    }
 
-    std::shared_ptr<Document> XmlParser::parse() {
+    void XmlParser::parseStream(std::istream& stream) {
+      rapidxml::file<> xmlFile(stream);
+      parseXmlFile(xmlFile);
+    }
+
+    void XmlParser::parseString(const std::string& xmlString) {
+      // null-terminated copy to be modified by rapidxml (so can't use c_str)
+      std::vector<char> vec(xmlString.begin(), xmlString.end());
+      vec.push_back('\0');
+
       rapidxml::xml_document<> xmlDocument;
-      xmlDocument.parse<0>(xmlFile_.data());
+      xmlDocument.parse<0>(vec.data());
+      parseXml(xmlDocument);
+    }
 
+    void XmlParser::parseXmlFile(rapidxml::file<>& xmlFile) {
+      rapidxml::xml_document<> xmlDocument;
+      xmlDocument.parse<0>(xmlFile.data());
+      parseXml(xmlDocument);
+    }
+
+    void XmlParser::parseXml(const rapidxml::xml_document<>& xmlDocument) {
       if (!xmlDocument.first_node())
         throw error::XmlParsingError("xml document is empty");
 
@@ -80,7 +97,6 @@ namespace adm {
       } else {
         throw error::XmlParsingError("audioFormatExtended node not found");
       }
-      return document_;
     }  // namespace xml
 
     /**
