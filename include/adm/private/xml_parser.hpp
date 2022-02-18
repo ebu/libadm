@@ -80,15 +80,20 @@ namespace adm {
       bool hasUnresolvedReferences();
 
      private:
-      std::shared_ptr<AudioProgramme> parseAudioProgramme(NodePtr node);
-      std::shared_ptr<AudioContent> parseAudioContent(NodePtr node);
-      std::shared_ptr<AudioObject> parseAudioObject(NodePtr node);
-      std::shared_ptr<AudioTrackFormat> parseAudioTrackFormat(NodePtr node);
-      std::shared_ptr<AudioStreamFormat> parseAudioStreamFormat(NodePtr node);
-      std::shared_ptr<AudioPackFormat> parseAudioPackFormat(NodePtr node);
-      std::shared_ptr<AudioTrackUid> parseAudioTrackUid(NodePtr node);
-      std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(NodePtr node);
+      virtual std::shared_ptr<AudioProgramme> parseAudioProgramme(NodePtr node);
+      virtual std::shared_ptr<AudioContent> parseAudioContent(NodePtr node);
+      virtual std::shared_ptr<AudioObject> parseAudioObject(NodePtr node);
+      virtual std::shared_ptr<AudioTrackFormat> parseAudioTrackFormat(
+          NodePtr node);
+      virtual std::shared_ptr<AudioStreamFormat> parseAudioStreamFormat(
+          NodePtr node);
+      virtual std::shared_ptr<AudioPackFormat> parseAudioPackFormat(
+          NodePtr node);
+      virtual std::shared_ptr<AudioTrackUid> parseAudioTrackUid(NodePtr node);
+      virtual std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(
+          NodePtr node);
 
+     private:
       ParserOptions options_;
       std::shared_ptr<Document> document_;
 
