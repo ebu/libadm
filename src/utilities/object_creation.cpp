@@ -89,9 +89,7 @@ namespace adm {
       }
       holder.audioObject->addReference(packFormat);
       if (trackFormatIds.size() != speakerLabels.size()) {
-          std::stringstream ss;
-          ss << "Sizes of trackFormatIds and speakerLabels arguments do not match.";
-          throw error::AdmException(ss.str());
+          throw error::AdmException("Sizes of trackFormatIds and speakerLabels arguments do not match.");
       }
       for (size_t i = 0; i < trackFormatIds.size(); i++) {
           auto track =
