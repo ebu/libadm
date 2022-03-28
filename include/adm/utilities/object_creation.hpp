@@ -106,10 +106,10 @@ namespace adm {
    * @param speakerLabels Labels of all the speakers in the layout.
    */
   ADM_EXPORT SimpleCommonDefinitionsObjectHolder
-  addSimpleCommonDefinitionsObjectTo(
+  addTailoredCommonDefinitionsObjectTo(
       std::shared_ptr<Document> document, const std::string& name,
-      const std::string& packFormatId,
-      const std::vector<std::string>& trackFormatIds,
+      const adm::AudioPackFormatId packFormatId,
+      const std::vector<adm::AudioTrackFormatId>& trackFormatIds,
       const std::vector<std::string>& speakerLabels);
 
 }  // namespace adm

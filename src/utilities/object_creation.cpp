@@ -72,18 +72,17 @@ namespace adm {
     return holder;
   }
 
-  SimpleCommonDefinitionsObjectHolder addSimpleCommonDefinitionsObjectTo(
+  SimpleCommonDefinitionsObjectHolder addTailoredCommonDefinitionsObjectTo(
       std::shared_ptr<Document> document, const std::string& name,
-      const std::string& packFormatId,
-      const std::vector<std::string>& trackFormatIds,
+      const adm::AudioPackFormatId packFormatId,
+      const std::vector<adm::AudioTrackFormatId>& trackFormatIds,
       const std::vector<std::string>& speakerLabels) {
     SimpleCommonDefinitionsObjectHolder holder;
     holder.audioObject = AudioObject::create(AudioObjectName(name));
-    auto packFormat =
-        document->lookup(adm::parseAudioPackFormatId(packFormatId));
+    auto packFormat = document->lookup(packFormatId);
     if (!packFormat) {
       std::stringstream ss;
-      ss << "AudioPackFormatId \"" << packFormatId
+      ss << "AudioPackFormatId \"" << adm::formatId(packFormatId)
          << "\" not found. Are the common definitions added to the document?";
       throw error::AdmException(ss.str());
     }
@@ -93,11 +92,10 @@ namespace adm {
           "Sizes of trackFormatIds and speakerLabels arguments do not match.");
     }
     for (size_t i = 0; i < trackFormatIds.size(); i++) {
-      auto track =
-          document->lookup(adm::parseAudioTrackFormatId(trackFormatIds.at(i)));
+      auto track = document->lookup(trackFormatIds.at(i));
       if (!track) {
         std::stringstream ss;
-        ss << "AudioTrackFormatId \"" << trackFormatIds.at(i)
+        ss << "AudioTrackFormatId \"" << adm::formatId(trackFormatIds.at(i))
            << "\" not found. Id might be invalid.";
         throw error::AdmException(ss.str());
       }
