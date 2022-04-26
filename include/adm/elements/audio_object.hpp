@@ -11,7 +11,7 @@
 #include "adm/elements/dialogue.hpp"
 #include "adm/elements/importance.hpp"
 #include "adm/elements/label.hpp"
-#include "adm/elements/private/common_parameters.hpp"
+#include "adm/elements/common_parameters.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
 #include "adm/detail/auto_base.hpp"

@@ -1,4 +1,4 @@
-#include "adm/elements/private/common_parameters.hpp"
+#include "adm/elements/common_parameters.hpp"
 
 namespace adm {
   namespace detail {

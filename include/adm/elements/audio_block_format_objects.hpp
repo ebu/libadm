@@ -8,7 +8,7 @@
 #include "adm/elements/object_divergence.hpp"
 #include "adm/elements/position.hpp"
 #include "adm/elements/position_offset.hpp"
-#include "adm/elements/private/common_parameters.hpp"
+#include "adm/elements/common_parameters.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_option_helper.hpp"
