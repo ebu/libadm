@@ -107,7 +107,7 @@ if (${CMAKE_VERSION} VERSION_LESS "3.8.0")
   # this for CMake < 3.8
   target_compile_features(adm PUBLIC cxx_generic_lambdas)
 else()
-  target_compile_features(adm PUBLIC cxx_std_14)
+  target_compile_features(adm PUBLIC cxx_std_17)
 endif()
 set_target_properties(adm PROPERTIES CXX_EXTENSIONS OFF)
 
