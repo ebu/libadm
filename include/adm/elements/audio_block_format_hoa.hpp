@@ -57,9 +57,9 @@ namespace adm {
    * +---------------------+------------------------------+----------------------------+
    * | duration            | :type:`Duration`             | :class:`OptionalParameter` |
    * +---------------------+------------------------------+----------------------------+
-   * | order               | :type:`Order`                | :class:`OptionalParameter` |
+   * | order               | :type:`Order`                | :class:`RequiredParameter` |
    * +---------------------+------------------------------+----------------------------+
-   * | degree              | :type:`Degree`               | :class:`OptionalParameter` |
+   * | degree              | :type:`Degree`               | :class:`RequiredParameter` |
    * +---------------------+------------------------------+----------------------------+
    * | normalization       | :type:`Normalization`        | :class:`DefaultParameter`  |
    * +---------------------+------------------------------+----------------------------+
@@ -78,9 +78,6 @@ namespace adm {
    * | equation            | :type:`Equation`             | :class:`OptionalParameter` |
    * +---------------------+------------------------------+----------------------------+
    * \endrst
-   *
-   * Note that while order and degree are technically optional, in practice
-   * they must always be specified.
    */
   class AudioBlockFormatHoa : private detail::AudioBlockFormatHoaBase {
    public:
