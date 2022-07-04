@@ -23,6 +23,9 @@
 - Install path for .dll on Windows changed to binary dir 
 - .pdb files now installed for Windows Debug and RelWithDebInfo configurations
 
+### Fixed
+- `has` for `NfcRefDist`, `ScreenRef` and `Normalization` in HOA audioBlockFormat and audioPackFormat now always return true, as these parameters have defaults.
+
 ## 0.13.0 (February 15, 2022)
 
 ### Added
