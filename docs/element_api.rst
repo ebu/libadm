@@ -40,9 +40,10 @@ The set of methods which may be defined for each parameter of type
 
    .. cpp:function:: template<typename Parameter> bool isDefault<Parameter>()
 
-      Returns true if the parameter has a default and has been set; this is useful
-      to see if the default value was specified explicitly in the ADM XML, and is
-      used to control whether default values are written out in XML.
+      Returns true if the parameter has a default and has not been set; this is
+      useful to see if the default value was specified explicitly in the ADM
+      XML (in which case this would return false), and is used to control
+      whether default values are written out in XML.
 
    .. cpp:function:: bool add(Parameter parameter)
 
