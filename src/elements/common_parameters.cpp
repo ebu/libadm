@@ -14,5 +14,7 @@ namespace adm {
     template class DefaultParameter<HeadphoneVirtualise>;
 
     template class DefaultParameter<HeadLocked>;
+
+    template class DefaultParameter<ScreenRef>;
   }  // namespace detail
 }  // namespace adm

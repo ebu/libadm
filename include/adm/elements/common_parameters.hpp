@@ -5,6 +5,7 @@
 #include "adm/elements/headphone_virtualise.hpp"
 #include "adm/elements/head_locked.hpp"
 #include "adm/elements/importance.hpp"
+#include "adm/elements/screen_ref.hpp"
 #include "adm/elements/time.hpp"
 
 namespace adm {
@@ -29,6 +30,11 @@ namespace adm {
       return HeadLocked{false};
     }
 
+    template <>
+    inline ScreenRef getDefault<ScreenRef>() {
+      return ScreenRef{false};
+    }
+
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         RequiredParameter<AudioBlockFormatId>;
 
@@ -46,5 +52,8 @@ namespace adm {
 
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         DefaultParameter<HeadLocked>;
+
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        DefaultParameter<ScreenRef>;
   }  // namespace detail
 }  // namespace adm
