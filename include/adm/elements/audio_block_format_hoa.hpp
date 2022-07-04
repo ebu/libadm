@@ -3,15 +3,11 @@
 
 #include <boost/optional.hpp>
 #include "adm/elements/time.hpp"
-#include "adm/elements/audio_block_format_id.hpp"
 #include "adm/elements/common_parameters.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
-#include "adm/elements/screen_ref.hpp"
-#include "adm/elements/nfc_ref_dist.hpp"
-#include "adm/elements/normalization.hpp"
 #include "adm/detail/auto_base.hpp"
 
 namespace adm {
@@ -34,11 +30,25 @@ namespace adm {
   using Equation = detail::NamedType<std::string, EquationTag>;
 
   namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+      OptionalParameter<Order>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+      OptionalParameter<Degree>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+      OptionalParameter<Equation>;
+
     using AudioBlockFormatHoaBase =
-        HasParameters<DefaultParameter<Gain>,
-                      DefaultParameter<HeadphoneVirtualise>,
+        HasParameters<RequiredParameter<AudioBlockFormatId>,
+                      DefaultParameter<Rtime>, OptionalParameter<Duration>,
+                      OptionalParameter<Order>, OptionalParameter<Degree>,
+                      DefaultParameter<Normalization>,
+                      DefaultParameter<NfcRefDist>,
+                      DefaultParameter<Gain>,
+                      DefaultParameter<Importance>,
                       DefaultParameter<HeadLocked>,
-                      DefaultParameter<Importance>>;
+                      DefaultParameter<HeadphoneVirtualise>,
+                      DefaultParameter<ScreenRef>,
+                      OptionalParameter<Equation>>;
   }  // namespace detail
 
   /**
@@ -123,25 +133,6 @@ namespace adm {
     template <typename Parameter>
     bool isDefault() const;
 
-    /// @brief AudioBlockFormatId setter
-    ADM_EXPORT void set(AudioBlockFormatId id);
-    /// @brief Rtime setter
-    ADM_EXPORT void set(Rtime rtime);
-    /// @brief Duration setter
-    ADM_EXPORT void set(Duration duration);
-    /// @brief Order setter
-    ADM_EXPORT void set(Order order);
-    /// @brief Degree setter
-    ADM_EXPORT void set(Degree degree);
-    /// @brief NfcRefDist setter
-    ADM_EXPORT void set(NfcRefDist dist);
-    /// @brief ScreenRef setter
-    ADM_EXPORT void set(ScreenRef screenRef);
-    /// @brief Normalization setter
-    ADM_EXPORT void set(Normalization normalization);
-    /// @brief Equation setter
-    ADM_EXPORT void set(Equation equation);
-
     using detail::AudioBlockFormatHoaBase::set;
 
     /**
@@ -160,53 +151,10 @@ namespace adm {
     using detail::AudioBlockFormatHoaBase::isDefault;
     using detail::AudioBlockFormatHoaBase::unset;
 
-    ADM_EXPORT AudioBlockFormatId
-        get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
-    ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
-    ADM_EXPORT Order get(detail::ParameterTraits<Order>::tag) const;
-    ADM_EXPORT Degree get(detail::ParameterTraits<Degree>::tag) const;
-    ADM_EXPORT NfcRefDist get(detail::ParameterTraits<NfcRefDist>::tag) const;
-    ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT Normalization
-        get(detail::ParameterTraits<Normalization>::tag) const;
-    ADM_EXPORT Equation get(detail::ParameterTraits<Equation>::tag) const;
-
-    ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Order>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Degree>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<NfcRefDist>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Normalization>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<Equation>::tag) const;
-
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<Rtime>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<NfcRefDist>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
-    ADM_EXPORT bool isDefault(
-        detail::ParameterTraits<Normalization>::tag) const;
-
-    ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<NfcRefDist>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Normalization>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<Equation>::tag);
-    AudioBlockFormatId id_;
-    boost::optional<Rtime> rtime_;
-    boost::optional<Duration> duration_;
-    boost::optional<Order> order_;
-    boost::optional<Degree> degree_;
-    boost::optional<NfcRefDist> nfcRefDist_;
-    boost::optional<ScreenRef> screenRef_;
-    boost::optional<Normalization> normalization_;
-    boost::optional<Equation> equation_;
   };
 
   // ---- Implementation ---- //

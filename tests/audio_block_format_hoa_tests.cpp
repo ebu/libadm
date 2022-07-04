@@ -12,10 +12,14 @@ TEST_CASE("audio_block_format_hoa") {
     REQUIRE(blockFormat.has<Duration>() == false);
     REQUIRE(blockFormat.has<Order>() == true);
     REQUIRE(blockFormat.has<Degree>() == true);
-    REQUIRE(blockFormat.has<NfcRefDist>() == false);
-    REQUIRE(blockFormat.has<ScreenRef>() == false);
-    REQUIRE(blockFormat.has<Normalization>() == false);
+    REQUIRE(blockFormat.has<NfcRefDist>() == true);
+    REQUIRE(blockFormat.has<ScreenRef>() == true);
+    REQUIRE(blockFormat.has<Normalization>() == true);
     REQUIRE(blockFormat.has<Equation>() == false);
+
+    REQUIRE(blockFormat.get<NfcRefDist>() == 0);
+    REQUIRE(blockFormat.get<ScreenRef>() == false);
+    REQUIRE(blockFormat.get<Normalization>() == "SN3D");
 
     REQUIRE(blockFormat.isDefault<Rtime>() == true);
     REQUIRE(blockFormat.isDefault<NfcRefDist>() == true);
@@ -72,9 +76,9 @@ TEST_CASE("audio_block_format_hoa") {
     REQUIRE(blockFormat.has<Duration>() == false);
     REQUIRE(blockFormat.has<Order>() == true);
     REQUIRE(blockFormat.has<Degree>() == true);
-    REQUIRE(blockFormat.has<NfcRefDist>() == false);
-    REQUIRE(blockFormat.has<ScreenRef>() == false);
-    REQUIRE(blockFormat.has<Normalization>() == false);
+    REQUIRE(blockFormat.has<NfcRefDist>() == true);
+    REQUIRE(blockFormat.has<ScreenRef>() == true);
+    REQUIRE(blockFormat.has<Normalization>() == true);
     REQUIRE(blockFormat.has<Equation>() == false);
 
     REQUIRE(blockFormat.isDefault<Rtime>() == true);
