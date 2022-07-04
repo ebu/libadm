@@ -32,29 +32,28 @@ TEST_CASE("audio_pack_format_hoa") {
 }
 
 TEST_CASE("audio_pack_format_hoa_with_extra_param_in_constructor") {
-    using namespace adm;
+  using namespace adm;
 
-    auto packFormatHoa = AudioPackFormatHoa::create(
-        AudioPackFormatName("MyPackFormatHoa"),
-        AudioPackFormatId(AudioPackFormatIdValue(1), TypeDescriptor(4)),
-        Normalization("FuMa"), ScreenRef(true), NfcRefDist(2));
+  auto packFormatHoa = AudioPackFormatHoa::create(
+      AudioPackFormatName("MyPackFormatHoa"),
+      AudioPackFormatId(AudioPackFormatIdValue(1), TypeDescriptor(4)),
+      Normalization("FuMa"), ScreenRef(true), NfcRefDist(2));
 
-    REQUIRE(packFormatHoa->has<AudioPackFormatId>());
-    REQUIRE(packFormatHoa->has<AudioPackFormatName>());
-    REQUIRE(packFormatHoa->has<TypeDescriptor>());
-    REQUIRE(packFormatHoa->has<Normalization>());
-    REQUIRE(packFormatHoa->has<ScreenRef>());
-    REQUIRE(packFormatHoa->has<NfcRefDist>());
+  REQUIRE(packFormatHoa->has<AudioPackFormatId>());
+  REQUIRE(packFormatHoa->has<AudioPackFormatName>());
+  REQUIRE(packFormatHoa->has<TypeDescriptor>());
+  REQUIRE(packFormatHoa->has<Normalization>());
+  REQUIRE(packFormatHoa->has<ScreenRef>());
+  REQUIRE(packFormatHoa->has<NfcRefDist>());
 
-    REQUIRE(packFormatHoa->get<AudioPackFormatId>().get<TypeDescriptor>() ==
-            TypeDefinition::HOA);
-    REQUIRE(
-        packFormatHoa->get<AudioPackFormatId>().get<AudioPackFormatIdValue>() ==
-        1u);
-    REQUIRE(packFormatHoa->get<AudioPackFormatName>() == "MyPackFormatHoa");
-    REQUIRE(packFormatHoa->get<TypeDescriptor>() ==
-            TypeDefinition::HOA);
-    REQUIRE(packFormatHoa->get<Normalization>() == "FuMa");
-    REQUIRE(packFormatHoa->get<ScreenRef>() == true);
-    REQUIRE(packFormatHoa->get<NfcRefDist>() == 2);
+  REQUIRE(packFormatHoa->get<AudioPackFormatId>().get<TypeDescriptor>() ==
+          TypeDefinition::HOA);
+  REQUIRE(
+      packFormatHoa->get<AudioPackFormatId>().get<AudioPackFormatIdValue>() ==
+      1u);
+  REQUIRE(packFormatHoa->get<AudioPackFormatName>() == "MyPackFormatHoa");
+  REQUIRE(packFormatHoa->get<TypeDescriptor>() == TypeDefinition::HOA);
+  REQUIRE(packFormatHoa->get<Normalization>() == "FuMa");
+  REQUIRE(packFormatHoa->get<ScreenRef>() == true);
+  REQUIRE(packFormatHoa->get<NfcRefDist>() == 2);
 }

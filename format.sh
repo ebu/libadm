@@ -17,7 +17,6 @@ include/adm/elements/audio_pack_format_hoa.hpp
 include/adm/elements/nfc_ref_dist.hpp
 tests/hex_values_tests.cpp
 tests/adm_common_definitions_tests.cpp
-tests/audio_pack_format_hoa_tests.cpp
 tests/xml_parser_audio_block_format_hoa_tests.cpp
 tests/xml_parser_audio_block_format_objects_tests.cpp
 tests/xml_parser_audio_pack_format_tests.cpp
