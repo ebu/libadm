@@ -16,5 +16,8 @@ namespace adm {
     template class DefaultParameter<HeadLocked>;
 
     template class DefaultParameter<ScreenRef>;
+
+    template class DefaultParameter<Normalization>;
+    template class DefaultParameter<NfcRefDist>;
   }  // namespace detail
 }  // namespace adm

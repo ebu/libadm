@@ -5,6 +5,8 @@
 #include "adm/elements/headphone_virtualise.hpp"
 #include "adm/elements/head_locked.hpp"
 #include "adm/elements/importance.hpp"
+#include "adm/elements/nfc_ref_dist.hpp"
+#include "adm/elements/normalization.hpp"
 #include "adm/elements/screen_ref.hpp"
 #include "adm/elements/time.hpp"
 
@@ -35,6 +37,11 @@ namespace adm {
       return ScreenRef{false};
     }
 
+    template <>
+    inline Normalization getDefault<Normalization>() {
+      return Normalization{"SN3D"};
+    }
+
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         RequiredParameter<AudioBlockFormatId>;
 
@@ -55,5 +62,10 @@ namespace adm {
 
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         DefaultParameter<ScreenRef>;
+
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        DefaultParameter<Normalization>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        DefaultParameter<NfcRefDist>;
   }  // namespace detail
 }  // namespace adm
