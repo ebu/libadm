@@ -38,6 +38,7 @@ namespace adm {
    */
   struct SimpleCommonDefinitionsObjectHolder {
     std::shared_ptr<AudioObject> audioObject;
+    /// a mapping from the short speaker label (e.g. `M+000`) to the audioTrackUid
     std::map<std::string, std::shared_ptr<AudioTrackUid>> audioTrackUids;
   };
 
