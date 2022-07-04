@@ -1,5 +1,6 @@
 #pragma once
 #include "adm/detail/auto_base.hpp"
+#include "adm/elements/audio_block_format_id.hpp"
 #include "adm/elements/gain.hpp"
 #include "adm/elements/headphone_virtualise.hpp"
 #include "adm/elements/head_locked.hpp"
@@ -27,6 +28,9 @@ namespace adm {
     inline HeadLocked getDefault<HeadLocked>() {
       return HeadLocked{false};
     }
+
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        RequiredParameter<AudioBlockFormatId>;
 
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Gain>;
 

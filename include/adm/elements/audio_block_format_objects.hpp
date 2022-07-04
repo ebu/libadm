@@ -2,7 +2,6 @@
 #pragma once
 
 #include <boost/optional.hpp>
-#include "adm/elements/audio_block_format_id.hpp"
 #include "adm/elements/channel_lock.hpp"
 #include "adm/elements/jump_position.hpp"
 #include "adm/elements/object_divergence.hpp"
@@ -46,8 +45,6 @@ namespace adm {
   struct AudioBlockFormatObjectsTag {};
 
   namespace detail {
-    extern template class ADM_EXPORT_TEMPLATE_METHODS
-        RequiredParameter<AudioBlockFormatId>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Width>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Height>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Depth>;

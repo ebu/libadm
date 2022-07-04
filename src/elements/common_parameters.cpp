@@ -2,6 +2,8 @@
 
 namespace adm {
   namespace detail {
+    template class RequiredParameter<AudioBlockFormatId>;
+
     template class DefaultParameter<Gain>;
 
     template class DefaultParameter<Importance>;
