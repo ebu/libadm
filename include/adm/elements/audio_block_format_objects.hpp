@@ -50,14 +50,13 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Depth>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Diffuse>;
 
-    using AudioBlockFormatObjectsBase =
-        HasParameters<RequiredParameter<AudioBlockFormatId>,
-                      DefaultParameter<Rtime>, OptionalParameter<Duration>,
-                      DefaultParameter<Width>, DefaultParameter<Height>,
-                      DefaultParameter<Depth>, DefaultParameter<Diffuse>,
-                      DefaultParameter<Gain>, DefaultParameter<Importance>,
-                      DefaultParameter<HeadphoneVirtualise>,
-                      DefaultParameter<HeadLocked>>;
+    using AudioBlockFormatObjectsBase = HasParameters<
+        RequiredParameter<AudioBlockFormatId>, DefaultParameter<Rtime>,
+        OptionalParameter<Duration>, DefaultParameter<Width>,
+        DefaultParameter<Height>, DefaultParameter<Depth>,
+        DefaultParameter<Diffuse>, DefaultParameter<Gain>,
+        DefaultParameter<Importance>, DefaultParameter<HeadphoneVirtualise>,
+        DefaultParameter<HeadLocked>, DefaultParameter<ScreenRef>>;
   }  // namespace detail
 
   /**
@@ -208,8 +207,6 @@ namespace adm {
     ADM_EXPORT void set(ObjectDivergence objectDivergence);
     /// @brief JumpPosition setter
     ADM_EXPORT void set(JumpPosition jumpPosition);
-    /// @brief ScreenRef setter
-    ADM_EXPORT void set(ScreenRef screenRef);
 
     /**
      * @brief ADM parameter unset template
@@ -240,7 +237,6 @@ namespace adm {
         get(detail::ParameterTraits<ObjectDivergence>::tag) const;
     ADM_EXPORT JumpPosition
         get(detail::ParameterTraits<JumpPosition>::tag) const;
-    ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<Cartesian>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Position>::tag) const;
@@ -250,7 +246,6 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<ChannelLock>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<ObjectDivergence>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<JumpPosition>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<ScreenRef>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -261,7 +256,6 @@ namespace adm {
     ADM_EXPORT bool isDefault(
         detail::ParameterTraits<ObjectDivergence>::tag) const;
     ADM_EXPORT bool isDefault(detail::ParameterTraits<JumpPosition>::tag) const;
-    ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
 
     ADM_EXPORT void unset(detail::ParameterTraits<Cartesian>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Position>::tag);
@@ -271,7 +265,6 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<ChannelLock>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<ObjectDivergence>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<JumpPosition>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
 
     boost::optional<Cartesian> cartesian_;
     boost::optional<SphericalPosition> sphericalPosition_;
@@ -280,7 +273,6 @@ namespace adm {
     boost::optional<ChannelLock> channelLock_;
     boost::optional<ObjectDivergence> objectDivergence_;
     boost::optional<JumpPosition> jumpPosition_;
-    boost::optional<ScreenRef> screenRef_;
   };
 
   // ---- Implementation ---- //

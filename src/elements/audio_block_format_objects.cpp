@@ -7,7 +7,6 @@ namespace adm {
     const ChannelLock channelLockDefault{};
     const ObjectDivergence objectDivergenceDefault{};
     const JumpPosition jumpPositionDefault{};
-    const ScreenRef screenRefDefault{false};
   }  // namespace
 
   namespace detail {
@@ -64,10 +63,6 @@ namespace adm {
       detail::ParameterTraits<JumpPosition>::tag) const {
     return boost::get_optional_value_or(jumpPosition_, jumpPositionDefault);
   }
-  ScreenRef AudioBlockFormatObjects::get(
-      detail::ParameterTraits<ScreenRef>::tag) const {
-    return boost::get_optional_value_or(screenRef_, screenRefDefault);
-  }
 
   // ---- Has ---- //
   bool AudioBlockFormatObjects::has(
@@ -103,10 +98,6 @@ namespace adm {
       detail::ParameterTraits<JumpPosition>::tag) const {
     return true;
   }
-  bool AudioBlockFormatObjects::has(
-      detail::ParameterTraits<ScreenRef>::tag) const {
-    return true;
-  }
 
   // ---- isDefault ---- //
   bool AudioBlockFormatObjects::isDefault(
@@ -124,10 +115,6 @@ namespace adm {
   bool AudioBlockFormatObjects::isDefault(
       detail::ParameterTraits<JumpPosition>::tag) const {
     return jumpPosition_ == boost::none;
-  }
-  bool AudioBlockFormatObjects::isDefault(
-      detail::ParameterTraits<ScreenRef>::tag) const {
-    return screenRef_ == boost::none;
   }
 
   // ---- Setter ---- //
@@ -173,9 +160,6 @@ namespace adm {
   void AudioBlockFormatObjects::set(JumpPosition jumpPosition) {
     jumpPosition_ = jumpPosition;
   }
-  void AudioBlockFormatObjects::set(ScreenRef screenRef) {
-    screenRef_ = screenRef;
-  }
 
   // ---- Unsetter ---- //
   void AudioBlockFormatObjects::unset(detail::ParameterTraits<Cartesian>::tag) {
@@ -212,9 +196,6 @@ namespace adm {
   void AudioBlockFormatObjects::unset(
       detail::ParameterTraits<JumpPosition>::tag) {
     jumpPosition_ = boost::none;
-  }
-  void AudioBlockFormatObjects::unset(detail::ParameterTraits<ScreenRef>::tag) {
-    screenRef_ = boost::none;
   }
 
 }  // namespace adm
