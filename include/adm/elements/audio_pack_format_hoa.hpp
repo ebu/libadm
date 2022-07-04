@@ -10,6 +10,13 @@ namespace adm {
 
     class Document;
 
+    namespace detail {
+      using AudioPackFormatHoaBase =
+          HasParameters<DefaultParameter<Normalization>,
+                        DefaultParameter<NfcRefDist>,
+                        DefaultParameter<ScreenRef>>;
+    }
+
     /**
      * @brief Class representation of the audioPackFormat ADM element for HOA
      *
@@ -27,7 +34,8 @@ namespace adm {
      * +---------------+-----------------------+---------------------------+
      * \endrst
      */
-    class AudioPackFormatHoa : public AudioPackFormat {
+    class AudioPackFormatHoa : public AudioPackFormat,
+                               private detail::AudioPackFormatHoaBase {
      public:
       template <typename... Parameters>
       static std::shared_ptr<AudioPackFormatHoa> create(
@@ -61,12 +69,7 @@ namespace adm {
       template <typename Parameter>
       bool isDefault() const;
 
-      /// @brief ScreenRef setter
-      ADM_EXPORT void set(ScreenRef screenRef);
-      /// @brief Normalization setter
-      ADM_EXPORT void set(Normalization normalization);
-      /// @brief nfcRefDistance setter
-      ADM_EXPORT void set(NfcRefDist nfcRefDist);
+      using detail::AudioPackFormatHoaBase::set;
 
       /**
        * @brief ADM parameter unset template
@@ -89,34 +92,18 @@ namespace adm {
       using AudioPackFormat::get;
       using AudioPackFormat::has;
       using AudioPackFormat::unset;
+      using AudioPackFormat::isDefault;
+
+      using detail::AudioPackFormatHoaBase::get;
+      using detail::AudioPackFormatHoaBase::has;
+      using detail::AudioPackFormatHoaBase::unset;
+      using detail::AudioPackFormatHoaBase::isDefault;
 
       friend class AudioPackFormatHoaAttorney;
 
       ADM_EXPORT explicit AudioPackFormatHoa(AudioPackFormatName name);
       // ADM_EXPORT AudioPackFormatHoa(const AudioPackFormat &) = default;
       // ADM_EXPORT AudioPackFormatHoa(AudioPackFormat &&) = default;
-
-      ADM_EXPORT ScreenRef get(detail::ParameterTraits<ScreenRef>::tag) const;
-      ADM_EXPORT Normalization
-          get(detail::ParameterTraits<Normalization>::tag) const;
-      ADM_EXPORT NfcRefDist get(detail::ParameterTraits<NfcRefDist>::tag) const;
-
-      ADM_EXPORT bool has(detail::ParameterTraits<ScreenRef>::tag) const;
-      ADM_EXPORT bool has(detail::ParameterTraits<Normalization>::tag) const;
-      ADM_EXPORT bool has(detail::ParameterTraits<NfcRefDist>::tag) const;
-
-      ADM_EXPORT bool isDefault(detail::ParameterTraits<ScreenRef>::tag) const;
-      ADM_EXPORT bool isDefault(
-          detail::ParameterTraits<Normalization>::tag) const;
-      ADM_EXPORT bool isDefault(detail::ParameterTraits<NfcRefDist>::tag) const;
-
-      ADM_EXPORT void unset(detail::ParameterTraits<ScreenRef>::tag);
-      ADM_EXPORT void unset(detail::ParameterTraits<Normalization>::tag);
-      ADM_EXPORT void unset(detail::ParameterTraits<NfcRefDist>::tag);
-
-      boost::optional<ScreenRef> screenRef_;
-      boost::optional<Normalization> normalization_;
-      boost::optional<NfcRefDist> nfcRefDist_;
     };
 
     // ---- Implementation ---- //
