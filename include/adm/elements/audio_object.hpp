@@ -73,9 +73,14 @@ namespace adm {
   using MaybeSilentAudioTrackUID =
       boost::variant<std::shared_ptr<AudioTrackUid>, SilentTrack>;
 
-  ADD_TRAIT(MaybeSilentAudioTrackUID,
-            MaybeSilentAudioTrackUIDTag);
+  ADD_TRAIT(MaybeSilentAudioTrackUID, MaybeSilentAudioTrackUIDTag);
 
+  using MaybeSilentTrackRange =
+      detail::CastedVectorRange<MaybeSilentAudioTrackUID,
+                                MaybeSilentAudioTrackUID>;
+  using MaybeSilentTrackRangeConst = detail::CastedVectorRange<
+      MaybeSilentAudioTrackUID,
+      boost::variant<std::shared_ptr<const AudioTrackUid>, SilentTrack>>;
 
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
@@ -371,9 +376,8 @@ namespace adm {
         detail::ParameterTraits<AudioPackFormat>::tag) const;
     ElementRange<const AudioTrackUid> getReferences(
         detail::ParameterTraits<AudioTrackUid>::tag) const;
-    // XXX: not working yet
-    // ElementRange<const MaybeSilentAudioTrackUID> getReferences(
-    //     detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag) const;
+    MaybeSilentTrackRangeConst getReferences(
+        detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag) const;
 
     ElementRange<AudioObject> getReferences(
         detail::ParameterTraits<AudioObject>::tag);
@@ -381,7 +385,7 @@ namespace adm {
         detail::ParameterTraits<AudioPackFormat>::tag);
     ElementRange<AudioTrackUid> getReferences(
         detail::ParameterTraits<AudioTrackUid>::tag);
-    ElementRange<MaybeSilentAudioTrackUID> getReferences(
+    MaybeSilentTrackRange getReferences(
         detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag);
 
     ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioObject>::tag);
@@ -474,42 +478,40 @@ namespace adm {
 
   inline ElementRange<const AudioObject> AudioObject::getReferences(
       detail::ParameterTraits<AudioObject>::tag) const {
-    return detail::makeElementRange<AudioObject>(audioObjects_);
+    return {audioObjects_.begin(), audioObjects_.end()};
   };
   inline ElementRange<const AudioPackFormat> AudioObject::getReferences(
       detail::ParameterTraits<AudioPackFormat>::tag) const {
-    return detail::makeElementRange<AudioPackFormat>(audioPackFormats_);
+    return {audioPackFormats_.begin(), audioPackFormats_.end()};
   };
   inline ElementRange<const AudioTrackUid> AudioObject::getReferences(
       detail::ParameterTraits<AudioTrackUid>::tag) const {
     sync_audioTrackUids();
-    return detail::makeElementRange<AudioTrackUid>(
-        const_cast<const std::vector<std::shared_ptr<AudioTrackUid>> &>(
-            audioTrackUids_));
+    return {audioTrackUids_.begin(), audioTrackUids_.end()};
   };
-  // XXX: not working yet
-  // inline ElementRange<const MaybeSilentAudioTrackUID> AudioObject::getReferences(
-  //     detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag) const {
-  //   sync_audioTrackUids();
-  //   return detail::makeElementRange<MaybeSilentAudioTrackUID>(maybeSilentaudioTrackUids_);
-  // };
+  inline MaybeSilentTrackRangeConst AudioObject::getReferences(
+      detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag) const {
+    return {maybeSilentaudioTrackUids_.begin(),
+            maybeSilentaudioTrackUids_.end()};
+  };
 
   inline ElementRange<AudioObject> AudioObject::getReferences(
       detail::ParameterTraits<AudioObject>::tag) {
-    return detail::makeElementRange<AudioObject>(audioObjects_);
+    return {audioObjects_.begin(), audioObjects_.end()};
   };
   inline ElementRange<AudioPackFormat> AudioObject::getReferences(
       detail::ParameterTraits<AudioPackFormat>::tag) {
-    return detail::makeElementRange<AudioPackFormat>(audioPackFormats_);
+    return {audioPackFormats_.begin(), audioPackFormats_.end()};
   };
   inline ElementRange<AudioTrackUid> AudioObject::getReferences(
       detail::ParameterTraits<AudioTrackUid>::tag) {
     sync_audioTrackUids();
-    return detail::makeElementRange<AudioTrackUid>(audioTrackUids_);
+    return {audioTrackUids_.begin(), audioTrackUids_.end()};
   };
-  inline ElementRange<MaybeSilentAudioTrackUID> AudioObject::getReferences(
+  inline MaybeSilentTrackRange AudioObject::getReferences(
       detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag) {
-    return detail::makeElementRange<MaybeSilentAudioTrackUID>(maybeSilentaudioTrackUids_);
+    return {maybeSilentaudioTrackUids_.begin(),
+            maybeSilentaudioTrackUids_.end()};
   };
 
   template <typename Element>

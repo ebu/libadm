@@ -365,82 +365,82 @@ namespace adm {
   // ---- get elements ---- //
   ElementRange<const AudioProgramme> Document::getElements(
       detail::ParameterTraits<AudioProgramme>::tag) const {
-    return detail::makeElementRange<AudioProgramme>(audioProgrammes_);
+    return {audioProgrammes_.begin(), audioProgrammes_.end()};
   }
 
   ElementRange<const AudioContent> Document::getElements(
       detail::ParameterTraits<AudioContent>::tag) const {
-    return detail::makeElementRange<AudioContent>(audioContents_);
+    return {audioContents_.begin(), audioContents_.end()};
   }
 
   ElementRange<const AudioObject> Document::getElements(
       detail::ParameterTraits<AudioObject>::tag) const {
-    return detail::makeElementRange<AudioObject>(audioObjects_);
+    return {audioObjects_.begin(), audioObjects_.end()};
   }
 
   ElementRange<const AudioPackFormat> Document::getElements(
       detail::ParameterTraits<AudioPackFormat>::tag) const {
-    return detail::makeElementRange<AudioPackFormat>(audioPackFormats_);
+    return {audioPackFormats_.begin(), audioPackFormats_.end()};
   }
 
   ElementRange<const AudioChannelFormat> Document::getElements(
       detail::ParameterTraits<AudioChannelFormat>::tag) const {
-    return detail::makeElementRange<AudioChannelFormat>(audioChannelFormats_);
+    return {audioChannelFormats_.begin(), audioChannelFormats_.end()};
   }
 
   ElementRange<const AudioStreamFormat> Document::getElements(
       detail::ParameterTraits<AudioStreamFormat>::tag) const {
-    return detail::makeElementRange<AudioStreamFormat>(audioStreamFormats_);
+    return {audioStreamFormats_.begin(), audioStreamFormats_.end()};
   }
 
   ElementRange<const AudioTrackFormat> Document::getElements(
       detail::ParameterTraits<AudioTrackFormat>::tag) const {
-    return detail::makeElementRange<AudioTrackFormat>(audioTrackFormats_);
+    return {audioTrackFormats_.begin(), audioTrackFormats_.end()};
   }
 
   ElementRange<const AudioTrackUid> Document::getElements(
       detail::ParameterTraits<AudioTrackUid>::tag) const {
-    return detail::makeElementRange<AudioTrackUid>(audioTrackUids_);
+    return {audioTrackUids_.begin(), audioTrackUids_.end()};
   }
 
   ElementRange<AudioProgramme> Document::getElements(
       detail::ParameterTraits<AudioProgramme>::tag) {
-    return detail::makeElementRange<AudioProgramme>(audioProgrammes_);
+    return {audioProgrammes_.begin(), audioProgrammes_.end()};
   }
 
   ElementRange<AudioContent> Document::getElements(
       detail::ParameterTraits<AudioContent>::tag) {
-    return detail::makeElementRange<AudioContent>(audioContents_);
+    return {audioContents_.begin(), audioContents_.end()};
   }
 
   ElementRange<AudioObject> Document::getElements(
       detail::ParameterTraits<AudioObject>::tag) {
-    return detail::makeElementRange<AudioObject>(audioObjects_);
+    return {audioObjects_.begin(), audioObjects_.end()};
   }
 
   ElementRange<AudioPackFormat> Document::getElements(
       detail::ParameterTraits<AudioPackFormat>::tag) {
-    return detail::makeElementRange<AudioPackFormat>(audioPackFormats_);
+    return {audioPackFormats_.begin(), audioPackFormats_.end()};
   }
 
   ElementRange<AudioChannelFormat> Document::getElements(
       detail::ParameterTraits<AudioChannelFormat>::tag) {
-    return detail::makeElementRange<AudioChannelFormat>(audioChannelFormats_);
+    return {audioChannelFormats_.begin(), audioChannelFormats_.end()};
   }
 
   ElementRange<AudioStreamFormat> Document::getElements(
       detail::ParameterTraits<AudioStreamFormat>::tag) {
-    return detail::makeElementRange<AudioStreamFormat>(audioStreamFormats_);
+    return {audioStreamFormats_.begin(), audioStreamFormats_.end()};
   }
 
   ElementRange<AudioTrackFormat> Document::getElements(
       detail::ParameterTraits<AudioTrackFormat>::tag) {
-    return detail::makeElementRange<AudioTrackFormat>(audioTrackFormats_);
+    return {audioTrackFormats_.begin(), audioTrackFormats_.end()};
   }
 
   ElementRange<AudioTrackUid> Document::getElements(
       detail::ParameterTraits<AudioTrackUid>::tag) {
-    return detail::makeElementRange<AudioTrackUid>(audioTrackUids_);
+    return {audioTrackUids_.begin(), audioTrackUids_.end()};
   }
 
   // ---- lookup elements ---- //

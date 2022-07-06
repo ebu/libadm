@@ -338,7 +338,7 @@ namespace adm {
 
   inline ElementRange<const AudioObject> AudioContent::getReferences(
       detail::ParameterTraits<AudioObject>::tag) const {
-    return detail::makeElementRange<AudioObject>(audioObjects_);
+    return {audioObjects_.begin(), audioObjects_.end()};
   }
 
   template <typename Element>
@@ -349,7 +349,7 @@ namespace adm {
 
   inline ElementRange<AudioObject> AudioContent::getReferences(
       detail::ParameterTraits<AudioObject>::tag) {
-    return detail::makeElementRange<AudioObject>(audioObjects_);
+    return {audioObjects_.begin(), audioObjects_.end()};
   }
 
   template <typename Element>

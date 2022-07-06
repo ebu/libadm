@@ -302,22 +302,22 @@ namespace adm {
 
   inline ElementRange<const AudioChannelFormat> AudioPackFormat::getReferences(
       detail::ParameterTraits<AudioChannelFormat>::tag) const {
-    return detail::makeElementRange<AudioChannelFormat>(audioChannelFormats_);
+    return {audioChannelFormats_.begin(), audioChannelFormats_.end()};
   }
 
   inline ElementRange<const AudioPackFormat> AudioPackFormat::getReferences(
       detail::ParameterTraits<AudioPackFormat>::tag) const {
-    return detail::makeElementRange<AudioPackFormat>(audioPackFormats_);
+    return {audioPackFormats_.begin(), audioPackFormats_.end()};
   }
 
   inline ElementRange<AudioChannelFormat> AudioPackFormat::getReferences(
       detail::ParameterTraits<AudioChannelFormat>::tag) {
-    return detail::makeElementRange<AudioChannelFormat>(audioChannelFormats_);
+    return {audioChannelFormats_.begin(), audioChannelFormats_.end()};
   }
 
   inline ElementRange<AudioPackFormat> AudioPackFormat::getReferences(
       detail::ParameterTraits<AudioPackFormat>::tag) {
-    return detail::makeElementRange<AudioPackFormat>(audioPackFormats_);
+    return {audioPackFormats_.begin(), audioPackFormats_.end()};
   }
 
   template <typename Element>
