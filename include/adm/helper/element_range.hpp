@@ -5,6 +5,7 @@
 #include <vector>
 #include <boost/range/iterator_range_core.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
+#include <boost/variant/variant_fwd.hpp>
 
 namespace adm {
 
@@ -81,6 +82,12 @@ namespace adm {
       using type = typename boost::iterator_range<ConstSharedPtrIteratorAdaptor<
           typename std::vector<std::shared_ptr<Element>>::const_iterator,
           Element>>;
+    };
+
+    template <typename... Elements>
+    struct ElementRangeImpl<boost::variant<Elements...>> {
+      using type = typename boost::iterator_range<
+          typename std::vector<boost::variant<Elements...>>::const_iterator>;
     };
 
     /**

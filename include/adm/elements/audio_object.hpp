@@ -50,6 +50,33 @@ namespace adm {
   ADD_TRAIT(AudioComplementaryObjectGroupLabels,
             AudioComplementaryObjectGroupLabelsTag);
 
+  struct SilentTrackTag {};
+
+  class SilentTrack {
+   public:
+    using tag = SilentTrackTag;
+
+    bool operator==(const SilentTrack &other) const {
+      return index == other.index;
+    }
+    bool operator!=(const SilentTrack &other) const {
+      return !(*this == other);
+    }
+
+   private:
+    boost::optional<size_t> index;
+    friend class AudioObject;
+  };
+
+  struct MaybeSilentAudioTrackUIDTag {};
+
+  using MaybeSilentAudioTrackUID =
+      boost::variant<std::shared_ptr<AudioTrackUid>, SilentTrack>;
+
+  ADD_TRAIT(MaybeSilentAudioTrackUID,
+            MaybeSilentAudioTrackUIDTag);
+
+
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         VectorParameter<AudioComplementaryObjectGroupLabels>;
@@ -217,6 +244,8 @@ namespace adm {
     ADM_EXPORT bool addReference(std::shared_ptr<AudioPackFormat> packFormat);
     /// @brief Add reference to an AudioTrackUid
     ADM_EXPORT bool addReference(std::shared_ptr<AudioTrackUid> trackUid);
+    /// @brief Add reference to a SilentTrack
+    ADM_EXPORT bool addReference(SilentTrack silentTrack);
 
     /**
      * @brief Get references to ADM elements template
@@ -245,6 +274,11 @@ namespace adm {
         std::shared_ptr<AudioPackFormat> packFormat);
     /// @brief Remove reference to an AudioTrackUid
     ADM_EXPORT void removeReference(std::shared_ptr<AudioTrackUid> trackUid);
+    /// @brief Remove reference to a SilentTrack
+    ///
+    /// if SilentTrack was one returned by getReferences, removes that specific
+    /// reference, otherwise removes the first
+    ADM_EXPORT void removeReference(const SilentTrack &silentTrack);
 
     /**
      * @brief Clear references to Elements template
@@ -337,6 +371,9 @@ namespace adm {
         detail::ParameterTraits<AudioPackFormat>::tag) const;
     ElementRange<const AudioTrackUid> getReferences(
         detail::ParameterTraits<AudioTrackUid>::tag) const;
+    // XXX: not working yet
+    // ElementRange<const MaybeSilentAudioTrackUID> getReferences(
+    //     detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag) const;
 
     ElementRange<AudioObject> getReferences(
         detail::ParameterTraits<AudioObject>::tag);
@@ -344,6 +381,8 @@ namespace adm {
         detail::ParameterTraits<AudioPackFormat>::tag);
     ElementRange<AudioTrackUid> getReferences(
         detail::ParameterTraits<AudioTrackUid>::tag);
+    ElementRange<MaybeSilentAudioTrackUID> getReferences(
+        detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag);
 
     ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioObject>::tag);
     ADM_EXPORT void clearReferences(
@@ -355,13 +394,27 @@ namespace adm {
 
     ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
+    ADM_EXPORT void sync_audioTrackUids() const;
+
     std::weak_ptr<Document> parent_;
     AudioObjectId id_;
     AudioObjectName name_;
     std::vector<std::shared_ptr<AudioObject>> audioObjects_;
     std::vector<std::shared_ptr<AudioObject>> audioComplementaryObjects_;
     std::vector<std::shared_ptr<AudioPackFormat>> audioPackFormats_;
-    std::vector<std::shared_ptr<AudioTrackUid>> audioTrackUids_;
+
+    // references to audioTrackUids and silent tracks are stared primarily in
+    // maybeSilentaudioTrackUids_, but audioTrackUids_ is required for
+    // backwards compatibility.
+    //
+    // To avoid having to keep these in sync,
+    // audioTrackUids_dirty is set to true when maybeSilentaudioTrackUids_ is
+    // modified, and sync_audioTrackUids should be called before accessing
+    // audioTrackUids_ to make sure that they are in sync. This will also throw if there are silent tracks.
+    std::vector<MaybeSilentAudioTrackUID> maybeSilentaudioTrackUids_;
+    mutable std::vector<std::shared_ptr<AudioTrackUid>> audioTrackUids_;
+    mutable bool audioTrackUids_dirty = false;
+
     boost::optional<Start> start_;
     boost::optional<Duration> duration_;
     boost::optional<DialogueId> dialogueId_;
@@ -429,8 +482,17 @@ namespace adm {
   };
   inline ElementRange<const AudioTrackUid> AudioObject::getReferences(
       detail::ParameterTraits<AudioTrackUid>::tag) const {
-    return detail::makeElementRange<AudioTrackUid>(audioTrackUids_);
+    sync_audioTrackUids();
+    return detail::makeElementRange<AudioTrackUid>(
+        const_cast<const std::vector<std::shared_ptr<AudioTrackUid>> &>(
+            audioTrackUids_));
   };
+  // XXX: not working yet
+  // inline ElementRange<const MaybeSilentAudioTrackUID> AudioObject::getReferences(
+  //     detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag) const {
+  //   sync_audioTrackUids();
+  //   return detail::makeElementRange<MaybeSilentAudioTrackUID>(maybeSilentaudioTrackUids_);
+  // };
 
   inline ElementRange<AudioObject> AudioObject::getReferences(
       detail::ParameterTraits<AudioObject>::tag) {
@@ -442,7 +504,12 @@ namespace adm {
   };
   inline ElementRange<AudioTrackUid> AudioObject::getReferences(
       detail::ParameterTraits<AudioTrackUid>::tag) {
+    sync_audioTrackUids();
     return detail::makeElementRange<AudioTrackUid>(audioTrackUids_);
+  };
+  inline ElementRange<MaybeSilentAudioTrackUID> AudioObject::getReferences(
+      detail::ParameterTraits<MaybeSilentAudioTrackUID>::tag) {
+    return detail::makeElementRange<MaybeSilentAudioTrackUID>(maybeSilentaudioTrackUids_);
   };
 
   template <typename Element>

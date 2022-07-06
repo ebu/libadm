@@ -180,6 +180,19 @@ namespace adm {
     }
   }
 
+  ADM_EXPORT bool AudioObject::addReference(SilentTrack silentTrack) {
+    size_t next_id = 0;
+    for (const auto& track_ref : maybeSilentaudioTrackUids_) {
+      if (track_ref.type() == typeid(SilentTrack))
+        next_id = std::max(next_id,
+                           boost::get<SilentTrack>(track_ref).index.get() + 1);
+    }
+    silentTrack.index = next_id;
+    maybeSilentaudioTrackUids_.emplace_back(silentTrack);
+    audioTrackUids_dirty = true;
+    return true;
+  }
+
   bool AudioObject::addReference(std::shared_ptr<AudioPackFormat> packFormat) {
     autoParent(shared_from_this(), packFormat);
     if (getParent().lock() != packFormat->getParent().lock()) {
@@ -204,10 +217,12 @@ namespace adm {
           "AudioObject cannot refer to an AudioTrackUid in a different "
           "document");
     }
-    auto it =
-        std::find(audioTrackUids_.begin(), audioTrackUids_.end(), trackUid);
-    if (it == audioTrackUids_.end()) {
-      audioTrackUids_.push_back(trackUid);
+    auto it = std::find(maybeSilentaudioTrackUids_.begin(),
+                        maybeSilentaudioTrackUids_.end(),
+                        MaybeSilentAudioTrackUID{trackUid});
+    if (it == maybeSilentaudioTrackUids_.end()) {
+      maybeSilentaudioTrackUids_.push_back(trackUid);
+      audioTrackUids_dirty = true;
       return true;
     } else {
       return false;
@@ -231,10 +246,31 @@ namespace adm {
   }
 
   void AudioObject::removeReference(std::shared_ptr<AudioTrackUid> trackUid) {
-    auto it =
-        std::find(audioTrackUids_.begin(), audioTrackUids_.end(), trackUid);
-    if (it != audioTrackUids_.end()) {
-      audioTrackUids_.erase(it);
+    auto it = std::find(maybeSilentaudioTrackUids_.begin(),
+                        maybeSilentaudioTrackUids_.end(),
+                        MaybeSilentAudioTrackUID{trackUid});
+    if (it != maybeSilentaudioTrackUids_.end()) {
+      maybeSilentaudioTrackUids_.erase(it);
+      audioTrackUids_dirty = true;
+    }
+  }
+
+  void AudioObject::removeReference(const SilentTrack& silentTrack) {
+    decltype(maybeSilentaudioTrackUids_)::const_iterator it;
+    if (silentTrack.index)
+      it = std::find(maybeSilentaudioTrackUids_.begin(),
+                     maybeSilentaudioTrackUids_.end(),
+                     MaybeSilentAudioTrackUID{silentTrack});
+    else
+      it = std::find_if(maybeSilentaudioTrackUids_.begin(),
+                        maybeSilentaudioTrackUids_.end(),
+                        [&silentTrack](const auto& t) {
+                          return t.type() == typeid(SilentTrack);
+                        });
+
+    if (it != maybeSilentaudioTrackUids_.end()) {
+      maybeSilentaudioTrackUids_.erase(it);
+      audioTrackUids_dirty = true;
     }
   }
 
@@ -256,7 +292,11 @@ namespace adm {
 
   void AudioObject::clearReferences(
       detail::ParameterTraits<AudioTrackUid>::tag) {
-    return audioTrackUids_.clear();
+    // XXX: only remove real AudioTrackUid references?
+    maybeSilentaudioTrackUids_.clear();
+    // it's easy enough to sync these, and nice to remove references if possible
+    audioTrackUids_.clear();
+    audioTrackUids_dirty = false;
   }
 
   // --- ComplementaryObjects ---- //
@@ -308,6 +348,16 @@ namespace adm {
 
   void AudioObject::clearComplementaryObjects() {
     return audioComplementaryObjects_.clear();
+  }
+
+  void AudioObject::sync_audioTrackUids() const {
+    if (audioTrackUids_dirty) {
+      audioTrackUids_.clear();
+      for (const auto& el : maybeSilentaudioTrackUids_)
+        audioTrackUids_.push_back(
+            boost::get<std::shared_ptr<AudioTrackUid>>(el));
+      audioTrackUids_dirty = false;
+    }
   }
 
   // ---- Common ---- //
