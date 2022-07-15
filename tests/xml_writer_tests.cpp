@@ -100,6 +100,20 @@ TEST_CASE("write_objects_with_position_offset") {
   CHECK_THAT(xml.str(), EqualsXmlFile("write_objects_with_position_offset"));
 }
 
+TEST_CASE("write_objects_silent_track_ref") {
+  using namespace adm;
+  auto document = Document::create();
+
+  auto object = AudioObject::create(AudioObjectName("object"));
+  document->add(object);
+  object->addReference(AudioTrackUid::getSilent(document));
+
+  std::stringstream xml;
+  writeXml(xml, document);
+
+  CHECK_THAT(xml.str(), EqualsXmlFile("write_objects_silent_track_ref"));
+}
+
 std::shared_ptr<const adm::Document> createSimpleScene() {
   using namespace adm;
   auto document = Document::create();

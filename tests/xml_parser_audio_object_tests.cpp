@@ -190,3 +190,22 @@ TEST_CASE("xml_parser/audio_object_position_offset") {
     REQUIRE(audioObject->has<PositionOffset>() == false);
   }
 }
+
+TEST_CASE("xml_parser/audio_object_track_refs") {
+  using namespace adm;
+  auto document = parseXml("xml_parser/audio_object_track_refs.xml");
+  auto audioObject = document->lookup(parseAudioObjectId("AO_1001"));
+
+  auto tracks = audioObject->getReferences<AudioTrackUid>();
+  REQUIRE(tracks.size() == 2);
+
+  auto normalTrack = tracks[0];
+  REQUIRE(*normalTrack->get<AudioTrackUidId>().get<AudioTrackUidIdValue>() ==
+          1);
+  REQUIRE(!normalTrack->isSilent());
+
+  auto silentTrack = tracks[1];
+  REQUIRE(*silentTrack->get<AudioTrackUidId>().get<AudioTrackUidIdValue>() ==
+          0);
+  REQUIRE(silentTrack->isSilent());
+}

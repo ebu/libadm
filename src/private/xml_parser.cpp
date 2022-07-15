@@ -82,7 +82,7 @@ namespace adm {
         resolveReferences(contentObjectRefs_);
         resolveReferences(objectObjectRefs_);
         resolveReferences(objectPackFormatRefs_);
-        resolveReferences(objectTrackUidRefs_);
+        resolveTrackUidReferences(objectTrackUidRefs_);
         resolveReference(trackUidTrackFormatRef_);
         resolveReference(trackUidChannelFormatRef_);
         resolveReference(trackUidPackFormatRef_);
@@ -326,6 +326,21 @@ namespace adm {
           return audioPackFormat;
       }
       // clang-format on
+    }
+
+    void XmlParser::resolveTrackUidReferences(
+        const std::map<std::shared_ptr<AudioObject>,
+                       std::vector<AudioTrackUidId>>& map) {
+      for (const auto& entry : map) {
+        for (const auto& id : entry.second) {
+          if (*id.get<AudioTrackUidIdValue>() == 0)
+            entry.first->addReference(AudioTrackUid::getSilent(document_));
+          else if (const auto& element = document_->lookup(id))
+            entry.first->addReference(element);
+          else
+            throw error::XmlParsingUnresolvedReference(formatId(id));
+        }
+      }
     }
 
     void XmlParser::setCommonProperties(

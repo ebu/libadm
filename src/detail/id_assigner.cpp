@@ -158,7 +158,8 @@ namespace adm {
     }
 
     AudioTrackUidId IdAssigner::assignId(AudioTrackUid& trackUid) {
-      if (isCommonDefinitionsId(trackUid.get<AudioTrackUidId>())) {
+      if (isCommonDefinitionsId(trackUid.get<AudioTrackUidId>()) ||
+          trackUid.isSilent()) {
         return trackUid.get<AudioTrackUidId>();
       }
       AudioTrackUidIdValue idValue(0x0001u);

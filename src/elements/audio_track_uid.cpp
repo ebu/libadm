@@ -8,6 +8,26 @@
 
 namespace adm {
 
+  std::shared_ptr<AudioTrackUid> AudioTrackUid::getSilent(
+      std::shared_ptr<Document>& document) {
+    AudioTrackUidId id{AudioTrackUidIdValue{0}};
+
+    std::shared_ptr<AudioTrackUid> trackUid;
+
+    trackUid = document->lookup(id);
+    if (trackUid) return trackUid;
+
+    trackUid = std::shared_ptr<AudioTrackUid>(new AudioTrackUid());
+    trackUid->id_ = id;
+    return trackUid;
+  }
+
+  std::shared_ptr<AudioTrackUid> AudioTrackUid::getSilent() {
+    auto uid = std::shared_ptr<AudioTrackUid>(new AudioTrackUid());
+    uid->set(AudioTrackUidId{AudioTrackUidIdValue{0}});
+    return uid;
+  }
+
   // ---- Getter ---- //
   AudioTrackUidId AudioTrackUid::get(
       detail::ParameterTraits<AudioTrackUidId>::tag) const {
@@ -30,10 +50,26 @@ namespace adm {
     if (getParent().lock() != nullptr && getParent().lock()->lookup(id)) {
       throw std::runtime_error("id already in use");
     }
+    if (id == AudioTrackUidId{AudioTrackUidIdValue{0}} &&
+        (has<SampleRate>() || has<BitDepth>() ||
+         getReference<AudioPackFormat>() || getReference<AudioTrackFormat>() ||
+         getReference<AudioChannelFormat>()))
+      throw error::AdmGenericRuntimeError(
+          "audioTrackUid with ID zero has no references or parameters");
     id_ = id;
   }
-  void AudioTrackUid::set(SampleRate sampleRate) { sampleRate_ = sampleRate; }
-  void AudioTrackUid::set(BitDepth bitDepth) { bitDepth_ = bitDepth; }
+  void AudioTrackUid::set(SampleRate sampleRate) {
+    if (isSilent())
+      throw error::AdmGenericRuntimeError(
+          "audioTrackUid with ID zero has no references or parameters");
+    sampleRate_ = sampleRate;
+  }
+  void AudioTrackUid::set(BitDepth bitDepth) {
+    if (isSilent())
+      throw error::AdmGenericRuntimeError(
+          "audioTrackUid with ID zero has no references or parameters");
+    bitDepth_ = bitDepth;
+  }
 
   // ---- Has ---- //
   bool AudioTrackUid::has(detail::ParameterTraits<AudioTrackUidId>::tag) const {
@@ -57,6 +93,10 @@ namespace adm {
   // ---- References ---- //
   void AudioTrackUid::setReference(
       std::shared_ptr<AudioTrackFormat> trackFormat) {
+    if (isSilent())
+      throw error::AdmGenericRuntimeError(
+          "audioTrackUid with ID zero has no references or parameters");
+
     if (!autoParent(*this, trackFormat)) {
       throw std::runtime_error(
           "AudioTrackUid cannot refer to an AudioTrackFormat in a different "
@@ -74,6 +114,9 @@ namespace adm {
 
   void AudioTrackUid::setReference(
       std::shared_ptr<AudioPackFormat> packFormat) {
+    if (isSilent())
+      throw error::AdmGenericRuntimeError(
+          "audioTrackUid with ID zero has no references or parameters");
     if (!autoParent(*this, packFormat)) {
       throw std::runtime_error(
           "AudioTrackUid cannot refer to an AudioPackFormat in a different "
@@ -84,6 +127,9 @@ namespace adm {
 
   void AudioTrackUid::setReference(
       std::shared_ptr<AudioChannelFormat> channelFormat) {
+    if (isSilent())
+      throw error::AdmGenericRuntimeError(
+          "audioTrackUid with ID zero has no references or parameters");
     if (!autoParent(*this, channelFormat)) {
       throw std::runtime_error(
           "AudioTrackUid cannot refer to an AudioChannelFormat in a different "
@@ -148,6 +194,10 @@ namespace adm {
   void AudioTrackUid::removeReference(
       detail::ParameterTraits<AudioPackFormat>::tag) {
     audioPackFormat_ = nullptr;
+  }
+
+  bool AudioTrackUid::isSilent() const {
+    return *get<AudioTrackUidId>().get<AudioTrackUidIdValue>() == 0;
   }
 
   // ---- Common ---- //

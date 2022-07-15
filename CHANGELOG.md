@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+- Added support for silent audioTrackUid references with ID 0. See `AudioTrackUid::isSilent` and `AudioTrackUid::getSilent`.
+
 ### Changed
 - Decimal times are now written without trailing zeros past 5 decimal places. To interoperate with ADM parsers which don't support more than 5 digits, users should round times in the ADM document before writing.
 

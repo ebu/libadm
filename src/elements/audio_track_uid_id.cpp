@@ -1,4 +1,5 @@
 #include "adm/elements/audio_track_uid_id.hpp"
+#include <limits>
 #include <sstream>
 #include "adm/detail/id_parser.hpp"
 
@@ -10,7 +11,8 @@ namespace adm {
 
   // ---- Defaults ---- //
   const AudioTrackUidIdValue AudioTrackUidId::valueDefault_ =
-      AudioTrackUidIdValue(0);
+      AudioTrackUidIdValue(
+          std::numeric_limits<AudioTrackUidIdValue::value_type>::max());
 
   // ---- Getter ---- //
   AudioTrackUidIdValue AudioTrackUidId::get(

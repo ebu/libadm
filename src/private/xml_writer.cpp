@@ -45,7 +45,13 @@ namespace adm {
       root.addBaseElements<AudioChannelFormat, AudioChannelFormatId>(document, "audioChannelFormat", &formatAudioChannelFormat);
       root.addBaseElements<AudioStreamFormat, AudioStreamFormatId>(document, "audioStreamFormat", &formatAudioStreamFormat);
       root.addBaseElements<AudioTrackFormat, AudioTrackFormatId>(document, "audioTrackFormat", &formatAudioTrackFormat);
-      root.addBaseElements<AudioTrackUid, AudioTrackUidId>(document, "audioTrackUID", &formatAudioTrackUid);
+
+      for (auto &element : document->template getElements<AudioTrackUid>()) {
+        auto id = element->template get<AudioTrackUidId>();
+        if (!isCommonDefinitionsId(id) && !element->isSilent()) {
+          root.addElement(element, "audioTrackUID", &formatAudioTrackUid);
+        }
+      }
       // clang-format on
       return stream << xmlDocument;
     }

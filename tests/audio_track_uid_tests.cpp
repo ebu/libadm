@@ -129,3 +129,39 @@ TEST_CASE("audio_track_uid_with_channel_format_and_track_format_refs") {
   audioTrackUid->removeReference<AudioChannelFormat>();
   audioTrackUid->removeReference<AudioTrackFormat>();
 }
+
+TEST_CASE("audio_track_uid_silent") {
+  using namespace adm;
+  SECTION("silent") {
+    auto audioTrackUid =
+        AudioTrackUid::create(AudioTrackUidId(AudioTrackUidIdValue(0)));
+    REQUIRE(audioTrackUid->isSilent());
+
+    REQUIRE_THROWS_AS(audioTrackUid->set(SampleRate(48000)),
+                      error::AdmGenericRuntimeError);
+    REQUIRE_THROWS_AS(audioTrackUid->set(BitDepth(24)),
+                      error::AdmGenericRuntimeError);
+  }
+
+  SECTION("no id") {
+    auto audioTrackUid = AudioTrackUid::create();
+    REQUIRE(!audioTrackUid->isSilent());
+
+    REQUIRE(audioTrackUid->getReference<AudioPackFormat>() == nullptr);
+  }
+
+  SECTION("non-silent") {
+    auto audioTrackUid =
+        AudioTrackUid::create(AudioTrackUidId(AudioTrackUidIdValue(1)));
+    REQUIRE(!audioTrackUid->isSilent());
+
+    REQUIRE(audioTrackUid->getReference<AudioPackFormat>() == nullptr);
+  }
+
+  SECTION("params already set") {
+    auto audioTrackUid = AudioTrackUid::create(SampleRate(48000));
+    REQUIRE_THROWS_AS(
+        audioTrackUid->set(AudioTrackUidId(AudioTrackUidIdValue(0))),
+        error::AdmGenericRuntimeError);
+  }
+}

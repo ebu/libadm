@@ -152,6 +152,7 @@ namespace adm {
       idAssigner_.assignId(*trackUid);
       AudioTrackUidAttorney::setParent(trackUid, shared_from_this());
       audioTrackUids_.push_back(trackUid);
+
       auto audioTrackFormat = trackUid->getReference<AudioTrackFormat>();
       if (audioTrackFormat) {
         add(audioTrackFormat);

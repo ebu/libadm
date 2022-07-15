@@ -201,6 +201,13 @@ namespace adm {
           "AudioObject cannot refer to an AudioTrackUid in a different "
           "document");
     }
+
+    // we can reference a silent track more than once, so skip the uniqueness check
+    if (trackUid->isSilent()) {
+      audioTrackUids_.push_back(trackUid);
+      return true;
+    }
+
     auto it =
         std::find(audioTrackUids_.begin(), audioTrackUids_.end(), trackUid);
     if (it == audioTrackUids_.end()) {

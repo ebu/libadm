@@ -54,6 +54,19 @@ namespace adm {
     static std::shared_ptr<AudioTrackUid> create(
         Parameters... optionalNamedArgs);
 
+    /// get a silent AudioTrackUid which can be referenced from AudioObjects
+    ///
+    /// this will get an existing silent track from the document, or create a
+    /// new one of none exists
+    ADM_EXPORT static std::shared_ptr<AudioTrackUid> getSilent(
+        std::shared_ptr<Document> &document);
+
+    /// get a silent AudioTrackUid which can be referenced from AudioObjects
+    ///
+    /// using this can lead to having multiple silent AudioTrackUids in a
+    /// Document
+    ADM_EXPORT static std::shared_ptr<AudioTrackUid> getSilent();
+
     /**
      * @brief Copy AudioTrackUid
      *
@@ -150,6 +163,14 @@ namespace adm {
      */
     template <typename Element>
     void removeReference();
+
+    /// true if this element has an ID of 0
+    ///
+    /// These elements do not appear in adm XML, but are referenced from
+    /// audioObjects to indicate that a channel has no corresponding audio
+    /// track. If this is true, no parameters or references may be set and
+    /// getReference will return null pointers.
+    ADM_EXPORT bool isSilent() const;
 
     /**
      * @brief Print overview to ostream

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioObject audioObjectID="AO_1001" audioObjectName="MyObject">
+          <audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+          <audioTrackUIDRef>ATU_00000000</audioTrackUIDRef>
+        </audioObject>
+
+        <audioTrackUID UID="ATU_00000001">
+          <audioTrackFormatIDRef>AT_00010003_01</audioTrackFormatIDRef>
+          <audioPackFormatIDRef>AP_00010001</audioPackFormatIDRef>
+        </audioTrackUID>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

@@ -137,6 +137,10 @@ namespace adm {
         }
       }
 
+      void resolveTrackUidReferences(
+          const std::map<std::shared_ptr<AudioObject>,
+                         std::vector<AudioTrackUidId>>& map);
+
       template <typename Src, typename Target>
       void resolveReference(const std::map<Src, Target>& map) {
         for (const auto& entry : map) {
