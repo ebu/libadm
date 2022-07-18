@@ -28,6 +28,9 @@ namespace adm {
    * ids, which are also used to check if `adm::Path`s are equal or not.
    *
    * To easily create an `adm::Route` you may use the `adm::RouteTracer`.
+   *
+   * Routes are ordered first by the hash of their elements, then by the
+   * elements themselves.
    */
 
   class Route {
