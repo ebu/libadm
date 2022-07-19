@@ -21,14 +21,7 @@ namespace adm {
 
   // ---- add elements ---- //
   bool Document::add(std::shared_ptr<AudioProgramme> programme) {
-    if (programme->getParent().lock() &&
-        programme->getParent().lock() != shared_from_this()) {
-      throw std::runtime_error(
-          "AudioProgramme already belongs to another Document");
-    }
-    auto it =
-        std::find(audioProgrammes_.begin(), audioProgrammes_.end(), programme);
-    if (it == audioProgrammes_.end()) {
+    if (!checkParent(programme, "AudioProgramme")) {
       idAssigner_.assignId(*programme);
       AudioProgrammeAttorney::setParent(programme, shared_from_this());
       audioProgrammes_.push_back(programme);
@@ -42,13 +35,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioContent> content) {
-    if (content->getParent().lock() &&
-        content->getParent().lock() != shared_from_this()) {
-      throw std::runtime_error(
-          "AudioContent already belongs to another Document");
-    }
-    auto it = std::find(audioContents_.begin(), audioContents_.end(), content);
-    if (it == audioContents_.end()) {
+    if (!checkParent(content, "AudioContent")) {
       idAssigner_.assignId(*content);
       AudioContentAttorney::setParent(content, shared_from_this());
       audioContents_.push_back(content);
@@ -62,13 +49,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioObject> object) {
-    if (object->getParent().lock() &&
-        object->getParent().lock() != shared_from_this()) {
-      throw std::runtime_error(
-          "AudioObject already belongs to another Document");
-    }
-    auto it = std::find(audioObjects_.begin(), audioObjects_.end(), object);
-    if (it == audioObjects_.end()) {
+    if (!checkParent(object, "AudioObject")) {
       idAssigner_.assignId(*object);
       AudioObjectAttorney::setParent(object, shared_from_this());
       audioObjects_.push_back(object);
@@ -90,14 +71,7 @@ namespace adm {
     }
   }
   bool Document::add(std::shared_ptr<AudioPackFormat> packFormat) {
-    if (packFormat->getParent().lock() &&
-        packFormat->getParent().lock() != shared_from_this()) {
-      throw std::runtime_error(
-          "AudioPackFormat already belongs to another Document");
-    }
-    auto it = std::find(audioPackFormats_.begin(), audioPackFormats_.end(),
-                        packFormat);
-    if (it == audioPackFormats_.end()) {
+    if (!checkParent(packFormat, "AudioPackFormat")) {
       idAssigner_.assignId(*packFormat);
       AudioPackFormatAttorney::setParent(packFormat, shared_from_this());
       audioPackFormats_.push_back(packFormat);
@@ -114,14 +88,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioChannelFormat> channelFormat) {
-    if (channelFormat->getParent().lock() &&
-        channelFormat->getParent().lock() != shared_from_this()) {
-      throw std::runtime_error(
-          "AudioChannelFormat already belongs to another Document");
-    }
-    auto it = std::find(audioChannelFormats_.begin(),
-                        audioChannelFormats_.end(), channelFormat);
-    if (it == audioChannelFormats_.end()) {
+    if (!checkParent(channelFormat, "AudioChannelFormat")) {
       idAssigner_.assignId(*channelFormat);
       AudioChannelFormatAttorney::setParent(channelFormat, shared_from_this());
       audioChannelFormats_.push_back(channelFormat);
@@ -132,14 +99,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioStreamFormat> streamFormat) {
-    if (streamFormat->getParent().lock() &&
-        streamFormat->getParent().lock() != shared_from_this()) {
-      throw std::runtime_error(
-          "AudioStreamFormat already belongs to another Document");
-    }
-    auto it = std::find(audioStreamFormats_.begin(), audioStreamFormats_.end(),
-                        streamFormat);
-    if (it == audioStreamFormats_.end()) {
+    if (!checkParent(streamFormat, "AudioStreamFormat")) {
       idAssigner_.assignId(*streamFormat);
       AudioStreamFormatAttorney::setParent(streamFormat, shared_from_this());
       audioStreamFormats_.push_back(streamFormat);
@@ -166,14 +126,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioTrackFormat> trackFormat) {
-    if (trackFormat->getParent().lock() &&
-        trackFormat->getParent().lock() != shared_from_this()) {
-      throw std::runtime_error(
-          "AudioTrackFormat already belongs to another Document");
-    }
-    auto it = std::find(audioTrackFormats_.begin(), audioTrackFormats_.end(),
-                        trackFormat);
-    if (it == audioTrackFormats_.end()) {
+    if (!checkParent(trackFormat, "AudioTrackFormat")) {
       // NOTE: That the id assignment works properly the AudioStreamFormats
       // have to be added before the AudioTrackFormat.
       auto audioStreamFormat = trackFormat->getReference<AudioStreamFormat>();
@@ -195,14 +148,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioTrackUid> trackUid) {
-    if (trackUid->getParent().lock() &&
-        trackUid->getParent().lock() != shared_from_this()) {
-      throw std::runtime_error(
-          "AudioTrackUid already belongs to another Document");
-    }
-    auto it =
-        std::find(audioTrackUids_.begin(), audioTrackUids_.end(), trackUid);
-    if (it == audioTrackUids_.end()) {
+    if (!checkParent(trackUid, "AudioTrackUid")) {
       idAssigner_.assignId(*trackUid);
       AudioTrackUidAttorney::setParent(trackUid, shared_from_this());
       audioTrackUids_.push_back(trackUid);
@@ -230,6 +176,7 @@ namespace adm {
         std::find(audioProgrammes_.begin(), audioProgrammes_.end(), programme);
     if (it != audioProgrammes_.end()) {
       audioProgrammes_.erase(it);
+      AudioProgrammeAttorney::setParent(programme, {});
       return true;
     }
     return false;
@@ -239,6 +186,7 @@ namespace adm {
     auto it = std::find(audioContents_.begin(), audioContents_.end(), content);
     if (it != audioContents_.end()) {
       audioContents_.erase(it);
+      AudioContentAttorney::setParent(content, {});
       for (auto& audioProgramme : audioProgrammes_) {
         audioProgramme->removeReference(content);
       }
@@ -251,6 +199,7 @@ namespace adm {
     auto it = std::find(audioObjects_.begin(), audioObjects_.end(), object);
     if (it != audioObjects_.end()) {
       audioObjects_.erase(it);
+      AudioObjectAttorney::setParent(object, {});
       for (auto& audioObject : audioObjects_) {
         audioObject->removeReference(object);
       }
@@ -267,6 +216,7 @@ namespace adm {
                         packFormat);
     if (it != audioPackFormats_.end()) {
       audioPackFormats_.erase(it);
+      AudioPackFormatAttorney::setParent(packFormat, {});
       for (auto& audioPackFormat : audioPackFormats_) {
         audioPackFormat->removeReference(packFormat);
       }
@@ -293,6 +243,7 @@ namespace adm {
                         audioChannelFormats_.end(), channelFormat);
     if (it != audioChannelFormats_.end()) {
       audioChannelFormats_.erase(it);
+      AudioChannelFormatAttorney::setParent(channelFormat, {});
       for (auto& audioPackFormat : audioPackFormats_) {
         audioPackFormat->removeReference(channelFormat);
       }
@@ -318,6 +269,7 @@ namespace adm {
                         streamFormat);
     if (it != audioStreamFormats_.end()) {
       audioStreamFormats_.erase(it);
+      AudioStreamFormatAttorney::setParent(streamFormat, {});
 
       for (auto& audioTrackFormat : audioTrackFormats_) {
         if (audioTrackFormat->getReference<AudioStreamFormat>() ==
@@ -335,6 +287,7 @@ namespace adm {
                         trackFormat);
     if (it != audioTrackFormats_.end()) {
       audioTrackFormats_.erase(it);
+      AudioTrackFormatAttorney::setParent(trackFormat, {});
 
       for (auto& audioStreamFormat : audioStreamFormats_) {
         audioStreamFormat->removeReference(trackFormat);
@@ -354,6 +307,7 @@ namespace adm {
         std::find(audioTrackUids_.begin(), audioTrackUids_.end(), trackUid);
     if (it != audioTrackUids_.end()) {
       audioTrackUids_.erase(it);
+      AudioTrackUidAttorney::setParent(trackUid, {});
       for (auto& audioObject : audioObjects_) {
         audioObject->removeReference(trackUid);
       }
@@ -515,6 +469,16 @@ namespace adm {
   std::shared_ptr<const AudioTrackUid> Document::lookup(
       const AudioTrackUidId& id) const {
     return lookupById<const AudioTrackUid>(getElements<AudioTrackUid>(), id);
+  }
+
+  template <typename Element>
+  bool Document::checkParent(const std::shared_ptr<Element> &element, const char *type) {
+    auto parentPtr = element->getParent().lock();
+    if (parentPtr && parentPtr.get() != this)
+      throw std::runtime_error(
+          std::string{type} + " already belongs to another Document");
+    else
+      return static_cast<bool>(parentPtr);
   }
 
 }  // namespace adm

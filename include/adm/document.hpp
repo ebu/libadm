@@ -240,6 +240,17 @@ namespace adm {
     ADM_EXPORT ElementRange<AudioTrackUid> getElements(
         detail::ParameterTraits<AudioTrackUid>::tag);
 
+    /// check the parent of an element
+    ///
+    /// - if there is no parent, return false
+    /// - if this document is the parent, return true
+    /// - if another document is the parent, throw
+    ///
+    /// use char * to avoid copying a std::string for an error that's not
+    /// normally raised
+    template <typename Element>
+    bool checkParent(const std::shared_ptr<Element> &element, const char *type);
+
     std::vector<std::shared_ptr<AudioProgramme>> audioProgrammes_;
     std::vector<std::shared_ptr<AudioContent>> audioContents_;
     std::vector<std::shared_ptr<AudioObject>> audioObjects_;
