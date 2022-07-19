@@ -43,24 +43,23 @@ namespace adm {
 
   template <typename ElementSrc, typename ElementDest>
   void resolveReferences(
-      std::shared_ptr<const ElementSrc> element,
-      std::map<std::shared_ptr<const ElementSrc>, std::shared_ptr<ElementSrc>>
-          mappingSrc,
-      std::map<std::shared_ptr<const ElementDest>, std::shared_ptr<ElementDest>>
-          mappingDest) {
-    for (const auto& reference : element->template getReferences<ElementDest>()) {
+      const std::shared_ptr<const ElementSrc>& element,
+      const std::map<std::shared_ptr<const ElementSrc>,
+                     std::shared_ptr<ElementSrc>>& mappingSrc,
+      const std::map<std::shared_ptr<const ElementDest>,
+                     std::shared_ptr<ElementDest>>& mappingDest) {
+    for (const auto& reference :
+         element->template getReferences<ElementDest>()) {
       mappingSrc.at(element)->addReference(mappingDest.at(reference));
     }
   }
 
   inline void resolveReferences(
-      std::shared_ptr<const AudioStreamFormat> element,
-      std::map<std::shared_ptr<const AudioStreamFormat>,
-               std::shared_ptr<AudioStreamFormat>>
-          mappingSrc,
-      std::map<std::shared_ptr<const AudioTrackFormat>,
-               std::shared_ptr<AudioTrackFormat>>
-          mappingDest) {
+      const std::shared_ptr<const AudioStreamFormat>& element,
+      const std::map<std::shared_ptr<const AudioStreamFormat>,
+                     std::shared_ptr<AudioStreamFormat>>& mappingSrc,
+      const std::map<std::shared_ptr<const AudioTrackFormat>,
+                     std::shared_ptr<AudioTrackFormat>>& mappingDest) {
     for (const auto& weakReference : element->getAudioTrackFormatReferences()) {
       auto reference = weakReference.lock();
       if (reference) {
@@ -72,11 +71,11 @@ namespace adm {
 
   template <typename ElementSrc, typename ElementDest>
   void resolveReference(
-      std::shared_ptr<const ElementSrc> element,
-      std::map<std::shared_ptr<const ElementSrc>, std::shared_ptr<ElementSrc>>
-          mappingSrc,
-      std::map<std::shared_ptr<const ElementDest>, std::shared_ptr<ElementDest>>
-          mappingDest) {
+      const std::shared_ptr<const ElementSrc>& element,
+      const std::map<std::shared_ptr<const ElementSrc>,
+                     std::shared_ptr<ElementSrc>>& mappingSrc,
+      const std::map<std::shared_ptr<const ElementDest>,
+                     std::shared_ptr<ElementDest>>& mappingDest) {
     if (auto reference = element->template getReference<ElementDest>()) {
       mappingSrc.at(element)->setReference(mappingDest.at(reference));
     }
@@ -84,11 +83,11 @@ namespace adm {
 
   template <typename ElementSrc, typename ElementDest>
   void resolveComplementaries(
-      std::shared_ptr<const ElementSrc> element,
-      std::map<std::shared_ptr<const ElementSrc>, std::shared_ptr<ElementSrc>>
-          mappingSrc,
-      std::map<std::shared_ptr<const ElementDest>, std::shared_ptr<ElementDest>>
-          mappingDest) {
+      const std::shared_ptr<const ElementSrc>& element,
+      const std::map<std::shared_ptr<const ElementSrc>,
+                     std::shared_ptr<ElementSrc>>& mappingSrc,
+      const std::map<std::shared_ptr<const ElementDest>,
+                     std::shared_ptr<ElementDest>>& mappingDest) {
     for (const auto& reference : element->getComplementaryObjects()) {
       mappingSrc.at(element)->addComplementary(mappingDest.at(reference));
     }
@@ -119,8 +118,9 @@ namespace adm {
    * already there is done using the id.
    */
   template <typename AudioBlockFormat>
-  void copyAudioBlockFormats(std::shared_ptr<const AudioChannelFormat> src,
-                             std::shared_ptr<AudioChannelFormat> dest) {
+  void copyAudioBlockFormats(
+      const std::shared_ptr<const AudioChannelFormat>& src,
+      const std::shared_ptr<AudioChannelFormat>& dest) {
     auto blockFormatsSrc = src->template getElements<AudioBlockFormat>();
     auto blockFormatsDest = dest->template getElements<AudioBlockFormat>();
     for (const auto& blockFormatSrc : blockFormatsSrc) {
