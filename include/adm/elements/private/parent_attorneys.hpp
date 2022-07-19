@@ -19,9 +19,9 @@ namespace adm {
    private:
     friend class Document;
 
-    static void setParent(std::shared_ptr<AudioProgramme> programme,
+    static void setParent(const std::shared_ptr<AudioProgramme>& programme,
                           std::weak_ptr<Document> parent) {
-      programme->setParent(parent);
+      programme->setParent(std::move(parent));
     }
   };
 
@@ -30,9 +30,9 @@ namespace adm {
     friend class Document;
     friend class AudioProgramme;
 
-    static void setParent(std::shared_ptr<AudioContent> content,
+    static void setParent(const std::shared_ptr<AudioContent>& content,
                           std::weak_ptr<Document> parent) {
-      content->setParent(parent);
+      content->setParent(std::move(parent));
     }
   };
 
@@ -42,9 +42,9 @@ namespace adm {
     friend class AudioContent;
     friend class AudioObject;
 
-    static void setParent(std::shared_ptr<AudioObject> object,
+    static void setParent(const std::shared_ptr<AudioObject>& object,
                           std::weak_ptr<Document> parent) {
-      object->setParent(parent);
+      object->setParent(std::move(parent));
     }
   };
 
@@ -56,9 +56,9 @@ namespace adm {
     friend class AudioStreamFormat;
     friend class AudioObject;
 
-    static void setParent(std::shared_ptr<AudioPackFormat> packFormat,
+    static void setParent(const std::shared_ptr<AudioPackFormat>& packFormat,
                           std::weak_ptr<Document> parent) {
-      packFormat->setParent(parent);
+      packFormat->setParent(std::move(parent));
     }
   };
 
@@ -68,9 +68,10 @@ namespace adm {
     friend class AudioPackFormat;
     friend class AudioStreamFormat;
 
-    static void setParent(std::shared_ptr<AudioChannelFormat> channelFormat,
-                          std::weak_ptr<Document> parent) {
-      channelFormat->setParent(parent);
+    static void setParent(
+        const std::shared_ptr<AudioChannelFormat>& channelFormat,
+        std::weak_ptr<Document> parent) {
+      channelFormat->setParent(std::move(parent));
     }
   };
 
@@ -79,9 +80,10 @@ namespace adm {
     friend class Document;
     friend class AudioTrackFormat;
 
-    static void setParent(std::shared_ptr<AudioStreamFormat> streamFormat,
-                          std::weak_ptr<Document> parent) {
-      streamFormat->setParent(parent);
+    static void setParent(
+        const std::shared_ptr<AudioStreamFormat>& streamFormat,
+        std::weak_ptr<Document> parent) {
+      streamFormat->setParent(std::move(parent));
     }
   };
 
@@ -91,9 +93,9 @@ namespace adm {
     friend class AudioTrackUid;
     friend class AudioStreamFormat;
 
-    static void setParent(std::shared_ptr<AudioTrackFormat> trackFormat,
+    static void setParent(const std::shared_ptr<AudioTrackFormat>& trackFormat,
                           std::weak_ptr<Document> parent) {
-      trackFormat->setParent(parent);
+      trackFormat->setParent(std::move(parent));
     }
   };
 
@@ -102,9 +104,9 @@ namespace adm {
     friend class Document;
     friend class AudioObject;
 
-    static void setParent(std::shared_ptr<AudioTrackUid> trackFormat,
+    static void setParent(const std::shared_ptr<AudioTrackUid>& trackFormat,
                           std::weak_ptr<Document> parent) {
-      trackFormat->setParent(parent);
+      trackFormat->setParent(std::move(parent));
     }
   };
 
