@@ -48,7 +48,7 @@ namespace adm {
           mappingSrc,
       std::map<std::shared_ptr<const ElementDest>, std::shared_ptr<ElementDest>>
           mappingDest) {
-    for (auto reference : element->template getReferences<ElementDest>()) {
+    for (const auto& reference : element->template getReferences<ElementDest>()) {
       mappingSrc.at(element)->addReference(mappingDest.at(reference));
     }
   }
@@ -61,7 +61,7 @@ namespace adm {
       std::map<std::shared_ptr<const AudioTrackFormat>,
                std::shared_ptr<AudioTrackFormat>>
           mappingDest) {
-    for (auto weakReference : element->getAudioTrackFormatReferences()) {
+    for (const auto& weakReference : element->getAudioTrackFormatReferences()) {
       auto reference = weakReference.lock();
       if (reference) {
         mappingSrc.at(element)->addReference(
@@ -89,7 +89,7 @@ namespace adm {
           mappingSrc,
       std::map<std::shared_ptr<const ElementDest>, std::shared_ptr<ElementDest>>
           mappingDest) {
-    for (auto reference : element->getComplementaryObjects()) {
+    for (const auto& reference : element->getComplementaryObjects()) {
       mappingSrc.at(element)->addComplementary(mappingDest.at(reference));
     }
   }
@@ -123,7 +123,7 @@ namespace adm {
                              std::shared_ptr<AudioChannelFormat> dest) {
     auto blockFormatsSrc = src->template getElements<AudioBlockFormat>();
     auto blockFormatsDest = dest->template getElements<AudioBlockFormat>();
-    for (auto blockFormatSrc : blockFormatsSrc) {
+    for (const auto& blockFormatSrc : blockFormatsSrc) {
       auto foundBlockFormat =
           std::find_if(blockFormatsDest.begin(), blockFormatsDest.end(),
                        ParameterEqualTo<AudioBlockFormat, AudioBlockFormatId>(

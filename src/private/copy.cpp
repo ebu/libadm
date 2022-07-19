@@ -21,59 +21,59 @@ namespace adm {
     ElementMapping mapping;
     std::vector<ElementVariant> copiedElements;
     // copy
-    for (auto element : document->getElements<AudioProgramme>()) {
+    for (const auto& element : document->getElements<AudioProgramme>()) {
       mapping.audioProgramme[element] = element->copy();
       copiedElements.push_back(mapping.audioProgramme.at(element));
     }
-    for (auto element : document->getElements<AudioContent>()) {
+    for (const auto& element : document->getElements<AudioContent>()) {
       mapping.audioContent[element] = element->copy();
       copiedElements.push_back(mapping.audioContent.at(element));
     }
-    for (auto element : document->getElements<AudioObject>()) {
+    for (const auto& element : document->getElements<AudioObject>()) {
       mapping.audioObject[element] = element->copy();
       copiedElements.push_back(mapping.audioObject.at(element));
     }
-    for (auto element : document->getElements<AudioPackFormat>()) {
+    for (const auto& element : document->getElements<AudioPackFormat>()) {
       mapping.audioPackFormat[element] = element->copy();
       copiedElements.push_back(mapping.audioPackFormat.at(element));
     }
-    for (auto element : document->getElements<AudioChannelFormat>()) {
+    for (const auto& element : document->getElements<AudioChannelFormat>()) {
       mapping.audioChannelFormat[element] = element->copy();
       copiedElements.push_back(mapping.audioChannelFormat.at(element));
     }
-    for (auto element : document->getElements<AudioStreamFormat>()) {
+    for (const auto& element : document->getElements<AudioStreamFormat>()) {
       mapping.audioStreamFormat[element] = element->copy();
       copiedElements.push_back(mapping.audioStreamFormat.at(element));
     }
-    for (auto element : document->getElements<AudioTrackFormat>()) {
+    for (const auto& element : document->getElements<AudioTrackFormat>()) {
       mapping.audioTrackFormat[element] = element->copy();
       copiedElements.push_back(mapping.audioTrackFormat.at(element));
     }
-    for (auto element : document->getElements<AudioTrackUid>()) {
+    for (const auto& element : document->getElements<AudioTrackUid>()) {
       mapping.audioTrackUid[element] = element->copy();
       copiedElements.push_back(mapping.audioTrackUid.at(element));
     }
 
     // resolve
-    for (auto element : document->getElements<AudioProgramme>()) {
+    for (const auto& element : document->getElements<AudioProgramme>()) {
       resolveReferences(element, mapping.audioProgramme, mapping.audioContent);
     }
-    for (auto element : document->getElements<AudioContent>()) {
+    for (const auto& element : document->getElements<AudioContent>()) {
       resolveReferences(element, mapping.audioContent, mapping.audioObject);
     }
-    for (auto element : document->getElements<AudioObject>()) {
+    for (const auto& element : document->getElements<AudioObject>()) {
       resolveReferences(element, mapping.audioObject, mapping.audioObject);
       resolveReferences(element, mapping.audioObject, mapping.audioPackFormat);
       resolveReferences(element, mapping.audioObject, mapping.audioTrackUid);
       resolveComplementaries(element, mapping.audioObject, mapping.audioObject);
     }
-    for (auto element : document->getElements<AudioPackFormat>()) {
+    for (const auto& element : document->getElements<AudioPackFormat>()) {
       resolveReferences(element, mapping.audioPackFormat,
                         mapping.audioPackFormat);
       resolveReferences(element, mapping.audioPackFormat,
                         mapping.audioChannelFormat);
     }
-    for (auto element : document->getElements<AudioStreamFormat>()) {
+    for (const auto& element : document->getElements<AudioStreamFormat>()) {
       resolveReference(element, mapping.audioStreamFormat,
                        mapping.audioPackFormat);
       resolveReference(element, mapping.audioStreamFormat,
@@ -81,11 +81,11 @@ namespace adm {
       resolveReferences(element, mapping.audioStreamFormat,
                         mapping.audioTrackFormat);
     }
-    for (auto element : document->getElements<AudioTrackFormat>()) {
+    for (const auto& element : document->getElements<AudioTrackFormat>()) {
       resolveReference(element, mapping.audioTrackFormat,
                        mapping.audioStreamFormat);
     }
-    for (auto element : document->getElements<AudioTrackUid>()) {
+    for (const auto& element : document->getElements<AudioTrackUid>()) {
       resolveReference(element, mapping.audioTrackUid,
                        mapping.audioTrackFormat);
       resolveReference(element, mapping.audioTrackUid, mapping.audioPackFormat);
