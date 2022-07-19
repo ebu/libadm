@@ -193,7 +193,7 @@ namespace adm {
   }
 
   void AudioPackFormat::setParent(std::weak_ptr<Document> document) {
-    parent_ = document;
+    parent_ = std::move(document);
   }
 
   std::weak_ptr<Document> AudioPackFormat::getParent() const { return parent_; }

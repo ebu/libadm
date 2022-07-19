@@ -206,7 +206,7 @@ namespace adm {
   }
 
   void AudioChannelFormat::setParent(std::weak_ptr<Document> document) {
-    parent_ = document;
+    parent_ = std::move(document);
   }
 
   std::weak_ptr<Document> AudioChannelFormat::getParent() const {

@@ -337,7 +337,7 @@ namespace adm {
   }
 
   void AudioObject::setParent(std::weak_ptr<Document> document) {
-    parent_ = document;
+    parent_ = std::move(document);
   }
 
   std::weak_ptr<Document> AudioObject::getParent() const { return parent_; }

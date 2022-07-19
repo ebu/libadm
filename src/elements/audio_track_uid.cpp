@@ -168,7 +168,7 @@ namespace adm {
   }
 
   void AudioTrackUid::setParent(std::weak_ptr<Document> document) {
-    parent_ = document;
+    parent_ = std::move(document);
   }
 
   std::weak_ptr<Document> AudioTrackUid::getParent() const { return parent_; }

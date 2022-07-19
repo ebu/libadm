@@ -186,7 +186,7 @@ namespace adm {
   }
 
   void AudioStreamFormat::setParent(std::weak_ptr<Document> document) {
-    parent_ = document;
+    parent_ = std::move(document);
   }
 
   std::weak_ptr<Document> AudioStreamFormat::getParent() const {
