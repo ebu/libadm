@@ -340,7 +340,9 @@ namespace adm {
     parent_ = std::move(document);
   }
 
-  std::weak_ptr<Document> AudioObject::getParent() const { return parent_; }
+  const std::weak_ptr<Document>& AudioObject::getParent() const {
+    return parent_;
+  }
 
   std::shared_ptr<AudioObject> AudioObject::copy() const {
     auto audioObjectCopy = std::shared_ptr<AudioObject>(new AudioObject(*this));

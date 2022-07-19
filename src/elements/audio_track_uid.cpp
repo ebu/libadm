@@ -171,7 +171,9 @@ namespace adm {
     parent_ = std::move(document);
   }
 
-  std::weak_ptr<Document> AudioTrackUid::getParent() const { return parent_; }
+  const std::weak_ptr<Document>& AudioTrackUid::getParent() const {
+    return parent_;
+  }
 
   std::shared_ptr<AudioTrackUid> AudioTrackUid::copy() const {
     auto audioTrackUidCopy =

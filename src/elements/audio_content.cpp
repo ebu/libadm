@@ -231,7 +231,9 @@ namespace adm {
   void AudioContent::setParent(std::weak_ptr<Document> document) {
     parent_ = std::move(document);
   }
-  std::weak_ptr<Document> AudioContent::getParent() const { return parent_; }
+  const std::weak_ptr<Document>& AudioContent::getParent() const {
+    return parent_;
+  }
 
   std::shared_ptr<AudioContent> AudioContent::copy() const {
     auto audioContentCopy =

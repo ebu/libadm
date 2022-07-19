@@ -196,7 +196,7 @@ namespace adm {
     ADM_EXPORT void print(std::ostream &os) const;
 
     /// Get adm::Document this element belongs to
-    ADM_EXPORT std::weak_ptr<Document> getParent() const;
+    ADM_EXPORT const std::weak_ptr<Document> &getParent() const;
 
    private:
     friend class AudioChannelFormatAttorney;
