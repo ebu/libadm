@@ -4,6 +4,7 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <cstring>
 #include <vector>
 #include "adm/document.hpp"
 #include "adm/elements/format_descriptor.hpp"
@@ -73,13 +74,13 @@ namespace adm {
        * @returns a vector of NodePtr or an empty vector if no element could
        * not be found.
        */
-      std::vector<NodePtr> findElements(NodePtr node, const std::string& name) {
+      std::vector<NodePtr> findElements(NodePtr node, const char* name) {
         std::vector<NodePtr> elements;
-        for (NodePtr elementNode = node->first_node(); elementNode;
-             elementNode = elementNode->next_sibling()) {
-          if (std::string(elementNode->name()) == name) {
-            elements.push_back(elementNode);
-          }
+
+        size_t nameLen = std::strlen(name);
+        for (NodePtr elementNode = node->first_node(name, nameLen); elementNode;
+             elementNode = elementNode->next_sibling(name, nameLen)) {
+          elements.push_back(elementNode);
         }
         return elements;
       }
