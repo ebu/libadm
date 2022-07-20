@@ -37,8 +37,13 @@ namespace adm {
       } else {
         root = xmlDocument.addEbuStructure();
       }
+
+      root.addBaseElements<AudioProgramme, AudioProgrammeId>(
+          document, "audioProgramme", [this](XmlNode& node, auto programme) {
+            formatAudioProgramme(node, programme);
+          });
+
       // clang-format off
-      root.addBaseElements<AudioProgramme, AudioProgrammeId>(document, "audioProgramme", &formatAudioProgramme);
       root.addBaseElements<AudioContent, AudioContentId>(document, "audioContent", &formatAudioContent);
       root.addBaseElements<AudioObject, AudioObjectId>(document, "audioObject", &formatAudioObject);
       root.addBaseElements<AudioPackFormat, AudioPackFormatId>(document, "audioPackFormat", &formatAudioPackFormat);
@@ -48,6 +53,21 @@ namespace adm {
       root.addBaseElements<AudioTrackUid, AudioTrackUidId>(document, "audioTrackUID", &formatAudioTrackUid);
       // clang-format on
       return stream << xmlDocument;
+    }
+
+    void XmlWriter::formatAudioProgramme(
+        XmlNode& node, const std::shared_ptr<const AudioProgramme> programme) {
+      // clang-format off
+      node.addAttribute<AudioProgrammeId>(programme, "audioProgrammeID");
+      node.addOptionalAttribute<AudioProgrammeName>(programme, "audioProgrammeName");
+      node.addOptionalAttribute<AudioProgrammeLanguage>(programme, "audioProgrammeLanguage");
+      node.addOptionalAttribute<Start>(programme, "start");
+      node.addOptionalAttribute<End>(programme, "end");
+      node.addOptionalAttribute<MaxDuckingDepth>(programme, "maxDuckingDepth");
+      node.addReferences<AudioContent, AudioContentId>(programme, "audioContentIDRef");
+      node.addVectorElements<LoudnessMetadatas>(programme, "loudnessMetadata", &formatLoudnessMetadata);
+      node.addVectorElements<Labels>(programme, "audioProgrammeLabel", &formatLabel);
+      // clang-format on
     }
 
   }  // namespace xml

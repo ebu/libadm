@@ -17,20 +17,37 @@ namespace adm {
       return static_cast<bool>(options & flag);
     }
 
-    XmlParser::XmlParser(const std::string& filename, ParserOptions options,
-                         std::shared_ptr<Document> destDocument)
-        : xmlFile_(filename.c_str()),
-          options_(options),
-          document_(destDocument) {}
+    XmlParser::XmlParser(std::shared_ptr<Document> destDocument,
+                         ParserOptions options)
+        : options_(options), document_(std::move(destDocument)) {}
 
-    XmlParser::XmlParser(std::istream& stream, ParserOptions options,
-                         std::shared_ptr<Document> destDocument)
-        : xmlFile_(stream), options_(options), document_(destDocument) {}
+    void XmlParser::parseFile(const std::string& filename) {
+      rapidxml::file<> xmlFile(filename.c_str());
+      parseXmlFile(xmlFile);
+    }
 
-    std::shared_ptr<Document> XmlParser::parse() {
+    void XmlParser::parseStream(std::istream& stream) {
+      rapidxml::file<> xmlFile(stream);
+      parseXmlFile(xmlFile);
+    }
+
+    void XmlParser::parseString(const std::string& xmlString) {
+      // null-terminated copy to be modified by rapidxml (so can't use c_str)
+      std::vector<char> vec(xmlString.begin(), xmlString.end());
+      vec.push_back('\0');
+
       rapidxml::xml_document<> xmlDocument;
-      xmlDocument.parse<0>(xmlFile_.data());
+      xmlDocument.parse<0>(vec.data());
+      parseXml(xmlDocument);
+    }
 
+    void XmlParser::parseXmlFile(rapidxml::file<>& xmlFile) {
+      rapidxml::xml_document<> xmlDocument;
+      xmlDocument.parse<0>(xmlFile.data());
+      parseXml(xmlDocument);
+    }
+
+    void XmlParser::parseXml(const rapidxml::xml_document<>& xmlDocument) {
       if (!xmlDocument.first_node())
         throw error::XmlParsingError("xml document is empty");
 
@@ -80,7 +97,6 @@ namespace adm {
       } else {
         throw error::XmlParsingError("audioFormatExtended node not found");
       }
-      return document_;
     }  // namespace xml
 
     /**
@@ -430,8 +446,8 @@ namespace adm {
       return audioTrackUid;
     }
 
-    AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(
-        NodePtr node) {
+    AudioBlockFormatDirectSpeakers
+    XmlParser::parseAudioBlockFormatDirectSpeakers(NodePtr node) {
       AudioBlockFormatDirectSpeakers audioBlockFormat;
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
@@ -600,7 +616,8 @@ namespace adm {
       return headphoneVirtualise;
     }
 
-    AudioBlockFormatObjects parseAudioBlockFormatObjects(NodePtr node) {
+    AudioBlockFormatObjects XmlParser::parseAudioBlockFormatObjects(
+        NodePtr node) {
       AudioBlockFormatObjects audioBlockFormat{SphericalPosition()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
@@ -826,7 +843,8 @@ namespace adm {
         return ContentKind(
             parseAttribute<MixedContentKind>(node, "mixedContentKind"));
       } else {
-        throw error::XmlParsingError("unknown dialogue id", getDocumentLine(node));
+        throw error::XmlParsingError("unknown dialogue id",
+                                     getDocumentLine(node));
       }
     }
 
@@ -835,7 +853,7 @@ namespace adm {
       return AudioProgrammeReferenceScreen();
     }
 
-    AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node) {
+    AudioBlockFormatHoa XmlParser::parseAudioBlockFormatHoa(NodePtr node) {
       AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
@@ -855,11 +873,14 @@ namespace adm {
       return audioBlockFormat;
     }
 
-    AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node) {
+    AudioBlockFormatBinaural XmlParser::parseAudioBlockFormatBinaural(
+        NodePtr node) {
       AudioBlockFormatBinaural audioBlockFormat;
 
-      setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat,
+                                  &parseTimecode);
+      setOptionalAttribute<Duration>(node, "duration", audioBlockFormat,
+                                     &parseTimecode);
       setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
 

@@ -94,3 +94,8 @@ add_adm_test("xml_writer_audio_content_tests")
 add_adm_test("xml_writer_objects_creation_tests")
 add_adm_test("xml_writer_label_tests")
 add_adm_test("xml_writer_tests")
+
+# tests which use non-exported symbols
+if ((NOT BUILD_SHARED_LIBS) OR (NOT ADM_HIDE_INTERNAL_SYMBOLS))
+    add_adm_test("xml_parser_override_tests")
+endif ()

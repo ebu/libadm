@@ -44,13 +44,10 @@ namespace adm {
     AudioProgrammeReferenceScreen parseAudioProgrammeReferenceScreen(
         NodePtr node);
     Label parseLabel(NodePtr node);
-    AudioBlockFormatObjects parseAudioBlockFormatObjects(NodePtr node);
     Gain parseGain(NodePtr node);
     ChannelLock parseChannelLock(NodePtr node);
     ObjectDivergence parseObjectDivergence(NodePtr node);
     JumpPosition parseJumpPosition(NodePtr node);
-    AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(
-        NodePtr node);
     SphericalSpeakerPosition parseSphericalSpeakerPosition(
         const std::vector<std::pair<NodePtr, SphericalCoordinateValue>>&
             sphericalCoordinates);
@@ -61,36 +58,45 @@ namespace adm {
     SpeakerPosition parseSpeakerPosition(std::vector<NodePtr> node);
     SpeakerLabel parseSpeakerLabel(NodePtr node);
     HeadphoneVirtualise parseHeadphoneVirtualise(NodePtr node);
-    AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node);
-    AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node);
 
     NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr root);
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
     class XmlParser {
      public:
-      explicit XmlParser(
-          const std::string& filename,
-          ParserOptions options = ParserOptions::none,
-          std::shared_ptr<Document> destDocument = Document::create());
-      explicit XmlParser(
-          std::istream& stream, ParserOptions options = ParserOptions::none,
-          std::shared_ptr<Document> destDocument = Document::create());
+      explicit XmlParser(std::shared_ptr<Document> destDocument,
+                         ParserOptions options = ParserOptions::none);
 
-      std::shared_ptr<Document> parse();
+      void parseFile(const std::string& filename);
+      void parseStream(std::istream& stream);
+      void parseString(const std::string& xmlString);
+      void parseXmlFile(rapidxml::file<>& xmlFile);
+      void parseXml(const rapidxml::xml_document<>& xmlDocument);
 
       bool hasUnresolvedReferences();
 
-     private:
-      std::shared_ptr<AudioProgramme> parseAudioProgramme(NodePtr node);
-      std::shared_ptr<AudioContent> parseAudioContent(NodePtr node);
-      std::shared_ptr<AudioObject> parseAudioObject(NodePtr node);
-      std::shared_ptr<AudioTrackFormat> parseAudioTrackFormat(NodePtr node);
-      std::shared_ptr<AudioStreamFormat> parseAudioStreamFormat(NodePtr node);
-      std::shared_ptr<AudioPackFormat> parseAudioPackFormat(NodePtr node);
-      std::shared_ptr<AudioTrackUid> parseAudioTrackUid(NodePtr node);
-      std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(NodePtr node);
+     protected:
+      virtual std::shared_ptr<AudioProgramme> parseAudioProgramme(NodePtr node);
+      virtual std::shared_ptr<AudioContent> parseAudioContent(NodePtr node);
+      virtual std::shared_ptr<AudioObject> parseAudioObject(NodePtr node);
+      virtual std::shared_ptr<AudioTrackFormat> parseAudioTrackFormat(
+          NodePtr node);
+      virtual std::shared_ptr<AudioStreamFormat> parseAudioStreamFormat(
+          NodePtr node);
+      virtual std::shared_ptr<AudioPackFormat> parseAudioPackFormat(
+          NodePtr node);
+      virtual std::shared_ptr<AudioTrackUid> parseAudioTrackUid(NodePtr node);
+      virtual std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(
+          NodePtr node);
 
-      rapidxml::file<> xmlFile_;
+      virtual AudioBlockFormatObjects parseAudioBlockFormatObjects(
+          NodePtr node);
+      virtual AudioBlockFormatDirectSpeakers
+      parseAudioBlockFormatDirectSpeakers(NodePtr node);
+      virtual AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node);
+      virtual AudioBlockFormatBinaural parseAudioBlockFormatBinaural(
+          NodePtr node);
+
+     private:
       ParserOptions options_;
       std::shared_ptr<Document> document_;
 

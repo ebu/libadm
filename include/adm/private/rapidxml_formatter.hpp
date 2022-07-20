@@ -7,8 +7,6 @@ namespace adm {
 
     class XmlNode;
 
-    void formatAudioProgramme(
-        XmlNode &node, const std::shared_ptr<const AudioProgramme> programme);
     void formatLabel(XmlNode &node, const Label &label);
     void formatAudioComplementaryObjectGroupLabel(
         XmlNode &node, const AudioComplementaryObjectGroupLabel &label);

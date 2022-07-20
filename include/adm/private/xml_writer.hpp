@@ -1,9 +1,14 @@
 #pragma once
 #include "adm/write.hpp"
+#include <memory>
 
 namespace adm {
   class Document;
+  class AudioProgramme;
+
   namespace xml {
+
+    class XmlNode;
 
     class XmlWriter {
      public:
@@ -11,6 +16,10 @@ namespace adm {
 
       std::ostream& write(std::shared_ptr<const Document> document,
                           std::ostream& stream);
+
+     protected:
+      virtual void formatAudioProgramme(
+          XmlNode& node, const std::shared_ptr<const AudioProgramme> programme);
 
      private:
       WriterOptions options_;
