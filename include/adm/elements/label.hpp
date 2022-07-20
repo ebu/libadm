@@ -72,7 +72,7 @@ namespace adm {
   ADD_TRAIT(Labels, LabelsTag);
 
   inline bool operator==(Label const& lhs, Label const& rhs) {
-    return detail::compareOptionals<LabelValue, LabelLanguage>(lhs, rhs);
+    return detail::optionalsEqual<LabelValue, LabelLanguage>(lhs, rhs);
   }
 
   inline bool operator!=(Label const& lhs, Label const& rhs) {

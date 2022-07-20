@@ -224,8 +224,8 @@ namespace adm {
     struct ParameterCompare<LoudnessMetadata> {
       static bool compare(LoudnessMetadata const& lhs,
                           LoudnessMetadata const& rhs) {
-        return compareOptionals<LoudnessRecType, LoudnessMethod,
-                                LoudnessCorrectionType>(lhs, rhs);
+        return optionalsEqual<LoudnessRecType, LoudnessMethod,
+                              LoudnessCorrectionType>(lhs, rhs);
       }
     };
     extern template class ADM_EXPORT_TEMPLATE_METHODS
