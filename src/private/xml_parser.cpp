@@ -686,7 +686,7 @@ namespace adm {
       return frequency;
     }
 
-    Cartesian guessCartesianFlag(NodePtr node, const std::string& elementName) {
+    Cartesian guessCartesianFlag(NodePtr node, const char *elementName) {
       auto element = detail::findElement(node, elementName);
       if (element) {
         auto coordinate = element->first_attribute("coordinate");

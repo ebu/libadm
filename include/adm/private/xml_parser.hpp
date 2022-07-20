@@ -32,7 +32,7 @@ namespace adm {
     Frequency parseFrequency(std::vector<NodePtr> nodes);
     DialogueId parseDialogueId(NodePtr node);
     ContentKind parseContentKind(NodePtr node);
-    Cartesian guessCartesianFlag(NodePtr node, const std::string& elementName);
+    Cartesian guessCartesianFlag(NodePtr node, const char* elementName);
     SphericalPosition parseSphericalPosition(std::vector<NodePtr> nodes);
     CartesianPosition parseCartesianPosition(std::vector<NodePtr> nodes);
     SphericalPositionOffset parseSphericalPositionOffset(

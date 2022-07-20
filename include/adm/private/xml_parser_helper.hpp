@@ -63,14 +63,8 @@ namespace adm {
        * @returns NodePtr to first element or a nullptr if no element could
        * not be found.
        */
-      NodePtr findElement(NodePtr node, const std::string& name) {
-        for (NodePtr elementNode = node->first_node(); elementNode;
-             elementNode = elementNode->next_sibling()) {
-          if (std::string(elementNode->name()) == name) {
-            return elementNode;
-          }
-        }
-        return nullptr;
+      NodePtr findElement(NodePtr node, const char* name) {
+        return node->first_node(name);
       }
 
       /**
