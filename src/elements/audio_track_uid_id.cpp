@@ -1,8 +1,8 @@
 #include "adm/elements/audio_track_uid_id.hpp"
 #include <boost/format.hpp>
-#include <regex>
 #include <sstream>
 #include "adm/detail/hex_values.hpp"
+#include "adm/detail/id_parser.hpp"
 
 namespace adm {
 
@@ -62,16 +62,12 @@ namespace adm {
   }
 
   AudioTrackUidId parseAudioTrackUidId(const std::string& id) {
-    const static std::regex r("ATU_([0-9a-fA-F]{8})");
-    std::smatch idMatch;
-    if (std::regex_match(id, idMatch, r)) {
-      auto value = detail::parseHexValue(idMatch[1], 8);
-      return AudioTrackUidId(AudioTrackUidIdValue(value));
-    } else {
-      std::stringstream errorString;
-      errorString << "invalid AudioTrackUidId: " << id;
-      throw std::runtime_error(errorString.str());
-    }
+    // ATU_xxxxxxxx
+    detail::IDParser parser("AudioChannelFormatId", id);
+    parser.check_size(12);
+    parser.check_prefix("ATU_", 4);
+    auto value = parser.parse_hex(4, 8);
+    return AudioTrackUidId(AudioTrackUidIdValue(value));
   }
 
   std::string formatId(AudioTrackUidId id) {

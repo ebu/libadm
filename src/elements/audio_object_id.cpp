@@ -1,8 +1,8 @@
 #include "adm/elements/audio_object_id.hpp"
 #include <boost/format.hpp>
-#include <regex>
 #include <sstream>
 #include "adm/detail/hex_values.hpp"
+#include "adm/detail/id_parser.hpp"
 
 namespace adm {
 
@@ -58,16 +58,12 @@ namespace adm {
   }
 
   AudioObjectId parseAudioObjectId(const std::string& id) {
-    const static std::regex r("AO_([0-9a-fA-F]{4})");
-    std::smatch idMatch;
-    if (std::regex_match(id, idMatch, r)) {
-      auto value = detail::parseHexValue(idMatch[1], 4);
-      return AudioObjectId(AudioObjectIdValue(value));
-    } else {
-      std::stringstream errorString;
-      errorString << "invalid AudioObjectId: " << id;
-      throw std::runtime_error(errorString.str());
-    }
+    // AO_xxxx
+    detail::IDParser parser("AudioObjectId", id);
+    parser.check_size(7);
+    parser.check_prefix("AO_", 3);
+    auto value = parser.parse_hex(3, 4);
+    return AudioObjectId(AudioObjectIdValue(value));
   }
 
   std::string formatId(AudioObjectId id) {

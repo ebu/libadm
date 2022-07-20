@@ -1,8 +1,8 @@
 #include "adm/elements/audio_block_format_id.hpp"
 #include <boost/format.hpp>
-#include <regex>
 #include <sstream>
 #include "adm/detail/hex_values.hpp"
+#include "adm/detail/id_parser.hpp"
 
 namespace adm {
 
@@ -107,19 +107,16 @@ namespace adm {
   }
 
   AudioBlockFormatId parseAudioBlockFormatId(const std::string& id) {
-    const static std::regex r("AB_([0-9a-fA-F]{4})([0-9a-fA-F]{4})_([0-9a-fA-F]{8})");
-    std::smatch idMatch;
-    if (std::regex_match(id, idMatch, r)) {
-      auto type = parseTypeLabel(idMatch[1]);
-      auto value = detail::parseHexValue(idMatch[2], 4);
-      auto counter = detail::parseHexValue(idMatch[3], 8);
-      return AudioBlockFormatId(type, AudioBlockFormatIdValue(value),
-                                AudioBlockFormatIdCounter(counter));
-    } else {
-      std::stringstream errorString;
-      errorString << "invalid AudioBlockFormatId: " << id;
-      throw std::runtime_error(errorString.str());
-    }
+    // AB_yyyyxxxx_zzzzzzzz
+    detail::IDParser parser("AudioBlockFormatId", id);
+    parser.check_size(20);
+    parser.check_prefix("AB_", 3);
+    auto type = parser.parse_hex(3, 4);
+    auto value = parser.parse_hex(7, 4);
+    parser.check_underscore(11);
+    auto counter = parser.parse_hex(12, 8);
+    return AudioBlockFormatId(TypeDescriptor(type), AudioBlockFormatIdValue(value),
+        AudioBlockFormatIdCounter(counter));
   }
 
   std::string formatId(AudioBlockFormatId id) {

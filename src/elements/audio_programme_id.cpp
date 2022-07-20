@@ -1,8 +1,8 @@
 #include "adm/elements/audio_programme_id.hpp"
 #include <boost/format.hpp>
-#include <regex>
 #include <sstream>
 #include "adm/detail/hex_values.hpp"
+#include "adm/detail/id_parser.hpp"
 
 namespace adm {
 
@@ -62,16 +62,12 @@ namespace adm {
   }
 
   AudioProgrammeId parseAudioProgrammeId(const std::string& id) {
-    const static std::regex r("APR_([0-9a-fA-F]{4})");
-    std::smatch idMatch;
-    if (std::regex_match(id, idMatch, r)) {
-      auto value = detail::parseHexValue(idMatch[1], 4);
-      return AudioProgrammeId(AudioProgrammeIdValue(value));
-    } else {
-      std::stringstream errorString;
-      errorString << "invalid AudioProgrammeId: " << id;
-      throw std::runtime_error(errorString.str());
-    }
+    // APR_xxxx
+    detail::IDParser parser("AudioProgrammeId", id);
+    parser.check_size(8);
+    parser.check_prefix("APR_", 4);
+    auto value = parser.parse_hex(4, 4);
+    return AudioProgrammeId(AudioProgrammeIdValue(value));
   }
 
   std::string formatId(AudioProgrammeId id) {

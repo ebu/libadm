@@ -1,8 +1,8 @@
 #include "adm/elements/audio_stream_format_id.hpp"
 #include <boost/format.hpp>
-#include <regex>
 #include <sstream>
 #include "adm/detail/hex_values.hpp"
+#include "adm/detail/id_parser.hpp"
 
 namespace adm {
 
@@ -83,17 +83,14 @@ namespace adm {
   }
 
   AudioStreamFormatId parseAudioStreamFormatId(const std::string& id) {
-    const static std::regex r("AS_([0-9a-fA-F]{4})([0-9a-fA-F]{4})");
-    std::smatch idMatch;
-    if (std::regex_match(id, idMatch, r)) {
-      auto type = parseTypeLabel(idMatch[1]);
-      auto value = detail::parseHexValue(idMatch[2], 4);
-      return AudioStreamFormatId(type, AudioStreamFormatIdValue(value));
-    } else {
-      std::stringstream errorString;
-      errorString << "invalid AudioStreamFormatId: " << id;
-      throw std::runtime_error(errorString.str());
-    }
+    // AS_yyyyxxxx
+    detail::IDParser parser("AudioStreamFormatId", id);
+    parser.check_size(11);
+    parser.check_prefix("AS_", 3);
+    auto type = parser.parse_hex(3, 4);
+    auto value = parser.parse_hex(7, 4);
+    return AudioStreamFormatId(TypeDescriptor(type),
+                               AudioStreamFormatIdValue(value));
   }
 
   std::string formatId(AudioStreamFormatId id) {
