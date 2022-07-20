@@ -50,7 +50,7 @@ namespace adm {
   }
 
   bool AudioContentId::operator<(const AudioContentId& other) const {
-    return formatId(*this) < formatId(other);
+    return get<AudioContentIdValue>() < other.get<AudioContentIdValue>();
   }
 
   // ---- Common ---- //

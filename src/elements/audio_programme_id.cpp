@@ -51,7 +51,7 @@ namespace adm {
   }
 
   bool AudioProgrammeId::operator<(const AudioProgrammeId& other) const {
-    return formatId(*this) < formatId(other);
+    return get<AudioProgrammeIdValue>() < other.get<AudioProgrammeIdValue>();
   }
 
   // ---- Common ---- //

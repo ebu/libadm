@@ -3,6 +3,7 @@
 #include <sstream>
 #include "adm/detail/hex_values.hpp"
 #include "adm/detail/id_parser.hpp"
+#include "adm/detail/optional_comparison.hpp"
 
 namespace adm {
 
@@ -61,10 +62,12 @@ namespace adm {
   }
 
   // ---- Operators ---- //
+  using Compare =
+      detail::comparison::OptionalComparator<TypeDescriptor,
+                                             AudioStreamFormatIdValue>;
+
   bool AudioStreamFormatId::operator==(const AudioStreamFormatId& other) const {
-    return get<TypeDescriptor>() == other.get<TypeDescriptor>() &&
-           get<AudioStreamFormatIdValue>() ==
-               other.get<AudioStreamFormatIdValue>();
+    return Compare::allEqual(*this, other);
   }
 
   bool AudioStreamFormatId::operator!=(const AudioStreamFormatId& other) const {
@@ -72,7 +75,7 @@ namespace adm {
   }
 
   bool AudioStreamFormatId::operator<(const AudioStreamFormatId& other) const {
-    return formatId(*this) < formatId(other);
+    return Compare::allLess(*this, other);
   }
 
   // ---- Common ---- //
