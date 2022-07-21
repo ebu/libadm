@@ -169,7 +169,7 @@ namespace adm {
     }
     auto it = std::find(audioObjects_.begin(), audioObjects_.end(), object);
     if (it == audioObjects_.end()) {
-      audioObjects_.push_back(object);
+      audioObjects_.push_back(std::move(object));
       return true;
     } else {
       return false;

@@ -113,7 +113,7 @@ namespace adm {
     auto it = std::find(audioChannelFormats_.begin(),
                         audioChannelFormats_.end(), channelFormat);
     if (it == audioChannelFormats_.end()) {
-      audioChannelFormats_.push_back(channelFormat);
+      audioChannelFormats_.push_back(std::move(channelFormat));
       return true;
     } else {
       return false;
@@ -134,7 +134,7 @@ namespace adm {
     auto it = std::find(audioPackFormats_.begin(), audioPackFormats_.end(),
                         packFormat);
     if (it == audioPackFormats_.end()) {
-      audioPackFormats_.push_back(packFormat);
+      audioPackFormats_.push_back(std::move(packFormat));
       return true;
     } else {
       return false;

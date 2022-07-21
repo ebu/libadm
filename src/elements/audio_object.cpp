@@ -172,7 +172,7 @@ namespace adm {
     auto it = std::find(audioObjects_.begin(), audioObjects_.end(), object);
     if (it == audioObjects_.end()) {
       removeComplementary(object);
-      audioObjects_.push_back(object);
+      audioObjects_.push_back(std::move(object));
       return true;
     } else {
       return false;
@@ -188,7 +188,7 @@ namespace adm {
     auto it = std::find(audioPackFormats_.begin(), audioPackFormats_.end(),
                         packFormat);
     if (it == audioPackFormats_.end()) {
-      audioPackFormats_.push_back(packFormat);
+      audioPackFormats_.push_back(std::move(packFormat));
       return true;
     } else {
       return false;
@@ -204,7 +204,7 @@ namespace adm {
     auto it =
         std::find(audioTrackUids_.begin(), audioTrackUids_.end(), trackUid);
     if (it == audioTrackUids_.end()) {
-      audioTrackUids_.push_back(trackUid);
+      audioTrackUids_.push_back(std::move(trackUid));
       return true;
     } else {
       return false;

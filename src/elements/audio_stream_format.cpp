@@ -58,7 +58,7 @@ namespace adm {
           "AudioStreamFormat cannot refer to an AudioChannelFormat in a "
           "different document");
     }
-    audioChannelFormat_ = channelFormat;
+    audioChannelFormat_ = std::move(channelFormat);
   }
 
   void AudioStreamFormat::setReference(
@@ -68,7 +68,7 @@ namespace adm {
           "AudioStreamFormat cannot refer to an AudioPackFormat in a "
           "different document");
     }
-    audioPackFormat_ = packFormat;
+    audioPackFormat_ = std::move(packFormat);
   }
 
   bool AudioStreamFormat::addReference(

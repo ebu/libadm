@@ -130,7 +130,7 @@ namespace adm {
     }
     auto it = std::find(audioContents_.begin(), audioContents_.end(), content);
     if (it == audioContents_.end()) {
-      audioContents_.push_back(content);
+      audioContents_.push_back(std::move(content));
       return true;
     } else {
       return false;

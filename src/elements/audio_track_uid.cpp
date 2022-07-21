@@ -69,7 +69,7 @@ namespace adm {
           trackFormat->get<AudioTrackFormatId>());
     }
 
-    audioTrackFormat_ = trackFormat;
+    audioTrackFormat_ = std::move(trackFormat);
   }
 
   void AudioTrackUid::setReference(
@@ -79,7 +79,7 @@ namespace adm {
           "AudioTrackUid cannot refer to an AudioPackFormat in a different "
           "document");
     }
-    audioPackFormat_ = packFormat;
+    audioPackFormat_ = std::move(packFormat);
   }
 
   void AudioTrackUid::setReference(
@@ -96,7 +96,7 @@ namespace adm {
           audioTrackFormat_->get<AudioTrackFormatId>());
     }
 
-    audioChannelFormat_ = channelFormat;
+    audioChannelFormat_ = std::move(channelFormat);
   }
 
   std::shared_ptr<const AudioTrackFormat> AudioTrackUid::getReference(

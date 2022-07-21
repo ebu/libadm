@@ -66,7 +66,7 @@ namespace adm {
     }
 
     removeReference<AudioStreamFormat>();
-    audioStreamFormat_ = streamFormat;
+    audioStreamFormat_ = std::move(streamFormat);
     if (audioStreamFormat_) {
       audioStreamFormat_->addReference(
           std::weak_ptr<AudioTrackFormat>(shared_from_this()));
