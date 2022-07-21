@@ -13,7 +13,7 @@ function(add_adm_test name)
   )
   add_test(
     NAME ${name}
-    COMMAND $<TARGET_FILE:${name}>
+    COMMAND $<TARGET_FILE:${name}> --benchmark-samples=1 --benchmark-warmup-time=0 --benchmark-no-analysis
     WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/test_data"
   )
 endfunction()
