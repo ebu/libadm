@@ -59,8 +59,7 @@ namespace adm {
     if (streamFormat == audioStreamFormat_) {
       return;
     }
-    autoParent(shared_from_this(), streamFormat);
-    if (getParent().lock() != streamFormat->getParent().lock()) {
+    if (!autoParent(*this, streamFormat)) {
       throw std::runtime_error(
           "AudioTrackFormat cannot refer to an AudioStreamFormat in a "
           "different document");

@@ -105,8 +105,7 @@ namespace adm {
 
   bool AudioPackFormat::addReference(
       std::shared_ptr<AudioChannelFormat> channelFormat) {
-    autoParent(shared_from_this(), channelFormat);
-    if (getParent().lock() != channelFormat->getParent().lock()) {
+    if (!autoParent(*this, channelFormat)) {
       throw std::runtime_error(
           "AudioPackFormat cannot refer to an AudioChannelFormat in a "
           "different document");
@@ -127,8 +126,7 @@ namespace adm {
       throw std::runtime_error(
           "adding AudioPackFormat reference would create a reference cycle");
     }
-    autoParent(shared_from_this(), packFormat);
-    if (getParent().lock() != packFormat->getParent().lock()) {
+    if (!autoParent(*this, packFormat)) {
       throw std::runtime_error(
           "AudioPackFormat cannot refer to an AudioPackFormat in a different "
           "document");

@@ -123,8 +123,7 @@ namespace adm {
 
   // ---- References ---- //
   bool AudioProgramme::addReference(std::shared_ptr<AudioContent> content) {
-    autoParent(shared_from_this(), content);
-    if (getParent().lock() != content->getParent().lock()) {
+    if (!autoParent(*this, content)) {
       throw std::runtime_error(
           "AudioProgramme cannot refer to an AudioContent in a different "
           "document");

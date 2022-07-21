@@ -164,8 +164,7 @@ namespace adm {
                                              object->get<AudioObjectId>());
     }
 
-    autoParent(shared_from_this(), object);
-    if (getParent().lock() != object->getParent().lock()) {
+    if (!autoParent(*this, object)) {
       throw std::runtime_error(
           "AudioObject cannot refer to an AudioObject in a different "
           "document");
@@ -181,8 +180,7 @@ namespace adm {
   }
 
   bool AudioObject::addReference(std::shared_ptr<AudioPackFormat> packFormat) {
-    autoParent(shared_from_this(), packFormat);
-    if (getParent().lock() != packFormat->getParent().lock()) {
+    if (!autoParent(*this, packFormat)) {
       throw std::runtime_error(
           "AudioObject cannot refer to an AudioPackFormat in a different "
           "document");
@@ -198,8 +196,7 @@ namespace adm {
   }
 
   bool AudioObject::addReference(std::shared_ptr<AudioTrackUid> trackUid) {
-    autoParent(shared_from_this(), trackUid);
-    if (getParent().lock() != trackUid->getParent().lock()) {
+    if (!autoParent(*this, trackUid)) {
       throw std::runtime_error(
           "AudioObject cannot refer to an AudioTrackUid in a different "
           "document");

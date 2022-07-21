@@ -53,8 +53,7 @@ namespace adm {
   // ---- References ---- //
   void AudioStreamFormat::setReference(
       std::shared_ptr<AudioChannelFormat> channelFormat) {
-    autoParent(shared_from_this(), channelFormat);
-    if (getParent().lock() != channelFormat->getParent().lock()) {
+    if (!autoParent(*this, channelFormat)) {
       throw std::runtime_error(
           "AudioStreamFormat cannot refer to an AudioChannelFormat in a "
           "different document");
@@ -64,8 +63,7 @@ namespace adm {
 
   void AudioStreamFormat::setReference(
       std::shared_ptr<AudioPackFormat> packFormat) {
-    autoParent(shared_from_this(), packFormat);
-    if (getParent().lock() != packFormat->getParent().lock()) {
+    if (!autoParent(*this, packFormat)) {
       throw std::runtime_error(
           "AudioStreamFormat cannot refer to an AudioPackFormat in a "
           "different document");
@@ -83,8 +81,7 @@ namespace adm {
     if (!trackFormat) {
       return false;
     }
-    autoParent(shared_from_this(), trackFormat);
-    if (getParent().lock() != trackFormat->getParent().lock()) {
+    if (!autoParent(*this, trackFormat)) {
       throw std::runtime_error(
           "AudioStreamFormat cannot refer to an AudioTrackFormat in a "
           "different document");
