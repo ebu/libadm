@@ -115,7 +115,7 @@ namespace adm {
         AudioBlockFormatIdCounter(counter));
   }
 
-  std::string formatId(AudioBlockFormatId id) {
+  std::string formatId(const AudioBlockFormatId& id) {
     std::string s("AB_yyyyxxxx_zzzzzzzz");
     detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
     detail::formatHex(s, 7, 4, id.get<AudioBlockFormatIdValue>().get());

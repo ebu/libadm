@@ -66,7 +66,7 @@ namespace adm {
     return AudioProgrammeId(AudioProgrammeIdValue(value));
   }
 
-  std::string formatId(AudioProgrammeId id) {
+  std::string formatId(const AudioProgrammeId& id) {
     std::string s("APR_xxxx");
     detail::formatHex(s, 4, 4, id.get<AudioProgrammeIdValue>().get());
     return s;

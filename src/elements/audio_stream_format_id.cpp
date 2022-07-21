@@ -92,7 +92,7 @@ namespace adm {
                                AudioStreamFormatIdValue(value));
   }
 
-  std::string formatId(AudioStreamFormatId id) {
+  std::string formatId(const AudioStreamFormatId& id) {
     std::string s("AS_yyyyxxxx");
     detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
     detail::formatHex(s, 7, 4, id.get<AudioStreamFormatIdValue>().get());

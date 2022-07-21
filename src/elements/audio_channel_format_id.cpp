@@ -95,7 +95,7 @@ namespace adm {
                                 AudioChannelFormatIdValue(value));
   }
 
-  std::string formatId(AudioChannelFormatId id) {
+  std::string formatId(const AudioChannelFormatId& id) {
     std::string s("AC_yyyyxxxx");
     detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
     detail::formatHex(s, 7, 4, id.get<AudioChannelFormatIdValue>().get());

@@ -115,7 +115,7 @@ namespace adm {
         AudioTrackFormatIdCounter(counter));
   }
 
-  std::string formatId(AudioTrackFormatId id) {
+  std::string formatId(const AudioTrackFormatId& id) {
     std::string s("AT_yyyyxxxx_zz");
     detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
     detail::formatHex(s, 7, 4, id.get<AudioTrackFormatIdValue>().get());

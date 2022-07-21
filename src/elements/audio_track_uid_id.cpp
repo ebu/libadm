@@ -64,7 +64,7 @@ namespace adm {
     return AudioTrackUidId(AudioTrackUidIdValue(value));
   }
 
-  std::string formatId(AudioTrackUidId id) {
+  std::string formatId(const AudioTrackUidId& id) {
     std::string s("ATU_xxxxxxxx");
     detail::formatHex(s, 4, 8, id.get<AudioTrackUidIdValue>().get());
     return s;

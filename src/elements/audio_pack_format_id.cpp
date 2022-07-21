@@ -89,7 +89,7 @@ namespace adm {
                              AudioPackFormatIdValue(value));
   }
 
-  std::string formatId(AudioPackFormatId id) {
+  std::string formatId(const AudioPackFormatId& id) {
     std::string s("AP_yyyyxxxx");
     detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
     detail::formatHex(s, 7, 4, id.get<AudioPackFormatIdValue>().get());

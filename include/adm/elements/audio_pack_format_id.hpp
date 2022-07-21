@@ -126,7 +126,7 @@ namespace adm {
   /// @brief Parse an AudioPackFormatId string and convert it into an object
   ADM_EXPORT AudioPackFormatId parseAudioPackFormatId(const std::string& id);
   /// @brief Format an AudioPackFormatId object as string
-  ADM_EXPORT std::string formatId(AudioPackFormatId id);
+  ADM_EXPORT std::string formatId(const AudioPackFormatId& id);
 
   // ---- Implementation ---- //
   template <typename... Parameters>

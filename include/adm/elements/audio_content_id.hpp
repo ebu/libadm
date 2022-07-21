@@ -119,7 +119,7 @@ namespace adm {
   /// @brief Parse an AudioContentId string and convert it into an object
   ADM_EXPORT AudioContentId parseAudioContentId(const std::string& id);
   /// @brief Format an AudioContentId object as string
-  ADM_EXPORT std::string formatId(AudioContentId id);
+  ADM_EXPORT std::string formatId(const AudioContentId& id);
 
   // ---- Implementation ---- //
   template <typename... Parameters>
