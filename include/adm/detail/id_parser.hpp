@@ -83,5 +83,23 @@ namespace adm {
       const char *type;
       const std::string &id;
     };
+
+    /// write a hex value into an existing string
+    inline void formatHex(std::string &id, size_t start, size_t len,
+                          unsigned value) {
+      assert(start + len <= id.size());
+      for (int i = static_cast<int>(start + len) - 1;
+           i >= static_cast<int>(start); i--) {
+        unsigned charValue = value & 0xf;
+        id[i] = charValue < 10 ? '0' + charValue : ('a' - 10) + charValue;
+        value >>= 4;
+      }
+
+      if (value) {
+        std::ostringstream errorString;
+        errorString << "failed to convert int value to hex: " << value;
+        throw std::runtime_error(errorString.str());
+      }
+    }
   }  // namespace detail
 }  // namespace adm
