@@ -686,7 +686,7 @@ namespace adm {
       return frequency;
     }
 
-    Cartesian guessCartesianFlag(NodePtr node, const char *elementName) {
+    Cartesian guessCartesianFlag(NodePtr node, const char* elementName) {
       auto element = detail::findElement(node, elementName);
       if (element) {
         auto coordinate = element->first_attribute("coordinate");
@@ -826,7 +826,8 @@ namespace adm {
         return ContentKind(
             parseAttribute<MixedContentKind>(node, "mixedContentKind"));
       } else {
-        throw error::XmlParsingError("unknown dialogue id", getDocumentLine(node));
+        throw error::XmlParsingError("unknown dialogue id",
+                                     getDocumentLine(node));
       }
     }
 
@@ -858,8 +859,10 @@ namespace adm {
     AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node) {
       AudioBlockFormatBinaural audioBlockFormat;
 
-      setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat,
+                                  &parseTimecode);
+      setOptionalAttribute<Duration>(node, "duration", audioBlockFormat,
+                                     &parseTimecode);
       setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
 

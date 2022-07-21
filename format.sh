@@ -8,7 +8,6 @@ src/elements/audio_track_format_id.cpp
 src/elements/audio_block_format_id.cpp
 src/elements/audio_block_format_hoa.cpp
 src/document.cpp
-src/private/xml_parser.cpp
 include/adm/elements/audio_block_format_hoa.hpp
 include/adm/elements/audio_pack_format.hpp
 include/adm/elements/audio_channel_format.hpp
