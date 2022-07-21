@@ -116,11 +116,11 @@ namespace adm {
       // clang-format on
 
       template <typename Src, typename TargetId>
-      void resolveReferences(std::map<Src, std::vector<TargetId>> map) {
-        for (auto entry : map) {
-          for (auto id : entry.second) {
+      void resolveReferences(const std::map<Src, std::vector<TargetId>>& map) {
+        for (const auto& entry : map) {
+          for (const auto& id : entry.second) {
             if (auto element = document_->lookup(id)) {
-              entry.first->addReference(element);
+              entry.first->addReference(std::move(element));
             } else {
               throw error::XmlParsingUnresolvedReference(formatId(id));
             }
@@ -129,11 +129,11 @@ namespace adm {
       }
 
       template <typename Src, typename Target>
-      void resolveReference(std::map<Src, Target> map) {
-        for (auto entry : map) {
-          auto id = entry.second;
+      void resolveReference(const std::map<Src, Target>& map) {
+        for (const auto& entry : map) {
+          const auto& id = entry.second;
           if (auto element = document_->lookup(id)) {
-            entry.first->setReference(element);
+            entry.first->setReference(std::move(element));
           } else {
             throw error::XmlParsingUnresolvedReference(formatId(id));
           }
