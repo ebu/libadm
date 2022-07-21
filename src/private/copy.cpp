@@ -89,6 +89,8 @@ namespace adm {
       resolveReference(element, mapping.audioTrackUid,
                        mapping.audioTrackFormat);
       resolveReference(element, mapping.audioTrackUid, mapping.audioPackFormat);
+      resolveReference(element, mapping.audioTrackUid,
+                       mapping.audioChannelFormat);
     }
     return copiedElements;
   }
