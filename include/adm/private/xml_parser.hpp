@@ -11,6 +11,7 @@
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
 #include "adm/elements/audio_pack_format_hoa.hpp"
+#include "adm/detail/id_map.hpp"
 
 namespace adm {
   /**
@@ -115,11 +116,19 @@ namespace adm {
       std::map<std::shared_ptr<AudioStreamFormat>, std::vector<AudioTrackFormatId>> streamFormatTrackFormatRefs_;
       // clang-format on
 
+      /// used to keep track of element IDs ourselves to avoid having it
+      /// iterate through the whole document for each element and reference
+      detail::IDMap idMap_;
+
+      /// add an element to both the document and idMap_
+      template <typename Element>
+      void add(std::shared_ptr<Element> el);
+
       template <typename Src, typename TargetId>
       void resolveReferences(const std::map<Src, std::vector<TargetId>>& map) {
         for (const auto& entry : map) {
           for (const auto& id : entry.second) {
-            if (auto element = document_->lookup(id)) {
+            if (auto element = idMap_.lookup(id)) {
               entry.first->addReference(std::move(element));
             } else {
               throw error::XmlParsingUnresolvedReference(formatId(id));
@@ -132,7 +141,7 @@ namespace adm {
       void resolveReference(const std::map<Src, Target>& map) {
         for (const auto& entry : map) {
           const auto& id = entry.second;
-          if (auto element = document_->lookup(id)) {
+          if (auto element = idMap_.lookup(id)) {
             entry.first->setReference(std::move(element));
           } else {
             throw error::XmlParsingUnresolvedReference(formatId(id));

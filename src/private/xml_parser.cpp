@@ -21,7 +21,8 @@ namespace adm {
                          std::shared_ptr<Document> destDocument)
         : xmlFile_(std::move(file)),
           options_(options),
-          document_(destDocument) {}
+          document_(destDocument),
+          idMap_(*destDocument) {}
 
     XmlParser::XmlParser(const std::string& filename, ParserOptions options,
                          std::shared_ptr<Document> destDocument)
@@ -32,6 +33,12 @@ namespace adm {
                          std::shared_ptr<Document> destDocument)
         : XmlParser(rapidxml::file<>{stream}, options,
                     std::move(destDocument)) {}
+
+    template <typename Element>
+    void XmlParser::add(std::shared_ptr<Element> el) {
+      document_->add(el);
+      idMap_.add(std::move(el));
+    }
 
     std::shared_ptr<Document> XmlParser::parse() {
       rapidxml::xml_document<> xmlDocument;
@@ -52,21 +59,21 @@ namespace adm {
         for (NodePtr node = root->first_node(); node;
              node = node->next_sibling()) {
           if (std::string(node->name()) == "audioProgramme") {
-            document_->add(parseAudioProgramme(node));
+            add(parseAudioProgramme(node));
           } else if (std::string(node->name()) == "audioContent") {
-            document_->add(parseAudioContent(node));
+            add(parseAudioContent(node));
           } else if (std::string(node->name()) == "audioObject") {
-            document_->add(parseAudioObject(node));
+            add(parseAudioObject(node));
           } else if (std::string(node->name()) == "audioTrackUID") {
-            document_->add(parseAudioTrackUid(node));
+            add(parseAudioTrackUid(node));
           } else if (std::string(node->name()) == "audioPackFormat") {
-            document_->add(parseAudioPackFormat(node));
+            add(parseAudioPackFormat(node));
           } else if (std::string(node->name()) == "audioChannelFormat") {
-            document_->add(parseAudioChannelFormat(node));
+            add(parseAudioChannelFormat(node));
           } else if (std::string(node->name()) == "audioStreamFormat") {
-            document_->add(parseAudioStreamFormat(node));
+            add(parseAudioStreamFormat(node));
           } else if (std::string(node->name()) == "audioTrackFormat") {
-            document_->add(parseAudioTrackFormat(node));
+            add(parseAudioTrackFormat(node));
           }
         }
         resolveReferences(programmeContentRefs_);
@@ -147,7 +154,7 @@ namespace adm {
       // clang-format off
       auto name = parseAttribute<AudioProgrammeName>(node, "audioProgrammeName");
       AudioProgrammeId id = parseAttribute<AudioProgrammeId>(node, "audioProgrammeID", &parseAudioProgrammeId);
-      if(document_->lookup(id) != nullptr) {
+      if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
       auto audioProgramme = AudioProgramme::create(name, id);
@@ -171,7 +178,7 @@ namespace adm {
       // clang-format off
       auto name = parseAttribute<AudioContentName>(node, "audioContentName");
       auto id = parseAttribute<AudioContentId>(node, "audioContentID", &parseAudioContentId);
-      if(document_->lookup(id) != nullptr) {
+      if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
       auto audioContent = AudioContent::create(name, id);
@@ -192,7 +199,7 @@ namespace adm {
       // clang-format off
       auto name = parseAttribute<AudioObjectName>(node, "audioObjectName");
       auto id = parseAttribute<AudioObjectId>(node, "audioObjectID", &parseAudioObjectId);
-      if(document_->lookup(id) != nullptr) {
+      if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
       auto audioObject = AudioObject::create(name, id);
@@ -295,7 +302,7 @@ namespace adm {
       // clang-format off
       auto name = parseAttribute<AudioPackFormatName>(node, "audioPackFormatName");
       auto id = parseAttribute<AudioPackFormatId>(node, "audioPackFormatID", &parseAudioPackFormatId);
-      if(document_->lookup(id) != nullptr) {
+      if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
       auto typeDescriptor = id.get<TypeDescriptor>();
@@ -334,7 +341,7 @@ namespace adm {
       // clang-format off
       auto name = parseAttribute<AudioChannelFormatName>(node, "audioChannelFormatName");
       auto id = parseAttribute<AudioChannelFormatId>(node, "audioChannelFormatID", &parseAudioChannelFormatId);
-      if(document_->lookup(id) != nullptr) {
+      if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
       auto audioChannelFormat = AudioChannelFormat::create(name, id.get<TypeDescriptor>(), id);
@@ -382,7 +389,7 @@ namespace adm {
       // clang-format off
       auto name = parseAttribute<AudioStreamFormatName>(node, "audioStreamFormatName");
       auto id = parseAttribute<AudioStreamFormatId>(node, "audioStreamFormatID", &parseAudioStreamFormatId);
-      if(document_->lookup(id) != nullptr) {
+      if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
 
@@ -403,7 +410,7 @@ namespace adm {
       // clang-format off
       auto name = parseAttribute<AudioTrackFormatName>(node, "audioTrackFormatName");
       auto id = parseAttribute<AudioTrackFormatId>(node, "audioTrackFormatID", &parseAudioTrackFormatId);
-      if(document_->lookup(id) != nullptr) {
+      if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
 
@@ -421,7 +428,7 @@ namespace adm {
     std::shared_ptr<AudioTrackUid> XmlParser::parseAudioTrackUid(NodePtr node) {
       // clang-format off
       auto id = parseAttribute<AudioTrackUidId>(node, "UID", &parseAudioTrackUidId);
-      if(document_->lookup(id) != nullptr) {
+      if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
       auto audioTrackUid = AudioTrackUid::create(id);
