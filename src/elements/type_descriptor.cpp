@@ -1,7 +1,6 @@
 #include "adm/elements/type_descriptor.hpp"
+#include <cassert>
 #include <sstream>
-#include <regex>
-#include <boost/format.hpp>
 
 namespace adm {
 
