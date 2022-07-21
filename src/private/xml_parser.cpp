@@ -58,21 +58,23 @@ namespace adm {
         // add ADM elements to ADM document
         for (NodePtr node = root->first_node(); node;
              node = node->next_sibling()) {
-          if (std::string(node->name()) == "audioProgramme") {
+          std::string nodeName(node->name(), node->name_size());
+
+          if (nodeName == "audioProgramme") {
             add(parseAudioProgramme(node));
-          } else if (std::string(node->name()) == "audioContent") {
+          } else if (nodeName == "audioContent") {
             add(parseAudioContent(node));
-          } else if (std::string(node->name()) == "audioObject") {
+          } else if (nodeName == "audioObject") {
             add(parseAudioObject(node));
-          } else if (std::string(node->name()) == "audioTrackUID") {
+          } else if (nodeName == "audioTrackUID") {
             add(parseAudioTrackUid(node));
-          } else if (std::string(node->name()) == "audioPackFormat") {
+          } else if (nodeName == "audioPackFormat") {
             add(parseAudioPackFormat(node));
-          } else if (std::string(node->name()) == "audioChannelFormat") {
+          } else if (nodeName == "audioChannelFormat") {
             add(parseAudioChannelFormat(node));
-          } else if (std::string(node->name()) == "audioStreamFormat") {
+          } else if (nodeName == "audioStreamFormat") {
             add(parseAudioStreamFormat(node));
-          } else if (std::string(node->name()) == "audioTrackFormat") {
+          } else if (nodeName == "audioTrackFormat") {
             add(parseAudioTrackFormat(node));
           }
         }
