@@ -17,15 +17,21 @@ namespace adm {
       return static_cast<bool>(options & flag);
     }
 
-    XmlParser::XmlParser(const std::string& filename, ParserOptions options,
+    XmlParser::XmlParser(rapidxml::file<> file, ParserOptions options,
                          std::shared_ptr<Document> destDocument)
-        : xmlFile_(filename.c_str()),
+        : xmlFile_(std::move(file)),
           options_(options),
           document_(destDocument) {}
 
+    XmlParser::XmlParser(const std::string& filename, ParserOptions options,
+                         std::shared_ptr<Document> destDocument)
+        : XmlParser(rapidxml::file<>{filename.c_str()}, options,
+                    std::move(destDocument)) {}
+
     XmlParser::XmlParser(std::istream& stream, ParserOptions options,
                          std::shared_ptr<Document> destDocument)
-        : xmlFile_(stream), options_(options), document_(destDocument) {}
+        : XmlParser(rapidxml::file<>{stream}, options,
+                    std::move(destDocument)) {}
 
     std::shared_ptr<Document> XmlParser::parse() {
       rapidxml::xml_document<> xmlDocument;

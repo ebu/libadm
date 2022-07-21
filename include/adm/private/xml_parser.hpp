@@ -81,6 +81,10 @@ namespace adm {
       bool hasUnresolvedReferences();
 
      private:
+      explicit XmlParser(
+          rapidxml::file<> file, ParserOptions options = ParserOptions::none,
+          std::shared_ptr<Document> destDocument = Document::create());
+
       std::shared_ptr<AudioProgramme> parseAudioProgramme(NodePtr node);
       std::shared_ptr<AudioContent> parseAudioContent(NodePtr node);
       std::shared_ptr<AudioObject> parseAudioObject(NodePtr node);
