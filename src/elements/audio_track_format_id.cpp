@@ -1,7 +1,5 @@
 #include "adm/elements/audio_track_format_id.hpp"
-#include <boost/format.hpp>
 #include <sstream>
-#include "adm/detail/hex_values.hpp"
 #include "adm/detail/id_parser.hpp"
 #include "adm/detail/optional_comparison.hpp"
 
@@ -101,11 +99,7 @@ namespace adm {
 
   // ---- Common ---- //
   void AudioTrackFormatId::print(std::ostream& os) const {
-    os << boost::str(
-        boost::format("AT_%1%%2%_%3%") %
-        formatTypeLabel(get<TypeDescriptor>()) %
-        detail::formatHexValue(get<AudioTrackFormatIdValue>().get()) %
-        detail::formatHexValue(get<AudioTrackFormatIdCounter>().get(), 2));
+    os << formatId(*this);
   }
 
   AudioTrackFormatId parseAudioTrackFormatId(const std::string& id) {
@@ -122,9 +116,11 @@ namespace adm {
   }
 
   std::string formatId(AudioTrackFormatId id) {
-    std::stringstream idStream;
-    id.print(idStream);
-    return idStream.str();
+    std::string s("AT_yyyyxxxx_zz");
+    detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
+    detail::formatHex(s, 7, 4, id.get<AudioTrackFormatIdValue>().get());
+    detail::formatHex(s, 12, 2, id.get<AudioTrackFormatIdCounter>().get());
+    return s;
   }
 
 }  // namespace adm

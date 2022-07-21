@@ -1,7 +1,5 @@
 #include "adm/elements/audio_pack_format_id.hpp"
-#include <boost/format.hpp>
 #include <sstream>
-#include "adm/detail/hex_values.hpp"
 #include "adm/detail/id_parser.hpp"
 #include "adm/detail/optional_comparison.hpp"
 
@@ -77,9 +75,7 @@ namespace adm {
 
   // ---- Common ---- //
   void AudioPackFormatId::print(std::ostream& os) const {
-    os << boost::str(
-        boost::format("AP_%1%%2%") % formatTypeLabel(get<TypeDescriptor>()) %
-        detail::formatHexValue(get<AudioPackFormatIdValue>().get()));
+    os << formatId(*this);
   }
 
   AudioPackFormatId parseAudioPackFormatId(const std::string& id) {
@@ -94,9 +90,10 @@ namespace adm {
   }
 
   std::string formatId(AudioPackFormatId id) {
-    std::stringstream idStream;
-    id.print(idStream);
-    return idStream.str();
+    std::string s("AP_yyyyxxxx");
+    detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
+    detail::formatHex(s, 7, 4, id.get<AudioPackFormatIdValue>().get());
+    return s;
   }
 
 }  // namespace adm

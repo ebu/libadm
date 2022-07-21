@@ -1,7 +1,5 @@
 #include "adm/elements/audio_content_id.hpp"
-#include <boost/format.hpp>
 #include <sstream>
-#include "adm/detail/hex_values.hpp"
 #include "adm/detail/id_parser.hpp"
 
 namespace adm {
@@ -54,10 +52,7 @@ namespace adm {
   }
 
   // ---- Common ---- //
-  void AudioContentId::print(std::ostream& os) const {
-    os << boost::str(boost::format("ACO_%1%") %
-                     detail::formatHexValue(get<AudioContentIdValue>().get()));
-  }
+  void AudioContentId::print(std::ostream& os) const { os << formatId(*this); }
 
   AudioContentId parseAudioContentId(const std::string& id) {
     // ACO_xxxx
@@ -69,9 +64,9 @@ namespace adm {
   }
 
   std::string formatId(AudioContentId id) {
-    std::stringstream idStream;
-    id.print(idStream);
-    return idStream.str();
+    std::string s("ACO_xxxx");
+    detail::formatHex(s, 4, 4, id.get<AudioContentIdValue>().get());
+    return s;
   }
 
 }  // namespace adm

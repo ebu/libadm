@@ -1,7 +1,5 @@
 #include "adm/elements/audio_track_uid_id.hpp"
-#include <boost/format.hpp>
 #include <sstream>
-#include "adm/detail/hex_values.hpp"
 #include "adm/detail/id_parser.hpp"
 
 namespace adm {
@@ -55,11 +53,7 @@ namespace adm {
   }
 
   // ---- Common ---- //
-  void AudioTrackUidId::print(std::ostream& os) const {
-    os << boost::str(
-        boost::format("ATU_%1%") %
-        detail::formatHexValue(get<AudioTrackUidIdValue>().get(), 8));
-  }
+  void AudioTrackUidId::print(std::ostream& os) const { os << formatId(*this); }
 
   AudioTrackUidId parseAudioTrackUidId(const std::string& id) {
     // ATU_xxxxxxxx
@@ -71,9 +65,9 @@ namespace adm {
   }
 
   std::string formatId(AudioTrackUidId id) {
-    std::stringstream idStream;
-    id.print(idStream);
-    return idStream.str();
+    std::string s("ATU_xxxxxxxx");
+    detail::formatHex(s, 4, 8, id.get<AudioTrackUidIdValue>().get());
+    return s;
   }
 
 }  // namespace adm
