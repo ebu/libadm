@@ -283,14 +283,15 @@ namespace adm {
                         audioComplementaryObjects_.end(), object);
     if (it == audioComplementaryObjects_.end()) {
       removeReference(object);
-      audioComplementaryObjects_.push_back(object);
+      audioComplementaryObjects_.push_back(std::move(object));
       return true;
     } else {
       return false;
     }
   }
 
-  void AudioObject::removeComplementary(std::shared_ptr<AudioObject> object) {
+  void AudioObject::removeComplementary(
+      const std::shared_ptr<AudioObject>& object) {
     auto it = std::find(audioComplementaryObjects_.begin(),
                         audioComplementaryObjects_.end(), object);
     if (it != audioComplementaryObjects_.end()) {
