@@ -93,7 +93,7 @@ namespace adm {
     } else {
       assignId(blockFormat, &audioBlockFormatsDirectSpeakers_.back());
     }
-    audioBlockFormatsDirectSpeakers_.push_back(blockFormat);
+    audioBlockFormatsDirectSpeakers_.push_back(std::move(blockFormat));
   }
   void AudioChannelFormat::add(AudioBlockFormatMatrix blockFormat) {
     if (audioBlockFormatsMatrix_.empty()) {
@@ -101,7 +101,7 @@ namespace adm {
     } else {
       assignId(blockFormat, &audioBlockFormatsMatrix_.back());
     }
-    audioBlockFormatsMatrix_.push_back(blockFormat);
+    audioBlockFormatsMatrix_.push_back(std::move(blockFormat));
   }
 
   void AudioChannelFormat::add(AudioBlockFormatObjects blockFormat) {
@@ -110,7 +110,7 @@ namespace adm {
     } else {
       assignId(blockFormat, &audioBlockFormatsObjects_.back());
     }
-    audioBlockFormatsObjects_.push_back(blockFormat);
+    audioBlockFormatsObjects_.push_back(std::move(blockFormat));
   }
 
   void AudioChannelFormat::add(AudioBlockFormatHoa blockFormat) {
@@ -119,7 +119,7 @@ namespace adm {
     } else {
       assignId(blockFormat, &audioBlockFormatsHoa_.back());
     }
-    audioBlockFormatsHoa_.push_back(blockFormat);
+    audioBlockFormatsHoa_.push_back(std::move(blockFormat));
   }
 
   void AudioChannelFormat::add(AudioBlockFormatBinaural blockFormat) {
@@ -128,7 +128,7 @@ namespace adm {
     } else {
       assignId(blockFormat, &audioBlockFormatsBinaural_.back());
     }
-    audioBlockFormatsBinaural_.push_back(blockFormat);
+    audioBlockFormatsBinaural_.push_back(std::move(blockFormat));
   }
 
   BlockFormatsConstRange<AudioBlockFormatDirectSpeakers>
