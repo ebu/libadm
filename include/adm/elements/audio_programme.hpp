@@ -291,7 +291,8 @@ namespace adm {
   template <typename... Parameters>
   std::shared_ptr<AudioProgramme> AudioProgramme::create(
       AudioProgrammeName name, Parameters... optionalNamedArgs) {
-    std::shared_ptr<AudioProgramme> programme(new AudioProgramme(name));
+    std::shared_ptr<AudioProgramme> programme(
+        new AudioProgramme(std::move(name)));
     detail::setNamedOptionHelper(programme, std::move(optionalNamedArgs)...);
 
     return programme;

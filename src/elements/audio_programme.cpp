@@ -91,9 +91,9 @@ namespace adm {
     id_ = id;
   }
 
-  void AudioProgramme::set(AudioProgrammeName name) { name_ = name; }
+  void AudioProgramme::set(AudioProgrammeName name) { name_ = std::move(name); }
   void AudioProgramme::set(AudioProgrammeLanguage language) {
-    language_ = language;
+    language_ = std::move(language);
   }
   void AudioProgramme::set(Start start) { start_ = start; }
   void AudioProgramme::set(End end) { end_ = end; }
@@ -195,5 +195,6 @@ namespace adm {
     return audioProgrammeCopy;
   }
 
-  AudioProgramme::AudioProgramme(AudioProgrammeName name) : name_(name){};
+  AudioProgramme::AudioProgramme(AudioProgrammeName name)
+      : name_(std::move(name)){};
 }  // namespace adm

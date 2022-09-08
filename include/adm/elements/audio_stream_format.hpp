@@ -319,7 +319,7 @@ namespace adm {
       AudioStreamFormatName name, FormatDescriptor format,
       Parameters... optionalNamedArgs) {
     std::shared_ptr<AudioStreamFormat> streamFormat(
-        new AudioStreamFormat(name, format));
+        new AudioStreamFormat(std::move(name), format));
     detail::setNamedOptionHelper(streamFormat, std::move(optionalNamedArgs)...);
 
     return streamFormat;

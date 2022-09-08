@@ -34,7 +34,9 @@ namespace adm {
     }
     id_ = id;
   }
-  void AudioStreamFormat::set(AudioStreamFormatName name) { name_ = name; }
+  void AudioStreamFormat::set(AudioStreamFormatName name) {
+    name_ = std::move(name);
+  }
 
   // ---- Has ---- //
   bool AudioStreamFormat::has(
@@ -200,7 +202,7 @@ namespace adm {
 
   AudioStreamFormat::AudioStreamFormat(AudioStreamFormatName name,
                                        FormatDescriptor format)
-      : name_(name),
+      : name_(std::move(name)),
         id_(AudioStreamFormatId(TypeDefinition::UNDEFINED)),
         format_(format) {}
 

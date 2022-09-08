@@ -106,7 +106,7 @@ namespace adm {
     }
     id_ = id;
   }
-  void AudioObject::set(AudioObjectName name) { name_ = name; }
+  void AudioObject::set(AudioObjectName name) { name_ = std::move(name); }
   void AudioObject::set(Start start) { start_ = start; }
   void AudioObject::set(Duration duration) { duration_ = duration; }
   void AudioObject::set(DialogueId id) { dialogueId_ = id; }
@@ -349,6 +349,6 @@ namespace adm {
     return audioObjectCopy;
   }
 
-  AudioObject::AudioObject(AudioObjectName name) : name_(name) {}
+  AudioObject::AudioObject(AudioObjectName name) : name_(std::move(name)) {}
 
 }  // namespace adm

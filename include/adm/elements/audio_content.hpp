@@ -299,7 +299,7 @@ namespace adm {
   template <typename... Parameters>
   std::shared_ptr<AudioContent> AudioContent::create(
       AudioContentName name, Parameters... optionalNamedArgs) {
-    std::shared_ptr<AudioContent> content(new AudioContent(name));
+    std::shared_ptr<AudioContent> content(new AudioContent(std::move(name)));
     detail::setNamedOptionHelper(content, std::move(optionalNamedArgs)...);
 
     return content;

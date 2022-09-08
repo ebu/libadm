@@ -377,7 +377,7 @@ namespace adm {
   template <typename... Parameters>
   std::shared_ptr<AudioObject> AudioObject::create(
       AudioObjectName name, Parameters... optionalNamedArgs) {
-    std::shared_ptr<AudioObject> object(new AudioObject(name));
+    std::shared_ptr<AudioObject> object(new AudioObject(std::move(name)));
     detail::setNamedOptionHelper(object, std::move(optionalNamedArgs)...);
 
     return object;

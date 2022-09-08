@@ -306,7 +306,7 @@ namespace adm {
       AudioChannelFormatName name, TypeDescriptor channelType,
       Parameters... optionalNamedArgs) {
     std::shared_ptr<AudioChannelFormat> channel(
-        new AudioChannelFormat(name, channelType));
+        new AudioChannelFormat(std::move(name), channelType));
     detail::setNamedOptionHelper(
         channel, std::move(optionalNamedArgs)...);
     return channel;

@@ -33,7 +33,9 @@ namespace adm {
     }
     id_ = id;
   }
-  void AudioTrackFormat::set(AudioTrackFormatName name) { name_ = name; }
+  void AudioTrackFormat::set(AudioTrackFormatName name) {
+    name_ = std::move(name);
+  }
 
   // ---- Has ---- //
   bool AudioTrackFormat::has(
@@ -132,7 +134,7 @@ namespace adm {
 
   AudioTrackFormat::AudioTrackFormat(AudioTrackFormatName name,
                                      FormatDescriptor format)
-      : name_(name),
+      : name_(std::move(name)),
         id_(AudioTrackFormatId(TypeDefinition::UNDEFINED)),
         format_(format) {}
 

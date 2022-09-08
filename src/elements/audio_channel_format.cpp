@@ -61,7 +61,9 @@ namespace adm {
       throw std::runtime_error(errorString.str());
     }
   }
-  void AudioChannelFormat::set(AudioChannelFormatName name) { name_ = name; }
+  void AudioChannelFormat::set(AudioChannelFormatName name) {
+    name_ = std::move(name);
+  }
   void AudioChannelFormat::set(Frequency frequency) { frequency_ = frequency; }
 
   // ---- Has ---- //
@@ -222,6 +224,6 @@ namespace adm {
 
   AudioChannelFormat::AudioChannelFormat(AudioChannelFormatName name,
                                          TypeDescriptor channelType)
-      : name_(name), typeDescriptor_(channelType) {}
+      : name_(std::move(name)), typeDescriptor_(channelType) {}
 
 }  // namespace adm

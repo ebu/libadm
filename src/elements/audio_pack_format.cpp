@@ -53,7 +53,7 @@ namespace adm {
       throw std::runtime_error(errorString.str());
     }
   }
-  void AudioPackFormat::set(AudioPackFormatName name) { name_ = name; }
+  void AudioPackFormat::set(AudioPackFormatName name) { name_ = std::move(name); }
   void AudioPackFormat::set(Importance importance) { importance_ = importance; }
   void AudioPackFormat::set(AbsoluteDistance absoluteDistance) {
     absoluteDistance_ = absoluteDistance;
@@ -206,7 +206,7 @@ namespace adm {
 
   AudioPackFormat::AudioPackFormat(AudioPackFormatName name,
                                    TypeDescriptor channelType)
-      : name_(name), typeDescriptor_(channelType) {
+      : name_(std::move(name)), typeDescriptor_(channelType) {
   }
 
 

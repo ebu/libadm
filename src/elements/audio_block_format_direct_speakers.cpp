@@ -102,7 +102,7 @@ namespace adm {
     auto it =
         std::find(speakerLabels_.begin(), speakerLabels_.end(), speakerLabel);
     if (it == speakerLabels_.end()) {
-      speakerLabels_.push_back(speakerLabel);
+      speakerLabels_.push_back(std::move(speakerLabel));
       return true;
     } else {
       return false;

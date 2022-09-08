@@ -257,7 +257,7 @@ namespace adm {
     } else {
 
       std::shared_ptr<AudioPackFormat> pack(
-          new AudioPackFormat(name, channelType));
+          new AudioPackFormat(std::move(name), channelType));
       detail::setNamedOptionHelper(
           pack, std::move(optionalNamedArgs)...);
       return pack;

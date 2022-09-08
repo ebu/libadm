@@ -91,9 +91,9 @@ namespace adm {
     }
     id_ = id;
   }
-  void AudioContent::set(AudioContentName name) { name_ = name; }
+  void AudioContent::set(AudioContentName name) { name_ = std::move(name); }
   void AudioContent::set(AudioContentLanguage language) {
-    language_ = language;
+    language_ = std::move(language);
   }
   void AudioContent::set(DialogueId id) {
     if (dialogueId_ && dialogueId_.get() == id) {
@@ -242,6 +242,6 @@ namespace adm {
     return audioContentCopy;
   }
 
-  AudioContent::AudioContent(AudioContentName name) : name_(name) {}
+  AudioContent::AudioContent(AudioContentName name) : name_(std::move(name)) {}
 
 }  // namespace adm
