@@ -149,7 +149,7 @@ namespace adm {
                       Callable parser) {
       auto value = parseOptionalAttribute<NT>(node, attributeName, parser);
       if (value != boost::none) {
-        return value.get();
+        return std::move(value.get());
       } else {
         std::stringstream errorString;
         int errorLine = getDocumentLine(node);
@@ -170,7 +170,7 @@ namespace adm {
                               Target& target, Callable parser) {
       auto value = parseOptionalAttribute<NT>(node, attributeName, parser);
       if (value != boost::none) {
-        detail::invokeSet(target, value.get());
+        detail::invokeSet(target, std::move(value.get()));
       }
     }
 
@@ -198,7 +198,7 @@ namespace adm {
     NT parseElement(NodePtr node, const char* elementName, Callable parser) {
       auto value = parseOptionalElement<NT>(node, elementName, parser);
       if (value != boost::none) {
-        return value.get();
+        return std::move(value.get());
       } else {
         std::stringstream errorString;
         int errorLine = getDocumentLine(node);
@@ -213,7 +213,7 @@ namespace adm {
                             Target& target, Callable parser) {
       auto value = parseOptionalElement<NT>(node, elementName, parser);
       if (value != boost::none) {
-        detail::invokeAdd(target, value.get());
+        detail::invokeAdd(target, std::move(value.get()));
       }
     }
 
@@ -231,7 +231,7 @@ namespace adm {
                             Target& target, Callable parser) {
       auto value = parseOptionalElement<NT>(node, elementName, parser);
       if (value != boost::none) {
-        detail::invokeSet(target, value.get());
+        detail::invokeSet(target, std::move(value.get()));
       }
     }
 
@@ -261,7 +261,7 @@ namespace adm {
                                  Target& target, Callable parser) {
       auto value = parseOptionalMultiElement<NT>(node, elementName, parser);
       if (value != boost::none) {
-        detail::invokeSet(target, value.get());
+        detail::invokeSet(target, std::move(value.get()));
       }
     }
 
@@ -270,7 +270,7 @@ namespace adm {
                          Callable parser) {
       auto value = parseOptionalMultiElement<NT>(node, elementName, parser);
       if (value != boost::none) {
-        detail::invokeSet(target, value.get());
+        detail::invokeSet(target, std::move(value.get()));
       } else {
         std::stringstream errorString;
         int errorLine = getDocumentLine(node);
