@@ -169,7 +169,7 @@ namespace adm {
       static constexpr bool has_get_set_has = true;
 
       ADM_BASE_EXPORT T get(Tag) const { return value_; }
-      ADM_BASE_EXPORT void set(T value) { value_ = value; }
+      ADM_BASE_EXPORT void set(T value) { value_ = std::move(value); }
       ADM_BASE_EXPORT bool has(Tag) const { return true; }
 
      private:
@@ -188,7 +188,7 @@ namespace adm {
       static constexpr bool has_isDefault_unset = true;
 
       ADM_BASE_EXPORT T get(Tag) const { return value_.get(); }
-      ADM_BASE_EXPORT void set(T value) { value_ = value; }
+      ADM_BASE_EXPORT void set(T value) { value_ = std::move(value); }
       ADM_BASE_EXPORT bool has(Tag) const { return value_ != boost::none; }
       ADM_BASE_EXPORT bool isDefault(Tag) const { return false; }
       ADM_BASE_EXPORT void unset(Tag) { value_ = boost::none; }
@@ -211,7 +211,7 @@ namespace adm {
       ADM_BASE_EXPORT T get(Tag) const {
         return boost::get_optional_value_or(value_, getDefault<T>());
       }
-      ADM_BASE_EXPORT void set(T value) { value_ = value; }
+      ADM_BASE_EXPORT void set(T value) { value_ = std::move(value); }
       ADM_BASE_EXPORT bool has(Tag) const { return true; }
       ADM_BASE_EXPORT bool isDefault(Tag) const {
         return value_ == boost::none;
@@ -242,7 +242,7 @@ namespace adm {
       static constexpr bool has_add_remove = true;
 
       ADM_BASE_EXPORT T get(Tag) const { return value_; }
-      ADM_BASE_EXPORT void set(T value) { value_ = value; }
+      ADM_BASE_EXPORT void set(T value) { value_ = std::move(value); }
       ADM_BASE_EXPORT bool has(Tag) const { return value_.size() > 0; }
       ADM_BASE_EXPORT bool isDefault(Tag) const { return false; }
       ADM_BASE_EXPORT void unset(Tag) { value_.clear(); }
@@ -250,7 +250,7 @@ namespace adm {
       ADM_BASE_EXPORT bool add(Value item) {
         auto it = find_item(item);
         if (it == value_.end()) {
-          value_.push_back(item);
+          value_.push_back(std::move(item));
           return true;
         } else {
           return false;
@@ -290,7 +290,9 @@ namespace adm {
       }
 
       using VariantParam::set;
-      ADM_BASE_EXPORT void set(T value) { return VariantParam::set(value); }
+      ADM_BASE_EXPORT void set(T value) {
+        return VariantParam::set(std::move(value));
+      }
 
       using VariantParam::has;
       ADM_BASE_EXPORT bool has(Tag) const {
