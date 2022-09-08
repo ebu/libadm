@@ -159,7 +159,7 @@ namespace adm {
       if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
-      auto audioProgramme = AudioProgramme::create(name, id);
+      auto audioProgramme = AudioProgramme::create(std::move(name), id);
 
       setOptionalAttribute<AudioProgrammeLanguage>(node, "audioProgrammeLanguage", audioProgramme);
       setOptionalAttribute<Start>(node, "start", audioProgramme, &parseTimecode);
@@ -183,7 +183,7 @@ namespace adm {
       if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
-      auto audioContent = AudioContent::create(name, id);
+      auto audioContent = AudioContent::create(std::move(name), id);
 
       setOptionalAttribute<AudioContentLanguage>(node, "audioContentLanguage", audioContent);
 
@@ -204,7 +204,7 @@ namespace adm {
       if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
-      auto audioObject = AudioObject::create(name, id);
+      auto audioObject = AudioObject::create(std::move(name), id);
 
       setOptionalAttribute<Start>(node, "start", audioObject, &parseTimecode);
       setOptionalAttribute<Duration>(node, "duration", audioObject, &parseTimecode);
@@ -314,14 +314,14 @@ namespace adm {
       checkChannelType(id, typeLabel, typeDefinition);
 
       if(typeDescriptor == adm::TypeDefinition::HOA){
-          auto audioPackFormat = AudioPackFormatHoa::create(name, id);
+          auto audioPackFormat = AudioPackFormatHoa::create(std::move(name), id);
           setCommonProperties(audioPackFormat, node);
           setOptionalAttribute<Normalization>(node, "normalization", audioPackFormat);
           setOptionalAttribute<ScreenRef>(node, "screenRef", audioPackFormat);
           setOptionalAttribute<NfcRefDist>(node, "nfcRefDist", audioPackFormat);
           return audioPackFormat;
       } else {
-          auto audioPackFormat = AudioPackFormat::create(name, typeDescriptor, id);
+          auto audioPackFormat = AudioPackFormat::create(std::move(name), typeDescriptor, id);
           setCommonProperties(audioPackFormat, node);
           return audioPackFormat;
       }
@@ -346,7 +346,7 @@ namespace adm {
       if(idMap_.contains(id)) {
         throw error::XmlParsingDuplicateId(formatId(id), getDocumentLine(node));
       }
-      auto audioChannelFormat = AudioChannelFormat::create(name, id.get<TypeDescriptor>(), id);
+      auto audioChannelFormat = AudioChannelFormat::create(std::move(name), id.get<TypeDescriptor>(), id);
 
       auto typeLabel = parseOptionalAttribute<TypeDescriptor>(node, "typeLabel", &parseTypeLabel);
       auto typeDefinition = parseOptionalAttribute<TypeDescriptor>(node, "typeDefinition", &parseTypeDefinition);
@@ -398,7 +398,7 @@ namespace adm {
       auto formatLabel = parseOptionalAttribute<FormatDescriptor>(node, "formatLabel", &parseFormatLabel);
       auto formatDefinition = parseOptionalAttribute<FormatDescriptor>(node, "formatDefinition", &parseFormatDefinition);
       auto format = checkFormat(formatLabel, formatDefinition);
-      auto audioStreamFormat = AudioStreamFormat::create(name, format, id);
+      auto audioStreamFormat = AudioStreamFormat::create(std::move(name), format, id);
 
       setOptionalReference<AudioChannelFormatId>(node, "audioChannelFormatIDRef", audioStreamFormat, streamFormatChannelFormatRef_, &parseAudioChannelFormatId);
       setOptionalReference<AudioPackFormatId>(node, "audioPackFormatIDRef", audioStreamFormat, streamFormatPackFormatRef_, &parseAudioPackFormatId);
@@ -420,7 +420,7 @@ namespace adm {
       auto formatDefinition = parseOptionalAttribute<FormatDescriptor>(node, "formatDefinition", &parseFormatDefinition);
       auto format = checkFormat(formatLabel, formatDefinition);
 
-      auto audioTrackFormat = AudioTrackFormat::create(name, format, id);
+      auto audioTrackFormat = AudioTrackFormat::create(std::move(name), format, id);
 
       setOptionalReference<AudioStreamFormatId>(node, "audioStreamFormatIDRef", audioTrackFormat, trackFormatStreamFormatRef_, &parseAudioStreamFormatId);
       // clang-format on
