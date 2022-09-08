@@ -26,7 +26,7 @@ namespace adm {
       explicit NamedType(T const& value) : value_(value) {
         Validator::validate(get());
       }
-      explicit NamedType(T&& value) : value_(value) {
+      explicit NamedType(T&& value) : value_(std::move(value)) {
         Validator::validate(get());
       }
       T& get() { return value_; }
