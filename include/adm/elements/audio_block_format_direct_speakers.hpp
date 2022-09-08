@@ -149,7 +149,7 @@ namespace adm {
     /// @brief Add a SpeakerLabel
     ADM_EXPORT bool add(SpeakerLabel label);
     /// @brief remove a SpeakerLabel
-    ADM_EXPORT void remove(SpeakerLabel label);
+    ADM_EXPORT void remove(const SpeakerLabel& label);
 
    private:
     using detail::AudioBlockFormatDirectSpeakersBase::get;

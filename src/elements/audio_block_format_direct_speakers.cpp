@@ -110,7 +110,8 @@ namespace adm {
   }
 
   // ---- Remove ---- //
-  void AudioBlockFormatDirectSpeakers::remove(SpeakerLabel speakerLabel) {
+  void AudioBlockFormatDirectSpeakers::remove(
+      const SpeakerLabel &speakerLabel) {
     auto it =
         std::find(speakerLabels_.begin(), speakerLabels_.end(), speakerLabel);
     if (it != speakerLabels_.end()) {
