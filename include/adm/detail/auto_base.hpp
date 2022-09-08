@@ -257,7 +257,7 @@ namespace adm {
         }
       }
 
-      ADM_BASE_EXPORT void remove(Value item) {
+      ADM_BASE_EXPORT void remove(Value const& item) {
         auto it = find_item(item);
         if (it != value_.end()) value_.erase(it);
       }
