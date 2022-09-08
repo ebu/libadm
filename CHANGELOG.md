@@ -18,6 +18,7 @@
 - implemented fractional time format from BS.2076-2
 - audioProgramme and audioContent may now have multiple loudnessMetadata elements, as per BS.2076-2
 - admConfig.cmake updated to behave better with find_package calls - errors are now reported correctly and info messages are silenced if QUIET has been requested.
+- libadm_INCLUDE_DIRS and libadm_LIBRARY_DIRS were removed from admConfig.cmake. Users of these should link to the adm targets instead, as per the documentation.
 - CMake GNUInstallDirs module used to determine default install locations
 - INSTALL_XXX_DIR cache variables prefixed with ADM
 - Install path for .dll on Windows changed to binary dir 
