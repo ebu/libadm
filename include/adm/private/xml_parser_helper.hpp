@@ -95,7 +95,7 @@ namespace adm {
                                     TypeTag<unsigned int>) {
         return std::stoul(v);
       }
-      inline std::string parseImpl(const std::string& v, TypeTag<std::string>) {
+      inline std::string parseImpl(std::string v, TypeTag<std::string>) {
         return v;
       }
       inline float parseImpl(const std::string& v, TypeTag<float>) {
@@ -109,10 +109,10 @@ namespace adm {
       }
 
       template <typename NT>
-      NT parseDefault(const std::string& v) {
+      NT parseDefault(std::string v) {
         typedef typename NT::value_type value_type;
         typedef TypeTag<value_type> DispatchTypeTag;
-        return NT(parseImpl(v, DispatchTypeTag()));
+        return NT(parseImpl(std::move(v), DispatchTypeTag()));
       }
     }  // namespace detail
 
