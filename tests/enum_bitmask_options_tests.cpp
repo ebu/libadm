@@ -29,31 +29,31 @@ TEST_CASE("bitmask_operators") {
   using adm::TestOptions;
   {
     TestOptions opt = TestOptions::secure | TestOptions::verbose;
-    REQUIRE(unsigned(opt) == (0x1 | 0x4));
+    REQUIRE(unsigned(opt) == (0x1u | 0x4u));
   }
   {
     TestOptions opt = TestOptions::secure;
     opt |= TestOptions::verbose;
-    REQUIRE(unsigned(opt) == (0x1 | 0x4));
+    REQUIRE(unsigned(opt) == (0x1u | 0x4u));
   }
   {
     TestOptions opt =
         TestOptions::verbose & (TestOptions::secure | TestOptions::verbose);
-    REQUIRE(unsigned(opt) == (0x4 & (0x1 | 0x4)));
+    REQUIRE(unsigned(opt) == (0x4u & (0x1u | 0x4u)));
   }
   {
     TestOptions opt = (TestOptions::secure | TestOptions::verbose);
     opt &= TestOptions::verbose;
-    REQUIRE(unsigned(opt) == (0x4 & (0x1 | 0x4)));
+    REQUIRE(unsigned(opt) == (0x4u & (0x1u | 0x4u)));
   }
   {
     TestOptions opt = (TestOptions::secure | TestOptions::verbose);
     opt ^= TestOptions::verbose;
-    REQUIRE(unsigned(opt) == (0x4 ^ (0x1 | 0x4)));
+    REQUIRE(unsigned(opt) == (0x4u ^ (0x1u | 0x4u)));
   }
   {
     TestOptions opt = ~TestOptions::secure;
-    REQUIRE(unsigned(opt) == (~0x1));
+    REQUIRE(unsigned(opt) == (~0x1u));
   }
 }
 
