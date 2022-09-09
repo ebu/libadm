@@ -31,43 +31,42 @@ TEST_CASE("basic") {
 // programme->content->object->trackuid->trackformat->streamformat->channelformat
 struct FullDepthViaUIDStrategy {
   template <typename SubElement, typename Element>
-  bool shouldRecurse(std::shared_ptr<Element> a,
-                     std::shared_ptr<SubElement> b) {
+  bool shouldRecurse(std::shared_ptr<Element>, std::shared_ptr<SubElement>) {
     return false;
   }
 
-  bool shouldRecurse(std::shared_ptr<const adm::AudioProgramme> a,
-                     std::shared_ptr<const adm::AudioContent> b) {
+  bool shouldRecurse(std::shared_ptr<const adm::AudioProgramme>,
+                     std::shared_ptr<const adm::AudioContent>) {
     return true;
   }
-  bool shouldRecurse(std::shared_ptr<const adm::AudioContent> a,
-                     std::shared_ptr<const adm::AudioObject> b) {
-    return true;
-  }
-
-  bool shouldRecurse(std::shared_ptr<const adm::AudioObject> a,
-                     std::shared_ptr<const adm::AudioObject> b) {
+  bool shouldRecurse(std::shared_ptr<const adm::AudioContent>,
+                     std::shared_ptr<const adm::AudioObject>) {
     return true;
   }
 
-  bool shouldRecurse(std::shared_ptr<const adm::AudioObject> a,
-                     std::shared_ptr<const adm::AudioTrackUid> b) {
+  bool shouldRecurse(std::shared_ptr<const adm::AudioObject>,
+                     std::shared_ptr<const adm::AudioObject>) {
     return true;
   }
-  bool shouldRecurse(std::shared_ptr<const adm::AudioTrackUid> a,
-                     std::shared_ptr<const adm::AudioTrackFormat> b) {
+
+  bool shouldRecurse(std::shared_ptr<const adm::AudioObject>,
+                     std::shared_ptr<const adm::AudioTrackUid>) {
     return true;
   }
-  bool shouldRecurse(std::shared_ptr<const adm::AudioTrackFormat> a,
-                     std::shared_ptr<const adm::AudioStreamFormat> b) {
+  bool shouldRecurse(std::shared_ptr<const adm::AudioTrackUid>,
+                     std::shared_ptr<const adm::AudioTrackFormat>) {
     return true;
   }
-  bool shouldRecurse(std::shared_ptr<const adm::AudioStreamFormat> a,
-                     std::shared_ptr<const adm::AudioChannelFormat> b) {
+  bool shouldRecurse(std::shared_ptr<const adm::AudioTrackFormat>,
+                     std::shared_ptr<const adm::AudioStreamFormat>) {
     return true;
   }
-  bool shouldRecurse(std::shared_ptr<const adm::AudioTrackUid> a,
-                     std::shared_ptr<const adm::AudioChannelFormat> b) {
+  bool shouldRecurse(std::shared_ptr<const adm::AudioStreamFormat>,
+                     std::shared_ptr<const adm::AudioChannelFormat>) {
+    return true;
+  }
+  bool shouldRecurse(std::shared_ptr<const adm::AudioTrackUid>,
+                     std::shared_ptr<const adm::AudioChannelFormat>) {
     return true;
   }
 
@@ -77,7 +76,7 @@ struct FullDepthViaUIDStrategy {
   }
 
   template <typename Element>
-  bool isEndOfRoute(std::shared_ptr<Element> e) {
+  bool isEndOfRoute(std::shared_ptr<Element>) {
     return false;
   }
 
