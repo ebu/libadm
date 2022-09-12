@@ -8,7 +8,7 @@ namespace adm {
     ///
     /// the value is given by the template T, so that get<AudioProgramme>()
     /// returns a T<AudioProgramme>, for example
-    template <template <typename Element> typename T>
+    template <template <typename Element> class T>
     struct ForEachElement {
       /// get one of the stored values
       template <typename El>
