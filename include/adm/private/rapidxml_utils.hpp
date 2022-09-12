@@ -7,7 +7,7 @@ namespace adm {
   namespace xml {
     template <typename It>
     int countLines(It begin, It end) {
-      return std::count(begin, end, '\n');
+      return static_cast<int>(std::count(begin, end, '\n'));
     }
 
     inline int getDocumentLine(rapidxml::xml_node<>* node) {
