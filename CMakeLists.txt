@@ -9,7 +9,7 @@ include_directories(include)
 ############################################################
 # init project
 ############################################################
-project(libadm VERSION 0.13.0 LANGUAGES CXX)
+project(libadm VERSION 0.14.0 LANGUAGES CXX)
 
 if(${PROJECT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
     set(IS_ROOT_PROJECT TRUE)

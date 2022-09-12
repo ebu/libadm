@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.14.0 (September 12, 2022)
 
 ### Added
 - Added support for AudioChannelFormatIDRef in AudioTrackUID as per BS.2076-2
