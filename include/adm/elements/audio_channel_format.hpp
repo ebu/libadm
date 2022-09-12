@@ -308,7 +308,7 @@ namespace adm {
     std::shared_ptr<AudioChannelFormat> channel(
         new AudioChannelFormat(name, channelType));
     detail::setNamedOptionHelper(
-        channel, std::forward<Parameters>(optionalNamedArgs)...);
+        channel, std::move(optionalNamedArgs)...);
     return channel;
   }
 

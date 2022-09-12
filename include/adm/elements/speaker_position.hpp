@@ -154,8 +154,7 @@ namespace adm {
   template <typename... Parameters>
   CartesianSpeakerPosition::CartesianSpeakerPosition(
       Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
   template <typename Parameter>
@@ -322,8 +321,7 @@ namespace adm {
   template <typename... Parameters>
   SphericalSpeakerPosition::SphericalSpeakerPosition(
       Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
   template <typename Parameter>

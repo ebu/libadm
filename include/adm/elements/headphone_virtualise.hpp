@@ -110,7 +110,6 @@ namespace adm {
 
   template <typename... Parameters>
   HeadphoneVirtualise::HeadphoneVirtualise(Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 }  // namespace adm

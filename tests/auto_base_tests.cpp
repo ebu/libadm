@@ -48,8 +48,7 @@ namespace adm {
   struct TestElement : private detail::Base {
     template <typename... Parameters>
     explicit TestElement(Parameters... namedArgs) {
-      detail::setNamedOptionHelper(this,
-                                   std::forward<Parameters>(namedArgs)...);
+      detail::setNamedOptionHelper(this, std::move(namedArgs)...);
     }
 
     using detail::Base::add;

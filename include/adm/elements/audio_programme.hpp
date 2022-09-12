@@ -292,8 +292,7 @@ namespace adm {
   std::shared_ptr<AudioProgramme> AudioProgramme::create(
       AudioProgrammeName name, Parameters... optionalNamedArgs) {
     std::shared_ptr<AudioProgramme> programme(new AudioProgramme(name));
-    detail::setNamedOptionHelper(
-        programme, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(programme, std::move(optionalNamedArgs)...);
 
     return programme;
   }

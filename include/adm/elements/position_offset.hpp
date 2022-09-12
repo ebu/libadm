@@ -154,15 +154,13 @@ namespace adm {
   template <typename... Parameters>
   SphericalPositionOffset::SphericalPositionOffset(
       Parameters&&... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
   template <typename... Parameters>
   CartesianPositionOffset::CartesianPositionOffset(
       Parameters&&... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
 }  // namespace adm

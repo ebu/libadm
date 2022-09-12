@@ -236,8 +236,7 @@ namespace adm {
   SphericalPosition::SphericalPosition(Azimuth azimuth, Elevation elevation,
                                        Parameters... optionalNamedArgs)
       : azimuth_(azimuth), elevation_(elevation) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
   template <typename Parameter>
@@ -268,8 +267,7 @@ namespace adm {
   CartesianPosition::CartesianPosition(X x, Y y,
                                        Parameters... optionalNamedArgs)
       : x_(x), y_(y) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
   template <typename Parameter>

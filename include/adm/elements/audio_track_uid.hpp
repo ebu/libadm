@@ -223,8 +223,7 @@ namespace adm {
   std::shared_ptr<AudioTrackUid> AudioTrackUid::create(
       Parameters... optionalNamedArgs) {
     std::shared_ptr<AudioTrackUid> trackUid(new AudioTrackUid());
-    detail::setNamedOptionHelper(
-        trackUid, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(trackUid, std::move(optionalNamedArgs)...);
 
     return trackUid;
   }

@@ -143,8 +143,7 @@ namespace adm {
 
   template <typename... Parameters>
   ObjectDivergence::ObjectDivergence(Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
   template <typename Parameter>

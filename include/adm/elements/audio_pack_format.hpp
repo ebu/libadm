@@ -259,7 +259,7 @@ namespace adm {
       std::shared_ptr<AudioPackFormat> pack(
           new AudioPackFormat(name, channelType));
       detail::setNamedOptionHelper(
-          pack, std::forward<Parameters>(optionalNamedArgs)...);
+          pack, std::move(optionalNamedArgs)...);
       return pack;
     }
   }

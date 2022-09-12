@@ -165,7 +165,7 @@ namespace adm {
     set(order);
     set(degree);
     detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+        this, std::move(optionalNamedArgs)...);
   }
 
   template <typename Parameter>

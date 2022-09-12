@@ -137,8 +137,7 @@ namespace adm {
 
   template <typename... Parameters>
   JumpPosition::JumpPosition(Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   };
 
   template <typename Parameter>

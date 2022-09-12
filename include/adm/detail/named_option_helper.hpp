@@ -11,15 +11,10 @@ namespace adm {
     inline void setNamedOptionHelper(Element /*element*/) {}
 
     template <typename Element, typename T, typename... Parameters>
-    void setNamedOptionHelper(Element element, const T& v, Parameters... args) {
-      element->set(v);
+    void setNamedOptionHelper(Element element, T v, Parameters... args) {
+      element->set(std::move(v));
 
-      setNamedOptionHelper(element, std::forward<Parameters>(args)...);
-    }
-
-    template <typename Element, typename T>
-    void setNamedOptionHelper(Element element, const T& v) {
-      element->set(v);
+      setNamedOptionHelper(element, std::move(args)...);
     }
 
   }  // namespace detail

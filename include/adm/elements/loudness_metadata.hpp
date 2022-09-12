@@ -191,8 +191,7 @@ namespace adm {
 
   template <typename... Parameters>
   LoudnessMetadata::LoudnessMetadata(Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   };
 
   template <typename Parameter>

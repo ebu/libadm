@@ -143,8 +143,7 @@ namespace adm {
   AudioObjectInteraction::AudioObjectInteraction(
       OnOffInteract onOffInteract, Parameters... optionalNamedArgs)
       : onOffInteract_(onOffInteract) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   };
 
   template <typename Parameter>

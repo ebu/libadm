@@ -150,8 +150,7 @@ namespace adm {
   // ---- Implementation ---- //
   template <typename... Parameters>
   AudioBlockFormatId::AudioBlockFormatId(Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   };
 
   template <typename Parameter>

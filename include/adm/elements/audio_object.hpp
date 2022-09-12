@@ -378,8 +378,7 @@ namespace adm {
   std::shared_ptr<AudioObject> AudioObject::create(
       AudioObjectName name, Parameters... optionalNamedArgs) {
     std::shared_ptr<AudioObject> object(new AudioObject(name));
-    detail::setNamedOptionHelper(
-        object, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(object, std::move(optionalNamedArgs)...);
 
     return object;
   }

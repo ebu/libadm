@@ -112,7 +112,7 @@ namespace adm {
         AudioPackFormatName name, Parameters... optionalNamedArgs) {
       std::shared_ptr<AudioPackFormatHoa> pack(new AudioPackFormatHoa(name));
       detail::setNamedOptionHelper(
-          pack, std::forward<Parameters>(optionalNamedArgs)...);
+          pack, std::move(optionalNamedArgs)...);
       return pack;
     }
 

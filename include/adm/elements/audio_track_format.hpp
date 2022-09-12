@@ -234,8 +234,7 @@ namespace adm {
       Parameters... optionalNamedArgs) {
     std::shared_ptr<AudioTrackFormat> trackFormat(
         new AudioTrackFormat(name, format));
-    detail::setNamedOptionHelper(
-        trackFormat, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(trackFormat, std::move(optionalNamedArgs)...);
 
     return trackFormat;
   }

@@ -131,8 +131,7 @@ namespace adm {
   // ---- Implementation ---- //
   template <typename... Parameters>
   AudioPackFormatId::AudioPackFormatId(Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   };
 
   template <typename Parameter>

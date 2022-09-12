@@ -320,8 +320,7 @@ namespace adm {
       Parameters... optionalNamedArgs) {
     std::shared_ptr<AudioStreamFormat> streamFormat(
         new AudioStreamFormat(name, format));
-    detail::setNamedOptionHelper(
-        streamFormat, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(streamFormat, std::move(optionalNamedArgs)...);
 
     return streamFormat;
   }

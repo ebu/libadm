@@ -281,16 +281,14 @@ namespace adm {
   AudioBlockFormatObjects::AudioBlockFormatObjects(
       CartesianPosition position, Parameters... optionalNamedArgs) {
     set(position);
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
   template <typename... Parameters>
   AudioBlockFormatObjects::AudioBlockFormatObjects(
       SphericalPosition position, Parameters... optionalNamedArgs) {
     set(position);
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
   template <typename Parameter>

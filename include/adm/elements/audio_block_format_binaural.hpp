@@ -144,8 +144,7 @@ namespace adm {
   template <typename... Parameters>
   AudioBlockFormatBinaural::AudioBlockFormatBinaural(
       Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+    detail::setNamedOptionHelper(this, std::move(optionalNamedArgs)...);
   }
 
   template <typename Parameter>

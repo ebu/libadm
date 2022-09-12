@@ -40,8 +40,7 @@ namespace adm {
 
     template <typename... Parameters>
     explicit Label(Parameters... namedArgs) {
-      detail::setNamedOptionHelper(this,
-                                   std::forward<Parameters>(namedArgs)...);
+      detail::setNamedOptionHelper(this, std::move(namedArgs)...);
     }
 
     ADM_EXPORT explicit Label(std::string str)
