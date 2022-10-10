@@ -313,6 +313,11 @@ namespace adm {
       }
     }
 
+    template <typename NT>
+    NT parseValue(NodePtr node) {
+      return parseValue<NT>(node, detail::parseDefault<NT>);
+    }
+
     template <typename NT, typename Target, typename Callable>
     void setValue(NodePtr node, Target& target, Callable parser) {
       detail::invokeSet(target, parseValue<NT>(node, parser));
