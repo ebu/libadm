@@ -8,7 +8,7 @@
 
 namespace adm {
 
-  /// @brief Tag for NamedTyoe ::ScreenEdge
+  /// @brief Tag for NamedType ::ScreenEdge
   struct ScreenEdgeTag {};
   /**
    * @brief NamedType for the screen edge
