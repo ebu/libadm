@@ -33,7 +33,7 @@ namespace adm {
     }
 
     /// normalised fraction, such that numerator and denominator have no common
-    /// fractors
+    /// factors
     ADM_EXPORT FractionalTime normalised() const;
 
    private:
