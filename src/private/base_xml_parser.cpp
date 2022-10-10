@@ -370,6 +370,23 @@ namespace adm {
       return audioTrackUid;
     }
 
+    ProfileList BaseXmlParser::parseProfileList(NodePtr node) {
+          ProfileList profileList;
+
+          addOptionalElements<Profile>(node, "profile", profileList, &parseProfile);
+
+          return profileList;
+    }
+
+    Profile parseProfile(NodePtr node) {
+          auto value = parseValue<ProfileValue>(node);
+          auto name = parseAttribute<ProfileName>(node, "profileName");
+          auto version = parseAttribute<ProfileVersion>(node, "profileVersion");
+          auto level = parseAttribute<ProfileLevel>(node, "profileLevel");
+
+          return Profile{value, name, version, level};
+    }
+
     AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(
         NodePtr node) {
       AudioBlockFormatDirectSpeakers audioBlockFormat;

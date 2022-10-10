@@ -11,6 +11,7 @@
 namespace adm {
   namespace detail {
     template class OptionalParameter<Version>;
+    template class OptionalParameter<ProfileList>;
   }  // namespace detail
 
   Document::Document() { idAssigner_.document(this); }

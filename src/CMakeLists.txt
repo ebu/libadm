@@ -48,6 +48,7 @@ add_library(adm
   elements/position.cpp
   elements/position_offset.cpp
   elements/position_interaction_range.cpp
+  elements/profile_list.cpp
   elements/screen_edge_lock.cpp
   elements/speaker_position.cpp
   elements/type_descriptor.cpp

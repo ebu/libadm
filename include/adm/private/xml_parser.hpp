@@ -11,7 +11,6 @@
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
 #include "adm/elements/audio_pack_format_hoa.hpp"
-//#include "adm/detail/id_map.hpp"
 #include "adm/private/base_xml_parser.hpp"
 
 namespace adm {

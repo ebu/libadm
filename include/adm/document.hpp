@@ -20,19 +20,23 @@ namespace adm {
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<Version>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<ProfileList>;
 
-    using DocumentBase = HasParameters<OptionalParameter<Version>>;
+    using DocumentBase = HasParameters<OptionalParameter<Version>, OptionalParameter<ProfileList>>;
   }  // namespace detail
 
   /**
    * @brief Class representation of a whole ADM document
+   * @headerfile document.hpp <adm/document.hpp>
    *
    * \rst
-   * +---------------+-----------------+----------------------------+
-   * | ADM Parameter | Parameter Type  | Pattern Type               |
-   * +===============+=================+============================+
-   * | version       | :type:`Version` | :class:`OptionalParameter` |
-   * +---------------+-----------------+----------------------------+
+   * +---------------+---------------------+----------------------------+
+   * | ADM Parameter | Parameter Type      | Pattern Type               |
+   * +===============+=====================+============================+
+   * | version       | :type:`Version`     | :class:`OptionalParameter` |
+   * | profileList   | :type:`ProfileList` | :class:`OptionalParameter`                           |
+   * +---------------+---------------------+----------------------------+
    * \endrst
    *
    * Note that:
