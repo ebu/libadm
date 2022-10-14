@@ -3,7 +3,7 @@
 	<coreMetadata>
 		<format>
 			<audioFormatExtended>
-				<audioObject audioObjectID="AO_1001" audioObjectName="other parameters" start="00:00:00.000000000" duration="00:00:10.000000000" dialogue="1" importance="5" interact="1" disableDucking="1">
+				<audioObject audioObjectID="AO_1001" audioObjectName="other parameters" start="00:00:00.00000" duration="00:00:10.00000" dialogue="1" importance="5" interact="1" disableDucking="1">
 					<audioObjectLabel>label</audioObjectLabel>
 					<gain>0.500000</gain>
 					<headLocked>1</headLocked>

@@ -4,7 +4,7 @@
 		<format>
 			<audioFormatExtended>
 				<audioChannelFormat audioChannelFormatID="AC_00011001" audioChannelFormatName="Test" typeLabel="0001" typeDefinition="DirectSpeakers">
-					<audioBlockFormat audioBlockFormatID="AB_00011001_00000001" rtime="00:00:01.000000000" duration="00:00:01.000000000">
+					<audioBlockFormat audioBlockFormatID="AB_00011001_00000001" rtime="00:00:01.00000" duration="00:00:01.00000">
 						<speakerLabel>testLabel</speakerLabel>
 						<position coordinate="azimuth" screenEdgeLock="left">60.000000</position>
 						<position coordinate="azimuth" bound="min">58.000000</position>

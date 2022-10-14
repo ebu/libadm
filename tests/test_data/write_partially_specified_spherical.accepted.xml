@@ -4,7 +4,7 @@
 		<format>
 			<audioFormatExtended>
 				<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="Test" typeLabel="0003" typeDefinition="Objects">
-					<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" rtime="00:00:01.000000000" duration="00:00:01.000000000">
+					<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" rtime="00:00:01.00000" duration="00:00:01.00000">
 						<position coordinate="azimuth">60.000000</position>
 						<position coordinate="elevation">30.000000</position>
 					</audioBlockFormat>

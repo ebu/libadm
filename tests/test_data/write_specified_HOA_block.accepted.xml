@@ -4,7 +4,7 @@
 		<format>
 			<audioFormatExtended>
 				<audioChannelFormat audioChannelFormatID="AC_00041001" audioChannelFormatName="Test" typeLabel="0004" typeDefinition="HOA">
-					<audioBlockFormat audioBlockFormatID="AB_00041001_00000001" rtime="00:00:00.000000000" duration="00:00:01.000000000">
+					<audioBlockFormat audioBlockFormatID="AB_00041001_00000001" rtime="00:00:00.00000" duration="00:00:01.00000">
 						<order>2</order>
 						<degree>1</degree>
 						<nfcRefDist>2.000000</nfcRefDist>

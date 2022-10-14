@@ -43,7 +43,9 @@ TEST_CASE("adm_time") {
   // reformat timecode
   {
     REQUIRE(formatTimecode(parseTimecode("00:00:00.00000")) ==
-            "00:00:00.000000000");
+            "00:00:00.00000");
+    REQUIRE(formatTimecode(parseTimecode("00:00:00.000001")) ==
+            "00:00:00.000001");
     REQUIRE(formatTimecode(parseTimecode("04:20:14.046079001")) ==
             "04:20:14.046079001");
     REQUIRE(formatTimecode(parseTimecode("23:59:59.999999999")) ==

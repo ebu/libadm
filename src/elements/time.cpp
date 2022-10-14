@@ -94,7 +94,18 @@ namespace adm {
       ss << std::setw(2) << std::setfill('0')
          << std::chrono::duration_cast<std::chrono::seconds>(time).count() % 60;
       ss << ".";
-      ss << std::setw(9) << std::setfill('0') << time.count() % 1000000000;
+
+      {
+        auto ns = time.count() % 1000000000;
+        // drop trailing zero digits, while keeping at least 5 to satisfy BS.2076-2
+        int precision = 9;
+        while (ns % 10 == 0 && precision > 5) {
+          ns /= 10;
+          precision--;
+        }
+        ss << std::setw(precision) << std::setfill('0') << ns;
+      }
+
       return ss.str();
     }
 

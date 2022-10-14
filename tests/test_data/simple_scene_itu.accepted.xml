@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ituADM>
 	<audioFormatExtended>
-		<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="Main" start="10:00:00.000000000" end="10:00:10.000000000">
+		<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="Main" start="10:00:00.00000" end="10:00:10.00000">
 			<audioContentIDRef>ACO_1001</audioContentIDRef>
 		</audioProgramme>
 		<audioContent audioContentID="ACO_1001" audioContentName="Main">
 			<audioObjectIDRef>AO_1001</audioObjectIDRef>
 		</audioContent>
-		<audioObject audioObjectID="AO_1001" audioObjectName="MainObject" start="00:00:00.000000000">
+		<audioObject audioObjectID="AO_1001" audioObjectName="MainObject" start="00:00:00.00000">
 			<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
 			<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
 			<gain>1.000000</gain>
@@ -18,7 +18,7 @@
 			<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
 		</audioPackFormat>
 		<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="MainObject" typeLabel="0003" typeDefinition="Objects">
-			<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" rtime="00:00:00.000000000">
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" rtime="00:00:00.00000">
 				<position coordinate="azimuth">30.000000</position>
 				<position coordinate="elevation">0.000000</position>
 				<position coordinate="distance">1.000000</position>
@@ -36,7 +36,7 @@
 				<headphoneVirtualise bypass="0" DRR="130.000000"/>
 				<importance>10</importance>
 			</audioBlockFormat>
-			<audioBlockFormat audioBlockFormatID="AB_00031001_00000002" rtime="00:00:03.000000000">
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000002" rtime="00:00:03.00000">
 				<position coordinate="azimuth">-30.000000</position>
 				<position coordinate="elevation">0.000000</position>
 				<position coordinate="distance">1.000000</position>
@@ -54,7 +54,7 @@
 				<headphoneVirtualise bypass="0" DRR="130.000000"/>
 				<importance>10</importance>
 			</audioBlockFormat>
-			<audioBlockFormat audioBlockFormatID="AB_00031001_00000003" rtime="00:00:06.000000000">
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000003" rtime="00:00:06.00000">
 				<position coordinate="azimuth">0.000000</position>
 				<position coordinate="elevation">0.000000</position>
 				<position coordinate="distance">1.000000</position>
@@ -72,7 +72,7 @@
 				<headphoneVirtualise bypass="0" DRR="130.000000"/>
 				<importance>10</importance>
 			</audioBlockFormat>
-			<audioBlockFormat audioBlockFormatID="AB_00031001_00000004" rtime="00:00:09.000000000">
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000004" rtime="00:00:09.00000">
 				<position coordinate="azimuth">30.000000</position>
 				<position coordinate="elevation">0.000000</position>
 				<position coordinate="distance">1.000000</position>

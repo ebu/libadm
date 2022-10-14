@@ -4,7 +4,7 @@
 		<format>
 			<audioFormatExtended>
 				<audioChannelFormat audioChannelFormatID="AC_00051001" audioChannelFormatName="Test" typeLabel="0005" typeDefinition="Binaural">
-					<audioBlockFormat audioBlockFormatID="AB_00051001_00000001" rtime="00:00:00.000000000" duration="00:00:01.000000000">
+					<audioBlockFormat audioBlockFormatID="AB_00051001_00000001" rtime="00:00:00.00000" duration="00:00:01.00000">
 						<gain>0.500000</gain>
 						<importance>5</importance>
 					</audioBlockFormat>
