@@ -28,11 +28,11 @@ macOS
 *****
 
 On macOS you can use homebrew to install the library. You just have to
-add the IRT's NGA homebrew tap and can then use the usual install command.
+add the NGA homebrew tap and can then use the usual install command.
 
 .. code:: console
 
-    brew tap irt-open-source/homebrew-nga
+    brew tap ebu/homebrew-nga
     brew install libadm
 
 Manual installation
