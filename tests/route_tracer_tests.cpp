@@ -83,6 +83,11 @@ struct FullDepthViaUIDStrategy {
   bool isEndOfRoute(std::shared_ptr<const adm::AudioChannelFormat>) {
     return true;
   }
+
+  bool isEndOfRoute(
+      const std::shared_ptr<const adm::AudioTrackUid> &track_uid) {
+    return track_uid->isSilent();
+  }
 };
 
 TEST_CASE("via_uid") {
@@ -136,6 +141,32 @@ TEST_CASE("uid_to_channel_format") {
   expected_route.add(object);
   expected_route.add(trackUid);
   expected_route.add(channelFormat);
+
+  REQUIRE(route == expected_route);
+}
+
+TEST_CASE("silent_track_uid") {
+  auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+
+  auto content = AudioContent::create(AudioContentName("Content"));
+  programme->addReference(content);
+
+  auto object = AudioObject::create(AudioObjectName("Object"));
+  content->addReference(object);
+
+  auto trackUid = AudioTrackUid::getSilent();
+  object->addReference(trackUid);
+
+  detail::GenericRouteTracer<adm::Route, FullDepthViaUIDStrategy> tracer;
+  auto routes = tracer.run(programme);
+  REQUIRE(routes.size() == 1);
+  Route &route = routes[0];
+
+  Route expected_route;
+  expected_route.add(programme);
+  expected_route.add(content);
+  expected_route.add(object);
+  expected_route.add(trackUid);
 
   REQUIRE(route == expected_route);
 }
