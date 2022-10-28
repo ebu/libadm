@@ -17,6 +17,10 @@ namespace adm {
       detail::ParameterTraits<Duration>::tag) const {
     return duration_.get();
   }
+  InitializeBlock AudioBlockFormatMatrix::get(
+      detail::ParameterTraits<InitializeBlock>::tag) const {
+    return initializeBlock_.get();
+  }
 
   // ---- Has ---- //
   bool AudioBlockFormatMatrix::has(
@@ -30,6 +34,10 @@ namespace adm {
       detail::ParameterTraits<Duration>::tag) const {
     return duration_ != boost::none;
   }
+  bool AudioBlockFormatMatrix::has(
+      detail::ParameterTraits<InitializeBlock>::tag) const {
+    return initializeBlock_ != boost::none;
+  }
 
   // ---- isDefault ---- //
   bool AudioBlockFormatMatrix::isDefault(
@@ -41,6 +49,9 @@ namespace adm {
   void AudioBlockFormatMatrix::set(AudioBlockFormatId id) { id_ = id; }
   void AudioBlockFormatMatrix::set(Rtime rtime) { rtime_ = rtime; }
   void AudioBlockFormatMatrix::set(Duration duration) { duration_ = duration; }
+  void AudioBlockFormatMatrix::set(InitializeBlock initializeBlock) {
+    initializeBlock_ = initializeBlock;
+  }
 
   // ---- Unsetter ---- //
   void AudioBlockFormatMatrix::unset(detail::ParameterTraits<Rtime>::tag) {
@@ -48,6 +59,10 @@ namespace adm {
   }
   void AudioBlockFormatMatrix::unset(detail::ParameterTraits<Duration>::tag) {
     duration_ = boost::none;
+  }
+  void AudioBlockFormatMatrix::unset(
+      detail::ParameterTraits<InitializeBlock>::tag) {
+    initializeBlock_ = boost::none;
   }
 
 }  // namespace adm

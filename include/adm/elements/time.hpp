@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <boost/variant.hpp>
+#include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 
@@ -52,6 +53,7 @@ namespace adm {
     Time(const std::chrono::duration<Rep, Period>& time) : time(time) {}
     // NOLINTNEXTLINE(google-explicit-constructor)
     Time(const FractionalTime& time) : time(time) {}
+    Time() : time(std::chrono::nanoseconds::zero()) {}
 
     /// convert to nanoseconds, rounding down
     ADM_EXPORT std::chrono::nanoseconds asNanoseconds() const;
@@ -88,6 +90,26 @@ namespace adm {
   struct RtimeTag {};
   /// @brief NamedType for the rtime attribute
   using Rtime = detail::NamedType<Time, RtimeTag>;
+  /// @brief Tag for NamedType ::InitializeBlock
+  struct InitializeBlockTag {};
+  /// @brief NamedType for the InitializeBlock attribute
+  using InitializeBlock = detail::NamedType<bool, InitializeBlockTag>;
+
+  enum class TimeReference { TOTAL, LOCAL };
+  /// @brief Tag for NamedType ::TimeReference
+  struct TimeReferenceTag {};
+
+  namespace detail {
+    template <>
+    struct ParameterTraits<TimeReference> {
+      using tag = TimeReferenceTag;
+    };
+  }  // namespace detail
+
+  namespace detail {
+    template <>
+    ADM_EXPORT TimeReference getDefault<TimeReference>();
+  }
 
   /// @brief Parse an adm timecode and convert it to a std::chrono::duration
   ADM_EXPORT Time parseTimecode(const std::string& timecode);

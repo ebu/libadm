@@ -55,8 +55,8 @@ namespace adm {
   AudioObjectId parseAudioObjectId(const std::string& id) {
     // AO_xxxx
     detail::IDParser parser("AudioObjectId", id);
-    parser.check_size(7);
     parser.check_prefix("AO_", 3);
+    parser.check_size(7);
     auto value = parser.parse_hex(3, 4);
     return AudioObjectId(AudioObjectIdValue(value));
   }

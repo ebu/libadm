@@ -17,7 +17,8 @@ namespace adm {
 
   namespace detail {
     using AudioBlockFormatBinauralBase =
-        HasParameters<DefaultParameter<Gain>, DefaultParameter<Importance>>;
+        HasParameters<DefaultParameter<Gain>, DefaultParameter<Importance>,
+                      OptionalParameter<InitializeBlock>>;
   }  // namespace detail
 
   /// @brief Tag for AudioBlockFormatBinaural
@@ -37,6 +38,16 @@ namespace adm {
    * | rtime               | :type:`Rtime`                | :class:`DefaultParameter`  |
    * +---------------------+------------------------------+----------------------------+
    * | duration            | :type:`Duration`             | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | lstart              | :type:`Rtime` (by using      |                            |
+   * |                     |     LOCAL TimeReference      |                            |
+   * |                     |     in FrameHeader)          |                            |
+   * +---------------------+------------------------------+----------------------------+
+   * | lduration           | :type:`Duration` (by using   |                            |
+   * |                     |      LOCAL TimeReference     |                            |
+   * |                     |      in FrameHeader)         |                            |
+   * +---------------------+------------------------------+----------------------------+
+   * | initializeBlock     | :type:`InitializeBlock`      | :class:`OptionalParameter` |
    * +---------------------+------------------------------+----------------------------+
    * | gain                | :class:`Gain`                | :class:`DefaultParameter`  |
    * +---------------------+------------------------------+----------------------------+

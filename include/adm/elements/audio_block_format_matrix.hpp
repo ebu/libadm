@@ -83,6 +83,8 @@ namespace adm {
     ADM_EXPORT void set(Rtime rtime);
     /// @brief Duration setter
     ADM_EXPORT void set(Duration duration);
+    /// @brief InitializeBlock setter
+    ADM_EXPORT void set(InitializeBlock initializeBlock);
 
     using detail::AudioBlockFormatMatrixBase::set;
     /**
@@ -105,10 +107,13 @@ namespace adm {
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT InitializeBlock
+        get(detail::ParameterTraits<InitializeBlock>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<InitializeBlock>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -117,10 +122,12 @@ namespace adm {
 
     ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<InitializeBlock>::tag);
 
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;
     boost::optional<Duration> duration_;
+    boost::optional<InitializeBlock> initializeBlock_;
   };
 
   // ---- Implementation ---- //

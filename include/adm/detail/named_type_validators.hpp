@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <array>
 
 namespace adm {
 
@@ -23,6 +24,20 @@ namespace adm {
   };
 
   namespace detail {
+    template <typename T>
+    void validateStringList(std::string const& type, std::string const& value,
+                            T&& list) {
+      for (auto const& element : list) {
+        if (element == value) return;
+      }
+      std::stringstream msg;
+      msg << "'" << value << "' is not a valid " << type
+          << ". Permitted values are:";
+      for (auto const& element : list) {
+        msg << " '" << element << "'";
+      }
+      throw InvalidStringError(msg.str());
+    }
 
     struct DefaultValidator {
       template <typename T>
@@ -82,120 +97,84 @@ namespace adm {
 
     struct ScreenEdgeValidator {
       static void validate(const std::string& value) {
-        for (auto& validString : {"left", "right", "top", "bottom"}) {
-          if (value == validString) {
-            return;
-          }
-        }
-        std::stringstream msg;
-        msg << "illegal ScreenEdge: '" << value << "'";
-        throw InvalidStringError(msg.str());
+        validateStringList(
+            "ScreenEdge", value,
+            std::array<std::string, 4>{"left", "right", "top", "bottom"});
       }
     };
 
     struct HorizontalEdgeValidator {
       static void validate(const std::string& value) {
-        for (auto& validString : {"left", "right"}) {
-          if (value == validString) {
-            return;
-          }
-        }
-        std::stringstream msg;
-        msg << "illegal HorizontalEdge: '" << value << "'";
-        throw InvalidStringError(msg.str());
+        validateStringList("HorizontalEdge", value,
+                           std::array<std::string, 2>{"left", "right"});
       }
     };
 
     struct VerticalEdgeValidator {
       static void validate(const std::string& value) {
-        for (auto& validString : {"top", "bottom"}) {
-          if (value == validString) {
-            return;
-          }
-        }
-        std::stringstream msg;
-        msg << "illegal VerticalEdge: '" << value << "'";
-        throw InvalidStringError(msg.str());
+        validateStringList("VerticalEdge", value,
+                           std::array<std::string, 2>{"top", "bottom"});
       }
     };
 
     struct FrequencyTypeValidator {
       static void validate(const std::string& value) {
-        for (auto& validString : {"lowPass", "highPass"}) {
-          if (value == validString) {
-            return;
-          }
-        }
-        std::stringstream msg;
-        msg << "illegal FrequencyType: '" << value << "'";
-        throw InvalidStringError(msg.str());
+        validateStringList("FrequencyType", value,
+                           std::array<std::string, 2>{"lowPass", "highPass"});
       }
     };
 
     struct CoordinateValueValidator {
       static void validate(const std::string& value) {
-        for (auto& validString :
-             {"azimuth", "elevation", "distance", "X", "Y", "Z"}) {
-          if (value == validString) {
-            return;
-          }
-        }
-        std::stringstream msg;
-        msg << "illegal CoordinateValue: '" << value << "'";
-        throw InvalidStringError(msg.str());
+        validateStringList(
+            "CoordinateValue", value,
+            std::array<std::string, 6>{"azimuth", "elevation", "distance", "X",
+                                       "Y", "Z"});
       }
     };
 
     struct SphericalCoordinateValueValidator {
       static void validate(const std::string& value) {
-        for (auto& validString : {"azimuth", "elevation", "distance"}) {
-          if (value == validString) {
-            return;
-          }
-        }
-        std::stringstream msg;
-        msg << "illegal SphericalCoordinateValue: '" << value << "'";
-        throw InvalidStringError(msg.str());
+        validateStringList(
+            "SphericalCoordinateValue", value,
+            std::array<std::string, 3>{"azimuth", "elevation", "distance"});
       }
     };
 
     struct CartesianCoordinateValueValidator {
       static void validate(const std::string& value) {
-        for (auto& validString : {"X", "Y", "Z"}) {
-          if (value == validString) {
-            return;
-          }
-        }
-        std::stringstream msg;
-        msg << "illegal CartesianCoordinateValue: '" << value << "'";
-        throw InvalidStringError(msg.str());
+        validateStringList("CartesianCoordinateValue", value,
+                           std::array<std::string, 3>{"X", "Y", "Z"});
       }
     };
 
     struct BoundValueValidator {
       static void validate(const std::string& value) {
-        for (auto& validString : {"min", "max"}) {
-          if (value == validString) {
-            return;
-          }
-        }
-        std::stringstream msg;
-        msg << "illegal Bound: '" << value << "'";
-        throw InvalidStringError(msg.str());
+        validateStringList("Bound", value,
+                           std::array<std::string, 2>{"min", "max"});
       }
     };
 
-    struct TimeReferenceValueValidator {
-      static void validate(const std::string& value) {
-        for (auto& validString : {"total", "local"}) {
-          if (value == validString) {
-            return;
-          }
+    struct FrameIndexValidator {
+      static void validate(unsigned int value) {
+        if (!(value > 0 && value <= 0xFFFFFFFF)) {
+          throw OutOfRangeError("FrameIndex value: " + std::to_string(value) +
+                                " not within valid range of [0x1,0xFFFFFFFF]");
         }
-        std::stringstream msg;
-        msg << "illegal TimeReference: '" << value << "'";
-        throw InvalidStringError(msg.str());
       }
+    };
+
+    struct ChunkIndexValidator {
+      static void validate(unsigned int value) {
+        if (!(value > 0 && value <= 0xFF)) {
+          throw OutOfRangeError("ChunkIndex value: " + std::to_string(value) +
+                                " not within valid range of [0x1,0xFF]");
+        }
+      }
+    };
+
+    struct CountToFullValueValidator {
+      static void validate(const unsigned int& value) { return; }
     };
 
   }  // namespace detail
