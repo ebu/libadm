@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000001" start="00:00:00.00000" duration="00:00:01.00000" type="full" timeReference="local"/>
+	</frameHeader>
+	<audioFormatExtended>
+		<audioChannelFormat audioChannelFormatID="AC_00051001" audioChannelFormatName="Test" typeLabel="0005" typeDefinition="Binaural">
+			<audioBlockFormat audioBlockFormatID="AB_00051001_00000001" lstart="00:00:00.00000" lduration="00:00:01.00000">
+				<gain>0.500000</gain>
+				<importance>5</importance>
+			</audioBlockFormat>
+		</audioChannelFormat>
+	</audioFormatExtended>
+</frame>
+

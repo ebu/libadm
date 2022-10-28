@@ -17,7 +17,8 @@ namespace adm {
 
   namespace detail {
     using AudioBlockFormatMatrixBase =
-        HasParameters<DefaultParameter<Gain>, DefaultParameter<Importance>>;
+        HasParameters<DefaultParameter<Gain>, DefaultParameter<Importance>,
+                      OptionalParameter<InitializeBlock>>;
   }  // namespace detail
 
   /// @brief Tag for AudioBlockFormatMatrix

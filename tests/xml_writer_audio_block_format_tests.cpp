@@ -6,6 +6,7 @@
 #include "adm/utilities/object_creation.hpp"
 #include "adm/write.hpp"
 #include "helper/file_comparator.hpp"
+#include "adm/serial.hpp"
 
 using namespace adm;
 namespace {
@@ -205,4 +206,54 @@ TEST_CASE("write specified Binaural block") {
 
   auto xml = getXml(doc);
   CHECK_THAT(xml, EqualsXmlFile("write_specified_binaural_block"));
+}
+
+TEST_CASE("write specified Binaural block sadm") {
+  using namespace std::chrono_literals;
+
+  auto doc = Document::create();
+  auto channelFormat = AudioChannelFormat::create(
+      AudioChannelFormatName("Test"), TypeDefinition::BINAURAL);
+  doc->add(channelFormat);
+  auto blockFormat = AudioBlockFormatBinaural{
+      Rtime{std::chrono::seconds(0)}, Duration{std::chrono::seconds(1)},
+      Gain::fromLinear(0.5), Importance{5}};
+  channelFormat->add(blockFormat);
+
+  FrameFormat format{FrameFormatId{FrameIndex{1}}, Start{0s}, Duration{1s},
+                     FrameType::FULL, TimeReference::LOCAL};
+
+  std::stringstream ss;
+  writeXml(ss, doc, FrameHeader{format});
+  CHECK_THAT(ss.str(), EqualsXmlFile("write_specified_binaural_block_sadm"));
+}
+
+TEST_CASE("Time reference writing") {
+  using namespace std::chrono_literals;
+  Rtime start{1s};
+  Duration duration{2s};
+  CartesianPosition position{X{0}, Y{1}};
+  auto document = Document::create();
+  FrameFormat format{FrameFormatId{FrameIndex{1}}, Start{0s}, Duration{1s},
+                     FrameType::FULL};
+  SECTION("Objects, total time") {
+    format.set(TimeReference::TOTAL);
+    auto channelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName{"Objects Format"}, TypeDefinition::OBJECTS);
+    channelFormat->add(AudioBlockFormatObjects{position, start, duration});
+    document->add(channelFormat);
+    std::stringstream ss;
+    writeXml(ss, document, FrameHeader{format});
+    CHECK_THAT(ss.str(), EqualsXmlFile("write_total_time_reference"));
+  }
+  SECTION("Objects, local time") {
+    format.set(TimeReference::LOCAL);
+    auto channelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName{"Objects Format"}, TypeDefinition::OBJECTS);
+    channelFormat->add(AudioBlockFormatObjects{position, start, duration});
+    document->add(channelFormat);
+    std::stringstream ss;
+    writeXml(ss, document, FrameHeader{format});
+    CHECK_THAT(ss.str(), EqualsXmlFile("write_local_time_reference"));
+  }
 }

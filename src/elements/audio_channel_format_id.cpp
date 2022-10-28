@@ -4,7 +4,6 @@
 #include "adm/detail/optional_comparison.hpp"
 
 namespace adm {
-
   // ---- Defaults ---- //
   const TypeDescriptor AudioChannelFormatId::channelTypeDefault_ =
       TypeDefinition::UNDEFINED;
@@ -84,22 +83,33 @@ namespace adm {
     os << formatId(*this);
   }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioChannelFormatId> {
+      static constexpr char const* name{"audioChannelFormatID"};
+      static constexpr char const* format{"AC_yyyyxxxx"};
+      static constexpr std::size_t sections{2};
+    };
+    template <>
+    struct IdSection<AudioChannelFormatId, 0> {
+      using type = TypeDescriptor;
+      static constexpr char identifier{'y'};
+    };
+    template <>
+    struct IdSection<AudioChannelFormatId, 1> {
+      using type = AudioChannelFormatIdValue;
+      static constexpr char identifier{'x'};
+    };
+  }  // namespace detail
+
   AudioChannelFormatId parseAudioChannelFormatId(const std::string& id) {
-    // AC_yyyyxxxx
-    detail::IDParser parser("AudioChannelFormatId", id);
-    parser.check_size(11);
-    parser.check_prefix("AC_", 3);
-    auto type = parser.parse_hex(3, 4);
-    auto value = parser.parse_hex(7, 4);
-    return AudioChannelFormatId(TypeDescriptor(type),
-                                AudioChannelFormatIdValue(value));
+    detail::IDParser<AudioChannelFormatId> parser{id};
+    parser.validate();
+    return parser.parse();
   }
 
   std::string formatId(const AudioChannelFormatId& id) {
-    std::string s("AC_yyyyxxxx");
-    detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
-    detail::formatHex(s, 7, 4, id.get<AudioChannelFormatIdValue>().get());
-    return s;
+    return detail::formatId(id);
   }
 
 }  // namespace adm

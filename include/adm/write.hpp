@@ -9,6 +9,7 @@
 namespace adm {
 
   class Document;
+  class FrameHeader;
 
   namespace xml {
     /**
@@ -43,6 +44,12 @@ namespace adm {
       itu_structure = 0x1,  ///< use ITU xml structure
       write_default_values = 0x2,  ///< write default values
     };
+
+    enum class SadmWriterOptions : unsigned {
+      none = 0x0,  ///< default behaviour
+      core_metadata = 0x1,  ///< audioFormatExtended inside coreMetadata/format/
+      write_default_values = 0x2,  ///< write default values
+    };
   }  // namespace xml
 
   /**
@@ -74,8 +81,41 @@ namespace adm {
       xml::WriterOptions options = xml::WriterOptions::none);
 
   /**
+   * @brief Write a SADM Frame. The header will be written using the supplied FrameHeader
+   * and the audioFormatExtended node will be written using the supplied Document.
+   * Note that the header's TimeReference will be used to determine whether rtime/duration
+   * or lstart/lduration is written in audioBlockFormats
+   *
+   * Convenience wrapper for files using
+   * `writeXml(std::ostream&, std::shared_ptr<const Document>, FrameHeader const&)`
+   * @param filename XML file to write to
+   * @param admDocument ADM document to be used as frame's audioFormatExtended node
+   * @param frameHeader SADM frame header
+   * @param options Options to influence the XML generator behaviour
+   */
+  ADM_EXPORT void writeXml(
+      const std::string& filename, std::shared_ptr<const Document> admDocument,
+      FrameHeader const& frameHeader,
+      xml::SadmWriterOptions options = xml::SadmWriterOptions::none);
+
+  /**
+   * @brief Write a SADM Frame to an output stream. The header will be written using the supplied FrameHeader
+   * and the audioFormatExtended node will be written using the supplied Document.
+   * Note that the header's TimeReference will be used to determine whether rtime/duration
+   * or lstart/lduration is written in audioBlockFormats
+   * @param stream output stream to write XML data
+   * @param admDocument ADM document to be used as frame's audioFormatExtended node
+   * @param frameHeader SADM frame header
+   * @param options Options to influence the XML generator behaviour
+   */
+  ADM_EXPORT std::ostream& writeXml(
+      std::ostream& stream, std::shared_ptr<const Document> admDocument,
+      FrameHeader const& frameHeader,
+      xml::SadmWriterOptions options = xml::SadmWriterOptions::none);
+  /**
    * @}
    */
 }  // namespace adm
 
 ENABLE_ENUM_BITMASK_OPERATORS(adm::xml::WriterOptions);
+ENABLE_ENUM_BITMASK_OPERATORS(adm::xml::SadmWriterOptions);
