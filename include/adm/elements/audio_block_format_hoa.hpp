@@ -40,6 +40,8 @@ namespace adm {
     using AudioBlockFormatHoaBase =
         HasParameters<RequiredParameter<AudioBlockFormatId>,
                       DefaultParameter<Rtime>, OptionalParameter<Duration>,
+                      OptionalParameter<Lstart>, OptionalParameter<Lduration>, 
+                      OptionalParameter<InitializeBlock>, 
                       OptionalParameter<Order>, OptionalParameter<Degree>,
                       DefaultParameter<Normalization>,
                       DefaultParameter<NfcRefDist>,
@@ -66,6 +68,12 @@ namespace adm {
    * | rtime               | :type:`Rtime`                | :class:`DefaultParameter`  |
    * +---------------------+------------------------------+----------------------------+
    * | duration            | :type:`Duration`             | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | lstart              | :type:`Lstart`               | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | lduration           | :type:`Lduration`            | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | initializeBlock     | :type:`InitializeBlock`      | :class:`OptionalParameter` |
    * +---------------------+------------------------------+----------------------------+
    * | order               | :type:`Order`                | :class:`RequiredParameter` |
    * +---------------------+------------------------------+----------------------------+

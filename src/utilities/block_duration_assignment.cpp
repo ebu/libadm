@@ -7,6 +7,7 @@
 #include <map>
 #include <stdexcept>
 #include <adm/utilities/time_conversion.hpp>
+#include <iostream>
 
 namespace adm {
 
@@ -155,6 +156,13 @@ namespace adm {
       auto duration = durationOfChannel(route, programmeDuration);
       auto channel =
           route.getLastOf<AudioChannelFormat>()->get<AudioChannelFormatId>();
+      /*std::cout << "calculateDurationOfChannels: " << formatId(channel) << " ";
+      std::cout << duration.asNanoseconds().count() << " ";
+      for (auto &dur : durations) {
+        std::cout << formatId(dur.first) << " ";
+        std::cout << dur.second.asNanoseconds().count() << " ";
+      }
+      std::cout << std::endl;*/
       if (isPresentWithDifferentValue(channel, duration, durations)) {
         throw error::detail::formatElementRuntimeError(
             channel,

@@ -20,6 +20,18 @@ namespace adm {
       detail::ParameterTraits<Duration>::tag) const {
     return duration_.get();
   }
+  Lstart AudioBlockFormatDirectSpeakers::get(
+      detail::ParameterTraits<Lstart>::tag) const {
+    return lstart_.get();
+  }
+  Lduration AudioBlockFormatDirectSpeakers::get(
+      detail::ParameterTraits<Lduration>::tag) const {
+    return lduration_.get();
+  }
+  InitializeBlock AudioBlockFormatDirectSpeakers::get(
+      detail::ParameterTraits<InitializeBlock>::tag) const {
+    return initializeBlock_.get();
+  }
   SpeakerLabels AudioBlockFormatDirectSpeakers::get(
       detail::ParameterTraits<SpeakerLabels>::tag) const {
     return speakerLabels_;
@@ -47,6 +59,18 @@ namespace adm {
     return duration_ != boost::none;
   }
   bool AudioBlockFormatDirectSpeakers::has(
+      detail::ParameterTraits<Lstart>::tag) const {
+    return lstart_ != boost::none;
+  }
+  bool AudioBlockFormatDirectSpeakers::has(
+      detail::ParameterTraits<Lduration>::tag) const {
+    return lduration_ != boost::none;
+  }
+  bool AudioBlockFormatDirectSpeakers::has(
+      detail::ParameterTraits<InitializeBlock>::tag) const {
+    return initializeBlock_ != boost::none;
+  }
+  bool AudioBlockFormatDirectSpeakers::has(
       detail::ParameterTraits<SpeakerLabels>::tag) const {
     return speakerLabels_.size() > 0;
   }
@@ -71,6 +95,13 @@ namespace adm {
   void AudioBlockFormatDirectSpeakers::set(Duration duration) {
     duration_ = duration;
   }
+  void AudioBlockFormatDirectSpeakers::set(Lstart lstart) { lstart_ = lstart; }
+  void AudioBlockFormatDirectSpeakers::set(Lduration lduration) {
+    lduration_ = lduration;
+  }
+  void AudioBlockFormatDirectSpeakers::set(InitializeBlock initializeBlock) {
+    initializeBlock_ = initializeBlock;
+  }
   void AudioBlockFormatDirectSpeakers::set(
       CartesianSpeakerPosition speakerPosition) {
     speakerPosition_ = speakerPosition;
@@ -91,6 +122,18 @@ namespace adm {
   void AudioBlockFormatDirectSpeakers::unset(
       detail::ParameterTraits<Duration>::tag) {
     duration_ = boost::none;
+  }
+  void AudioBlockFormatDirectSpeakers::unset(
+      detail::ParameterTraits<Lstart>::tag) {
+    lstart_ = boost::none;
+  }
+  void AudioBlockFormatDirectSpeakers::unset(
+      detail::ParameterTraits<Lduration>::tag) {
+    lduration_ = boost::none;
+  }
+  void AudioBlockFormatDirectSpeakers::unset(
+      detail::ParameterTraits<InitializeBlock>::tag) {
+    initializeBlock_ = boost::none;
   }
   void AudioBlockFormatDirectSpeakers::unset(
       detail::ParameterTraits<SpeakerLabels>::tag) {

@@ -9,6 +9,7 @@
 namespace adm {
 
   class Document;
+  class Frame;
 
   namespace xml {
     /**
@@ -71,6 +72,29 @@ namespace adm {
    */
   ADM_EXPORT std::ostream& writeXml(
       std::ostream& stream, std::shared_ptr<const Document> admDocument,
+      xml::WriterOptions options = xml::WriterOptions::none);
+
+  /**
+   * @brief Write an Frame
+   *
+   * Convenience wrapper for files using
+   * `writeXml(std::ostream&, std::shared_ptr<const Frame>)`
+   * @param filename XML file to write to
+   * @param admFrame ADM frame that should be transformed into XML
+   * @param options Options to influence the XML generator behaviour
+   */
+  ADM_EXPORT void writeXml(
+      const std::string& filename, std::shared_ptr<const Frame> admFrame,
+      xml::WriterOptions options = xml::WriterOptions::none);
+
+  /**
+   * @brief Write an Frame to an output stream
+   * @param stream output stream to write XML data
+   * @param admFrame ADM frame that should be transformed into XML
+   * @param options Options to influence the XML generator behaviour
+   */
+  ADM_EXPORT std::ostream& writeXml(
+      std::ostream& stream, std::shared_ptr<const Frame> admFrame,
       xml::WriterOptions options = xml::WriterOptions::none);
 
   /**

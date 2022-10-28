@@ -88,6 +88,27 @@ namespace adm {
   struct RtimeTag {};
   /// @brief NamedType for the rtime attribute
   using Rtime = detail::NamedType<Time, RtimeTag>;
+  /// @brief Tag for NamedType ::Lstart
+  struct LstartTag {};
+  /// @brief NamedType for the lstart attribute
+  using Lstart = detail::NamedType<Time, LstartTag>;
+  /// @brief Tag for NamedType ::Lduration
+  struct LdurationTag {};
+  /// @brief NamedType for the lduration attribute
+  using Lduration = detail::NamedType<Time, LdurationTag>;
+  /// @brief Tag for NamedType ::InitializeBlock
+  struct InitializeBlockTag {};
+  /// @brief NamedType for the InitializeBlock attribute
+  using InitializeBlock = detail::NamedType<bool, InitializeBlockTag>;
+  /// @brief Tag for NamedType ::FrameStart
+  struct FrameStartTag {};
+  /// @brief NamedType for the sadm start attribute
+  using FrameStart = detail::NamedType<Time, FrameStartTag>;
+  /// @brief Tag for NamedType ::FrameDuration
+  struct FrameDurationTag {};
+  /// @brief NamedType for the sadm duration attribute
+  using FrameDuration =
+      detail::NamedType<Time, FrameDurationTag>;
 
   /// @brief Parse an adm timecode and convert it to a std::chrono::duration
   ADM_EXPORT Time parseTimecode(const std::string& timecode);

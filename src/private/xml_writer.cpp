@@ -1,6 +1,7 @@
 #include "adm/private/xml_writer.hpp"
 #include "adm/elements.hpp"
 #include "adm/document.hpp"
+#include "adm/frame.hpp"
 #include "adm/private/rapidxml_formatter.hpp"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_print.hpp"
@@ -54,6 +55,33 @@ namespace adm {
         }
       }
       // clang-format on
+      return stream << xmlDocument;
+    }
+
+    std::ostream& XmlWriter::write(std::shared_ptr<const Frame> frame,
+                                   std::ostream& stream) {
+      XmlDocument xmlDocument;
+      xmlDocument.setDiscardDefaults(
+          !isSet(options_, WriterOptions::write_default_values));
+      xmlDocument.addDeclaration();
+      auto root = xmlDocument.addNode("frame");
+      root.addElement(frame->frameHeader(), "frameHeader", &formatFrameHeader);
+      auto formatExtended = root.addNode("audioFormatExtended");
+      // clang-format off
+      formatExtended.addBaseElements<AudioProgramme, AudioProgrammeId>(frame, "audioProgramme", &formatAudioProgramme);
+      formatExtended.addBaseElements<AudioContent, AudioContentId>(frame, "audioContent", &formatAudioContent);
+      formatExtended.addBaseElements<AudioObject, AudioObjectId>(frame, "audioObject", &formatAudioObject);
+      formatExtended.addBaseElements<AudioPackFormat, AudioPackFormatId>(frame, "audioPackFormat", &formatAudioPackFormat);
+      formatExtended.addBaseElements<AudioChannelFormat, AudioChannelFormatId>(frame, "audioChannelFormat", &formatAudioChannelFormat);
+      formatExtended.addBaseElements<AudioStreamFormat, AudioStreamFormatId>(frame, "audioStreamFormat", &formatAudioStreamFormat);
+      formatExtended.addBaseElements<AudioTrackFormat, AudioTrackFormatId>(frame, "audioTrackFormat", &formatAudioTrackFormat);
+      
+      for (auto &element : frame->template getElements<AudioTrackUid>()) {
+        auto id = element->template get<AudioTrackUidId>();
+        if (!isCommonDefinitionsId(id) && !element->isSilent()) {
+          formatExtended.addElement(element, "audioTrackUID", &formatAudioTrackUid);
+        }
+      }      // clang-format on
       return stream << xmlDocument;
     }
 

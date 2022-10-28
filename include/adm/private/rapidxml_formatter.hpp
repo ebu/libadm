@@ -1,5 +1,10 @@
 #pragma once
 #include "adm/elements.hpp"
+#include "adm/serial/frame_header.hpp"
+#include "adm/serial/frame_format.hpp"
+#include "adm/serial/frame_format_id.hpp"
+#include "adm/serial/transport_track_format.hpp"
+
 #include <string>
 
 namespace adm {
@@ -80,7 +85,11 @@ namespace adm {
     void formatJumpPosition(XmlNode &node, const JumpPosition &jumpPosition);
     void formatHeadphoneVirtualise(
         XmlNode &node, const HeadphoneVirtualise &headphoneVirtualise);
-
+    void formatFrameHeader(XmlNode &node, const FrameHeader &header);
+    void formatFrameFormat(XmlNode &node, const FrameFormat &format);
+    void formatTransportTrackFormat(XmlNode &node,
+                                    const TransportTrackFormat &format);
+                                    
     namespace detail {
       std::string toString(const std::string &string);
       std::string toString(const Time &time);
@@ -93,7 +102,9 @@ namespace adm {
       std::string toString(const AudioStreamFormatId &id);
       std::string toString(const AudioTrackFormatId &id);
       std::string toString(const AudioTrackUidId &id);
-
+      std::string toString(const FrameFormatId &id);
+      std::string toString(const TransportId &id);
+      
       template <typename T, typename std::enable_if<
                                 std::is_integral<T>::value>::type * = nullptr>
       std::string toString(T value) {

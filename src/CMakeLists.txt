@@ -66,6 +66,13 @@ add_library(adm
   detail/id_assigner.cpp
   parse.cpp
   write.cpp
+  frame.cpp
+  serial/audio_track.cpp
+  serial/frame_format.cpp
+  serial/frame_format_id.cpp
+  serial/frame_header.cpp
+  serial/transport_track_format.cpp
+  serial/transport_id.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/resources.hpp
   ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp
 )
