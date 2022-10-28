@@ -39,8 +39,8 @@ namespace adm {
 
     using AudioBlockFormatHoaBase =
         HasParameters<RequiredParameter<AudioBlockFormatId>,
-                      DefaultParameter<Rtime>, OptionalParameter<Duration>,
-                      OptionalParameter<Order>, OptionalParameter<Degree>,
+                      DefaultParameter<Rtime>, OptionalParameter<Duration>, OptionalParameter<InitializeBlock>,
+        OptionalParameter<Order>, OptionalParameter<Degree>,
                       DefaultParameter<Normalization>,
                       DefaultParameter<NfcRefDist>,
                       DefaultParameter<Gain>,
@@ -66,6 +66,16 @@ namespace adm {
    * | rtime               | :type:`Rtime`                | :class:`DefaultParameter`  |
    * +---------------------+------------------------------+----------------------------+
    * | duration            | :type:`Duration`             | :class:`OptionalParameter` |
+   * +---------------------+------------------------------+----------------------------+
+   * | lstart              | :type:`Rtime` (by using      |                            |
+   * |                     |     LOCAL TimeReference      |                            |
+   * |                     |     in FrameHeader)          |                            |
+   * +---------------------+------------------------------+----------------------------+
+   * | lduration           | :type:`Duration` (by using   |                            |
+   * |                     |      LOCAL TimeReference     |                            |
+   * |                     |      in FrameHeader)         |                            |
+   * +---------------------+------------------------------+----------------------------+
+   * | initializeBlock     | :type:`InitializeBlock`      | :class:`OptionalParameter` |
    * +---------------------+------------------------------+----------------------------+
    * | order               | :type:`Order`                | :class:`RequiredParameter` |
    * +---------------------+------------------------------+----------------------------+

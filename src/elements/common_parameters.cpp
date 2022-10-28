@@ -10,6 +10,7 @@ namespace adm {
 
     template class DefaultParameter<Rtime>;
     template class OptionalParameter<Duration>;
+    template class OptionalParameter<InitializeBlock>;
 
     template class DefaultParameter<HeadphoneVirtualise>;
 

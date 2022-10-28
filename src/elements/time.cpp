@@ -5,6 +5,13 @@
 #include <sstream>
 
 namespace adm {
+  namespace detail {
+    template class DefaultParameter<TimeReference>;
+    template <>
+    TimeReference getDefault<TimeReference>() {
+      return TimeReference::TOTAL;
+    };
+  }  // namespace detail
 
   FractionalTime FractionalTime::normalised() const {
     int64_t gcd = boost::integer::gcd(numerator(), denominator());

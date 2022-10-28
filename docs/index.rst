@@ -25,6 +25,7 @@ libadm – ITU-R BS.2076 Library
   reference_document
   element_api
   reference_elements
+  reference_sadm_elements
   reference_helpers
   reference_utilities
   reference_read_write
