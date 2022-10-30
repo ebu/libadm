@@ -9,8 +9,8 @@
 #include "adm/elements/private/parent_attorneys.hpp"
 
 namespace adm {
-  Frame::Frame(FrameStart start, FrameDuration duration, FrameType frameType)
-      : frameHeader_(FrameHeader(start, duration, frameType)) {
+  Frame::Frame(FrameStart start, FrameDuration duration, FrameType frameType, FrameFormatId frameFormatId)
+      : frameHeader_(FrameHeader(start, duration, frameType, frameFormatId)) {
     audioFormatExtended_ = Document::create();
   }
 
@@ -19,8 +19,8 @@ namespace adm {
   }
 
   std::shared_ptr<Frame> Frame::create(FrameStart start, FrameDuration duration,
-                                       FrameType frameType) {
-    return std::shared_ptr<Frame>(new Frame(start, duration, frameType));
+                                       FrameType frameType, FrameFormatId frameFormatId) {
+    return std::shared_ptr<Frame>(new Frame(start, duration, frameType, frameFormatId));
   }
 
   std::shared_ptr<Frame> Frame::create(FrameHeader frameHeader) {

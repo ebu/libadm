@@ -131,18 +131,18 @@ namespace adm {
   
   // ---- Common ---- //
   void FrameFormat::print(std::ostream& os) const {
-    os << get<FrameFormatId>();
-    os << " (start=" << formatTimecode(get<FrameStart>().get());
-    os << ", duration=" << formatTimecode(get<FrameDuration>().get());
-    os << ", timeReference=";
-    os << get<TimeReference>().get();
+    os << get<FrameFormatId>() << std::endl;
+    os << " (start=" << formatTimecode(get<FrameStart>().get()) << std::endl;
+    os << ", duration=" << formatTimecode(get<FrameDuration>().get()) << std::endl;
+    os << ", timeReference=" << std::endl;
+    os << get<TimeReference>().get() << std::endl;
     if (has<FlowId>()) {
-      os << ", flowID=" << get<FlowId>();
+      os << ", flowID=" << get<FlowId>() << std::endl;
     }
     os << ", type=";
-    os << get<FrameType>().get();
+    os << get<FrameType>().get() << std::endl;
     if (has<CountToFull>()) {
-      os << ", countToFull=" << get<CountToFull>();
+      os << ", countToFull=" << get<CountToFull>() << std::endl;
     }
     if (has<NumSubFrame>()) {
       os << ", numSubFrame=" << get<NumSubFrame>();

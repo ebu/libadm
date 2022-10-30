@@ -75,7 +75,7 @@ namespace adm {
       formatExtended.addBaseElements<AudioChannelFormat, AudioChannelFormatId>(frame, "audioChannelFormat", &formatAudioChannelFormat);
       formatExtended.addBaseElements<AudioStreamFormat, AudioStreamFormatId>(frame, "audioStreamFormat", &formatAudioStreamFormat);
       formatExtended.addBaseElements<AudioTrackFormat, AudioTrackFormatId>(frame, "audioTrackFormat", &formatAudioTrackFormat);
-      
+
       for (auto &element : frame->template getElements<AudioTrackUid>()) {
         auto id = element->template get<AudioTrackUidId>();
         if (!isCommonDefinitionsId(id) && !element->isSilent()) {

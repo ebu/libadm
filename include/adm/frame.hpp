@@ -24,7 +24,8 @@ namespace adm {
      */
     ADM_EXPORT static std::shared_ptr<Frame> create(FrameStart start,
                                                     FrameDuration duration,
-                                                    FrameType frameType);
+                                                    FrameType frameType,
+                                                    FrameFormatId frameFormatId);
     ADM_EXPORT static std::shared_ptr<Frame> create(FrameHeader frameHeader);
 
     /// @brief FrameStart getter
@@ -211,7 +212,7 @@ namespace adm {
 
    private:
     ADM_EXPORT Frame(FrameStart start, FrameDuration duration,
-                     FrameType frameType);
+                     FrameType frameType, FrameFormatId frameFormatId);
     ADM_EXPORT Frame(FrameHeader frameHeader);
     ADM_EXPORT Frame(const Frame &) = default;
     ADM_EXPORT Frame(Frame &&) = default;

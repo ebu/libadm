@@ -57,16 +57,10 @@ namespace adm {
     parser.check_size(14);
     parser.check_prefix("FF_", 3);
     auto value = parser.parse_hex(3, 11);
-    parser.check_underscore(11);
-    auto counter = parser.parse_hex(12, 8);
     return FrameFormatId(FrameFormatIdValue(value));
   }
 
   std::string formatId(FrameFormatId id) {
-    std::stringstream idStream;
-    id.print(idStream);
-    return idStream.str();
-
     std::string s("FF_zzzzzzzzzzz");
     detail::formatHex(s, 3, 11, id.get<FrameFormatIdValue>().get());
     return s;

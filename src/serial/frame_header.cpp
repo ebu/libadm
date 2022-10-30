@@ -2,11 +2,13 @@
 #include "adm/frame.hpp"
 #include "adm/utilities/element_io.hpp"
 
+#include <iostream>
+
 namespace adm {
 
   FrameHeader::FrameHeader(FrameStart start, FrameDuration duration,
-                           FrameType frameType)
-      : frameFormat_(FrameFormat(start, duration, frameType)) {}
+                           FrameType frameType, FrameFormatId frameFormatId)
+      : frameFormat_(FrameFormat(start, duration, frameType, frameFormatId)) {}
 
   const FrameFormat& FrameHeader::frameFormat() const { return frameFormat_; }
   FrameFormat& FrameHeader::frameFormat() { return frameFormat_; }

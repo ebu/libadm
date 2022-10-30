@@ -21,3 +21,5 @@ target_link_libraries(multiple_storylines PRIVATE adm)
 add_executable(voice_over voice_over.cpp)
 target_link_libraries(voice_over PRIVATE adm)
 
+add_executable(create_sadm_from_scratch create_sadm_from_scratch.cpp)
+target_link_libraries(create_sadm_from_scratch PRIVATE adm)

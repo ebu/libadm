@@ -3,7 +3,6 @@
 
 #include "adm/serial/frame_format.hpp"
 #include "adm/serial/transport_track_format.hpp"
-//#include "adm/serialized_fwd.hpp"
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
@@ -36,7 +35,7 @@ namespace adm {
     typedef FrameHeaderTag tag;
 
     ADM_EXPORT FrameHeader(FrameStart start, FrameDuration duration,
-                           FrameType frameType);
+                           FrameType frameType, FrameFormatId frameFormatId);
     ADM_EXPORT FrameHeader(const FrameHeader&) = default;
     ADM_EXPORT FrameHeader(FrameHeader&&) = default;
     ADM_EXPORT FrameHeader& operator=(const FrameHeader&) = default;
@@ -52,6 +51,34 @@ namespace adm {
     ADM_EXPORT TransportTrackFormatRange transportTrackFormats();
 
     ADM_EXPORT void clearTransportTrackFormats();
+
+    /**
+     * @brief ADM parameter getter template
+     *
+     * Templated getter with the wanted ADM parameter type as template
+     * argument. If currently no value is available trying to get the adm
+     * parameter will result in an exception. Check with the has method before
+     */
+    template <typename Parameter>
+    Parameter get() const;
+
+    /**
+     * @brief ADM parameter has template
+     *
+     * Templated has method with the ADM parameter type as template argument.
+     * Returns true if the ADM parameter is set or has a default value.
+     */
+    template <typename Parameter>
+    bool has() const;
+
+    /**
+     * @brief ADM parameter isDefault template
+     *
+     * Templated isDefault method with the ADM parameter type as template
+     * argument. Returns true if the ADM parameter is the default value.
+     */
+    template <typename Parameter>
+    bool isDefault() const;
 
    private:
     FrameFormat frameFormat_;
