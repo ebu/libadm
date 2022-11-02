@@ -57,7 +57,7 @@ namespace adm {
   ADM_EXPORT SimpleObjectHolder createSimpleObject(const std::string& name);
 
   /**
-   * @brief Create and add `AudioObject` hierarchie for single
+   * @brief Create and add `AudioObject` hierarchy for single
    * `TypeDefinition::OBJECTS`-type element
    *
    * same as `createSimpleObject`, but the elements are automatically added to
