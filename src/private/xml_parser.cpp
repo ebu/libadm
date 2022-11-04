@@ -97,6 +97,8 @@ namespace adm {
         resolveReference(streamFormatChannelFormatRef_);
         resolveReference(streamFormatPackFormatRef_);
         resolveReferences(streamFormatTrackFormatRefs_);
+
+        setOptionalAttribute<Version>(root, "version", document_);
       } else {
         throw error::XmlParsingError("audioFormatExtended node not found");
       }

@@ -2,19 +2,29 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <vector>
 #include "adm/elements.hpp"
 #include "adm/detail/auto_base.hpp"
 #include "adm/detail/id_assigner.hpp"
+#include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 
 namespace adm {
 
+  /// tag for version
+  struct VersionTag {};
+  /// NamedType for audioFormatExtended version attribute
+  using Version = detail::NamedType<std::string, VersionTag>;
+
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<ProfileList>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<Version>;
 
-    using DocumentBase = HasParameters<OptionalParameter<ProfileList>>;
+    using DocumentBase = HasParameters<OptionalParameter<ProfileList>,
+                                       OptionalParameter<Version>>;
   }  // namespace detail
 
   /**
@@ -269,6 +279,8 @@ namespace adm {
 
     using detail::DocumentBase::get;
     using detail::DocumentBase::has;
+    using detail::DocumentBase::isDefault;
+    using detail::DocumentBase::unset;
 
     friend class detail::AddWrapperMethods<Document>;
 

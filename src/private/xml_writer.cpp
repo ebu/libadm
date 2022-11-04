@@ -38,6 +38,7 @@ namespace adm {
         root = xmlDocument.addEbuStructure();
       }
       // clang-format off
+      root.addOptionalAttribute<Version>(document, "version");
       root.addOptionalElement<ProfileList>(document, "profileList", &formatProfileList);
       root.addBaseElements<AudioProgramme, AudioProgrammeId>(document, "audioProgramme", &formatAudioProgramme);
       root.addBaseElements<AudioContent, AudioContentId>(document, "audioContent", &formatAudioContent);

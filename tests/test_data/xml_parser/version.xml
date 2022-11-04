@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended version="ITU-R_BS.2076-2">
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>
