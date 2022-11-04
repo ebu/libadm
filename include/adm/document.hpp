@@ -2,20 +2,48 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <vector>
 #include "adm/elements.hpp"
+#include "adm/detail/auto_base.hpp"
 #include "adm/detail/id_assigner.hpp"
+#include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 
 namespace adm {
 
+  /// tag for version
+  struct VersionTag {};
+  /// NamedType for audioFormatExtended version attribute
+  using Version = detail::NamedType<std::string, VersionTag>;
+
+  namespace detail {
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<Version>;
+
+    using DocumentBase = HasParameters<OptionalParameter<Version>>;
+  }  // namespace detail
+
   /**
-   * @ingroup main
    * @brief Class representation of a whole ADM document
-   * @headerfile document.hpp <adm/document.hpp>
    *
+   * \rst
+   * +---------------+-----------------+----------------------------+
+   * | ADM Parameter | Parameter Type  | Pattern Type               |
+   * +===============+=================+============================+
+   * | version       | :type:`Version` | :class:`OptionalParameter` |
+   * +---------------+-----------------+----------------------------+
+   * \endrst
+   *
+   * Note that:
+   * - version is defined in BS.2076-2 as being required, so should be set
+   *   manually to produce compliant documents. The version element does not
+   *   affect parsing of other elements, so for example new defaults for old
+   *   elements are not applied.
    */
-  class Document : public std::enable_shared_from_this<Document> {
+  class Document : public std::enable_shared_from_this<Document>,
+                   private detail::DocumentBase,
+                   public detail::AddWrapperMethods<Document> {
    public:
     /**
      * @brief Static helper function to create an Document
@@ -202,6 +230,12 @@ namespace adm {
         const AudioTrackUidId &trackUidId) const;
     ///@}
 
+    using detail::DocumentBase::set;
+    using detail::AddWrapperMethods<Document>::get;
+    using detail::AddWrapperMethods<Document>::has;
+    using detail::AddWrapperMethods<Document>::isDefault;
+    using detail::AddWrapperMethods<Document>::unset;
+
    private:
     ADM_EXPORT Document();
     ADM_EXPORT Document(const Document &) = default;
@@ -250,6 +284,13 @@ namespace adm {
     /// normally raised
     template <typename Element>
     bool checkParent(const std::shared_ptr<Element> &element, const char *type);
+
+    using detail::DocumentBase::get;
+    using detail::DocumentBase::has;
+    using detail::DocumentBase::isDefault;
+    using detail::DocumentBase::unset;
+
+    friend class detail::AddWrapperMethods<Document>;
 
     std::vector<std::shared_ptr<AudioProgramme>> audioProgrammes_;
     std::vector<std::shared_ptr<AudioContent>> audioContents_;

@@ -55,6 +55,8 @@ namespace adm {
         root = findAudioFormatExtendedNodeEbuCore(xmlDocument.first_node());
       }
       if (root) {
+        setOptionalAttribute<Version>(root, "version", document_);
+
         // add ADM elements to ADM document
         for (NodePtr node = root->first_node(); node;
              node = node->next_sibling()) {
