@@ -26,6 +26,16 @@ namespace adm {
   using Vectors = std::vector<Vector>;
   ADD_TRAIT(Vectors, VectorsTag);
 
+  struct VariantATag {};
+  using VariantA = detail::NamedType<int, VariantATag>;
+
+  struct VariantBTag {};
+  using VariantB = detail::NamedType<int, VariantBTag>;
+
+  struct VariantTag {};
+  using Variant = boost::variant<VariantA, VariantB>;
+  ADD_TRAIT(Variant, VariantTag);
+
   namespace detail {
     template <>
     Default getDefault<Default>() {
@@ -37,15 +47,18 @@ namespace adm {
     template class DefaultParameter<Default>;
     template class VectorParameter<Vectors>;
 
+    template class VariantTypeParameter<OptionalParameter<Variant>, VariantA>;
+    template class VariantTypeParameter<OptionalParameter<Variant>, VariantB>;
+    template class OptionalParameter<Variant>;
+
     using Base =
         HasParameters<RequiredParameter<Required>, OptionalParameter<Optional>,
-                      DefaultParameter<Default>, VectorParameter<Vectors>>;
+                      DefaultParameter<Default>, VectorParameter<Vectors>,
+                      VariantParameter<OptionalParameter<Variant>>>;
   };  // namespace detail
 
-  // standard wrapper around Base providing templated methods. not really
-  // needed for testing, but we might want to replace these with a template in
-  // the future, and this shows how it will typically be used.
-  struct TestElement : private detail::Base {
+  struct TestElement : private detail::Base,
+                       private detail::AddWrapperMethods<TestElement> {
     template <typename... Parameters>
     explicit TestElement(Parameters... namedArgs) {
       detail::setNamedOptionHelper(this, std::move(namedArgs)...);
@@ -55,35 +68,17 @@ namespace adm {
     using detail::Base::remove;
     using detail::Base::set;
 
-    template <typename Parameter>
-    Parameter get() const {
-      using Tag = typename detail::ParameterTraits<Parameter>::tag;
-      return get(Tag());
-    }
-
-    template <typename Parameter>
-    bool has() const {
-      using Tag = typename detail::ParameterTraits<Parameter>::tag;
-      return has(Tag());
-    }
-
-    template <typename Parameter>
-    bool isDefault() const {
-      using Tag = typename detail::ParameterTraits<Parameter>::tag;
-      return isDefault(Tag());
-    }
-
-    template <typename Parameter>
-    void unset() {
-      using Tag = typename detail::ParameterTraits<Parameter>::tag;
-      return unset(Tag());
-    }
+    using detail::AddWrapperMethods<TestElement>::get;
+    using detail::AddWrapperMethods<TestElement>::has;
+    using detail::AddWrapperMethods<TestElement>::unset;
+    using detail::AddWrapperMethods<TestElement>::isDefault;
 
    private:
     using detail::Base::get;
     using detail::Base::has;
     using detail::Base::isDefault;
     using detail::Base::unset;
+    friend class detail::AddWrapperMethods<TestElement>;
   };
 
 };  // namespace adm
@@ -165,4 +160,39 @@ TEST_CASE("vector") {
   REQUIRE(!e.has<Vectors>());
   REQUIRE(e.get<Vectors>() == Vectors{});
   REQUIRE(!e.isDefault<Vectors>());
+}
+
+TEST_CASE("variant") {
+  TestElement e;
+
+  REQUIRE(!e.has<Variant>());
+  REQUIRE(!e.has<VariantA>());
+  REQUIRE(!e.has<VariantB>());
+  REQUIRE(!e.isDefault<Variant>());
+
+  e.set(Variant{VariantA{5}});
+  REQUIRE(boost::get<VariantA>(e.get<Variant>()) == VariantA{5});
+  REQUIRE(e.get<VariantA>() == VariantA{5});
+  REQUIRE(e.has<Variant>());
+  REQUIRE(e.has<VariantA>());
+  REQUIRE(!e.has<VariantB>());
+  REQUIRE(!e.isDefault<Variant>());
+  REQUIRE(!e.isDefault<VariantA>());
+
+  e.unset<VariantA>();
+  REQUIRE(!e.has<Variant>());
+  REQUIRE(!e.isDefault<Variant>());
+
+  e.set(Variant{VariantB{5}});
+  REQUIRE(boost::get<VariantB>(e.get<Variant>()) == VariantB{5});
+  REQUIRE(e.get<VariantB>() == VariantB{5});
+  REQUIRE(e.has<Variant>());
+  REQUIRE(e.has<VariantB>());
+  REQUIRE(!e.has<VariantA>());
+  REQUIRE(!e.isDefault<Variant>());
+  REQUIRE(!e.isDefault<VariantB>());
+
+  e.unset<VariantB>();
+  REQUIRE(!e.has<Variant>());
+  REQUIRE(!e.isDefault<Variant>());
 }
