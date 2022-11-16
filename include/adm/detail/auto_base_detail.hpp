@@ -1,7 +1,7 @@
 
 namespace adm {
   namespace detail {
-    /// Combine A and B using F is defined_in_both
+    /// Combine A and B using F if defined_in_both, otherwise Base
     template <bool defined_in_both,
               template <typename A, typename B, typename Base> class F,
               typename A, typename B, typename Base>
