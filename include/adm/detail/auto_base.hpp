@@ -211,10 +211,10 @@ namespace adm {
      private:
       T value_;
       ADM_BASE_EXPORT typename T::iterator find_item(Value const& item) {
-        return std::find_if(
-            value_.begin(), value_.end(), [&item](Value const& val) {
-              return ParameterCompare<Value>::compare(item, val);
-            });
+        auto it = value_.begin();
+        for (; it != value_.end(); it++)
+          if (ParameterCompare<Value>::compare(item, *it)) break;
+        return it;
       }
     };
 
