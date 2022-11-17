@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioChannelFormat audioChannelFormatID="AC_00051001" audioChannelFormatName="Test" typeLabel="0005" typeDefinition="Binaural">
+					<audioBlockFormat audioBlockFormatID="AB_00051001_00000001" lstart="00:00:00.00000" lduration="00:00:01.00000">
+						<gain>0.500000</gain>
+						<importance>5</importance>
+					</audioBlockFormat>
+				</audioChannelFormat>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>

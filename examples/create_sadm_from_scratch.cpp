@@ -47,7 +47,7 @@ int main() {
 
   // write XML data to stdout
   std::stringstream xmlStream;
-  writeXml(xmlStream, frame);
+  writeXmlSadm(xmlStream, frame);
   std::cout << xmlStream.str();
   return 0;
 }

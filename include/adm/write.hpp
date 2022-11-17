@@ -83,7 +83,7 @@ namespace adm {
    * @param admFrame ADM frame that should be transformed into XML
    * @param options Options to influence the XML generator behaviour
    */
-  ADM_EXPORT void writeXml(
+  ADM_EXPORT void writeXmlSadm(
       const std::string& filename, std::shared_ptr<const Frame> admFrame,
       xml::WriterOptions options = xml::WriterOptions::none);
 
@@ -93,10 +93,9 @@ namespace adm {
    * @param admFrame ADM frame that should be transformed into XML
    * @param options Options to influence the XML generator behaviour
    */
-  ADM_EXPORT std::ostream& writeXml(
+  ADM_EXPORT std::ostream& writeXmlSadm(
       std::ostream& stream, std::shared_ptr<const Frame> admFrame,
       xml::WriterOptions options = xml::WriterOptions::none);
-
   /**
    * @}
    */

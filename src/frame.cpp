@@ -7,6 +7,8 @@
 #include "adm/serial/frame_format.hpp"
 #include "adm/serial/transport_track_format.hpp"
 #include "adm/elements/private/parent_attorneys.hpp"
+#include "adm/utilities/lookup.hpp"
+#include "adm/detail/id_assigner.hpp"
 
 namespace adm {
   Frame::Frame(FrameStart start, FrameDuration duration, FrameType frameType, FrameFormatId frameFormatId)
@@ -50,116 +52,4 @@ namespace adm {
   const FrameHeader& Frame::frameHeader() const { return frameHeader_; }
   FrameHeader& Frame::frameHeader() { return frameHeader_; }
   void Frame::setFrameHeader(FrameHeader frameHeader) { frameHeader_ = frameHeader; }
-
-  
-  // ---- add elements ---- //
-  bool Frame::add(std::shared_ptr<AudioProgramme> programme) {
-    return audioFormatExtended_->add(programme);
-  }
-
-  bool Frame::add(std::shared_ptr<AudioContent> content) {
-    return audioFormatExtended_->add(content);
-  }
-
-  bool Frame::add(std::shared_ptr<AudioObject> object) {
-    return audioFormatExtended_->add(object);
-  }
-
-  bool Frame::add(std::shared_ptr<AudioPackFormat> packFormat) {
-    return audioFormatExtended_->add(packFormat);
-  }
-
-  bool Frame::add(std::shared_ptr<AudioChannelFormat> channelFormat) {
-    return audioFormatExtended_->add(channelFormat);
-  }
-
-  bool Frame::add(std::shared_ptr<AudioStreamFormat> streamFormat) {
-    return audioFormatExtended_->add(streamFormat);
-  }
-
-  bool Frame::add(std::shared_ptr<AudioTrackFormat> trackFormat) {
-    return audioFormatExtended_->add(trackFormat);
-  }
-
-  bool Frame::add(std::shared_ptr<AudioTrackUid> trackUid) {
-    return audioFormatExtended_->add(trackUid);
-  }
-
-  // ---- remove elements --- //
-  bool Frame::remove(std::shared_ptr<AudioProgramme> programme) {
-    return audioFormatExtended_->remove(programme);
-  }
-
-  bool Frame::remove(std::shared_ptr<AudioContent> content) {
-    return audioFormatExtended_->remove(content);
-  }
-
-  bool Frame::remove(std::shared_ptr<AudioObject> object) {
-    return audioFormatExtended_->remove(object);
-  }
-
-  bool Frame::remove(std::shared_ptr<AudioPackFormat> packFormat) {
-    return audioFormatExtended_->remove(packFormat);
-  }
-
-  bool Frame::remove(std::shared_ptr<AudioChannelFormat> channelFormat) {
-    return audioFormatExtended_->remove(channelFormat);
-  }
-
-  bool Frame::remove(std::shared_ptr<AudioStreamFormat> streamFormat) {
-    return audioFormatExtended_->remove(streamFormat);
-  }
-
-  bool Frame::remove(std::shared_ptr<AudioTrackFormat> trackFormat) {
-    return audioFormatExtended_->remove(trackFormat);
-  }
-
-  bool Frame::remove(std::shared_ptr<AudioTrackUid> trackUid) {
-    return audioFormatExtended_->remove(trackUid);
-  }
-  
-  
-  // // ---- get elements ---- //
-  // ElementRange<const AudioProgramme> Frame::getElements(
-  //     detail::ParameterTraits<AudioProgramme>::tag) const {
-  //   return audioFormatExtended_->getElements<AudioProgramme>();
-  // }
-  //
-  // ElementRange<const AudioContent> Frame::getElements(
-  //     detail::ParameterTraits<AudioContent>::tag) const {
-  //   return audioFormatExtended_->getElements<AudioContent>();
-  // }
-  //
-  // ElementRange<const AudioObject> Frame::getElements(
-  //     detail::ParameterTraits<AudioObject>::tag) const {
-  //   return audioFormatExtended_->getElements<AudioObject>();
-  // }
-  //
-  // ElementRange<const AudioPackFormat> Frame::getElements(
-  //     detail::ParameterTraits<AudioPackFormat>::tag) const {
-  //   return audioFormatExtended_->getElements<AudioPackFormat>();
-  // }
-  //
-  // ElementRange<const AudioChannelFormat>
-  // Frame::getElements(
-  //     detail::ParameterTraits<AudioChannelFormat>::tag) const {
-  //   return audioFormatExtended_->getElements<AudioChannelFormat>();
-  // }
-  //
-  // ElementRange<const AudioStreamFormat>
-  // Frame::getElements(
-  //     detail::ParameterTraits<AudioStreamFormat>::tag) const {
-  //   return audioFormatExtended_->getElements<AudioStreamFormat>();
-  // }
-  //
-  // ElementRange<const AudioTrackFormat> Frame::getElements(
-  //     detail::ParameterTraits<AudioTrackFormat>::tag) const {
-  //   return audioFormatExtended_->getElements<AudioTrackFormat>();
-  // }
-  //
-  // ElementRange<const AudioTrackUid> Frame::getElements(
-  //     detail::ParameterTraits<AudioTrackUid>::tag) const {
-  //   return audioFormatExtended_->getElements<AudioTrackUid>();
-  // }
-
 }  // namespace adm

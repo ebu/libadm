@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="Main" start="00:00:00.1S48000" end="00:00:00.123S48000"/>
+				<audioChannelFormat audioChannelFormatID="AC_00011001" audioChannelFormatName="Test" typeLabel="0001" typeDefinition="DirectSpeakers">
+					<audioBlockFormat audioBlockFormatID="AB_00011001_00000001" lstart="00:00:00.1S2" lduration="00:00:01.1S4">
+						<position coordinate="azimuth">0.000000</position>
+						<position coordinate="elevation">0.000000</position>
+						<position coordinate="distance">1.000000</position>
+					</audioBlockFormat>
+				</audioChannelFormat>
+				<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="Test" typeLabel="0003" typeDefinition="Objects">
+					<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" lstart="00:00:00.1S2" lduration="00:00:01.1S4">
+						<position coordinate="azimuth">0.000000</position>
+						<position coordinate="elevation">0.000000</position>
+						<position coordinate="distance">1.000000</position>
+					</audioBlockFormat>
+				</audioChannelFormat>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+
+

@@ -6,16 +6,7 @@
 #include <boost/optional.hpp>
 #include <boost/variant.hpp>
 #include "adm/elements/time.hpp"
-#include "adm/elements/audio_programme.hpp"
-#include "adm/elements/audio_content.hpp"
-#include "adm/elements/audio_object.hpp"
-#include "adm/elements/audio_pack_format.hpp"
-#include "adm/elements/audio_channel_format.hpp"
-#include "adm/elements/audio_stream_format.hpp"
-#include "adm/elements/audio_track_format.hpp"
-#include "adm/elements/audio_track_uid.hpp"
 #include "adm/serial/frame_format_id.hpp"
-//#include "adm/serialized/flow_id.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/named_type_validators.hpp"
 #include "adm/detail/named_option_helper.hpp"

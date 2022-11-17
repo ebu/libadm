@@ -1,13 +1,13 @@
 #pragma once
 
 /**
- * @file serialized.hpp
+ * @file serial.hpp
  *
  * Convenience header to inlcude all ADM element headers.
  */
 
 /**
- * @defgroup sadm Serialized ADM elements
+ * @defgroup sadm Serial ADM elements
  *
  * @brief C++ representations of the elements required by the serialized version
  * of ADM
