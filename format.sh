@@ -2,7 +2,6 @@
 DIRS="examples include src tests"
 
 IGNORE="
-src/elements/time.cpp
 src/elements/audio_pack_format.cpp
 src/elements/audio_track_format_id.cpp
 src/elements/audio_block_format_id.cpp

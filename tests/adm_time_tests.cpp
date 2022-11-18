@@ -27,6 +27,8 @@ TEST_CASE("adm_time") {
             Time(std::chrono::nanoseconds(100000000)));
     REQUIRE(parseTimecode("00:00:00.000000001") ==
             Time(std::chrono::nanoseconds(1)));
+    REQUIRE(parseTimecode("00:00:00.0000000010") ==
+            Time(std::chrono::nanoseconds(1)));
   }
 
   // check fractional

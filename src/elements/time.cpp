@@ -1,6 +1,5 @@
 #include "adm/elements/time.hpp"
 #include <boost/integer/common_factor.hpp>
-#include <boost/format.hpp>
 #include <iomanip>
 #include <regex>
 #include <sstream>
@@ -43,22 +42,26 @@ namespace adm {
   }
 
   Time parseTimecode(const std::string& timecode) {
-    const static std::regex commonFormat(
-        "(\\d{2}):(\\d{2}):(\\d{2}).(\\d{1,9})");
+    const static std::regex commonFormat("(\\d{2}):(\\d{2}):(\\d{2}).(\\d+)");
     const static std::regex fractionalFormat(
         "(\\d{2}):(\\d{2}):(\\d{2}).(\\d+)S(\\d+)");
 
     std::smatch timecodeMatch;
     if (std::regex_match(timecode, timecodeMatch, commonFormat)) {
-      // add trailing zeros to string
-      auto nanoseconds =
-          boost::str(boost::format("%1%") %
-                     boost::io::group(std::setw(9), std::left,
-                                      std::setfill('0'), timecodeMatch[4]));
+      const std::string& ns_str = timecodeMatch[4];
+
+      // parse number of nanoseconds as if it always had 9 digits
+      int64_t ns = 0;
+      int64_t place_value = 1;
+      for (size_t i = 8; i != (size_t)-1; i--) {
+        if (i < ns_str.size()) ns += place_value * (ns_str[i] - '0');
+        place_value *= 10;
+      }
+
       return std::chrono::hours(stoi(timecodeMatch[1])) +
              std::chrono::minutes(stoi(timecodeMatch[2])) +
              std::chrono::seconds(stoi(timecodeMatch[3])) +
-             std::chrono::nanoseconds(stoi(nanoseconds));
+             std::chrono::nanoseconds(ns);
     } else if (std::regex_match(timecode, timecodeMatch, fractionalFormat)) {
       int64_t seconds = 3600 * stoi(timecodeMatch[1]) +
                         60 * stoi(timecodeMatch[2]) +
