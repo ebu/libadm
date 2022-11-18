@@ -1,5 +1,4 @@
 #include "adm/errors.hpp"
-#include <boost/format.hpp>
 
 namespace adm {
   namespace error {
@@ -20,10 +19,9 @@ namespace adm {
     std::string AudioTrackUidMutuallyExclusiveReferences::formatMessage(
         AudioChannelFormatId audioChannelFormatRef,
         AudioTrackFormatId audioTrackFormatRef) const {
-      return boost::str(boost::format("Mutually-exclusive AudioTrackUid "
-                                      "references detected: %1% and %2%") %
-                        formatId(audioChannelFormatRef) %
-                        formatId(audioTrackFormatRef));
+      return "Mutually-exclusive AudioTrackUid references detected: " +
+             formatId(audioChannelFormatRef) + " and " +
+             formatId(audioTrackFormatRef);
     }
 
     AudioObjectReferenceCycle::AudioObjectReferenceCycle(
@@ -32,10 +30,8 @@ namespace adm {
 
     std::string AudioObjectReferenceCycle::formatMessage(
         AudioObjectId referent, AudioObjectId reference) const {
-      return boost::str(
-          boost::format(
-              "Cyclic AudioObject reference detected from %1% to %2%") %
-          formatId(referent) % formatId(reference));
+      return "Cyclic AudioObject reference detected from " +
+             formatId(referent) + " to " + formatId(reference);
     }
 
     XmlParsingError::XmlParsingError(const std::string& message,
@@ -48,7 +44,7 @@ namespace adm {
     std::string XmlParsingError::formatMessage(
         const std::string& message, boost::optional<int> line) const {
       if (line) {
-        return boost::str(boost::format("%1% (:%2%)") % message % line.get());
+        return message + " (:" + std::to_string(line.get()) + ")";
       } else {
         return message;
       }
@@ -59,7 +55,7 @@ namespace adm {
         : XmlParsingError(formatMessage(id), line) {}
 
     std::string XmlParsingDuplicateId::formatMessage(const std::string& id) {
-      return boost::str(boost::format("Duplicate Id %1% found") % id);
+      return "Duplicate Id " + id + " found";
     }
 
     XmlParsingUnresolvedReference::XmlParsingUnresolvedReference(
@@ -68,7 +64,7 @@ namespace adm {
 
     std::string XmlParsingUnresolvedReference::formatMessage(
         const std::string& id) {
-      return boost::str(boost::format("Id %1% could not be resolved") % id);
+      return "Id " + id + " could not be resolved";
     }
 
     XmlParsingUnexpectedAttrError::XmlParsingUnexpectedAttrError(
@@ -78,9 +74,7 @@ namespace adm {
 
     std::string XmlParsingUnexpectedAttrError::formatMessage(
         const std::string& attr, const std::string& value) {
-      return boost::str(
-          boost::format("Unexpected value \"%2%\" found in attribute %1%") %
-          attr % value);
+      return "Unexpected value \"" + value + "\" found in attribute " + attr;
     }
 
   }  // namespace error

@@ -1,6 +1,5 @@
 #pragma once
 #include <stdexcept>
-#include <boost/format.hpp>
 #include <boost/optional.hpp>
 #include <adm/elements/audio_object_id.hpp>
 #include <adm/elements/audio_channel_format_id.hpp>
