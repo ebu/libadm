@@ -1,6 +1,7 @@
 /// @file audio_pack_format_hoa.hpp
 #pragma once
 
+#include "adm/elements/common_parameters.hpp"
 #include "adm/elements/screen_ref.hpp"
 #include "adm/elements/normalization.hpp"
 #include "adm/elements/nfc_ref_dist.hpp"
