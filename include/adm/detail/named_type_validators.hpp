@@ -29,7 +29,7 @@ namespace adm {
     /// the type, so reduces duplication
     template <typename T>
     struct ValidateRangeHelper {
-      static void validateRange(const T& value, int minValue, int maxValue) {
+      static void validateRange(T value, int minValue, int maxValue) {
         if (value > static_cast<T>(maxValue) ||
             value < static_cast<T>(minValue)) {
           std::stringstream msg;
@@ -39,7 +39,7 @@ namespace adm {
         }
       }
 
-      static void validateMin(const T& value, int minValue) {
+      static void validateMin(T value, int minValue) {
         if (value < static_cast<T>(minValue)) {
           std::stringstream msg;
           msg << "'" << value << "'' is not bigger than '" << minValue << "'";
@@ -47,7 +47,7 @@ namespace adm {
         }
       }
 
-      static void validateMax(const T& value, int maxValue) {
+      static void validateMax(T value, int maxValue) {
         if (value > static_cast<T>(maxValue)) {
           std::stringstream msg;
           msg << "'" << value << "'' is not smaller than '" << maxValue << "'";
@@ -74,7 +74,7 @@ namespace adm {
     template <int minValue, int maxValue>
     struct RangeValidator {
       template <typename T>
-      static void validate(const T& value) {
+      static void validate(T value) {
         ValidateRangeHelper<T>::validateRange(value, minValue, maxValue);
       }
     };
@@ -82,7 +82,7 @@ namespace adm {
     template <int minValue>
     struct MinValidator {
       template <typename T>
-      static void validate(const T& value) {
+      static void validate(T value) {
         ValidateRangeHelper<T>::validateMin(value, minValue);
       }
     };
@@ -90,7 +90,7 @@ namespace adm {
     template <int maxValue>
     struct MaxValidator {
       template <typename T>
-      static void validate(const T& value) {
+      static void validate(T value) {
         ValidateRangeHelper<T>::validateMax(value, maxValue);
       }
     };
