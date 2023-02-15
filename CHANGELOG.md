@@ -8,6 +8,9 @@
 ### Changed
 - Decimal times are now written without trailing zeros past 5 decimal places. To interoperate with ADM parsers which don't support more than 5 digits, users should round times in the ADM document before writing.
 
+### Fixed
+- Complementary audio object references are now read by the xml parser.
+
 ## 0.14.0 (September 12, 2022)
 
 ### Added
