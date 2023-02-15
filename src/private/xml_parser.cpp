@@ -81,6 +81,16 @@ namespace adm {
         resolveReferences(programmeContentRefs_);
         resolveReferences(contentObjectRefs_);
         resolveReferences(objectObjectRefs_);
+        // resolve complementary object references
+        for (auto& entry : objectComplementaryObjectRefs_) {
+          for (const auto& id : entry.second) {
+            if (auto element = document_->lookup(id)) {
+              entry.first->addComplementary(element);
+            } else {
+              throw error::XmlParsingUnresolvedReference(formatId(id));
+            }
+          }
+        }
         resolveReferences(objectPackFormatRefs_);
         resolveTrackUidReferences(objectTrackUidRefs_);
         resolveReference(trackUidTrackFormatRef_);
@@ -214,6 +224,7 @@ namespace adm {
       setOptionalAttribute<DisableDucking>(node, "disableDucking", audioObject);
 
       addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", audioObject, objectObjectRefs_, &parseAudioObjectId);
+      addOptionalReferences<AudioObjectId>(node, "audioComplementaryObjectIDRef", audioObject, objectComplementaryObjectRefs_, &parseAudioObjectId);
       addOptionalReferences<AudioPackFormatId>(node, "audioPackFormatIDRef", audioObject, objectPackFormatRefs_, &parseAudioPackFormatId);
       addOptionalReferences<AudioTrackUidId>(node, "audioTrackUIDRef", audioObject, objectTrackUidRefs_, &parseAudioTrackUidId);
       setOptionalElement<AudioObjectInteraction>(node, "audioObjectInteraction", audioObject, &parseAudioObjectInteraction);
