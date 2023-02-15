@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioObject audioObjectID="AO_1001" audioObjectName="Default">
+					<audioComplementaryObjectIDRef>AO_1002</audioComplementaryObjectIDRef>
+				</audioObject>
+				<audioObject audioObjectID="AO_1002" audioObjectName="Complementary"/>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+
