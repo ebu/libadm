@@ -209,3 +209,17 @@ TEST_CASE("xml_parser/audio_object_track_refs") {
           0);
   REQUIRE(silentTrack->isSilent());
 }
+
+TEST_CASE("xml_parser/audio_object_complementary_audio_objects") {
+  using namespace adm;
+  auto document =
+      parseXml("xml_parser/audio_object_complementary_audio_objects.xml");
+
+  auto audioObjectDefault = document->lookup(parseAudioObjectId("AO_1001"));
+  auto audioObjectComplementary =
+      document->lookup(parseAudioObjectId("AO_1002"));
+
+  auto complementaryObjects = audioObjectDefault->getComplementaryObjects();
+  REQUIRE(complementaryObjects.size() == 1);
+  CHECK(complementaryObjects.at(0) == audioObjectComplementary);
+}
