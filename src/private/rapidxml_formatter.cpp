@@ -672,5 +672,16 @@ namespace adm {
           trackUid, "audioPackFormatIDRef");
     }
 
+    void formatProfileList(XmlNode &node, const ProfileList &profileList) {
+      node.addVectorElements<Profiles>(&profileList, "profile", &formatProfile);
+    }
+
+    void formatProfile(XmlNode &node, const Profile &profile) {
+      node.setValue(profile.get<ProfileValue>());
+      node.addAttribute<ProfileName>(&profile, "profileName");
+      node.addAttribute<ProfileVersion>(&profile, "profileVersion");
+      node.addAttribute<ProfileLevel>(&profile, "profileLevel");
+    }
+
   }  // namespace xml
 }  // namespace adm

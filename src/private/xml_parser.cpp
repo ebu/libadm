@@ -76,6 +76,11 @@ namespace adm {
             add(parseAudioStreamFormat(node));
           } else if (nodeName == "audioTrackFormat") {
             add(parseAudioTrackFormat(node));
+          } else if (nodeName == "profileList") {
+            if (document_->has<ProfileList>())
+              throw error::XmlParsingError(
+                  "found more than one profileList element");
+            document_->set(parseProfileList(node));
           }
         }
         resolveReferences(programmeContentRefs_);
@@ -102,6 +107,8 @@ namespace adm {
         resolveReference(streamFormatChannelFormatRef_);
         resolveReference(streamFormatPackFormatRef_);
         resolveReferences(streamFormatTrackFormatRefs_);
+
+        setOptionalAttribute<Version>(root, "version", document_);
       } else {
         throw error::XmlParsingError("audioFormatExtended node not found");
       }
@@ -469,6 +476,23 @@ namespace adm {
       setOptionalReference<AudioPackFormatId>(node, "audioPackFormatIDRef", audioTrackUid, trackUidPackFormatRef_, &parseAudioPackFormatId);
       // clang-format on
       return audioTrackUid;
+    }
+
+    ProfileList XmlParser::parseProfileList(NodePtr node) {
+      ProfileList profileList;
+
+      addOptionalElements<Profile>(node, "profile", profileList, &parseProfile);
+
+      return profileList;
+    }
+
+    Profile parseProfile(NodePtr node) {
+      auto value = parseValue<ProfileValue>(node);
+      auto name = parseAttribute<ProfileName>(node, "profileName");
+      auto version = parseAttribute<ProfileVersion>(node, "profileVersion");
+      auto level = parseAttribute<ProfileLevel>(node, "profileLevel");
+
+      return Profile{value, name, version, level};
     }
 
     AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(

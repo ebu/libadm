@@ -17,5 +17,17 @@ namespace adm {
       setNamedOptionHelper(std::forward<Element>(element), std::move(args)...);
     }
 
+    /// check that the first template type is present in the remainder
+    template <typename T>
+    constexpr bool optionInList() {
+      return false;
+    }
+
+    template <typename T, typename Param, typename... Params>
+    constexpr bool optionInList() {
+      using ParamT = std::remove_const_t<std::remove_reference_t<Param>>;
+      return std::is_same<T, ParamT>::value || optionInList<T, Params...>();
+    }
+
   }  // namespace detail
 }  // namespace adm

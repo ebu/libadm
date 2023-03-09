@@ -9,6 +9,11 @@
 #include <algorithm>
 
 namespace adm {
+  namespace detail {
+    template class OptionalParameter<ProfileList>;
+    template class OptionalParameter<Version>;
+  }  // namespace detail
+
   Document::Document() { idAssigner_.document(this); }
 
   std::shared_ptr<Document> Document::create() {
