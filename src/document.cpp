@@ -400,76 +400,76 @@ namespace adm {
 
   // ---- lookup elements ---- //
   std::shared_ptr<AudioProgramme> Document::lookup(const AudioProgrammeId& id) {
-    return lookupById<AudioProgramme>(getElements<AudioProgramme>(), id);
+    return lookupById<AudioProgramme>(audioProgrammes_, id);
   }
   std::shared_ptr<const AudioProgramme> Document::lookup(
       const AudioProgrammeId& id) const {
-    return lookupById<const AudioProgramme>(getElements<AudioProgramme>(), id);
+    return lookupById<const AudioProgramme>(audioProgrammes_, id);
   }
 
   std::shared_ptr<AudioContent> Document::lookup(const AudioContentId& id) {
-    return lookupById<AudioContent>(getElements<AudioContent>(), id);
+    return lookupById<AudioContent>(audioContents_, id);
   }
   std::shared_ptr<const AudioContent> Document::lookup(
       const AudioContentId& id) const {
-    return lookupById<const AudioContent>(getElements<AudioContent>(), id);
+    return lookupById<const AudioContent>(audioContents_, id);
   }
 
   std::shared_ptr<AudioObject> Document::lookup(const AudioObjectId& id) {
-    return lookupById<AudioObject>(getElements<AudioObject>(), id);
+    return lookupById<AudioObject>(audioObjects_, id);
   }
   std::shared_ptr<const AudioObject> Document::lookup(
       const AudioObjectId& id) const {
-    return lookupById<const AudioObject>(getElements<AudioObject>(), id);
+    return lookupById<const AudioObject>(audioObjects_, id);
   }
 
   std::shared_ptr<AudioPackFormat> Document::lookup(
       const AudioPackFormatId& id) {
-    return lookupById<AudioPackFormat>(getElements<AudioPackFormat>(), id);
+    return lookupById<AudioPackFormat>(audioPackFormats_, id);
   }
   std::shared_ptr<const AudioPackFormat> Document::lookup(
       const AudioPackFormatId& id) const {
-    return lookupById<const AudioPackFormat>(getElements<AudioPackFormat>(),
+    return lookupById<const AudioPackFormat>(audioPackFormats_,
                                              id);
   }
 
   std::shared_ptr<AudioChannelFormat> Document::lookup(
       const AudioChannelFormatId& id) {
-    return lookupById<AudioChannelFormat>(getElements<AudioChannelFormat>(),
+    return lookupById<AudioChannelFormat>(audioChannelFormats_,
                                           id);
   }
   std::shared_ptr<const AudioChannelFormat> Document::lookup(
       const AudioChannelFormatId& id) const {
     return lookupById<const AudioChannelFormat>(
-        getElements<const AudioChannelFormat>(), id);
+        audioChannelFormats_, id);
   }
 
   std::shared_ptr<AudioStreamFormat> Document::lookup(
       const AudioStreamFormatId& id) {
-    return lookupById<AudioStreamFormat>(getElements<AudioStreamFormat>(), id);
+    return lookupById<AudioStreamFormat>(audioStreamFormats_, id);
   }
   std::shared_ptr<const AudioStreamFormat> Document::lookup(
       const AudioStreamFormatId& id) const {
-    return lookupById<const AudioStreamFormat>(getElements<AudioStreamFormat>(),
+    return lookupById<const AudioStreamFormat>(audioStreamFormats_,
                                                id);
   }
 
   std::shared_ptr<AudioTrackFormat> Document::lookup(
       const AudioTrackFormatId& id) {
-    return lookupById<AudioTrackFormat>(getElements<AudioTrackFormat>(), id);
+    return lookupById<AudioTrackFormat>(audioTrackFormats_, id);
   }
   std::shared_ptr<const AudioTrackFormat> Document::lookup(
       const AudioTrackFormatId& id) const {
-    return lookupById<const AudioTrackFormat>(getElements<AudioTrackFormat>(),
+    return lookupById<const AudioTrackFormat>(audioTrackFormats_,
                                               id);
   }
 
   std::shared_ptr<AudioTrackUid> Document::lookup(const AudioTrackUidId& id) {
-    return lookupById<AudioTrackUid>(getElements<AudioTrackUid>(), id);
+    return lookupById<AudioTrackUid>(audioTrackUids_, id);
   }
   std::shared_ptr<const AudioTrackUid> Document::lookup(
       const AudioTrackUidId& id) const {
-    return lookupById<const AudioTrackUid>(getElements<AudioTrackUid>(), id);
+    return lookupById<const AudioTrackUid>(audioTrackUids_, id);
   }
 
   template <typename Element>

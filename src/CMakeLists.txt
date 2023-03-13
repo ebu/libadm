@@ -64,6 +64,7 @@ add_library(adm
   private/xml_writer.cpp
   private/xml_parser.cpp
   detail/id_assigner.cpp
+  detail/named_type_validators.cpp
   parse.cpp
   write.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/resources.hpp

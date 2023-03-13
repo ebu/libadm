@@ -3,26 +3,66 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include "adm/export.h"
 
 namespace adm {
 
-  struct OutOfRangeError : public std::runtime_error {
+  struct ADM_EXPORT OutOfRangeError : public std::runtime_error {
     explicit OutOfRangeError(const char* msg) : std::runtime_error(msg) {}
     explicit OutOfRangeError(const std::string& msg)
         : std::runtime_error(msg) {}
   };
-  struct InvalidValueError : public std::runtime_error {
+  struct ADM_EXPORT InvalidValueError : public std::runtime_error {
     explicit InvalidValueError(const char* msg) : std::runtime_error(msg) {}
     explicit InvalidValueError(const std::string& msg)
         : std::runtime_error(msg) {}
   };
-  struct InvalidStringError : public std::runtime_error {
+  struct ADM_EXPORT InvalidStringError : public std::runtime_error {
     explicit InvalidStringError(const char* msg) : std::runtime_error(msg) {}
     explicit InvalidStringError(const std::string& msg)
         : std::runtime_error(msg) {}
   };
 
   namespace detail {
+
+    /// helpers for range validation; this does not have the range as part of
+    /// the type, so reduces duplication
+    template <typename T>
+    struct ValidateRangeHelper {
+      static void validateRange(T value, int minValue, int maxValue) {
+        if (value > static_cast<T>(maxValue) ||
+            value < static_cast<T>(minValue)) {
+          std::stringstream msg;
+          msg << "'" << value << "'"
+              << " is not in range [" << minValue << "," << maxValue << "]";
+          throw OutOfRangeError(msg.str());
+        }
+      }
+
+      static void validateMin(T value, int minValue) {
+        if (value < static_cast<T>(minValue)) {
+          std::stringstream msg;
+          msg << "'" << value << "'' is not bigger than '" << minValue << "'";
+          throw OutOfRangeError(msg.str());
+        }
+      }
+
+      static void validateMax(T value, int maxValue) {
+        if (value > static_cast<T>(maxValue)) {
+          std::stringstream msg;
+          msg << "'" << value << "'' is not smaller than '" << maxValue << "'";
+          throw OutOfRangeError(msg.str());
+        }
+      }
+    };
+
+    extern template struct ADM_EXPORT_TEMPLATE_METHODS
+        ValidateRangeHelper<float>;
+    extern template struct ADM_EXPORT_TEMPLATE_METHODS
+        ValidateRangeHelper<double>;
+    extern template struct ADM_EXPORT_TEMPLATE_METHODS ValidateRangeHelper<int>;
+    extern template struct ADM_EXPORT_TEMPLATE_METHODS
+        ValidateRangeHelper<unsigned>;
 
     struct DefaultValidator {
       template <typename T>
@@ -34,37 +74,24 @@ namespace adm {
     template <int minValue, int maxValue>
     struct RangeValidator {
       template <typename T>
-      static void validate(const T& value) {
-        if (value > maxValue || value < minValue) {
-          std::stringstream msg;
-          msg << "'" << value << "'"
-              << " is not in range [" << minValue << "," << maxValue << "]";
-          throw OutOfRangeError(msg.str());
-        }
+      static void validate(T value) {
+        ValidateRangeHelper<T>::validateRange(value, minValue, maxValue);
       }
     };
 
     template <int minValue>
     struct MinValidator {
       template <typename T>
-      static void validate(const T& value) {
-        if (value < minValue) {
-          std::stringstream msg;
-          msg << "'" << value << "'' is not bigger than '" << minValue << "'";
-          throw OutOfRangeError(msg.str());
-        }
+      static void validate(T value) {
+        ValidateRangeHelper<T>::validateMin(value, minValue);
       }
     };
 
     template <int maxValue>
     struct MaxValidator {
       template <typename T>
-      static void validate(const T& value) {
-        if (value > maxValue) {
-          std::stringstream msg;
-          msg << "'" << value << "'' is not smaller than '" << maxValue << "'";
-          throw OutOfRangeError(msg.str());
-        }
+      static void validate(T value) {
+        ValidateRangeHelper<T>::validateMax(value, maxValue);
       }
     };
 

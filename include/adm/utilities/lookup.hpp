@@ -20,8 +20,8 @@ namespace adm {
     return elements;
   }
 
-  template <typename Element, typename ElementId, typename ElementRange>
-  std::shared_ptr<Element> lookupById(const ElementRange& range,
+  template <typename Element, typename ElementId, typename Elements>
+  std::shared_ptr<Element> lookupById(const Elements& range,
                                       const ElementId& id) {
     for (auto& element : range) {
       if (element->template get<ElementId>() == id) {
