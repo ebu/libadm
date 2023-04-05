@@ -63,8 +63,10 @@ add_library(adm
   private/rapidxml_formatter.cpp
   private/xml_writer.cpp
   private/xml_parser.cpp
+  private/base_xml_parser.cpp
   detail/id_assigner.cpp
   parse.cpp
+  parse_sadm.cpp
   write.cpp
   frame.cpp
   serial/audio_track.cpp
@@ -73,6 +75,7 @@ add_library(adm
   serial/frame_header.cpp
   serial/transport_track_format.cpp
   serial/transport_id.cpp
+  serial/sadm_xml_parser.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/resources.hpp
   ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp
 )

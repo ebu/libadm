@@ -21,6 +21,8 @@
 #include "adm/export.h"
 #include <type_traits>
 
+#include <iostream>
+
 namespace adm {
 
   class Document;

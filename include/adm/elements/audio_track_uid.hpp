@@ -58,8 +58,22 @@ namespace adm {
     ///
     /// this will get an existing silent track from the document, or create a
     /// new one of none exists
-    ADM_EXPORT static std::shared_ptr<AudioTrackUid> getSilent(
-        std::shared_ptr<Document> &document);
+    //ADM_EXPORT static std::shared_ptr<AudioTrackUid> getSilent(
+    //    std::shared_ptr<Document> &document);
+
+    template <typename Doctype>
+    ADM_EXPORT static std::shared_ptr<AudioTrackUid> getSilent(Doctype doc) {
+      AudioTrackUidId id{AudioTrackUidIdValue{0}};
+
+      std::shared_ptr<AudioTrackUid> trackUid;
+
+      trackUid = doc->lookup(id);
+      if (trackUid) return trackUid;
+
+      trackUid = std::shared_ptr<AudioTrackUid>(new AudioTrackUid());
+      trackUid->id_ = id;
+      return trackUid;
+    }
 
     /// get a silent AudioTrackUid which can be referenced from AudioObjects
     ///
