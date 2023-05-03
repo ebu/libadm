@@ -44,6 +44,18 @@ namespace adm {
       detail::ParameterTraits<SphericalSpeakerPosition>::tag) const {
     return boost::get<SphericalSpeakerPosition>(speakerPosition_);
   }
+  Cartesian AudioBlockFormatDirectSpeakers::get(
+      detail::ParameterTraits<Cartesian>::tag) const {
+    if (cartesian_ != boost::none) {
+      return cartesian_.get();
+    } else {
+      if (has<SphericalSpeakerPosition>()) {
+        return Cartesian(false);
+      } else {
+        return Cartesian(true);
+      }
+    }
+  }
 
   // ---- Has ---- //
   bool AudioBlockFormatDirectSpeakers::has(
@@ -82,11 +94,19 @@ namespace adm {
       detail::ParameterTraits<SphericalSpeakerPosition>::tag) const {
     return (boost::get<SphericalSpeakerPosition>(&speakerPosition_));
   }
+  bool AudioBlockFormatDirectSpeakers::has(
+      detail::ParameterTraits<Cartesian>::tag) const {
+    return true;
+  }
 
   // ---- isDefault ---- //
   bool AudioBlockFormatDirectSpeakers::isDefault(
       detail::ParameterTraits<Rtime>::tag) const {
     return duration_ == boost::none;
+  }
+  bool AudioBlockFormatDirectSpeakers::isDefault(
+      detail::ParameterTraits<Cartesian>::tag) const {
+    return cartesian_ == boost::none;
   }
 
   // ---- Setter ---- //
@@ -105,6 +125,7 @@ namespace adm {
   void AudioBlockFormatDirectSpeakers::set(
       CartesianSpeakerPosition speakerPosition) {
     speakerPosition_ = speakerPosition;
+    cartesian_ = Cartesian(true);
   }
   void AudioBlockFormatDirectSpeakers::set(
       SphericalSpeakerPosition speakerPosition) {
@@ -112,6 +133,9 @@ namespace adm {
   }
   void AudioBlockFormatDirectSpeakers::set(SpeakerPosition speakerPosition) {
     speakerPosition_ = speakerPosition;
+  }
+  void AudioBlockFormatDirectSpeakers::set(Cartesian cartesian) {
+    cartesian_ = cartesian;
   }
 
   // ---- Unsetter ---- //
@@ -138,6 +162,9 @@ namespace adm {
   void AudioBlockFormatDirectSpeakers::unset(
       detail::ParameterTraits<SpeakerLabels>::tag) {
     speakerLabels_.clear();
+  }
+  void AudioBlockFormatDirectSpeakers::unset(detail::ParameterTraits<Cartesian>::tag) {
+    cartesian_ = boost::none;
   }
 
   // ---- Add ---- //

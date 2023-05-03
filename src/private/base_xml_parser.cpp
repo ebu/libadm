@@ -387,6 +387,7 @@ namespace adm {
       // clang-format on
       setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
+      setOptionalElement<Cartesian>(node, "cartesian", audioBlockFormat);
       return audioBlockFormat;
     }
 

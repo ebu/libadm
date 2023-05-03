@@ -20,7 +20,7 @@ namespace adm {
   class Document;
 
   /// @brief Tag for NamedType ::Cartesian
-  struct CartesianTag {};
+  //struct CartesianTag {};
   /// @brief NamedType for cartesian parameter
   using Cartesian = detail::NamedType<bool, CartesianTag>;
   /// @brief Tag for NamedType ::Width

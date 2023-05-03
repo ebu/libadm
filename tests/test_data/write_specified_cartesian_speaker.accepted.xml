@@ -18,6 +18,7 @@
 						<headLocked>1</headLocked>
 						<gain>0.500000</gain>
 						<importance>5</importance>
+						<cartesian>1</cartesian>
 					</audioBlockFormat>
 				</audioChannelFormat>
 			</audioFormatExtended>

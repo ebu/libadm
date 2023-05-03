@@ -44,6 +44,8 @@ namespace adm {
     ADM_EXPORT FrameHeader &frameHeader();
     ADM_EXPORT void setFrameHeader(FrameHeader frameHeader);
 
+    ADM_EXPORT std::shared_ptr<Document> getDocument() { return audioFormatExtended_; }
+    
    private:
     ADM_EXPORT Frame(FrameStart start, FrameDuration duration,
                      FrameType frameType, FrameFormatId frameFormatId);

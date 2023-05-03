@@ -74,4 +74,7 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         DefaultParameter<NfcRefDist>;
   }  // namespace detail
+
+  /// @brief Tag for NamedType ::Cartesian
+  struct CartesianTag {};
 }  // namespace adm
