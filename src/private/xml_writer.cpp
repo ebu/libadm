@@ -65,8 +65,10 @@ namespace adm {
           !isSet(options_, WriterOptions::write_default_values));
       xmlDocument.addDeclaration();
       auto root = xmlDocument.addNode("frame");
+      root.addAttribute("version", "ITU-R_BS.2125-1");
       root.addElement(frame->frameHeader(), "frameHeader", &formatFrameHeader);
       auto formatExtended = root.addNode("audioFormatExtended");
+      formatExtended.addAttribute("version", "ITU-R_BS.2076-2");
       // clang-format off
       formatExtended.addBaseElements<AudioProgramme, AudioProgrammeId>(frame, "audioProgramme", &formatAudioProgramme);
       formatExtended.addBaseElements<AudioContent, AudioContentId>(frame, "audioContent", &formatAudioContent);
