@@ -10,10 +10,10 @@ int main() {
   using namespace adm;
 
   auto frameFormatId = parseFrameFormatId("FF_00000000001");
-  auto frame = Frame::create(FrameStart(std::chrono::milliseconds(0)),
-                             FrameDuration(std::chrono::milliseconds(40)),
-                             FrameType("full"),
-                             frameFormatId);
+  auto frame = Frame::create({FrameStart(std::chrono::milliseconds(0)),
+                              FrameDuration(std::chrono::milliseconds(40)),
+                              FrameType("full"),
+                              frameFormatId});
 
   // create ADM elements
   auto admProgramme = AudioProgramme::create(

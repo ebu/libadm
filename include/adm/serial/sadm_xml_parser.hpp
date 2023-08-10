@@ -38,11 +38,12 @@ namespace adm {
     class SadmXmlParser : public BaseXmlParser {
      public:
       explicit SadmXmlParser(rapidxml::file<> file,
-                    ParserOptions options = ParserOptions::none,
-                    std::shared_ptr<Frame> destFrame = Frame::create(FrameStart(std::chrono::milliseconds(0)),
-                               FrameDuration(std::chrono::milliseconds(1000)),
-                               FrameType("full"),
-                               FrameFormatId(FrameFormatIdValue(1))));
+                             ParserOptions options = ParserOptions::none,
+                             std::shared_ptr<Frame> destFrame = Frame::create(
+                                 {FrameStart(std::chrono::milliseconds(0)),
+                                  FrameDuration(std::chrono::milliseconds(1000)),
+                                  FrameType("full"),
+                                  FrameFormatId(FrameFormatIdValue(1))}));
 
       std::shared_ptr<Frame> parse();
 

@@ -23,10 +23,6 @@ class Frame : public Document {
      * The constructor is private. This way it is ensured, that an Frame
      * can only be created as a `std::shared_ptr`.
      */
-    ADM_EXPORT static std::shared_ptr<Frame> create(FrameStart start,
-                                                    FrameDuration duration,
-                                                    FrameType frameType,
-                                                    FrameFormatId frameFormatId);
     ADM_EXPORT static std::shared_ptr<Frame> create(FrameHeader frameHeader);
     ADM_EXPORT static std::shared_ptr<Frame> create(FrameHeader header,
                                                     std::shared_ptr<Document const> const& document);

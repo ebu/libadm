@@ -17,9 +17,6 @@ namespace adm {
   }
 
   Frame::Frame(FrameHeader frameHeader) : frameHeader_(frameHeader) {
-  std::shared_ptr<Frame> Frame::create(FrameStart start, FrameDuration duration,
-                                       FrameType frameType, FrameFormatId frameFormatId) {
-    return std::shared_ptr<Frame>(new Frame(start, duration, frameType, frameFormatId));
   }
 
   std::shared_ptr<Frame> Frame::create(FrameHeader frameHeader) {
