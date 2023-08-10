@@ -15,7 +15,7 @@ namespace adm {
    * @brief Class representation of a whole adm frame
    * @headerfile frame.hpp <adm/frame.hpp>
    */
-  class Frame : public Document {
+class Frame : public Document {
    public:
     /**
      * @brief Static helper function to create an Frame
@@ -28,6 +28,8 @@ namespace adm {
                                                     FrameType frameType,
                                                     FrameFormatId frameFormatId);
     ADM_EXPORT static std::shared_ptr<Frame> create(FrameHeader frameHeader);
+    ADM_EXPORT static std::shared_ptr<Frame> create(FrameHeader header,
+                                                    std::shared_ptr<Document const> const& document);
 
     /// @brief FrameStart getter
     ADM_EXPORT FrameStart start() const;
@@ -44,7 +46,7 @@ namespace adm {
     ADM_EXPORT FrameHeader &frameHeader();
     ADM_EXPORT void setFrameHeader(FrameHeader frameHeader);
 
-    ADM_EXPORT std::shared_ptr<Document> getDocument() { return audioFormatExtended_; }
+    ADM_EXPORT std::shared_ptr<Document> getDocument();
     
    private:
     ADM_EXPORT Frame(FrameStart start, FrameDuration duration,
@@ -53,7 +55,6 @@ namespace adm {
     ADM_EXPORT Frame(const Frame &) = default;
     ADM_EXPORT Frame(Frame &&) = default;
 
-    std::shared_ptr<Document> audioFormatExtended_;
     FrameHeader frameHeader_;
   };
 

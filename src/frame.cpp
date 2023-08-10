@@ -8,18 +8,15 @@
 #include "adm/serial/transport_track_format.hpp"
 #include "adm/elements/private/parent_attorneys.hpp"
 #include "adm/utilities/lookup.hpp"
+#include "adm/utilities/copy.hpp"
 #include "adm/detail/id_assigner.hpp"
 
 namespace adm {
   Frame::Frame(FrameStart start, FrameDuration duration, FrameType frameType, FrameFormatId frameFormatId)
       : frameHeader_(FrameHeader(start, duration, frameType, frameFormatId)) {
-    audioFormatExtended_ = Document::create();
   }
 
   Frame::Frame(FrameHeader frameHeader) : frameHeader_(frameHeader) {
-    audioFormatExtended_ = Document::create();
-  }
-
   std::shared_ptr<Frame> Frame::create(FrameStart start, FrameDuration duration,
                                        FrameType frameType, FrameFormatId frameFormatId) {
     return std::shared_ptr<Frame>(new Frame(start, duration, frameType, frameFormatId));
@@ -44,12 +41,12 @@ namespace adm {
   }
 
   std::shared_ptr<Frame> Frame::deepCopy() const {
-    auto copy = Frame::create(frameHeader());
-    copy->audioFormatExtended_ = audioFormatExtended_->deepCopy();
-    return copy;
+      return adm::deepCopy(std::static_pointer_cast<Frame const>(shared_from_this()));
   }
 
   const FrameHeader& Frame::frameHeader() const { return frameHeader_; }
   FrameHeader& Frame::frameHeader() { return frameHeader_; }
   void Frame::setFrameHeader(FrameHeader frameHeader) { frameHeader_ = frameHeader; }
+
+    std::shared_ptr<Document> Frame::getDocument() { return shared_from_this(); }
 }  // namespace adm
