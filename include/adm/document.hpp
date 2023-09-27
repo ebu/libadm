@@ -20,19 +20,23 @@ namespace adm {
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<Version>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<ProfileList>;
 
-    using DocumentBase = HasParameters<OptionalParameter<Version>>;
+    using DocumentBase = HasParameters<OptionalParameter<Version>, OptionalParameter<ProfileList>>;
   }  // namespace detail
 
   /**
    * @brief Class representation of a whole ADM document
+   * @headerfile document.hpp <adm/document.hpp>
    *
    * \rst
-   * +---------------+-----------------+----------------------------+
-   * | ADM Parameter | Parameter Type  | Pattern Type               |
-   * +===============+=================+============================+
-   * | version       | :type:`Version` | :class:`OptionalParameter` |
-   * +---------------+-----------------+----------------------------+
+   * +---------------+---------------------+----------------------------+
+   * | ADM Parameter | Parameter Type      | Pattern Type               |
+   * +===============+=====================+============================+
+   * | version       | :type:`Version`     | :class:`OptionalParameter` |
+   * | profileList   | :type:`ProfileList` | :class:`OptionalParameter`                           |
+   * +---------------+---------------------+----------------------------+
    * \endrst
    *
    * Note that:
@@ -45,6 +49,8 @@ namespace adm {
                    private detail::DocumentBase,
                    public detail::AddWrapperMethods<Document> {
    public:
+     virtual ~Document() = default;
+
     /**
      * @brief Static helper function to create an Document
      *
@@ -236,11 +242,12 @@ namespace adm {
     using detail::AddWrapperMethods<Document>::isDefault;
     using detail::AddWrapperMethods<Document>::unset;
 
-   private:
+   protected:
     ADM_EXPORT Document();
     ADM_EXPORT Document(const Document &) = default;
     ADM_EXPORT Document(Document &&) = default;
 
+   private:
     ADM_EXPORT ElementRange<const AudioProgramme> getElements(
         detail::ParameterTraits<AudioProgramme>::tag) const;
     ADM_EXPORT ElementRange<const AudioContent> getElements(

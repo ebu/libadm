@@ -62,6 +62,9 @@ namespace adm {
     std::shared_ptr<const Element> getLastOf() const;
 
     template <typename Element>
+    std::vector<std::shared_ptr<const Element>> getAllOf() const;
+
+    template <typename Element>
     const_iterator findFirstOf() const;
     template <typename Element>
     const_iterator findLastOf() const;
@@ -137,6 +140,17 @@ namespace adm {
     } else {
       return nullptr;
     }
+  };
+
+  template <typename Element>
+  std::vector<std::shared_ptr<const Element>> Route::getAllOf() const {
+    std::vector<std::shared_ptr<const Element>> vec;
+    for (auto ritem : route_) {
+      if (isVariantType<std::shared_ptr<const Element>, ElementConstVariant>(ritem)) {
+        vec.push_back(boost::get<std::shared_ptr<const Element>>(ritem));
+      }
+    }
+    return vec;
   };
 
   inline bool operator==(const Route& lhs, const Route& rhs) {

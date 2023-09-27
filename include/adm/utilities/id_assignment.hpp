@@ -3,6 +3,7 @@
 
 #include "adm/document.hpp"
 #include "adm/export.h"
+#include "adm/frame.hpp"
 
 #include <memory>
 
@@ -22,6 +23,21 @@ namespace adm {
    * definitions.
    */
   ADM_EXPORT void reassignIds(std::shared_ptr<Document> document);
+
+  /**
+   * @brief Reassign ids of an Frame
+   *
+   * Assigns new ids to all the elements wihtin an Frame. Unreferenced
+   * audioTrackFormats and audioChannelFormats which are not referenced by an
+   * audioStreamFormat get an Id with the value zero and are thereby marked as
+   * ADM elements which should be ignored.
+   *
+   * @note
+   * Element that already have Ids with a value in the range 0x0001-0x0fff
+   * will not get new Ids assigned, as they are considered to be common
+   * definitions.
+   */
+  ADM_EXPORT void reassignIds(std::shared_ptr<Frame> frame);
 
   /** @name Check if id is a common definitions id
    */

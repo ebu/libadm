@@ -9,7 +9,7 @@ int main(int argc, char const *argv[]) {
     std::cout << "usage: " << argv[0] << " [XML_FILE]" << std::endl;
     exit(1);
   }
-  auto admDocument = adm::parseXml(argv[1]);
+  auto admDocument = adm::parseXml(argv[1], adm::xml::ParserOptions::recursive_node_search);
 
   // write XML data to stdout
   std::stringstream xmlStream;

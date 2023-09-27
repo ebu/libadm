@@ -263,4 +263,8 @@ namespace adm {
     reassignAllIds(document);
   }
 
+  void reassignIds(std::shared_ptr<Frame> frame) { 
+    reassignAllIds(frame); 
+  }
+
 }  // namespace adm

@@ -53,6 +53,12 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS DefaultParameter<Rtime>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<Duration>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<Lstart>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<Lduration>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<InitializeBlock>;
 
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         DefaultParameter<HeadphoneVirtualise>;
@@ -68,4 +74,7 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         DefaultParameter<NfcRefDist>;
   }  // namespace detail
+
+  /// @brief Tag for NamedType ::Cartesian
+  struct CartesianTag {};
 }  // namespace adm

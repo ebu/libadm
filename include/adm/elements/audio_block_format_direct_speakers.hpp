@@ -31,6 +31,10 @@ namespace adm {
       boost::variant<SphericalSpeakerPosition, CartesianSpeakerPosition>;
   struct SpeakerPositionTag {};
   ADD_TRAIT(SpeakerPosition, SpeakerPostionTag);
+  /// @brief Tag for NamedType ::Cartesian
+  //struct CartesianTag {};
+  /// @brief NamedType for cartesian parameter
+  using Cartesian = detail::NamedType<bool, CartesianTag>;
 
   namespace detail {
     using AudioBlockFormatDirectSpeakersBase =
@@ -56,6 +60,14 @@ namespace adm {
    * | rtime               | :type:`Rtime`                      | :class:`DefaultParameter`  |
    * +---------------------+------------------------------------+----------------------------+
    * | duration            | :type:`Duration`                   | :class:`OptionalParameter` |
+   * +---------------------+------------------------------------+----------------------------+
+   * | lstart              | :type:`Lstart`                     | :class:`OptionalParameter` |
+   * +---------------------+------------------------------------+----------------------------+
+   * | lduration           | :type:`Lduration`                  | :class:`OptionalParameter` |
+   * +---------------------+------------------------------------+----------------------------+
+   * | initializeBlock     | :type:`InitializeBlock`            | :class:`OptionalParameter` |
+   * +---------------------+------------------------------------+----------------------------+
+   * | cartesian           | :type:`Cartesian`                  | custom, see below          |
    * +---------------------+------------------------------------+----------------------------+
    * | position            | - :type:`SpeakerPosition`          | :class:`VariantParameter`  |
    * |                     | - :type:`SphericalSpeakerPosition` |                            |
@@ -127,12 +139,20 @@ namespace adm {
     ADM_EXPORT void set(Rtime rtime);
     /// @brief Duration setter
     ADM_EXPORT void set(Duration duration);
+    /// @brief Lstart setter
+    ADM_EXPORT void set(Lstart lstart);
+    /// @brief Lduration setter
+    ADM_EXPORT void set(Lduration lduration);
+    /// @brief InitializeBlock setter
+    ADM_EXPORT void set(InitializeBlock initializeBlock);
     /// @brief CartesianSpeakerPosition setter
     ADM_EXPORT void set(CartesianSpeakerPosition speakerPosition);
     /// @brief SphericalSpeakerPosition setter
     ADM_EXPORT void set(SphericalSpeakerPosition speakerPosition);
     /// @brief SpeakerPosition setter
     ADM_EXPORT void set(SpeakerPosition speakerPosition);
+    /// @brief Cartesian setter
+    ADM_EXPORT void set(Cartesian cartesian);
 
     using detail::AudioBlockFormatDirectSpeakersBase::set;
 
@@ -161,36 +181,54 @@ namespace adm {
         get(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT Rtime get(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT Lstart get(detail::ParameterTraits<Lstart>::tag) const;
+    ADM_EXPORT Lduration get(detail::ParameterTraits<Lduration>::tag) const;
+    ADM_EXPORT InitializeBlock
+        get(detail::ParameterTraits<InitializeBlock>::tag) const;
     ADM_EXPORT SpeakerLabels
         get(detail::ParameterTraits<SpeakerLabels>::tag) const;
     ADM_EXPORT CartesianSpeakerPosition
         get(detail::ParameterTraits<CartesianSpeakerPosition>::tag) const;
     ADM_EXPORT SphericalSpeakerPosition
         get(detail::ParameterTraits<SphericalSpeakerPosition>::tag) const;
+    ADM_EXPORT Cartesian get(detail::ParameterTraits<Cartesian>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioBlockFormatId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Lstart>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Lduration>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<InitializeBlock>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<SpeakerLabels>::tag) const;
     ADM_EXPORT bool has(
         detail::ParameterTraits<CartesianSpeakerPosition>::tag) const;
     ADM_EXPORT bool has(
         detail::ParameterTraits<SphericalSpeakerPosition>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Cartesian>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Cartesian>::tag) const;
 
     ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Lstart>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Lduration>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<InitializeBlock>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<SpeakerLabels>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Cartesian>::tag);
 
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;
     boost::optional<Duration> duration_;
+    boost::optional<Lstart> lstart_;
+    boost::optional<Lduration> lduration_;
+    boost::optional<InitializeBlock> initializeBlock_;
     SpeakerLabels speakerLabels_;
     SpeakerPosition speakerPosition_;
+    boost::optional<Cartesian> cartesian_;
   };
 
   // ---- Implementation ---- //

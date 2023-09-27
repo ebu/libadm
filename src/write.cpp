@@ -18,4 +18,17 @@ namespace adm {
     return writer.write(admDocument, stream);
   }
 
+  void writeXmlSadm(const std::string& filename,
+                std::shared_ptr<const Frame> admFrame,
+                xml::WriterOptions options) {
+    std::ofstream stream(filename);
+    writeXmlSadm(stream, admFrame, options);
+  }
+
+  std::ostream& writeXmlSadm(std::ostream& stream,
+                         std::shared_ptr<const Frame> admFrame,
+                         xml::WriterOptions options) {
+    xml::XmlWriter writer(options);
+    return writer.write(admFrame, stream);
+  }  
 }  // namespace adm
