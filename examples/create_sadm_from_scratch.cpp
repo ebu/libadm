@@ -1,19 +1,20 @@
 #include <iostream>
 #include <sstream>
-#include "adm/adm.hpp"
+#include "adm/elements.hpp"
+#include "adm/serial.hpp"
 #include "adm/utilities/id_assignment.hpp"
 #include "adm/utilities/object_creation.hpp"
 #include "adm/write.hpp"
-#include "adm/frame.hpp"
 
 int main() {
   using namespace adm;
 
   auto frameFormatId = parseFrameFormatId("FF_00000000001");
-  auto frame = Frame::create({FrameStart(std::chrono::milliseconds(0)),
-                              FrameDuration(std::chrono::milliseconds(40)),
-                              FrameType("full"),
-                              frameFormatId});
+  auto frameHeader = FrameHeader{FrameStart(std::chrono::milliseconds(0)),
+          FrameDuration(std::chrono::milliseconds(40)),
+          FrameType("full"),
+          frameFormatId};
+  auto document = Document::create();
 
   // create ADM elements
   auto admProgramme = AudioProgramme::create(
@@ -29,9 +30,9 @@ int main() {
   auto holder2 = createSimpleObject("Bob");
   speechContent->addReference(holder2.audioObject);
 
-  frame->add(admProgramme);
+  document->add(admProgramme);
 
-  reassignIds(frame);
+  reassignIds(document);
 
   auto trackFormat = TransportTrackFormat();
 
@@ -43,11 +44,11 @@ int main() {
   audioTrack2.add(holder2.audioTrackUid->get<AudioTrackUidId>());
   trackFormat.add(audioTrack2);
 
-  frame->frameHeader().add(trackFormat);
+  frameHeader.add(trackFormat);
 
   // write XML data to stdout
   std::stringstream xmlStream;
-  writeXmlSadm(xmlStream, frame);
+  writeXml(xmlStream, document, frameHeader);
   std::cout << xmlStream.str();
   return 0;
 }

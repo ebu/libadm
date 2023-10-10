@@ -11,12 +11,20 @@ namespace adm {
 
       std::ostream& write(std::shared_ptr<const Document> document,
                           std::ostream& stream);
-      std::ostream& write(std::shared_ptr<const Frame> frame,
-                          std::ostream& stream);
-                          
      private:
       WriterOptions options_;
     };
+
+    class SadmXmlWriter {
+     public:
+      SadmXmlWriter(SadmWriterOptions options = SadmWriterOptions::none);
+      std::ostream& write(std::shared_ptr<const Document> document,
+                          FrameHeader const& header,
+                          std::ostream& stream);
+     private:
+      SadmWriterOptions options_;
+    };
+
 
   }  // namespace xml
 }  // namespace adm

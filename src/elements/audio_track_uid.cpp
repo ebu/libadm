@@ -1,5 +1,4 @@
 #include "adm/document.hpp"
-#include "adm/frame.hpp"
 #include "adm/elements/audio_track_format.hpp"
 #include "adm/elements/private/parent_attorneys.hpp"
 #include "adm/elements/private/auto_parent.hpp"

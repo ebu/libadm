@@ -1,4 +1,4 @@
-#include "adm/serial/sadm_xml_parser.hpp"
+#include "adm/serial/frame_header_parser.hpp"
 #include "adm/private/xml_parser_helper.hpp"
 #include "adm/common_definitions.hpp"
 #include "adm/errors.hpp"
@@ -9,6 +9,19 @@
 
 namespace adm {
   namespace xml {
+    FrameHeaderParser::FrameHeaderParser(const std::string& filename,
+                                         ParserOptions options)
+        : FrameHeaderParser(rapidxml::file<>(filename.c_str()), options){}
+
+    FrameHeaderParser::FrameHeaderParser(std::istream& stream,
+                                         ParserOptions options)
+        : FrameHeaderParser(rapidxml::file<>(stream), options){}
+
+    FrameHeaderParser::FrameHeaderParser(rapidxml::file<> file,
+                                         ParserOptions options)
+        : file{std::move(file)},
+          options{std::move(options)}
+    {}
 
     /// Check if a option/flag is set
     /**
@@ -21,43 +34,23 @@ namespace adm {
       return static_cast<bool>(options & flag);
     }*/
     
-    SadmXmlParser::SadmXmlParser(rapidxml::file<> file, ParserOptions options,
-                         std::shared_ptr<Frame> destFrame)
-        : BaseXmlParser(file, options) {
-          xmlFile_ = std::move(file);
-          frame_ = destFrame;
-          idMap_ = *destFrame;
-        }
+    FrameHeader FrameHeaderParser::parse() {
+      rapidxml::xml_document<> document;
+      document.parse<0>(file.data());
 
-    std::shared_ptr<Frame> SadmXmlParser::parse() {
-      rapidxml::xml_document<> xmlDocument;
-      xmlDocument.parse<0>(xmlFile_.data());
-
-      if (!xmlDocument.first_node())
+      if (!document.first_node())
         throw error::XmlParsingError("xml document is empty");
 
-      auto root = findFrameNode(xmlDocument.first_node());
-      if (root) {
-        for (NodePtr node = root->first_node(); node;
-             node = node->next_sibling()) {
-          if (std::string(node->name()) == "frameHeader") {
-            if (frame_ != nullptr) {   // Don't overwrite existing frame
-              frame_->setFrameHeader(parseFrameHeader(node));
-            } else {
-              frame_ = Frame::create(parseFrameHeader(node));
-            }
-          } else {
-            NodePtr afe = findAudioFormatExtendedNodeFullRecursive(node);
-            if (afe) {
-              // add ADM elements to ADM document
-              parseAudioFormatExtended<std::shared_ptr<Frame>>(afe, frame_);
-            }
+      auto frame = findFrameNode(document.first_node());
+      if (frame) {
+        for (NodePtr node = frame->first_node(); node;
+             node = frame->next_sibling()) {
+          if (std::string(frame->name()) == "frameHeader") {
+            return parseFrameHeader(node);
           }
         }
-      } else {
-        throw std::runtime_error("frame node not found");
       }
-      return frame_;
+      throw std::runtime_error("frameHeader not found");
     }  // namespace xml
 
     
@@ -70,7 +63,7 @@ namespace adm {
      *
      * @note: Only the first frame node will be found!
      */
-    NodePtr SadmXmlParser::findFrameNode(NodePtr root) {
+    NodePtr FrameHeaderParser::findFrameNode(NodePtr root) {
       // ituADM is for common definitions reading
       if (std::string(root->name()) == "frame" || std::string(root->name()) == "ituADM") {
         return root;
@@ -83,7 +76,7 @@ namespace adm {
       }
     }
 
-    FrameHeader SadmXmlParser::parseFrameHeader(NodePtr node) {
+    FrameHeader FrameHeaderParser::parseFrameHeader(NodePtr node) {
       // clang-format off
       auto element = detail::findElement(node, "frameFormat");
       FrameFormatId ff_id = parseAttribute<FrameFormatId>(element, "frameFormatID", &parseFrameFormatId);

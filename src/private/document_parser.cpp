@@ -1,4 +1,4 @@
-#include "adm/private/xml_parser.hpp"
+#include "adm/private/document_parser.hpp"
 #include "adm/common_definitions.hpp"
 #include "adm/private/xml_parser_helper.hpp"
 #include "adm/detail/named_type_validators.hpp"
@@ -17,30 +17,30 @@ namespace adm {
       return static_cast<bool>(options & flag);
     }
 
-    XmlParser::XmlParser(rapidxml::file<> file, ParserOptions options,
-                         std::shared_ptr<Document> destDocument)
+    DocumentParser::DocumentParser(rapidxml::file<> file, ParserOptions options,
+                                   std::shared_ptr<Document> destDocument)
         : xmlFile_(std::move(file)),
           options_(options),
           document_(destDocument),
           idMap_(*destDocument) {}
 
-    XmlParser::XmlParser(const std::string& filename, ParserOptions options,
-                         std::shared_ptr<Document> destDocument)
-        : XmlParser(rapidxml::file<>{filename.c_str()}, options,
-                    std::move(destDocument)) {}
+    DocumentParser::DocumentParser(const std::string& filename, ParserOptions options,
+                                   std::shared_ptr<Document> destDocument)
+        : DocumentParser(rapidxml::file<>{filename.c_str()}, options,
+                         std::move(destDocument)) {}
 
-    XmlParser::XmlParser(std::istream& stream, ParserOptions options,
-                         std::shared_ptr<Document> destDocument)
-        : XmlParser(rapidxml::file<>{stream}, options,
-                    std::move(destDocument)) {}
+    DocumentParser::DocumentParser(std::istream& stream, ParserOptions options,
+                                   std::shared_ptr<Document> destDocument)
+        : DocumentParser(rapidxml::file<>{stream}, options,
+                         std::move(destDocument)) {}
 
     template <typename Element>
-    void XmlParser::add(std::shared_ptr<Element> el) {
+    void DocumentParser::add(std::shared_ptr<Element> el) {
       document_->add(el);
       idMap_.add(std::move(el));
     }
 
-    std::shared_ptr<Document> XmlParser::parse() {
+    std::shared_ptr<Document> DocumentParser::parse() {
       rapidxml::xml_document<> xmlDocument;
       xmlDocument.parse<0>(xmlFile_.data());
 
@@ -48,13 +48,20 @@ namespace adm {
         throw error::XmlParsingError("xml document is empty");
 
       NodePtr root = nullptr;
-      if (isSet(options_, ParserOptions::recursive_node_search)) {
-        root =
-            findAudioFormatExtendedNodeFullRecursive(xmlDocument.first_node());
-      } else {
-        root = findAudioFormatExtendedNodeEbuCore(xmlDocument.first_node());
+
+      root = findFrameAudioFormatExtended(xmlDocument.first_node());
+
+      if(!root) {
+        if (isSet(options_, ParserOptions::recursive_node_search)) {
+          root = findAudioFormatExtendedNodeFullRecursive(
+              xmlDocument.first_node());
+        } else {
+          root = findAudioFormatExtendedNodeEbuCore(xmlDocument.first_node());
+        }
       }
+
       if (root) {
+        setOptionalAttribute<Version>(root, "version", document_);
         // add ADM elements to ADM document
         for (NodePtr node = root->first_node(); node;
              node = node->next_sibling()) {
@@ -86,6 +93,16 @@ namespace adm {
         resolveReferences(programmeContentRefs_);
         resolveReferences(contentObjectRefs_);
         resolveReferences(objectObjectRefs_);
+        // resolve complementary object references
+        for (auto& entry : objectComplementaryObjectRefs_) {
+          for (const auto& id : entry.second) {
+            if (auto element = document_->lookup(id)) {
+              entry.first->addComplementary(element);
+            } else {
+              throw error::XmlParsingUnresolvedReference(formatId(id));
+            }
+          }
+        }
         resolveReferences(objectPackFormatRefs_);
         resolveTrackUidReferences(objectTrackUidRefs_);
         resolveReference(trackUidTrackFormatRef_);
@@ -98,41 +115,42 @@ namespace adm {
         resolveReference(streamFormatPackFormatRef_);
         resolveReferences(streamFormatTrackFormatRefs_);
 
-        setOptionalAttribute<Version>(root, "version", document_);
       } else {
         throw error::XmlParsingError("audioFormatExtended node not found");
       }
       return document_;
     }  // namespace xml
 
+
+    NodePtr findAudioFormatExtendedNodeCore(NodePtr node) {
+        auto coreMetadataNodes = detail::findElements(node, "coreMetadata");
+        if (coreMetadataNodes.size() != 1) {
+          return nullptr;
+        }
+        auto formatNodes =
+        detail::findElements(coreMetadataNodes.at(0), "format");
+        if (formatNodes.size() != 1) {
+          return nullptr;
+        }
+        auto audioFormatExtendedNodes =
+        detail::findElements(formatNodes.at(0), "audioFormatExtended");
+        if (audioFormatExtendedNodes.size() != 1) {
+          return nullptr;
+        }
+        return audioFormatExtendedNodes.at(0);
+    };
+
     /**
      * @brief Find the top level element 'audioFormatExtended'
      *
-     * This function recursively tries to find the audioFormatExtended node.
-     * It walks down the XML always checking the names of the nodes. It returns
-     * a nullptr if no audioFormatExtended node could be found.
-     *
-     * @note: Only the first audioFormatExtended node will be found!
+     * This function tries to directly find the audioFormatExtended node.
+     * It assmes the EBU schema and looks for the node in the specified place
      */
     NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr node) {
       if (std::string(node->name()) != "ebuCoreMain") {
         return nullptr;
       }
-      auto coreMetadataNodes = detail::findElements(node, "coreMetadata");
-      if (coreMetadataNodes.size() != 1) {
-        return nullptr;
-      }
-      auto formatNodes =
-          detail::findElements(coreMetadataNodes.at(0), "format");
-      if (formatNodes.size() != 1) {
-        return nullptr;
-      }
-      auto audioFormatExtendedNodes =
-          detail::findElements(formatNodes.at(0), "audioFormatExtended");
-      if (audioFormatExtendedNodes.size() != 1) {
-        return nullptr;
-      }
-      return audioFormatExtendedNodes.at(0);
+      return findAudioFormatExtendedNodeCore(node);
     }
 
     /**
@@ -144,6 +162,7 @@ namespace adm {
      *
      * @note: Only the first audioFormatExtended node will be found!
      */
+
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr node) {
       if (std::string(node->name()) == "audioFormatExtended") {
         return node;
@@ -158,7 +177,27 @@ namespace adm {
       return nullptr;
     }
 
-    std::shared_ptr<AudioProgramme> XmlParser::parseAudioProgramme(
+    NodePtr find_node_in_siblings(NodePtr node, std::string const& name) {
+      while(node) {
+        if (std::string(node->name()) == name) break;
+        node = node->next_sibling();
+      }
+      return node;
+    }
+
+    NodePtr findFrameAudioFormatExtended(NodePtr node) {
+      auto frame = find_node_in_siblings(node, "frame");
+      NodePtr audioFormatExtended{nullptr};
+      if(frame) {
+        audioFormatExtended = find_node_in_siblings(frame->first_node(), "audioFormatExtended");
+        if(!audioFormatExtended) {
+          audioFormatExtended = findAudioFormatExtendedNodeCore(frame);
+        }
+      }
+      return audioFormatExtended;
+    }
+
+    std::shared_ptr<AudioProgramme> DocumentParser::parseAudioProgramme(
         NodePtr node) {
       // clang-format off
       auto name = parseAttribute<AudioProgrammeName>(node, "audioProgrammeName");
@@ -183,7 +222,7 @@ namespace adm {
       return audioProgramme;
     }
 
-    std::shared_ptr<AudioContent> XmlParser::parseAudioContent(NodePtr node) {
+    std::shared_ptr<AudioContent> DocumentParser::parseAudioContent(NodePtr node) {
       // clang-format off
       auto name = parseAttribute<AudioContentName>(node, "audioContentName");
       auto id = parseAttribute<AudioContentId>(node, "audioContentID", &parseAudioContentId);
@@ -204,7 +243,7 @@ namespace adm {
       return audioContent;
     }
 
-    std::shared_ptr<AudioObject> XmlParser::parseAudioObject(NodePtr node) {
+    std::shared_ptr<AudioObject> DocumentParser::parseAudioObject(NodePtr node) {
       // clang-format off
       auto name = parseAttribute<AudioObjectName>(node, "audioObjectName");
       auto id = parseAttribute<AudioObjectId>(node, "audioObjectID", &parseAudioObjectId);
@@ -221,6 +260,7 @@ namespace adm {
       setOptionalAttribute<DisableDucking>(node, "disableDucking", audioObject);
 
       addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", audioObject, objectObjectRefs_, &parseAudioObjectId);
+      addOptionalReferences<AudioObjectId>(node, "audioComplementaryObjectIDRef", audioObject, objectComplementaryObjectRefs_, &parseAudioObjectId);
       addOptionalReferences<AudioPackFormatId>(node, "audioPackFormatIDRef", audioObject, objectPackFormatRefs_, &parseAudioPackFormatId);
       addOptionalReferences<AudioTrackUidId>(node, "audioTrackUIDRef", audioObject, objectTrackUidRefs_, &parseAudioTrackUidId);
       setOptionalElement<AudioObjectInteraction>(node, "audioObjectInteraction", audioObject, &parseAudioObjectInteraction);
@@ -306,7 +346,7 @@ namespace adm {
       return positionInteraction;
     }
 
-    std::shared_ptr<AudioPackFormat> XmlParser::parseAudioPackFormat(
+    std::shared_ptr<AudioPackFormat> DocumentParser::parseAudioPackFormat(
         NodePtr node) {
       // clang-format off
       auto name = parseAttribute<AudioPackFormatName>(node, "audioPackFormatName");
@@ -335,7 +375,7 @@ namespace adm {
       // clang-format on
     }
 
-    void XmlParser::resolveTrackUidReferences(
+    void DocumentParser::resolveTrackUidReferences(
         const std::map<std::shared_ptr<AudioObject>,
                        std::vector<AudioTrackUidId>>& map) {
       for (const auto& entry : map) {
@@ -350,7 +390,7 @@ namespace adm {
       }
     }
 
-    void XmlParser::setCommonProperties(
+    void DocumentParser::setCommonProperties(
         std::shared_ptr<AudioPackFormat> audioPackFormat, NodePtr node) {
       // clang-format off
       setOptionalAttribute<Importance>(node, "importance", audioPackFormat);
@@ -360,7 +400,7 @@ namespace adm {
       // clang-format on
     }
 
-    std::shared_ptr<AudioChannelFormat> XmlParser::parseAudioChannelFormat(
+    std::shared_ptr<AudioChannelFormat> DocumentParser::parseAudioChannelFormat(
         NodePtr node) {
       // clang-format off
       auto name = parseAttribute<AudioChannelFormatName>(node, "audioChannelFormatName");
@@ -408,7 +448,7 @@ namespace adm {
       return audioChannelFormat;
     }
 
-    std::shared_ptr<AudioStreamFormat> XmlParser::parseAudioStreamFormat(
+    std::shared_ptr<AudioStreamFormat> DocumentParser::parseAudioStreamFormat(
         NodePtr node) {
       // clang-format off
       auto name = parseAttribute<AudioStreamFormatName>(node, "audioStreamFormatName");
@@ -429,7 +469,7 @@ namespace adm {
       return audioStreamFormat;
     }
 
-    std::shared_ptr<AudioTrackFormat> XmlParser::parseAudioTrackFormat(
+    std::shared_ptr<AudioTrackFormat> DocumentParser::parseAudioTrackFormat(
         NodePtr node) {
       // clang-format off
       auto name = parseAttribute<AudioTrackFormatName>(node, "audioTrackFormatName");
@@ -449,7 +489,7 @@ namespace adm {
       return audioTrackFormat;
     }
 
-    std::shared_ptr<AudioTrackUid> XmlParser::parseAudioTrackUid(NodePtr node) {
+    std::shared_ptr<AudioTrackUid> DocumentParser::parseAudioTrackUid(NodePtr node) {
       // clang-format off
       auto id = parseAttribute<AudioTrackUidId>(node, "UID", &parseAudioTrackUidId);
       if(idMap_.contains(id)) {
@@ -467,7 +507,7 @@ namespace adm {
       return audioTrackUid;
     }
 
-    ProfileList XmlParser::parseProfileList(NodePtr node) {
+    ProfileList DocumentParser::parseProfileList(NodePtr node) {
       ProfileList profileList;
 
       addOptionalElements<Profile>(node, "profile", profileList, &parseProfile);
@@ -491,6 +531,9 @@ namespace adm {
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
       setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
       setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Lstart>(node, "lstart", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Lduration>(node, "lduration", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
       setMultiElement<SpeakerPosition>(node, "position", audioBlockFormat, &parseSpeakerPosition);
       addOptionalElements<SpeakerLabel>(node, "speakerLabel", audioBlockFormat, &parseSpeakerLabel);
       setOptionalElement<HeadLocked>(node, "headLocked", audioBlockFormat);
@@ -660,6 +703,9 @@ namespace adm {
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
       setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
       setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Lstart>(node, "lstart", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Lduration>(node, "lduration", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
 
       setOptionalElement<Cartesian>(node, "cartesian", audioBlockFormat);
       auto cartesianGuess = guessCartesianFlag(node, "position");
@@ -896,6 +942,9 @@ namespace adm {
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
       setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
       setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Lstart>(node, "lstart", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Lduration>(node, "lduration", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
       setOptionalElement<Order>(node, "order", audioBlockFormat);
       setOptionalElement<Degree>(node, "degree", audioBlockFormat);
       setOptionalElement<NfcRefDist>(node, "nfcRefDist", audioBlockFormat);
@@ -917,6 +966,9 @@ namespace adm {
                                   &parseTimecode);
       setOptionalAttribute<Duration>(node, "duration", audioBlockFormat,
                                      &parseTimecode);
+      setOptionalAttribute<Lstart>(node, "lstart", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<Lduration>(node, "lduration", audioBlockFormat, &parseTimecode);
+      setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
       setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
 

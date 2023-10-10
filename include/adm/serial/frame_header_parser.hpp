@@ -10,7 +10,6 @@
 #include "adm/parse_sadm.hpp"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
-//#include "adm/detail/id_map.hpp"
 #include "adm/private/base_xml_parser.hpp"
 
 #include "adm/serial/frame_format.hpp"
@@ -18,7 +17,6 @@
 #include "adm/serial/transport_track_format.hpp"
 #include "adm/serial/transport_id.hpp"
 #include "adm/serial/audio_track.hpp"
-#include "adm/frame.hpp"
 
 #include <iostream>
 
@@ -35,28 +33,29 @@ namespace adm {
   namespace xml {
     using NodePtr = rapidxml::xml_node<>*;
         
-    class SadmXmlParser : public BaseXmlParser {
+    class FrameHeaderParser {
      public:
-      explicit SadmXmlParser(rapidxml::file<> file,
-                             ParserOptions options = ParserOptions::none,
-                             std::shared_ptr<Frame> destFrame = Frame::create(
-                                 {FrameStart(std::chrono::milliseconds(0)),
-                                  FrameDuration(std::chrono::milliseconds(1000)),
-                                  FrameType("full"),
-                                  FrameFormatId(FrameFormatIdValue(1))}));
+      FrameHeaderParser(
+      const std::string& filename,
+          ParserOptions options = ParserOptions::none);
 
-      std::shared_ptr<Frame> parse();
+      explicit FrameHeaderParser(
+          std::istream& stream, ParserOptions options = ParserOptions::none);
+
+      FrameHeader parse();
 
      private:
+      explicit FrameHeaderParser(
+          rapidxml::file<> file, ParserOptions options = ParserOptions::none);
       /// add an element to both the document and idMap_
       template <typename Element>
       void add(std::shared_ptr<Element> el);
 
       NodePtr findFrameNode(NodePtr root);
-
       FrameHeader parseFrameHeader(NodePtr node);
 
-      std::shared_ptr<Frame> frame_;
+      rapidxml::file<> file;
+      ParserOptions options;
     };
 
   }  // namespace xml

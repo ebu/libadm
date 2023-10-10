@@ -27,6 +27,13 @@ namespace adm {
       return audioFormatExtendedNode;
     }
 
+    XmlNode XmlDocument::addCoreMetadataAudioFormatExtended(XmlNode& parent) const {
+      auto coreMetaDataNode = parent.addNode("coreMetadata");
+      auto formatNode = coreMetaDataNode.addNode("format");
+      auto audioFormatExtendedNode = formatNode.addNode("audioFormatExtended");
+      return audioFormatExtendedNode;
+    }
+
     XmlNode XmlDocument::addEbuStructure() {
       auto ebuCoreMainNode = addNode("ebuCoreMain");
       ebuCoreMainNode.addAttribute("xmlns:dc",
@@ -37,10 +44,7 @@ namespace adm {
                                    "http://www.w3.org/2001/XMLSchema-instance");
       ebuCoreMainNode.addAttribute("schema", "EBU_CORE_20140201.xsd");
       ebuCoreMainNode.addAttribute("xml:lang", "en");
-      auto coreMetaDataNode = ebuCoreMainNode.addNode("coreMetadata");
-      auto formatNode = coreMetaDataNode.addNode("format");
-      auto audioFormatExtendedNode = formatNode.addNode("audioFormatExtended");
-      return audioFormatExtendedNode;
+      return addCoreMetadataAudioFormatExtended(ebuCoreMainNode);
     }
 
     // ---- XML NODE WRAPPER ---- //

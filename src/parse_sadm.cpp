@@ -1,21 +1,21 @@
 #include "adm/parse_sadm.hpp"
-#include <memory>
+#include "adm/parse.hpp"
 #include <string>
-#include "adm/common_definitions.hpp"
-#include "adm/serial/sadm_xml_parser.hpp"
+#include "adm/serial/frame_header_parser.hpp"
 
 namespace adm {
-  std::shared_ptr<Frame> parseSadmXml(std::istream& stream,
-                                      xml::ParserOptions options) {
-    auto commonDefinitions = getSadmCommonDefinitions();
-    xml::SadmXmlParser parser(stream, options, commonDefinitions);
+  FrameHeader parseFrameHeader(
+      std::istream& stream,
+      xml::ParserOptions options) {
+    xml::FrameHeaderParser parser(stream, options);
     return parser.parse();
   }
-  
-  std::shared_ptr<Frame> parseSadmXmlWithCommonDefs(std::istream& stream,
-                                      std::shared_ptr<Frame> cd_frame,
-                                      xml::ParserOptions options) {
-    xml::SadmXmlParser parser(stream, options, cd_frame);
+
+  FrameHeader parseFrameHeader(
+      std::string const& fileName,
+      xml::ParserOptions options) {
+    std::ifstream file(fileName.c_str());
+    xml::FrameHeaderParser parser(fileName, options);
     return parser.parse();
   }
 }  // namespace adm

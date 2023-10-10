@@ -18,17 +18,19 @@ namespace adm {
     return writer.write(admDocument, stream);
   }
 
-  void writeXmlSadm(const std::string& filename,
-                std::shared_ptr<const Frame> admFrame,
-                xml::WriterOptions options) {
+  void writeXml(const std::string& filename,
+                    std::shared_ptr<const Document> admDocument,
+                    FrameHeader const& frameHeader,
+                    xml::SadmWriterOptions options) {
     std::ofstream stream(filename);
-    writeXmlSadm(stream, admFrame, options);
+    writeXml(stream, admDocument, frameHeader, options);
   }
 
-  std::ostream& writeXmlSadm(std::ostream& stream,
-                         std::shared_ptr<const Frame> admFrame,
-                         xml::WriterOptions options) {
-    xml::XmlWriter writer(options);
-    return writer.write(admFrame, stream);
+  std::ostream& writeXml(std::ostream& stream,
+                             std::shared_ptr<const Document> admDocument,
+                             FrameHeader const& frameHeader,
+                             xml::SadmWriterOptions options) {
+    xml::SadmXmlWriter writer(options);
+    return writer.write(admDocument, frameHeader, stream);
   }  
 }  // namespace adm

@@ -3,21 +3,16 @@
 #include <string>
 #include <memory>
 #include <iosfwd>
+#include "adm/serial/frame_header.hpp"
 #include "adm/export.h"
-#include "adm/frame.hpp"
 #include "adm/parse.hpp"
 
 namespace adm {
 
-  class Frame;
-
-  ADM_EXPORT std::shared_ptr<Frame> parseSadmXml(
-    std::istream& stream,
-    xml::ParserOptions options = xml::ParserOptions::none);
+  ADM_EXPORT FrameHeader parseFrameHeader(
+    std::istream& stream, adm::xml::ParserOptions = adm::xml::ParserOptions::none);
   
   
-  ADM_EXPORT std::shared_ptr<Frame> parseSadmXmlWithCommonDefs(
-    std::istream& stream,
-    std::shared_ptr<Frame> cd_frame,
-    xml::ParserOptions options = xml::ParserOptions::none);
+  ADM_EXPORT FrameHeader parseFrameHeader(
+    std::string const& fileName, adm::xml::ParserOptions = adm::xml::ParserOptions::none);
 }  // namespace adm
