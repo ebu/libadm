@@ -36,9 +36,6 @@ namespace adm {
   /// @brief NamedType for the CountToFull attribute
   using CountToFull = detail::NamedType<unsigned int, CountToFullTag,
                                         detail::DefaultValidator>;
-  struct FrameShiftTag {};
-  /// @brief NamedType for the FrameShift attribute
-  using FrameShift = detail::NamedType<unsigned int, FrameShiftTag>;
 
   /// @brief Tag for FrameFormat
   struct FrameFormatTag {};
@@ -53,7 +50,6 @@ namespace adm {
    *   - ::TimeReference
    *   - ::FrameType
    *   - ::CountToFull
-   *   - ::FrameShift
    */
 
   class FrameFormat {
@@ -118,8 +114,6 @@ namespace adm {
     ADM_EXPORT void set(FrameType frameType);
     /// @brief CountToFull setter
     ADM_EXPORT void set(CountToFull countToFull);
-    /// @brief FrameShift setter
-    ADM_EXPORT void set(FrameShift frameShift);
 
     /**
      * @brief ADM parameter unset template
@@ -147,7 +141,6 @@ namespace adm {
     ADM_EXPORT FlowId get(detail::ParameterTraits<FlowId>::tag) const;
     ADM_EXPORT FrameType get(detail::ParameterTraits<FrameType>::tag) const;
     ADM_EXPORT CountToFull get(detail::ParameterTraits<CountToFull>::tag) const;
-    ADM_EXPORT FrameShift get(detail::ParameterTraits<FrameShift>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<FrameFormatId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FrameStart>::tag) const;
@@ -156,12 +149,10 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<FlowId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FrameType>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<CountToFull>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<FrameShift>::tag) const;
 
     ADM_EXPORT void unset(detail::ParameterTraits<TimeReference>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<FlowId>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<CountToFull>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<FrameShift>::tag);
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -177,7 +168,6 @@ namespace adm {
     boost::optional<TimeReference> timeReference_;
     boost::optional<FlowId> flowId_;
     boost::optional<CountToFull> countToFull_;
-    boost::optional<FrameShift> frameShift_;
   };
 
   // ---- Implementation ---- //
