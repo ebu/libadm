@@ -36,10 +36,6 @@ namespace adm {
   /// @brief NamedType for the CountToFull attribute
   using CountToFull = detail::NamedType<unsigned int, CountToFullTag,
                                         detail::DefaultValidator>;
-  /// @brief Tag for NamedType ::NumSubFrame
-  struct NumSubFrameTag {};
-  /// @brief NamedType for the NumSubFrame attribute
-  using NumSubFrame = detail::NamedType<unsigned int, NumSubFrameTag>;
   /// @brief Tag for NamedType ::FrameSkip
   struct FrameSkipTag {};
   /// @brief NamedType for the FrameSkip attribute
@@ -61,7 +57,6 @@ namespace adm {
    *   - ::TimeReference
    *   - ::FrameType
    *   - ::CountToFull
-   *   - ::NumSubFrame
    *   - ::FrameSkip
    *   - ::FrameShift
    */
@@ -128,8 +123,6 @@ namespace adm {
     ADM_EXPORT void set(FrameType frameType);
     /// @brief CountToFull setter
     ADM_EXPORT void set(CountToFull countToFull);
-    /// @brief numSubFrame setter
-    ADM_EXPORT void set(NumSubFrame numSubFrame);
     /// @brief FrameSkip setter
     ADM_EXPORT void set(FrameSkip frameSkip);
     /// @brief FrameShift setter
@@ -161,7 +154,6 @@ namespace adm {
     ADM_EXPORT FlowId get(detail::ParameterTraits<FlowId>::tag) const;
     ADM_EXPORT FrameType get(detail::ParameterTraits<FrameType>::tag) const;
     ADM_EXPORT CountToFull get(detail::ParameterTraits<CountToFull>::tag) const;
-    ADM_EXPORT NumSubFrame get(detail::ParameterTraits<NumSubFrame>::tag) const;
     ADM_EXPORT FrameSkip get(detail::ParameterTraits<FrameSkip>::tag) const;
     ADM_EXPORT FrameShift get(detail::ParameterTraits<FrameShift>::tag) const;
 
@@ -172,14 +164,12 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<FlowId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FrameType>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<CountToFull>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<NumSubFrame>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FrameSkip>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FrameShift>::tag) const;
 
     ADM_EXPORT void unset(detail::ParameterTraits<TimeReference>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<FlowId>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<CountToFull>::tag);
-    ADM_EXPORT void unset(detail::ParameterTraits<NumSubFrame>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<FrameSkip>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<FrameShift>::tag);
 
@@ -197,7 +187,6 @@ namespace adm {
     boost::optional<TimeReference> timeReference_;
     boost::optional<FlowId> flowId_;
     boost::optional<CountToFull> countToFull_;
-    boost::optional<NumSubFrame> numSubFrame_;
     boost::optional<FrameSkip> frameSkip_;
     boost::optional<FrameShift> frameShift_;
   };

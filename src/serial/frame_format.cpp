@@ -37,10 +37,6 @@ namespace adm {
       detail::ParameterTraits<CountToFull>::tag) const {
     return countToFull_.get();
   }
-  NumSubFrame FrameFormat::get(
-      detail::ParameterTraits<NumSubFrame>::tag) const {
-    return numSubFrame_.get();
-  }
   FrameSkip FrameFormat::get(detail::ParameterTraits<FrameSkip>::tag) const {
     return frameSkip_.get();
   }
@@ -70,9 +66,6 @@ namespace adm {
   bool FrameFormat::has(detail::ParameterTraits<CountToFull>::tag) const {
     return countToFull_ != boost::none;
   }
-  bool FrameFormat::has(detail::ParameterTraits<NumSubFrame>::tag) const {
-    return numSubFrame_ != boost::none;
-  }
   bool FrameFormat::has(detail::ParameterTraits<FrameSkip>::tag) const {
     return frameSkip_ != boost::none;
   }
@@ -97,8 +90,6 @@ namespace adm {
   void FrameFormat::set(FlowId flowId) { flowId_ = flowId; }
   /// @brief CountToFull setter
   void FrameFormat::set(CountToFull countToFull) { countToFull_ = countToFull; }
-  /// @brief numSubFrame setter
-  void FrameFormat::set(NumSubFrame numSubFrame) { numSubFrame_ = numSubFrame; }
   /// @brief FrameSkip setter
   void FrameFormat::set(FrameSkip frameSkip) { frameSkip_ = frameSkip; }
   /// @brief FrameShift setter
@@ -113,9 +104,6 @@ namespace adm {
   }
   void FrameFormat::unset(detail::ParameterTraits<CountToFull>::tag) {
     countToFull_ = boost::none;
-  }
-  void FrameFormat::unset(detail::ParameterTraits<NumSubFrame>::tag) {
-    numSubFrame_ = boost::none;
   }
   void FrameFormat::unset(detail::ParameterTraits<FrameSkip>::tag) {
     frameSkip_ = boost::none;
@@ -143,9 +131,6 @@ namespace adm {
     os << get<FrameType>().get() << std::endl;
     if (has<CountToFull>()) {
       os << ", countToFull=" << get<CountToFull>() << std::endl;
-    }
-    if (has<NumSubFrame>()) {
-      os << ", numSubFrame=" << get<NumSubFrame>();
     }
     if (has<FrameSkip>()) {
       os << ", frameSkip=" << get<FrameSkip>();
