@@ -14,7 +14,6 @@ namespace adm {
   FrameHeader parseFrameHeader(
       std::string const& fileName,
       xml::ParserOptions options) {
-    std::ifstream file(fileName.c_str());
     xml::FrameHeaderParser parser(fileName, options);
     return parser.parse();
   }

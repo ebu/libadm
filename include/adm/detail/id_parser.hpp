@@ -29,7 +29,7 @@ namespace adm {
       }
 
       /// check that the start of the ID matches the given prefix
-      void check_prefix(const char *prefix, size_t prefix_len) {
+      void check_prefix(const char *prefix, size_t prefix_len) const {
         assert(prefix[prefix_len] == 0);
         for (size_t i = 0; i < prefix_len; i++)
           if (id[i] != prefix[i]) {

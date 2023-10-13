@@ -45,7 +45,7 @@ namespace adm {
       if (frame) {
         for (NodePtr node = frame->first_node(); node;
              node = frame->next_sibling()) {
-          if (std::string(frame->name()) == "frameHeader") {
+          if (std::string(node->name()) == "frameHeader") {
             return parseFrameHeader(node);
           }
         }
@@ -84,7 +84,7 @@ namespace adm {
       FrameDuration ff_duration = parseAttribute<FrameDuration>(element, "duration", &parseTimecode);
       FrameType ff_type = parseAttribute<FrameType>(element, "type");
         
-      FrameHeader frameHeader(ff_start, ff_duration, ff_type, ff_id);
+      FrameHeader frameHeader(ff_id, ff_start, ff_duration, ff_type);
       FrameFormat frameFormat = frameHeader.frameFormat();
       setOptionalAttribute<CountToFull>(element, "countToFull", frameFormat);
       setOptionalAttribute<FlowId>(element, "flowID", frameFormat);

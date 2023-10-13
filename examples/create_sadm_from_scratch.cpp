@@ -9,11 +9,10 @@
 int main() {
   using namespace adm;
 
-  auto frameFormatId = parseFrameFormatId("FF_00000000001");
-  auto frameHeader = FrameHeader{FrameStart(std::chrono::milliseconds(0)),
-          FrameDuration(std::chrono::milliseconds(40)),
-          FrameType("full"),
-          frameFormatId};
+  auto frameFormatId = parseFrameFormatId("FF_00000001");
+  auto frameHeader = FrameHeader{
+      frameFormatId, FrameStart(std::chrono::milliseconds(0)),
+      FrameDuration(std::chrono::milliseconds(40)), FrameType("full")};
   auto document = Document::create();
 
   // create ADM elements

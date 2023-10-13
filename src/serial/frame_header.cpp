@@ -5,9 +5,9 @@
 
 namespace adm {
 
-  FrameHeader::FrameHeader(FrameStart start, FrameDuration duration,
-                           FrameType frameType, FrameFormatId frameFormatId)
-      : frameFormat_(FrameFormat(start, duration, frameType, frameFormatId)) {}
+  FrameHeader::FrameHeader(FrameFormatId frameFormatId, FrameStart start,
+                           FrameDuration duration, FrameType frameType)
+      : frameFormat_(FrameFormat(frameFormatId, start, duration, frameType)) {}
 
   const FrameFormat& FrameHeader::frameFormat() const { return frameFormat_; }
   FrameFormat& FrameHeader::frameFormat() { return frameFormat_; }

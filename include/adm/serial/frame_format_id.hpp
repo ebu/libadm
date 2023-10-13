@@ -6,21 +6,43 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
+#include "adm/detail/auto_base.hpp"
+#include "adm/detail/named_type_validators.hpp"
 
 namespace adm {
 
   /// @brief Tag for FrameFormatIdValue
-  struct FrameFormatIdValueTag {};
+  struct FrameIndexTag {};
   /// @brief NamedType for the FrameFormatIdValue attribute
-  using FrameFormatIdValue =
-      detail::NamedType<unsigned int, FrameFormatIdValueTag>;
+  using FrameIndex = detail::NamedType<unsigned int, FrameIndexTag/*,
+                                       detail::FrameIndexValidator*/>; // TODO fix validators for default constructed NamedTypes
+
+  struct ChunkIndexTag {};
+  using ChunkIndex = detail::NamedType<unsigned int, ChunkIndexTag/*,
+                                       detail::ChunkIndexValidator*/>; // TODO fix validators for default constructed NamedTypes
 
   /// @brief Tag for FrameFormatId
   struct FrameFormatIdTag {};
-  /// @brief Representation of an FrameFormatIdTag
-  class FrameFormatId {
+  namespace detail {
+    using FrameFormatIdBase = HasParameters<RequiredParameter<FrameIndex>,
+                                            OptionalParameter<ChunkIndex>>;
+  }  // namespace detail
+
+  /// @brief Representation of an FrameFormatId
+  class FrameFormatId : private detail::FrameFormatIdBase,
+                        private detail::AddWrapperMethods<FrameFormatId> {
    public:
-    typedef FrameFormatId tag;
+    typedef FrameFormatIdTag tag;
+
+    using detail::FrameFormatIdBase::get;
+    using detail::FrameFormatIdBase::has;
+    using detail::FrameFormatIdBase::isDefault;
+    using detail::FrameFormatIdBase::set;
+    using detail::FrameFormatIdBase::unset;
+    using detail::AddWrapperMethods<FrameFormatId>::get;
+    using detail::AddWrapperMethods<FrameFormatId>::has;
+    using detail::AddWrapperMethods<FrameFormatId>::isDefault;
+    using detail::AddWrapperMethods<FrameFormatId>::unset;
 
     /**
      * @brief Constructor template
@@ -29,49 +51,7 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    FrameFormatId(Parameters... optionalNamedArgs);
-
-    /**
-     * @brief ADM parameter getter template
-     *
-     * Templated getter with the wanted ADM parameter type as template
-     * argument. If currently no value is available trying to get the adm
-     * parameter will result in an exception. Check with the has method before
-     */
-    template <typename Parameter>
-    Parameter get() const;
-
-    /**
-     * @brief ADM parameter has template
-     *
-     * Templated has method with the ADM parameter type as template argument.
-     * Returns true if the ADM parameter is set or has a default value.
-     */
-    template <typename Parameter>
-    bool has() const;
-
-    /**
-     * @brief ADM parameter isDefault template
-     *
-     * Templated isDefault method with the ADM parameter type as template
-     * argument. Returns true if the ADM parameter is the default value.
-     */
-    template <typename Parameter>
-    bool isDefault() const;
-
-    /// @brief Set value
-    ADM_EXPORT void set(FrameFormatIdValue value);
-
-    /**
-     * @brief ADM parameter unset template
-     *
-     * Templated unset method with the ADM parameter type as template
-     * argument. Removes an ADM parameter if it is optional or resets it to
-     * the default value if there is one.
-     */
-    template <typename Parameter>
-    void unset();
-
+    explicit FrameFormatId(FrameIndex index, Parameters... optionalNamedArgs);
     ///@{
     /**
      * @brief Operator overload
@@ -88,25 +68,7 @@ namespace adm {
      */
     void print(std::ostream& os) const;
 
-   private:
-    ADM_EXPORT FrameFormatIdValue
-        get(detail::ParameterTraits<FrameFormatIdValue>::tag) const;
-
-    ADM_EXPORT bool has(detail::ParameterTraits<FrameFormatIdValue>::tag) const;
-
-    ADM_EXPORT bool isDefault(
-        detail::ParameterTraits<FrameFormatIdValue>::tag) const;
-
-    template <typename Tag>
-    bool isDefault(Tag) const {
-      return false;
-    }
-
-    ADM_EXPORT void unset(detail::ParameterTraits<FrameFormatIdValue>::tag);
-
-    boost::optional<FrameFormatIdValue> value_;
-
-    static const FrameFormatIdValue valueDefault_;
+    friend class AddWrapperMethods<FrameFormatId>;
   };
 
   // ---- Free functions ---- //
@@ -118,33 +80,24 @@ namespace adm {
 
   // ---- Implementation ---- //
   template <typename... Parameters>
-  FrameFormatId::FrameFormatId(Parameters... optionalNamedArgs) {
+  FrameFormatId::FrameFormatId(FrameIndex frameIndex,
+                               Parameters... optionalNamedArgs) {
+    // TODO fix default constructed NamedType/Validators so this code can go
+    auto frameIndexValue = frameIndex.get();
+    if (frameIndexValue == 0 || frameIndexValue > 0xFFFFFFFF) {
+      throw OutOfRangeError("FrameIndex " + std::to_string(frameIndexValue) +
+                            " outside valid range of [0x1,0xFFFFFFFF]");
+    }
+    set(frameIndex);
     detail::setNamedOptionHelper(
         this, std::forward<Parameters>(optionalNamedArgs)...);
+    // TODO fix default constructed NamedType/Validators so this code can go
+    if (has<ChunkIndex>()) {
+      auto chunkIndexValue = get<ChunkIndex>().get();
+      if (chunkIndexValue == 0 || chunkIndexValue > 0xFF) {
+        throw OutOfRangeError("ChunkIndex " + std::to_string(chunkIndexValue) +
+                              " outside valid range of [0x1,0xFF]");
+      }
+    }
   };
-
-  template <typename Parameter>
-  Parameter FrameFormatId::get() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return get(Tag());
-  }
-
-  template <typename Parameter>
-  bool FrameFormatId::has() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return has(Tag());
-  }
-
-  template <typename Parameter>
-  bool FrameFormatId::isDefault() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return isDefault(Tag());
-  }
-
-  template <typename Parameter>
-  void FrameFormatId::unset() {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return unset(Tag());
-  }
-
 }  // namespace adm

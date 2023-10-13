@@ -4,38 +4,14 @@
 
 namespace adm {
 
-  // ---- Defaults ---- //
-  const FrameFormatIdValue FrameFormatId::valueDefault_ = FrameFormatIdValue(0);
-
-  // ---- Getter ---- //
-  FrameFormatIdValue FrameFormatId::get(
-      detail::ParameterTraits<FrameFormatIdValue>::tag) const {
-    return boost::get_optional_value_or(value_, valueDefault_);
-  }
-
-  // ---- Has ---- //
-  bool FrameFormatId::has(
-      detail::ParameterTraits<FrameFormatIdValue>::tag) const {
-    return true;
-  }
-
-  // ---- isDefault ---- //
-  bool FrameFormatId::isDefault(
-      detail::ParameterTraits<FrameFormatIdValue>::tag) const {
-    return value_ == boost::none;
-  }
-
-  // ---- Setter ---- //
-  void FrameFormatId::set(FrameFormatIdValue value) { value_ = value; }
-
-  // ---- Unsetter ---- //
-  void FrameFormatId::unset(detail::ParameterTraits<FrameFormatIdValue>::tag) {
-    value_ = boost::none;
-  }
-
   // ---- Operators ---- //
   bool FrameFormatId::operator==(const FrameFormatId& other) const {
-    return get<FrameFormatIdValue>() == other.get<FrameFormatIdValue>();
+    bool equal{get<FrameIndex>() == other.get<FrameIndex>()};
+    equal = equal && (has<ChunkIndex>() == other.has<ChunkIndex>());
+    if (equal && has<ChunkIndex>()) {
+      equal = (get<ChunkIndex>() == other.get<ChunkIndex>());
+    }
+    return equal;
   }
 
   bool FrameFormatId::operator!=(const FrameFormatId& other) const {
@@ -51,18 +27,56 @@ namespace adm {
     os << formatId(*this);
   }
 
+  namespace {
+    bool is_valid_frame_format_id_size(std::string const& id) {
+      return id.size() == 11 || id.size() == 14;
+    }
+
+    void validate_frame_format_id(detail::IDParser const& parser,
+                                  const std::string& id) {
+      // According to BS.2125-1 A 1.5.1 / Table 19
+      // FF_xxxxxxxx for non-divided frames
+      // FF_xxxxxxxx_zz for dividec frames
+      if (!is_valid_frame_format_id_size(id)) {
+        throw std::runtime_error(
+            std::string("frameFormatID \"").append(id) +
+            "\" is not the correct length, it should be 11 chars long in the "
+            "format "
+            "FF_xxxxxxxx or 14 chars long in the format FF_xxxxxxxx_zz");
+      }
+      if (id.size() == 14 && id.at(11) != '_') {
+        throw std::runtime_error(
+            std::string("frameFormatID \"").append(id) +
+            "\""
+            " is 14 characters long so should be in the format FF_xxxxxxxx_zz, "
+            "but character 11 is not \'_\'");
+      }
+      parser.check_prefix("FF_", 3);
+    }
+  }  // namespace
+
   FrameFormatId parseFrameFormatId(const std::string& id) {
-    // FF_zzzzzzzzzzz
     detail::IDParser parser("FrameFormatId", id);
-    parser.check_size(14);
-    parser.check_prefix("FF_", 3);
-    auto value = parser.parse_hex(3, 11);
-    return FrameFormatId(FrameFormatIdValue(value));
+    validate_frame_format_id(parser, id);
+    FrameIndex index{parser.parse_hex(3, 8)};
+    if (id.size() == 14) {
+      return FrameFormatId(index, ChunkIndex{parser.parse_hex(12, 2)});
+    } else {
+      return FrameFormatId(index);
+    }
   }
 
   std::string formatId(FrameFormatId id) {
-    std::string s("FF_zzzzzzzzzzz");
-    detail::formatHex(s, 3, 11, id.get<FrameFormatIdValue>().get());
+    std::string s{};
+    s.reserve(14);
+    if (id.has<ChunkIndex>()) {
+      s = "FF_zzzzzzzz_zz";
+      detail::formatHex(s, 3, 8, id.get<FrameIndex>().get());
+      detail::formatHex(s, 12, 2, id.get<ChunkIndex>().get());
+    } else {
+      s = "FF_zzzzzzzz";
+      detail::formatHex(s, 3, 8, id.get<FrameIndex>().get());
+    }
     return s;
   }
 

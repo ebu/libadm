@@ -171,10 +171,29 @@ namespace adm {
       }
     };
 
+    struct FrameIndexValidator {
+      static void validate(unsigned int value) {
+        if (!(value > 0 && value <= 0xFFFFFFFF)) {
+          throw OutOfRangeError("FrameIndex value: " + std::to_string(value) +
+                                " not within valid range of [0x1,0xFFFFFFFF]");
+        }
+      }
+    };
+
+    struct ChunkIndexValidator {
+      static void validate(unsigned int value) {
+        if (!(value > 0 && value <= 0xFF)) {
+          throw OutOfRangeError("ChunkIndex value: " + std::to_string(value) +
+                                " not within valid range of [0x1,0xFF]");
+        }
+      }
+    };
+
     struct CountToFullValueValidator {
       static void validate(const unsigned int& value) {
         return;
       }
     };
+
   }  // namespace detail
 }  // namespace adm

@@ -34,8 +34,8 @@ namespace adm {
    public:
     typedef FrameHeaderTag tag;
 
-    ADM_EXPORT FrameHeader(FrameStart start, FrameDuration duration,
-                           FrameType frameType, FrameFormatId frameFormatId);
+    ADM_EXPORT FrameHeader(FrameFormatId frameFormatId, FrameStart start,
+                           FrameDuration duration, FrameType frameType);
     ADM_EXPORT FrameHeader(const FrameHeader&) = default;
     ADM_EXPORT FrameHeader(FrameHeader&&) = default;
     ADM_EXPORT FrameHeader& operator=(const FrameHeader&) = default;

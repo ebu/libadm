@@ -65,8 +65,8 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    FrameFormat(FrameStart start, FrameDuration duration, FrameType frameType,
-                Parameters... optionalNamedArgs);
+    FrameFormat(FrameFormatId id, FrameStart start, FrameDuration duration,
+                FrameType frameType, Parameters... optionalNamedArgs);
     ADM_EXPORT FrameFormat(const FrameFormat &) = default;
     ADM_EXPORT FrameFormat(FrameFormat &&) = default;
     ADM_EXPORT FrameFormat &operator=(const FrameFormat &) = default;
@@ -173,9 +173,9 @@ namespace adm {
   // ---- Implementation ---- //
 
   template <typename... Parameters>
-  FrameFormat::FrameFormat(FrameStart start, FrameDuration duration,
-                           FrameType frameType, Parameters... optionalNamedArgs)
-      : start_(start), duration_(duration), frameType_(frameType) {
+  FrameFormat::FrameFormat(FrameFormatId id, FrameStart start,
+                           FrameDuration duration, FrameType frameType, Parameters... optionalNamedArgs)
+      : id_(id), start_(start), duration_(duration), frameType_(frameType) {
     detail::setNamedOptionHelper(
         this, std::forward<Parameters>(optionalNamedArgs)...);
   }
