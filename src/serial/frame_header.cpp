@@ -5,9 +5,8 @@
 
 namespace adm {
 
-  FrameHeader::FrameHeader(FrameFormatId frameFormatId, FrameStart start,
-                           FrameDuration duration, FrameType frameType)
-      : frameFormat_(FrameFormat(frameFormatId, start, duration, frameType)) {}
+  FrameHeader::FrameHeader(FrameFormat format)
+      : frameFormat_{std::move(format)} {}
 
   const FrameFormat& FrameHeader::frameFormat() const { return frameFormat_; }
   FrameFormat& FrameHeader::frameFormat() { return frameFormat_; }
@@ -16,8 +15,8 @@ namespace adm {
     transportTrackFormats_.push_back(transportTrackFormat);
   }
 
-  void FrameHeader::add(const FrameFormat& frameFormat) {
-    frameFormat_ = frameFormat;
+  void FrameHeader::set(FrameFormat frameFormat) {
+    frameFormat_ = std::move(frameFormat);
   }
   
   TransportTrackFormatConstRange FrameHeader::transportTrackFormats() const {

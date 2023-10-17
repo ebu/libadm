@@ -10,6 +10,7 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/named_type_validators.hpp"
 #include "adm/detail/named_option_helper.hpp"
+#include "adm/detail/auto_base.hpp"
 #include "adm/export.h"
 
 namespace adm {
@@ -36,6 +37,12 @@ namespace adm {
   /// @brief NamedType for the CountToFull attribute
   using CountToFull = detail::NamedType<unsigned int, CountToFullTag,
                                         detail::DefaultValidator>;
+  /// @brief Tag for NamedType ::NumMetadataChunks
+  struct NumMetadataChunksTag {};
+  /// @brief NamedType for the NumMetadataChunks attribute
+  using NumMetadataChunks =
+      detail::NamedType<unsigned int, NumMetadataChunksTag,
+                        detail::DefaultValidator>;
 
   /// @brief Tag for FrameFormat
   struct FrameFormatTag {};
@@ -50,9 +57,45 @@ namespace adm {
    *   - ::TimeReference
    *   - ::FrameType
    *   - ::CountToFull
+   *   - ::NumMetadataChunks
    */
 
-  class FrameFormat {
+  namespace detail {
+    using FrameFormatBase = HasParameters<OptionalParameter<NumMetadataChunks>>;
+  }  // namespace detail
+
+  /**
+   * @brief Class representation of the frameFormat ADM element
+   *
+   * \rst
+   * +------------------------+--------------------------------+------------------------------+
+   * | ADM Parameter          | Parameter Type                 | Pattern Type                 |
+   * +========================+================================+==============================+
+   * | frameFormatID          | :class:`FrameFormatId`         | :class:`RequiredParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | start                  | :type:`FrameStart`             | :class:`RequiredParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | duration               | :type:`FrameDuration`          | :class:`RequiredParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | type                   | :type:`FrameType`              | :class:`RequiredParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | timeReference          | :type:`TimeReference`          | :class:`DefaultParameter`    |
+   * +------------------------+--------------------------------+------------------------------+
+   * | flowId                 | :type:`FlowID`                 | :class:`OptionalParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | countToFull            | :type:`CountToFull`            | :class:`DefaultParameter`    |
+   * +------------------------+--------------------------------+------------------------------+
+   * | numMetadataChunks      | :type:`NumMetadataChunks`      | :class:`OptionalParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | countToSameChunk       | :type:`CountToSameChunk`       | :class:`OptionalParameter`    |
+   * +------------------------+--------------------------------+------------------------------+
+   * \endrst
+   *
+   * Note that:
+   * - numMetadataChunks is required for frame type divided and not permitted for other frame types.
+   * - countToSameChunk is optional for frame type divided and not permitted for other frame types.
+   */
+  class FrameFormat : private detail::FrameFormatBase {
    public:
     typedef FrameFormatTag tag;
     /// Type that holds the id for this element;
@@ -99,6 +142,10 @@ namespace adm {
      */
     template <typename Parameter>
     bool isDefault() const;
+
+    using detail::FrameFormatBase::get;
+    using detail::FrameFormatBase::has;
+    using detail::FrameFormatBase::set;
 
     /// @brief FrameFormatId setter
     ADM_EXPORT void set(FrameFormatId id);

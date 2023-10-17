@@ -167,7 +167,8 @@ namespace adm {
         validateStringList(
             "FrameType",
             value,
-            std::array<std::string, 4>{"header", "full", "intermediate", "all"});
+            std::array<std::string, 5>{"header", "full", "intermediate", "all",
+                                       "divided"});
       }
     };
 

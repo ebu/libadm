@@ -1,7 +1,13 @@
+#include <sstream>
 #include <catch2/catch.hpp>
 #include <adm/serial/frame_format.hpp>
+#include <adm/serial/frame_header.hpp>
+#include <adm/document.hpp>
+#include <adm/write.hpp>
+#include <adm/parse_sadm.hpp>
 
 using namespace adm;
+using namespace std::chrono_literals;
 TEST_CASE("Invalid format id parsing") {
   CHECK_THROWS(parseFrameFormatId("FF_00000000"));  // bad value
   CHECK_THROWS(parseFrameFormatId("FA_00000001"));  // bad prefix
@@ -80,4 +86,36 @@ TEST_CASE("id equality") {
     CHECK(!(four_two == nine_two));
     CHECK(four_two != nine_two);
   }
+}
+
+static constexpr char const* NUM_METADATA_ATTR_XML =
+    // clang-format off
+R"(<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000001" start="00:00:00.00000" duration="00:00:01.00000" type="divided" numMetadataChunks="3"/>
+	</frameHeader>
+	<audioFormatExtended/>
+</frame>
+
+)";
+// clang-format on
+
+TEST_CASE("NumMetadataChunks correctly written as attribute") {
+  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0ms},
+                                 FrameDuration{1s}, FrameType("divided"),
+                                 NumMetadataChunks{3}}};
+  auto document = Document::create();
+  std::stringstream out;
+  writeXml(out, document, header);
+  REQUIRE(out.str() == NUM_METADATA_ATTR_XML);
+}
+
+TEST_CASE("NumMetadataChunks correctly parsed from attribute") {
+  auto ss = std::stringstream(NUM_METADATA_ATTR_XML);
+  auto header = parseFrameHeader(ss);
+  auto format = header.frameFormat();
+  REQUIRE(format.has<NumMetadataChunks>());
+  auto numChunks = format.get<NumMetadataChunks>();
+  REQUIRE(numChunks == 3);
 }

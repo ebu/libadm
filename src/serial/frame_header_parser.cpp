@@ -84,12 +84,13 @@ namespace adm {
       FrameDuration ff_duration = parseAttribute<FrameDuration>(element, "duration", &parseTimecode);
       FrameType ff_type = parseAttribute<FrameType>(element, "type");
         
-      FrameHeader frameHeader(ff_id, ff_start, ff_duration, ff_type);
+      FrameHeader frameHeader({ff_id, ff_start, ff_duration, ff_type});
       FrameFormat frameFormat = frameHeader.frameFormat();
       setOptionalAttribute<CountToFull>(element, "countToFull", frameFormat);
+      setOptionalAttribute<NumMetadataChunks>(element, "numMetadataChunks", frameFormat);
       setOptionalAttribute<FlowId>(element, "flowID", frameFormat);
 
-      frameHeader.add(frameFormat);
+      frameHeader.set(frameFormat);
   
       auto elements = detail::findElements(node, "transportTrackFormat");
       for (auto el : elements) {

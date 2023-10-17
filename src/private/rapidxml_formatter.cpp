@@ -699,6 +699,8 @@ namespace adm {
       node.addOptionalAttribute<TimeReference>(&format, "timeReference");
       node.addOptionalAttribute<FlowId>(&format, "flowID");
       node.addOptionalAttribute<CountToFull>(&format, "countToFull");
+      node.addOptionalAttribute<NumMetadataChunks>(&format,
+                                                   "numMetadataChunks");
     }
 
     void formatTransportTrackFormat(XmlNode &node,

@@ -34,8 +34,7 @@ namespace adm {
    public:
     typedef FrameHeaderTag tag;
 
-    ADM_EXPORT FrameHeader(FrameFormatId frameFormatId, FrameStart start,
-                           FrameDuration duration, FrameType frameType);
+    ADM_EXPORT explicit FrameHeader(FrameFormat format);
     ADM_EXPORT FrameHeader(const FrameHeader&) = default;
     ADM_EXPORT FrameHeader(FrameHeader&&) = default;
     ADM_EXPORT FrameHeader& operator=(const FrameHeader&) = default;
@@ -45,7 +44,7 @@ namespace adm {
     ADM_EXPORT FrameFormat& frameFormat();
 
     ADM_EXPORT void add(const TransportTrackFormat& transportTrackFormat);
-    ADM_EXPORT void add(const FrameFormat& frameFormat);
+    ADM_EXPORT void set(FrameFormat frameFormat);
 
     ADM_EXPORT TransportTrackFormatConstRange transportTrackFormats() const;
     ADM_EXPORT TransportTrackFormatRange transportTrackFormats();
@@ -84,5 +83,4 @@ namespace adm {
     FrameFormat frameFormat_;
     std::vector<TransportTrackFormat> transportTrackFormats_;
   };
-
 }  // namespace adm
