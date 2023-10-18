@@ -1,4 +1,5 @@
 #include <sstream>
+#include <fstream>
 #include <catch2/catch.hpp>
 #include <adm/serial/frame_format.hpp>
 #include <adm/serial/frame_header.hpp>
@@ -99,6 +100,17 @@ R"(<?xml version="1.0" encoding="utf-8"?>
 </frame>
 
 )";
+
+static constexpr char const* COUNT_TO_SAME_CHUNK_XML =
+R"(<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000001" start="00:00:00.00000" duration="00:00:01.00000" type="divided" countToSameChunk="3"/>
+	</frameHeader>
+	<audioFormatExtended/>
+</frame>
+
+)";
 // clang-format on
 
 TEST_CASE("NumMetadataChunks correctly written as attribute") {
@@ -117,5 +129,24 @@ TEST_CASE("NumMetadataChunks correctly parsed from attribute") {
   auto format = header.frameFormat();
   REQUIRE(format.has<NumMetadataChunks>());
   auto numChunks = format.get<NumMetadataChunks>();
+  REQUIRE(numChunks == 3);
+}
+
+TEST_CASE("CountToSameChunk correctly written as attribute") {
+  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0ms},
+                                 FrameDuration{1s}, FrameType("divided"),
+                                 CountToSameChunk{3}}};
+  auto document = Document::create();
+  std::stringstream out;
+  writeXml(out, document, header);
+  REQUIRE(out.str() == COUNT_TO_SAME_CHUNK_XML);
+}
+
+TEST_CASE("CountToSameChunk correctly parsed from attribute") {
+  auto ss = std::stringstream(COUNT_TO_SAME_CHUNK_XML);
+  auto header = parseFrameHeader(ss);
+  auto format = header.frameFormat();
+  REQUIRE(format.has<CountToSameChunk>());
+  auto numChunks = format.get<CountToSameChunk>();
   REQUIRE(numChunks == 3);
 }

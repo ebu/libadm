@@ -701,6 +701,7 @@ namespace adm {
       node.addOptionalAttribute<CountToFull>(&format, "countToFull");
       node.addOptionalAttribute<NumMetadataChunks>(&format,
                                                    "numMetadataChunks");
+      node.addOptionalAttribute<CountToSameChunk>(&format, "countToSameChunk");
     }
 
     void formatTransportTrackFormat(XmlNode &node,

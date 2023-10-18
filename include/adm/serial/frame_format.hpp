@@ -43,6 +43,11 @@ namespace adm {
   using NumMetadataChunks =
       detail::NamedType<unsigned int, NumMetadataChunksTag,
                         detail::DefaultValidator>;
+  /// @brief Tag for NamedType ::CountToSameChunk
+  struct CountToSameChunkTag {};
+  /// @brief NamedType for the CountToSameChunk attribute
+  using CountToSameChunk = detail::NamedType<unsigned int, CountToSameChunkTag,
+                                             detail::DefaultValidator>;
 
   /// @brief Tag for FrameFormat
   struct FrameFormatTag {};
@@ -58,10 +63,12 @@ namespace adm {
    *   - ::FrameType
    *   - ::CountToFull
    *   - ::NumMetadataChunks
+   *   - ::CountToSameChunk
    */
 
   namespace detail {
-    using FrameFormatBase = HasParameters<OptionalParameter<NumMetadataChunks>>;
+    using FrameFormatBase = HasParameters<OptionalParameter<NumMetadataChunks>,
+                                          OptionalParameter<CountToSameChunk>>;
   }  // namespace detail
 
   /**

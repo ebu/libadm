@@ -88,6 +88,7 @@ namespace adm {
       FrameFormat frameFormat = frameHeader.frameFormat();
       setOptionalAttribute<CountToFull>(element, "countToFull", frameFormat);
       setOptionalAttribute<NumMetadataChunks>(element, "numMetadataChunks", frameFormat);
+      setOptionalAttribute<CountToSameChunk>(element, "countToSameChunk", frameFormat);
       setOptionalAttribute<FlowId>(element, "flowID", frameFormat);
 
       frameHeader.set(frameFormat);
