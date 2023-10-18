@@ -76,42 +76,88 @@ namespace adm {
       }
     }
 
-    FrameHeader FrameHeaderParser::parseFrameHeader(NodePtr node) {
-      // clang-format off
-      auto element = detail::findElement(node, "frameFormat");
-      FrameFormatId ff_id = parseAttribute<FrameFormatId>(element, "frameFormatID", &parseFrameFormatId);
-      FrameStart ff_start = parseAttribute<FrameStart>(element, "start", &parseTimecode);
-      FrameDuration ff_duration = parseAttribute<FrameDuration>(element, "duration", &parseTimecode);
-      FrameType ff_type = parseAttribute<FrameType>(element, "type");
-        
-      FrameHeader frameHeader({ff_id, ff_start, ff_duration, ff_type});
-      FrameFormat frameFormat = frameHeader.frameFormat();
-      setOptionalAttribute<CountToFull>(element, "countToFull", frameFormat);
-      setOptionalAttribute<NumMetadataChunks>(element, "numMetadataChunks", frameFormat);
-      setOptionalAttribute<CountToSameChunk>(element, "countToSameChunk", frameFormat);
-      setOptionalAttribute<FlowId>(element, "flowID", frameFormat);
-
-      frameHeader.set(frameFormat);
-  
-      auto elements = detail::findElements(node, "transportTrackFormat");
-      for (auto el : elements) {
-        TransportTrackFormat transportTrackFormat;
-        TransportId tr_id = parseAttribute<TransportId>(el, "transportID", &parseTransportId);
-        transportTrackFormat.set(tr_id);
-        auto at_elements = detail::findElements(el, "audioTrack");
-        for (auto at_element : at_elements) {
-          TrackId track_id = parseAttribute<TrackId>(at_element, "trackID");
-          AudioTrack audioTrack(track_id);
-          auto atu_elements = detail::findElements(at_element, "audioTrackUIDRef");
-          for (auto atu_element : atu_elements) {
-             audioTrack.add(parseAudioTrackUidId(atu_element->value()));
-          }
-          transportTrackFormat.add(audioTrack);
-        }
-        frameHeader.add(transportTrackFormat);
+    namespace {
+      FrameFormat createFrameFormat(NodePtr frameFormatNode) {
+        FrameFormatId id = parseAttribute<FrameFormatId>(
+            frameFormatNode, "frameFormatID", &parseFrameFormatId);
+        FrameStart start = parseAttribute<FrameStart>(frameFormatNode, "start",
+                                                      &parseTimecode);
+        FrameDuration duration = parseAttribute<FrameDuration>(
+            frameFormatNode, "duration", &parseTimecode);
+        FrameType type = parseAttribute<FrameType>(frameFormatNode, "type");
+        return {id, start, duration, type};
       }
 
-      // clang-format on
+      void parseOptionalElements(NodePtr frameFormatNode, FrameFormat& format) {
+        setOptionalAttribute<CountToFull>(frameFormatNode, "countToFull",
+                                          format);
+        setOptionalAttribute<NumMetadataChunks>(frameFormatNode,
+                                                "numMetadataChunks", format);
+        setOptionalAttribute<CountToSameChunk>(frameFormatNode,
+                                               "countToSameChunk", format);
+        setOptionalAttribute<FlowId>(frameFormatNode, "flowID", format);
+      }
+
+      FrameFormat parseFrameFormat(NodePtr frameFormatNode) {
+        auto format = createFrameFormat(frameFormatNode);
+        parseOptionalElements(frameFormatNode, format);
+        return format;
+      }
+
+      AudioTrack createAudioTrack(NodePtr audioTrackNode) {
+        TrackId track_id = parseAttribute<TrackId>(audioTrackNode, "trackID");
+        AudioTrack audioTrack(track_id);
+        auto atu_elements =
+            detail::findElements(audioTrackNode, "audioTrackUIDRef");
+        for (auto atu_element : atu_elements) {
+          audioTrack.add(parseAudioTrackUidId(atu_element->value()));
+        }
+        return audioTrack;
+      }
+
+      TransportTrackFormat createTrackPortTrackFormat(
+          NodePtr transportTrackFormatNode) {
+        TransportId tr_id = parseAttribute<TransportId>(
+            transportTrackFormatNode, "transportID", &parseTransportId);
+        return {tr_id};
+      }
+
+      void parseAllAudioTracks(NodePtr transportTrackFormatNode,
+                               TransportTrackFormat& transportTrackFormat) {
+        auto audioTracks =
+            detail::findElements(transportTrackFormatNode, "audioTrack");
+        for (auto audioTrackNode : audioTracks) {
+          transportTrackFormat.add(createAudioTrack(audioTrackNode));
+        }
+      }
+
+      TransportTrackFormat parseTransportTrackFormat(
+          NodePtr transportTrackFormatNode) {
+        auto transportTrackFormat =
+            createTrackPortTrackFormat(transportTrackFormatNode);
+        parseAllAudioTracks(transportTrackFormatNode, transportTrackFormat);
+        return transportTrackFormat;
+      }
+
+      void parseAllTransportTrackFormats(NodePtr frameHeaderNode,
+                                         FrameHeader& frameHeader) {
+        auto elements =
+            detail::findElements(frameHeaderNode, "transportTrackFormat");
+        for (auto el : elements) {
+          frameHeader.add(parseTransportTrackFormat(el));
+        }
+      }
+    }  // namespace
+
+    FrameHeader FrameHeaderParser::parseFrameHeader(NodePtr node) {
+      auto element = detail::findElement(node, "frameFormat");
+      if (!element) {
+        throw std::runtime_error("Missing frameFormat element");
+      }
+
+      FrameHeader frameHeader(parseFrameFormat(element));
+      parseAllTransportTrackFormats(node, frameHeader);
+
       return frameHeader;
     }
 
