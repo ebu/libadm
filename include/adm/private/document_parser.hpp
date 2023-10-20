@@ -65,6 +65,7 @@ namespace adm {
     AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node);
     AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node);
     Profile parseProfile(NodePtr node);
+    ProfileList parseProfileList(NodePtr node);
 
     NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr root);
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
@@ -97,7 +98,6 @@ namespace adm {
       std::shared_ptr<AudioPackFormat> parseAudioPackFormat(NodePtr node);
       std::shared_ptr<AudioTrackUid> parseAudioTrackUid(NodePtr node);
       std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(NodePtr node);
-      ProfileList parseProfileList(NodePtr node);
 
       rapidxml::file<> xmlFile_;
       ParserOptions options_;

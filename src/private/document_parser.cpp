@@ -507,14 +507,6 @@ namespace adm {
       return audioTrackUid;
     }
 
-    ProfileList DocumentParser::parseProfileList(NodePtr node) {
-      ProfileList profileList;
-
-      addOptionalElements<Profile>(node, "profile", profileList, &parseProfile);
-
-      return profileList;
-    }
-
     Profile parseProfile(NodePtr node) {
       auto value = parseValue<ProfileValue>(node);
       auto name = parseAttribute<ProfileName>(node, "profileName");
@@ -522,6 +514,12 @@ namespace adm {
       auto level = parseAttribute<ProfileLevel>(node, "profileLevel");
 
       return Profile{value, name, version, level};
+    }
+
+    ProfileList parseProfileList(NodePtr node) {
+      ProfileList profileList;
+      addOptionalElements<Profile>(node, "profile", profileList, &parseProfile);
+      return profileList;
     }
 
     AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(
