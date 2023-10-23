@@ -123,7 +123,7 @@ namespace adm {
 
       /// used to keep track of element IDs ourselves to avoid having it
       /// iterate through the whole document for each element and reference
-      detail::IDMap idMap_;
+      ::adm::detail::IDMap idMap_;
 
       /// add an element to both the document and idMap_
       template <typename Element>
