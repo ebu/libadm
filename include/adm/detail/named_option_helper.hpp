@@ -11,10 +11,10 @@ namespace adm {
     inline void setNamedOptionHelper(Element&& /*element*/) {}
 
     template <typename Element, typename T, typename... Parameters>
-    void setNamedOptionHelper(Element&& element, T v, Parameters... args) {
-      element->set(std::move(v));
-
-      setNamedOptionHelper(std::forward<Element>(element), std::move(args)...);
+    void setNamedOptionHelper(Element&& element, T&& v, Parameters&&... args) {
+      element->set(std::forward<T>(v));
+      setNamedOptionHelper(std::forward<Element>(element),
+                           std::forward<Parameters>(args)...);
     }
 
     /// check that the first template type is present in the remainder
