@@ -6,6 +6,7 @@
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
 #include <iostream>
+#include "adm/private/document_parser.hpp"
 
 namespace adm {
   namespace xml {
@@ -157,7 +158,9 @@ namespace adm {
 
       FrameHeader frameHeader(parseFrameFormat(element));
       parseAllTransportTrackFormats(node, frameHeader);
-
+      if (auto profileListNode = detail::findElement(node, "profileList")) {
+        frameHeader.set(parseProfileList(profileListNode));
+      }
       return frameHeader;
     }
 

@@ -725,6 +725,8 @@ namespace adm {
 
     void formatFrameHeader(XmlNode &node, const FrameHeader &header) {
       node.addElement<FrameFormat>(header.frameFormat(), "frameFormat", &formatFrameFormat);
+      node.addOptionalElement<ProfileList>(&header, "profileList",
+                                           &formatProfileList);
       for (const auto &transportTrack : header.transportTrackFormats()) {
         node.addElement(transportTrack, "transportTrackFormat",
                         &formatTransportTrackFormat);

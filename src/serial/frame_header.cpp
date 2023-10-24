@@ -5,8 +5,6 @@
 
 namespace adm {
 
-  FrameHeader::FrameHeader(FrameFormat format)
-      : frameFormat_{std::move(format)} {}
 
   const FrameFormat& FrameHeader::frameFormat() const { return frameFormat_; }
   FrameFormat& FrameHeader::frameFormat() { return frameFormat_; }

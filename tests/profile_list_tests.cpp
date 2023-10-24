@@ -5,6 +5,7 @@
 #include "adm/parse.hpp"
 #include "adm/write.hpp"
 #include "helper/file_comparator.hpp"
+#include "adm/serial.hpp"
 
 using namespace adm;
 using namespace adm_test;
@@ -65,4 +66,15 @@ TEST_CASE("xml/profileList") {
   writeXml(xml, document);
 
   CHECK_THAT(xml.str(), EqualsXmlFile("profile_list"));
+}
+
+TEST_CASE("sadm xml/profilelist") {
+  auto document = parseXml("xml_parser/profile_list.xml");
+  std::stringstream xml;
+  using namespace std::chrono_literals;
+  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0s},
+                                 FrameDuration{500ms}, FrameType{"full"}},
+                     document->get<ProfileList>()};
+  writeXml(xml, document, header);
+  CHECK_THAT(xml.str(), EqualsXmlFile("profile_list_frame_header"));
 }
