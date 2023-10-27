@@ -7,6 +7,8 @@
 #include "rapidxml/rapidxml_utils.hpp"
 #include <iostream>
 #include "adm/private/document_parser.hpp"
+#include "adm/serial/changed_ids.hpp"
+#include "adm/private/id_ref_traits.hpp"
 
 namespace adm {
   namespace xml {
@@ -78,6 +80,33 @@ namespace adm {
     }
 
     namespace {
+      template <typename T>
+      typename T::value_type parseIdRef(NodePtr idRefNode) {
+        auto id = detail::IDRefTraits<T>::parseId(idRefNode->value());
+        auto status = parseAttribute<Status>(idRefNode, "status");
+        return typename T::value_type{id, status};
+      }
+
+      template <typename T>
+      void addIdReferences(NodePtr changedIdsNode, ChangedIds& changedIds) {
+        addOptionalElements<typename T::value_type>(
+            changedIdsNode, detail::IDRefTraits<T>::elementName, changedIds,
+            &parseIdRef<T>);
+      }
+
+      ChangedIds parseChangedIds(NodePtr changedIdsNode) {
+        ChangedIds ids;
+        addIdReferences<AudioChannelFormatIdRefs>(changedIdsNode, ids);
+        addIdReferences<AudioPackFormatIdRefs>(changedIdsNode, ids);
+        addIdReferences<AudioTrackUidIdRefs>(changedIdsNode, ids);
+        addIdReferences<AudioTrackFormatIdRefs>(changedIdsNode, ids);
+        addIdReferences<AudioStreamFormatIdRefs>(changedIdsNode, ids);
+        addIdReferences<AudioObjectIdRefs>(changedIdsNode, ids);
+        addIdReferences<AudioContentIdRefs>(changedIdsNode, ids);
+        addIdReferences<AudioProgrammeIdRefs>(changedIdsNode, ids);
+        return ids;
+      }
+
       FrameFormat createFrameFormat(NodePtr frameFormatNode) {
         FrameFormatId id = parseAttribute<FrameFormatId>(
             frameFormatNode, "frameFormatID", &parseFrameFormatId);
@@ -97,6 +126,10 @@ namespace adm {
         setOptionalAttribute<CountToSameChunk>(frameFormatNode,
                                                "countToSameChunk", format);
         setOptionalAttribute<FlowId>(frameFormatNode, "flowID", format);
+        auto id_node = detail::findElement(frameFormatNode, "changedIDs");
+        if (id_node) {
+          format.set(parseChangedIds(id_node));
+        }
       }
 
       FrameFormat parseFrameFormat(NodePtr frameFormatNode) {
@@ -148,6 +181,8 @@ namespace adm {
           frameHeader.add(parseTransportTrackFormat(el));
         }
       }
+
+      //      ChangedIds parse
     }  // namespace
 
     FrameHeader FrameHeaderParser::parseFrameHeader(NodePtr node) {

@@ -1,6 +1,8 @@
 #include "adm/private/rapidxml_formatter.hpp"
 #include "adm/private/rapidxml_wrapper.hpp"
 #include "adm/serial/frame_format_id.hpp"
+#include <adm/serial/changed_ids.hpp>
+#include "adm/private/id_ref_traits.hpp"
 
 namespace adm {
   namespace xml {
@@ -691,6 +693,29 @@ namespace adm {
           trackUid, "audioPackFormatIDRef");
     }
 
+    namespace {
+      template <typename T>
+      void formatIdRef(XmlNode &parent, const ChangedIds &ids) {
+        for (auto ref : ids.get<T>()) {
+          auto refNode = parent.addNode(detail::IDRefTraits<T>::elementName);
+          refNode.setValue(formatId(
+              ref.template get<typename detail::IDRefTraits<T>::id_type>()));
+          refNode.addAttribute("status", ref.template get<Status>().get());
+        }
+      }
+    }  // namespace
+
+    void formatChangedIds(XmlNode &node, const ChangedIds &changedIds) {
+      formatIdRef<AudioChannelFormatIdRefs>(node, changedIds);
+      formatIdRef<AudioPackFormatIdRefs>(node, changedIds);
+      formatIdRef<AudioTrackUidIdRefs>(node, changedIds);
+      formatIdRef<AudioTrackFormatIdRefs>(node, changedIds);
+      formatIdRef<AudioStreamFormatIdRefs>(node, changedIds);
+      formatIdRef<AudioObjectIdRefs>(node, changedIds);
+      formatIdRef<AudioContentIdRefs>(node, changedIds);
+      formatIdRef<AudioProgrammeIdRefs>(node, changedIds);
+    }
+
     void formatFrameFormat(XmlNode &node, const FrameFormat &format) {
       node.addAttribute<FrameFormatId>(&format, "frameFormatID");
       node.addAttribute<FrameStart>(&format, "start");
@@ -702,6 +727,8 @@ namespace adm {
       node.addOptionalAttribute<NumMetadataChunks>(&format,
                                                    "numMetadataChunks");
       node.addOptionalAttribute<CountToSameChunk>(&format, "countToSameChunk");
+      node.addOptionalElement<ChangedIds>(&format, "changedIDs",
+                                          &formatChangedIds);
     }
 
     void formatTransportTrackFormat(XmlNode &node,

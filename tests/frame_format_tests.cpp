@@ -6,6 +6,7 @@
 #include <adm/document.hpp>
 #include <adm/write.hpp>
 #include <adm/parse_sadm.hpp>
+#include <adm/serial/changed_ids.hpp>
 
 using namespace adm;
 using namespace std::chrono_literals;
@@ -149,4 +150,54 @@ TEST_CASE("CountToSameChunk correctly parsed from attribute") {
   REQUIRE(format.has<CountToSameChunk>());
   auto numChunks = format.get<CountToSameChunk>();
   REQUIRE(numChunks == 3);
+}
+
+//clang-format off
+static constexpr const char* CHANGED_IDS_A2_2 =
+    R"(<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000004" start="00:00:03.00000" duration="00:00:01.00000" type="full">
+			<changedIDs>
+				<audioChannelFormatIDRef status="changed">AC_00031001</audioChannelFormatIDRef>
+				<audioChannelFormatIDRef status="expired">AC_00031002</audioChannelFormatIDRef>
+				<audioChannelFormatIDRef status="extended">AC_00031003</audioChannelFormatIDRef>
+			</changedIDs>
+		</frameFormat>
+	</frameHeader>
+	<audioFormatExtended/>
+</frame>
+
+)";
+//clang-format on
+
+TEST_CASE("ChangedIDs correctly written - BS2125-1 A2.2, 2nd example") {
+  FrameHeader header(FrameFormat{
+      FrameFormatId{FrameIndex{4}}, FrameStart{3s}, FrameDuration{1s},
+      FrameType{"full"},
+      ChangedIds{AudioChannelFormatIdRefs{
+          {parseAudioChannelFormatId("AC_00031001"), Status("changed")},
+          {parseAudioChannelFormatId("AC_00031002"), Status("expired")},
+          {parseAudioChannelFormatId("AC_00031003"), Status("extended")}}}});
+  std::stringstream ss("changedids.xml");
+  writeXml(ss, adm::Document::create(), header);
+  REQUIRE(ss.str() == CHANGED_IDS_A2_2);
+}
+
+TEST_CASE("ChangedIDs correctly parsed - BS2125-1 A2.2, 2nd example") {
+  std::stringstream ss(CHANGED_IDS_A2_2);
+  auto header = parseFrameHeader(ss);
+  REQUIRE(header.frameFormat().has<ChangedIds>());
+  auto ids = header.frameFormat().get<ChangedIds>();
+  auto channelFormatRefs = ids.get<AudioChannelFormatIdRefs>();
+  REQUIRE(channelFormatRefs.size() == 3);
+  REQUIRE(formatId(channelFormatRefs[0].get<AudioChannelFormatId>()) ==
+          "AC_00031001");
+  REQUIRE(channelFormatRefs[0].get<Status>().get() == "changed");
+  REQUIRE(formatId(channelFormatRefs[1].get<AudioChannelFormatId>()) ==
+          "AC_00031002");
+  REQUIRE(channelFormatRefs[1].get<Status>().get() == "expired");
+  REQUIRE(formatId(channelFormatRefs[2].get<AudioChannelFormatId>()) ==
+          "AC_00031003");
+  REQUIRE(channelFormatRefs[2].get<Status>().get() == "extended");
 }

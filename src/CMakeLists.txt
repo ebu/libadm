@@ -70,6 +70,7 @@ add_library(adm
   parse_sadm.cpp
   write.cpp
   serial/audio_track.cpp
+  serial/changed_ids.cpp
   serial/frame_format.cpp
   serial/frame_format_id.cpp
   serial/frame_header.cpp

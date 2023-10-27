@@ -7,6 +7,7 @@
 #include <boost/variant.hpp>
 #include "adm/elements/time.hpp"
 #include "adm/serial/frame_format_id.hpp"
+#include "adm/serial/changed_ids.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/named_type_validators.hpp"
 #include "adm/detail/named_option_helper.hpp"
@@ -64,11 +65,13 @@ namespace adm {
    *   - ::CountToFull
    *   - ::NumMetadataChunks
    *   - ::CountToSameChunk
+   *   - ::ChangedIds
    */
 
   namespace detail {
     using FrameFormatBase = HasParameters<OptionalParameter<NumMetadataChunks>,
-                                          OptionalParameter<CountToSameChunk>>;
+                                          OptionalParameter<CountToSameChunk>,
+                                          OptionalParameter<ChangedIds>>;
   }  // namespace detail
 
   /**
@@ -94,7 +97,9 @@ namespace adm {
    * +------------------------+--------------------------------+------------------------------+
    * | numMetadataChunks      | :type:`NumMetadataChunks`      | :class:`OptionalParameter`   |
    * +------------------------+--------------------------------+------------------------------+
-   * | countToSameChunk       | :type:`CountToSameChunk`       | :class:`OptionalParameter`    |
+   * | countToSameChunk       | :type:`CountToSameChunk`       | :class:`OptionalParameter`   |
+   * +------------------------+--------------------------------+------------------------------+
+   * | changedIDs             | :type:`ChangedIds`             | :class:`OptionalParameter`   |
    * +------------------------+--------------------------------+------------------------------+
    * \endrst
    *
