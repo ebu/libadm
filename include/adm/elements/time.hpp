@@ -54,6 +54,7 @@ namespace adm {
     Time(const std::chrono::duration<Rep, Period>& time) : time(time) {}
     // NOLINTNEXTLINE(google-explicit-constructor)
     Time(const FractionalTime& time) : time(time) {}
+    Time() : time(std::chrono::nanoseconds::zero()) {}
 
     /// convert to nanoseconds, rounding down
     ADM_EXPORT std::chrono::nanoseconds asNanoseconds() const;

@@ -15,16 +15,6 @@ namespace adm {
       detail::ParameterTraits<FrameFormatId>::tag) const {
     return id_;
   }
-  FrameStart FrameFormat::get(detail::ParameterTraits<FrameStart>::tag) const {
-    return start_;
-  }
-  FrameDuration FrameFormat::get(
-      detail::ParameterTraits<FrameDuration>::tag) const {
-    return duration_;
-  }
-  FrameType FrameFormat::get(detail::ParameterTraits<FrameType>::tag) const {
-    return frameType_;
-  }
   TimeReference FrameFormat::get(
       detail::ParameterTraits<TimeReference>::tag) const {
     return boost::get_optional_value_or(timeReference_, timeReferenceDefault);
@@ -40,12 +30,6 @@ namespace adm {
 
   // ---- Has ---- //
   bool FrameFormat::has(detail::ParameterTraits<FrameFormatId>::tag) const {
-    return true;
-  }
-  bool FrameFormat::has(detail::ParameterTraits<FrameStart>::tag) const {
-    return true;
-  }
-  bool FrameFormat::has(detail::ParameterTraits<FrameDuration>::tag) const {
     return true;
   }
   bool FrameFormat::has(detail::ParameterTraits<FrameType>::tag) const {
@@ -64,13 +48,6 @@ namespace adm {
   // ---- Setter ---- //
   /// @brief FrameFormatId setter
   void FrameFormat::set(FrameFormatId id) { id_ = id; }
-  /// @brief FrameStart setter
-  void FrameFormat::set(FrameStart start) { start_ = start; }
-  /// @brief FrameDuration setter
-  void FrameFormat::set(FrameDuration duration) { duration_ = duration; }
-  /// @brief FrameType setter
-  void FrameFormat::set(FrameType frameType) { frameType_ = frameType; }
-  /// @brief TimeReference setter
   void FrameFormat::set(TimeReference timeReference) {
     timeReference_ = timeReference;
   }

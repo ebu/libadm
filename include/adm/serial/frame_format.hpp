@@ -69,9 +69,10 @@ namespace adm {
    */
 
   namespace detail {
-    using FrameFormatBase = HasParameters<OptionalParameter<NumMetadataChunks>,
-                                          OptionalParameter<CountToSameChunk>,
-                                          OptionalParameter<ChangedIds>>;
+    using FrameFormatBase = HasParameters<
+        RequiredParameter<FrameStart>, RequiredParameter<FrameDuration>,
+        RequiredParameter<FrameType>, OptionalParameter<NumMetadataChunks>,
+        OptionalParameter<CountToSameChunk>, OptionalParameter<ChangedIds>>;
   }  // namespace detail
 
   /**
@@ -157,20 +158,15 @@ namespace adm {
 
     using detail::FrameFormatBase::get;
     using detail::FrameFormatBase::has;
+    using detail::FrameFormatBase::isDefault;
     using detail::FrameFormatBase::set;
 
     /// @brief FrameFormatId setter
     ADM_EXPORT void set(FrameFormatId id);
-    /// @brief FrameStart setter
-    ADM_EXPORT void set(FrameStart start);
-    /// @brief FrameDuration setter
-    ADM_EXPORT void set(FrameDuration duration);
     /// @brief TimeReference setter
     ADM_EXPORT void set(TimeReference timeReference);
     /// @brief FlowId setter
     ADM_EXPORT void set(FlowId id);
-    /// @brief FrameType setter
-    ADM_EXPORT void set(FrameType frameType);
     /// @brief CountToFull setter
     ADM_EXPORT void set(CountToFull countToFull);
 
@@ -192,18 +188,12 @@ namespace adm {
    private:
     ADM_EXPORT FrameFormatId
         get(detail::ParameterTraits<FrameFormatId>::tag) const;
-    ADM_EXPORT FrameStart get(detail::ParameterTraits<FrameStart>::tag) const;
-    ADM_EXPORT FrameDuration
-        get(detail::ParameterTraits<FrameDuration>::tag) const;
     ADM_EXPORT TimeReference
         get(detail::ParameterTraits<TimeReference>::tag) const;
     ADM_EXPORT FlowId get(detail::ParameterTraits<FlowId>::tag) const;
-    ADM_EXPORT FrameType get(detail::ParameterTraits<FrameType>::tag) const;
     ADM_EXPORT CountToFull get(detail::ParameterTraits<CountToFull>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<FrameFormatId>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<FrameStart>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<FrameDuration>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<TimeReference>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FlowId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FrameType>::tag) const;
@@ -221,9 +211,6 @@ namespace adm {
     ADM_EXPORT void isDefault(detail::ParameterTraits<TimeReference>::tag);
 
     FrameFormatId id_;
-    FrameStart start_;
-    FrameDuration duration_;
-    FrameType frameType_;
     boost::optional<TimeReference> timeReference_;
     boost::optional<FlowId> flowId_;
     boost::optional<CountToFull> countToFull_;
@@ -234,9 +221,10 @@ namespace adm {
   template <typename... Parameters>
   FrameFormat::FrameFormat(FrameFormatId id, FrameStart start,
                            FrameDuration duration, FrameType frameType, Parameters... optionalNamedArgs)
-      : id_(id), start_(start), duration_(duration), frameType_(frameType) {
+      : id_(id) {
     detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+        this, std::move(start), std::move(duration), std::move(frameType),
+        std::forward<Parameters>(optionalNamedArgs)...);
   }
 
   template <typename Parameter>
