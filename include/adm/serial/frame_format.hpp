@@ -112,7 +112,7 @@ namespace adm {
     typedef FrameFormatTag tag;
     /// Type that holds the id for this element;
     typedef FrameFormatId id_type;
-
+    
     /**
      * @brief Constructor template
      *

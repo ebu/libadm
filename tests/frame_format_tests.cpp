@@ -127,7 +127,7 @@ TEST_CASE("NumMetadataChunks correctly written as attribute") {
 TEST_CASE("NumMetadataChunks correctly parsed from attribute") {
   auto ss = std::stringstream(NUM_METADATA_ATTR_XML);
   auto header = parseFrameHeader(ss);
-  auto format = header.frameFormat();
+  auto format = header.get<FrameFormat>();
   REQUIRE(format.has<NumMetadataChunks>());
   auto numChunks = format.get<NumMetadataChunks>();
   REQUIRE(numChunks == 3);
@@ -146,7 +146,7 @@ TEST_CASE("CountToSameChunk correctly written as attribute") {
 TEST_CASE("CountToSameChunk correctly parsed from attribute") {
   auto ss = std::stringstream(COUNT_TO_SAME_CHUNK_XML);
   auto header = parseFrameHeader(ss);
-  auto format = header.frameFormat();
+  auto format = header.get<FrameFormat>();
   REQUIRE(format.has<CountToSameChunk>());
   auto numChunks = format.get<CountToSameChunk>();
   REQUIRE(numChunks == 3);
@@ -187,8 +187,9 @@ TEST_CASE("ChangedIDs correctly written - BS2125-1 A2.2, 2nd example") {
 TEST_CASE("ChangedIDs correctly parsed - BS2125-1 A2.2, 2nd example") {
   std::stringstream ss(CHANGED_IDS_A2_2);
   auto header = parseFrameHeader(ss);
-  REQUIRE(header.frameFormat().has<ChangedIds>());
-  auto ids = header.frameFormat().get<ChangedIds>();
+  auto format = header.get<FrameFormat>();
+  REQUIRE(format.has<ChangedIds>());
+  auto ids = format.get<ChangedIds>();
   auto channelFormatRefs = ids.get<AudioChannelFormatIdRefs>();
   REQUIRE(channelFormatRefs.size() == 3);
   REQUIRE(formatId(channelFormatRefs[0].get<AudioChannelFormatId>()) ==

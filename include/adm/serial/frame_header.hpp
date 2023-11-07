@@ -38,7 +38,6 @@ namespace adm {
    *   - ProfileList
    *   - TransportTrackFormat
    */
-
   class FrameHeader : public detail::FrameHeaderBase,
                       private detail::AddWrapperMethods<FrameHeader> {
    public:
@@ -51,9 +50,6 @@ namespace adm {
     ADM_EXPORT FrameHeader(FrameHeader&&) = default;
     ADM_EXPORT FrameHeader& operator=(const FrameHeader&) = default;
     ADM_EXPORT FrameHeader& operator=(FrameHeader&&) = default;
-
-    ADM_EXPORT const FrameFormat& frameFormat() const;
-    ADM_EXPORT FrameFormat& frameFormat();
 
     ADM_EXPORT void add(const TransportTrackFormat& transportTrackFormat);
     ADM_EXPORT void set(FrameFormat frameFormat);
@@ -75,6 +71,12 @@ namespace adm {
     friend class detail::AddWrapperMethods<FrameHeader>;
 
    private:
+    ADM_EXPORT inline FrameFormat get(FrameFormat::tag) const {
+      return frameFormat_;
+    }
+    ADM_EXPORT inline bool has(FrameFormat::tag) const { return true; }
+    ADM_EXPORT inline bool is_default(FrameFormat::tag) const { return false; }
+
     FrameFormat frameFormat_;
     std::vector<TransportTrackFormat> transportTrackFormats_;
   };
