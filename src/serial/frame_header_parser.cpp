@@ -107,6 +107,28 @@ namespace adm {
         return ids;
       }
 
+      FrameType parseFrameType(std::string const& attribute) {
+        if (attribute == "full") {
+          return FrameType{FrameTypeValue::FULL};
+        }
+        if (attribute == "header") {
+          return FrameType{FrameTypeValue::HEADER};
+        }
+        if (attribute == "intermediate") {
+          return FrameType{FrameTypeValue::INTERMEDIATE};
+        }
+        if (attribute == "all") {
+          return FrameType{FrameTypeValue::ALL};
+        }
+        if (attribute == "divided") {
+          return FrameType{FrameTypeValue::DIVIDED};
+        }
+        throw std::runtime_error(
+            attribute +
+            " is not a valid FrameType value, valid values are \"full\","
+            " \"header\", \"intermediate\", \"all\" and \"divided\"");
+      }
+
       FrameFormat createFrameFormat(NodePtr frameFormatNode) {
         FrameFormatId id = parseAttribute<FrameFormatId>(
             frameFormatNode, "frameFormatID", &parseFrameFormatId);
@@ -114,7 +136,8 @@ namespace adm {
                                                       &parseTimecode);
         FrameDuration duration = parseAttribute<FrameDuration>(
             frameFormatNode, "duration", &parseTimecode);
-        FrameType type = parseAttribute<FrameType>(frameFormatNode, "type");
+        FrameType type =
+            parseAttribute<FrameType>(frameFormatNode, "type", &parseFrameType);
         return {id, start, duration, type};
       }
 

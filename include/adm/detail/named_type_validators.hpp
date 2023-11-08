@@ -162,16 +162,6 @@ namespace adm {
       }
     };
 
-    struct FrameTypeValueValidator {
-      static void validate(const std::string& value) {
-        validateStringList(
-            "FrameType",
-            value,
-            std::array<std::string, 5>{"header", "full", "intermediate", "all",
-                                       "divided"});
-      }
-    };
-
     struct FrameIndexValidator {
       static void validate(unsigned int value) {
         if (!(value > 0 && value <= 0xFFFFFFFF)) {

@@ -30,6 +30,10 @@ namespace adm {
       std::string toString(const AudioTrackUidId &id) { return formatId(id); }
       std::string toString(const FrameFormatId &id) { return formatId(id); }
       std::string toString(const TransportId &id) { return formatId(id); }
+      std::string toString(const FrameType &frameType) {
+        return formatValue(frameType.get());
+      }
+      }
 
       struct MultiElementAttributeFormatter {
         MultiElementAttributeFormatter(const std::string &a,

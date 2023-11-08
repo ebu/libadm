@@ -115,9 +115,9 @@ R"(<?xml version="1.0" encoding="utf-8"?>
 // clang-format on
 
 TEST_CASE("NumMetadataChunks correctly written as attribute") {
-  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0ms},
-                                 FrameDuration{1s}, FrameType("divided"),
-                                 NumMetadataChunks{3}}};
+  FrameHeader header{FrameFormat{
+      FrameFormatId{FrameIndex{1}}, FrameStart{0ms}, FrameDuration{1s},
+      FrameType(FrameTypeValue::DIVIDED), NumMetadataChunks{3}}};
   auto document = Document::create();
   std::stringstream out;
   writeXml(out, document, header);
@@ -134,9 +134,9 @@ TEST_CASE("NumMetadataChunks correctly parsed from attribute") {
 }
 
 TEST_CASE("CountToSameChunk correctly written as attribute") {
-  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0ms},
-                                 FrameDuration{1s}, FrameType("divided"),
-                                 CountToSameChunk{3}}};
+  FrameHeader header{FrameFormat{
+      FrameFormatId{FrameIndex{1}}, FrameStart{0ms}, FrameDuration{1s},
+      FrameType(FrameTypeValue::DIVIDED), CountToSameChunk{3}}};
   auto document = Document::create();
   std::stringstream out;
   writeXml(out, document, header);
@@ -174,7 +174,7 @@ static constexpr const char* CHANGED_IDS_A2_2 =
 TEST_CASE("ChangedIDs correctly written - BS2125-1 A2.2, 2nd example") {
   FrameHeader header(FrameFormat{
       FrameFormatId{FrameIndex{4}}, FrameStart{3s}, FrameDuration{1s},
-      FrameType{"full"},
+      FrameType{FrameTypeValue::FULL},
       ChangedIds{AudioChannelFormatIdRefs{
           {parseAudioChannelFormatId("AC_00031001"), Status("changed")},
           {parseAudioChannelFormatId("AC_00031002"), Status("expired")},

@@ -73,8 +73,8 @@ TEST_CASE("sadm xml/profilelist") {
   std::stringstream xml;
   using namespace std::chrono_literals;
   FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0s},
-                                 FrameDuration{500ms}, FrameType{"full"}},
-                     document->get<ProfileList>()};
+                  FrameDuration{500ms}, FrameType{FrameTypeValue::FULL}},
+      document->get<ProfileList>()};
   writeXml(xml, document, header);
   CHECK_THAT(xml.str(), EqualsXmlFile("profile_list_frame_header"));
 }

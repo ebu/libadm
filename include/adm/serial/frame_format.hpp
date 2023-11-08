@@ -28,11 +28,18 @@ namespace adm {
   /// @brief NamedType for the TimeReference attribute
   using TimeReference = detail::NamedType<std::string, TimeReferenceTag,
                                           detail::TimeReferenceValueValidator>;
+
+  /// @brief Enum type for permitted values of FrameType
+  enum class FrameTypeValue { HEADER, FULL, DIVIDED, INTERMEDIATE, ALL };
+  /// @brief string conversion function for FrameTypeValue
+  std::string formatValue(FrameTypeValue value);
+  /// @brief ostream operator for FrameTypeValue
+  std::ostream &operator<<(std::ostream &, FrameTypeValue);
+
   /// @brief Tag for NamedType ::FrameType
   struct FrameTypeTag {};
   /// @brief NamedType for the FrameType attribute
-  using FrameType = detail::NamedType<std::string, FrameTypeTag,
-                                      detail::FrameTypeValueValidator>;
+  using FrameType = detail::NamedType<FrameTypeValue, FrameTypeTag>;
   /// @brief Tag for NamedType ::CountToFull
   struct CountToFullTag {};
   /// @brief NamedType for the CountToFull attribute

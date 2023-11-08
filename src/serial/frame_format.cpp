@@ -71,7 +71,7 @@ namespace adm {
   void FrameFormat::isDefault(detail::ParameterTraits<TimeReference>::tag) {
     timeReference_ = boost::none;
   }
-  
+
   // ---- Common ---- //
   void FrameFormat::print(std::ostream& os) const {
     os << get<FrameFormatId>() << std::endl;
@@ -90,4 +90,28 @@ namespace adm {
     os << ")";
   }
 
+  std::string formatValue(FrameTypeValue value) {
+    switch (value) {
+      case FrameTypeValue::HEADER: {
+        return "header";
+      }
+      case FrameTypeValue::FULL: {
+        return "full";
+      }
+      case FrameTypeValue::DIVIDED: {
+        return "divided";
+      }
+      case FrameTypeValue::INTERMEDIATE: {
+        return "intermediate";
+      }
+      case FrameTypeValue::ALL: {
+        return "all";
+      }
+    }
+  }
+
+  std::ostream& operator<<(std::ostream& os, FrameTypeValue value) {
+    os << formatValue(value);
+    return os;
+  }
 }  // namespace adm

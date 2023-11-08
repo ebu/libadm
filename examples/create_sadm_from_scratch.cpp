@@ -12,7 +12,8 @@ int main() {
   auto frameFormatId = parseFrameFormatId("FF_00000001");
   auto frameHeader = FrameHeader{FrameFormat{
       frameFormatId, FrameStart(std::chrono::milliseconds(0)),
-      FrameDuration(std::chrono::milliseconds(40)), FrameType("full")}};
+                  FrameDuration(std::chrono::milliseconds(40)),
+                  FrameType(FrameTypeValue::FULL)}};
   auto document = Document::create();
 
   // create ADM elements
