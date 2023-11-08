@@ -36,6 +36,9 @@ namespace adm {
       std::string toString(const Status &status) {
         return formatValue(status.get());
       }
+      std::string toString(const TimeReference &timeReference) {
+        return formatValue(timeReference.get());
+      }
 
       struct MultiElementAttributeFormatter {
         MultiElementAttributeFormatter(const std::string &a,

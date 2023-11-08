@@ -22,12 +22,14 @@ namespace adm {
   struct FlowIdTag {};
   /// @brief NamedType for the FlowId attribute
   using FlowId = detail::NamedType<std::string, FlowIdTag>;
-  
+
+  enum class TimeReferenceValue { TOTAL, LOCAL };
   /// @brief Tag for NamedType ::TimeReference
   struct TimeReferenceTag {};
   /// @brief NamedType for the TimeReference attribute
-  using TimeReference = detail::NamedType<std::string, TimeReferenceTag,
-                                          detail::TimeReferenceValueValidator>;
+  using TimeReference = detail::NamedType<TimeReferenceValue, TimeReferenceTag>;
+
+  std::string formatValue(TimeReferenceValue value);
 
   /// @brief Enum type for permitted values of FrameType
   enum class FrameTypeValue { HEADER, FULL, DIVIDED, INTERMEDIATE, ALL };
@@ -213,7 +215,8 @@ namespace adm {
       return false;
     }
 
-    ADM_EXPORT void isDefault(detail::ParameterTraits<TimeReference>::tag);
+    ADM_EXPORT bool isDefault(
+        detail::ParameterTraits<TimeReference>::tag) const;
 
     FrameFormatId id_;
     boost::optional<TimeReference> timeReference_;

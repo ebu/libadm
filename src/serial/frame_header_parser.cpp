@@ -159,7 +159,21 @@ namespace adm {
         return {id, start, duration, type};
       }
 
+      TimeReference parseTimeReference(std::string attribute) {
+        if (attribute == "local") {
+          return TimeReference{TimeReferenceValue::LOCAL};
+        }
+        if (attribute == "total") {
+          return TimeReference{TimeReferenceValue::TOTAL};
+        }
+        throw std::runtime_error(attribute +
+                                 " is not a valid value for timeReference. "
+                                 "Valid values are 'local' and 'total'");
+      }
+
       void parseOptionalElements(NodePtr frameFormatNode, FrameFormat& format) {
+        setOptionalAttribute<TimeReference>(frameFormatNode, "timeReference",
+                                            format, &parseTimeReference);
         setOptionalAttribute<CountToFull>(frameFormatNode, "countToFull",
                                           format);
         setOptionalAttribute<NumMetadataChunks>(frameFormatNode,

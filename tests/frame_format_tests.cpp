@@ -7,6 +7,7 @@
 #include <adm/write.hpp>
 #include <adm/parse_sadm.hpp>
 #include <adm/serial/changed_ids.hpp>
+#include "helper/ostream_operators.hpp"
 
 using namespace adm;
 using namespace std::chrono_literals;
@@ -204,4 +205,62 @@ TEST_CASE("ChangedIDs correctly parsed - BS2125-1 A2.2, 2nd example") {
   REQUIRE(formatId(channelFormatRefs[2].get<AudioChannelFormatId>()) ==
           "AC_00031003");
   REQUIRE(channelFormatRefs[2].get<Status>().get() == StatusValue::EXTENDED);
+}
+
+//clang-format off
+static constexpr const char* TIME_REF_TOTAL_XML =
+    R"(<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000003" start="00:00:01.00000" duration="00:00:00.50000" type="full" timeReference="local">
+			<changedIDs>
+				<audioChannelFormatIDRef status="changed">AC_00031001</audioChannelFormatIDRef>
+			</changedIDs>
+		</frameFormat>
+	</frameHeader>
+	<audioFormatExtended/>
+</frame>
+
+)";
+//clang-format on
+
+TEST_CASE(
+    "Local time timeReference correctly written - BS2125-1 A2.5, example 3") {
+  using namespace std::chrono_literals;
+  FrameHeader header{FrameFormat{
+      FrameFormatId{FrameIndex{3}}, FrameStart{1s}, FrameDuration{500ms},
+      FrameType{FrameTypeValue::FULL}, TimeReference{TimeReferenceValue::LOCAL},
+      ChangedIds{
+          AudioChannelFormatIdRefs{{parseAudioChannelFormatId("AC_00031001"),
+                                    Status{StatusValue::CHANGED}}}}}};
+  auto document = Document::create();
+  std::stringstream ss;
+  writeXml(ss, document, header);
+  REQUIRE(ss.str() == TIME_REF_TOTAL_XML);
+}
+
+TEST_CASE(
+    "Local time timeReference correctly parsed - BS2125-1 A2.5 example 3") {
+  std::stringstream ss{TIME_REF_TOTAL_XML};
+  auto header = parseFrameHeader(ss);
+  auto format = header.get<FrameFormat>();
+  REQUIRE(format.has<TimeReference>());
+  REQUIRE(format.get<TimeReference>() == TimeReferenceValue::LOCAL);
+}
+
+TEST_CASE("Total time timeReference") {
+  FrameFormat format(FrameFormatId{FrameIndex{1}}, FrameStart(1s),
+                     FrameDuration(1s), FrameType(FrameTypeValue::FULL));
+  REQUIRE(format.has<TimeReference>());
+  REQUIRE(format.isDefault<TimeReference>());
+  REQUIRE(format.get<TimeReference>() == TimeReferenceValue::TOTAL);
+  format.set(TimeReference(TimeReferenceValue::TOTAL));
+  REQUIRE(!format.isDefault<TimeReference>());
+  REQUIRE(format.get<TimeReference>() == TimeReferenceValue::TOTAL);
+  format.set(TimeReference(TimeReferenceValue::LOCAL));
+  REQUIRE(!format.isDefault<TimeReference>());
+  REQUIRE(format.get<TimeReference>() == TimeReferenceValue::LOCAL);
+  format.unset<TimeReference>();
+  REQUIRE(format.isDefault<TimeReference>());
+  REQUIRE(format.get<TimeReference>() == TimeReferenceValue::TOTAL);
 }

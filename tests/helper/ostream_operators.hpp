@@ -3,6 +3,7 @@
 #include <adm/elements/jump_position.hpp>
 #include <adm/elements/gain.hpp>
 #include <adm/elements/label.hpp>
+#include <adm/serial/frame_format.hpp>
 
 namespace adm {
   std::ostream& operator<<(std::ostream& stream, const FractionalTime& time) {
@@ -38,6 +39,11 @@ namespace adm {
 
   std::ostream& operator<<(std::ostream& os, const Label& label) {
     label.print(os);
+    return os;
+  }
+
+  std::ostream& operator<<(std::ostream& os, const TimeReferenceValue& value) {
+    os << formatValue(value);
     return os;
   }
 }  // namespace adm

@@ -7,7 +7,7 @@
 namespace adm {
 
   namespace {
-    const TimeReference timeReferenceDefault{"total"};
+    const TimeReference timeReferenceDefault{TimeReferenceValue::TOTAL};
   }
 
   // ---- Getter ---- //
@@ -36,7 +36,7 @@ namespace adm {
     return true;
   }
   bool FrameFormat::has(detail::ParameterTraits<TimeReference>::tag) const {
-    return timeReference_ != boost::none;
+    return true;
   }
   bool FrameFormat::has(detail::ParameterTraits<FlowId>::tag) const {
     return flowId_ != boost::none;
@@ -68,8 +68,9 @@ namespace adm {
   }
 
   // ---- isDefault ---- //
-  void FrameFormat::isDefault(detail::ParameterTraits<TimeReference>::tag) {
-    timeReference_ = boost::none;
+  bool FrameFormat::isDefault(
+      detail::ParameterTraits<TimeReference>::tag) const {
+    return timeReference_ == boost::none;
   }
 
   // ---- Common ---- //
@@ -79,7 +80,7 @@ namespace adm {
     os << "start=" << formatTimecode(get<FrameStart>().get());
     os << ", duration=" << formatTimecode(get<FrameDuration>().get());
     os << ", type=" << formatValue(get<FrameType>().get());
-    os << ", timeReference=" << get<TimeReference>().get();
+    os << ", timeReference=" << formatValue(get<TimeReference>().get());
     if (has<FlowId>()) {
       os << ", flowID=" << get<FlowId>();
     }
@@ -111,6 +112,17 @@ namespace adm {
       }
       case FrameTypeValue::ALL: {
         return "all";
+      }
+    }
+  }
+
+  std::string formatValue(TimeReferenceValue value) {
+    switch (value) {
+      case TimeReferenceValue::TOTAL: {
+        return "total";
+      }
+      case TimeReferenceValue::LOCAL: {
+        return "local";
       }
     }
   }

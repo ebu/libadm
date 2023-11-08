@@ -155,13 +155,6 @@ namespace adm {
       }
     };
 
-    struct TimeReferenceValueValidator {
-      static void validate(const std::string& value) {
-        validateStringList("TimeReference", value,
-                           std::array<std::string, 2>{"total", "local"});
-      }
-    };
-
     struct FrameIndexValidator {
       static void validate(unsigned int value) {
         if (!(value > 0 && value <= 0xFFFFFFFF)) {

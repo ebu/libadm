@@ -108,6 +108,7 @@ namespace adm {
       std::string toString(const TransportId &id);
       std::string toString(const FrameType &frameType);
       std::string toString(const Status &status);
+      std::string toString(const TimeReference &status);
 
       template <typename T, typename std::enable_if<
                                 std::is_integral<T>::value>::type * = nullptr>
