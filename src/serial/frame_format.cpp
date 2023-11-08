@@ -1,23 +1,18 @@
 #include "adm/serial/frame_format.hpp"
-
-#include <algorithm>
-#include <functional>
 #include "adm/utilities/element_io.hpp"
 
 namespace adm {
-
-  namespace {
-    const TimeReference timeReferenceDefault{TimeReferenceValue::TOTAL};
-  }
+  namespace detail {
+    template <>
+    TimeReference getDefault<TimeReference>() {
+      return TimeReference{TimeReferenceValue::TOTAL};
+    };
+  }  // namespace detail
 
   // ---- Getter ---- //
   FrameFormatId FrameFormat::get(
       detail::ParameterTraits<FrameFormatId>::tag) const {
     return id_;
-  }
-  TimeReference FrameFormat::get(
-      detail::ParameterTraits<TimeReference>::tag) const {
-    return boost::get_optional_value_or(timeReference_, timeReferenceDefault);
   }
   FlowId FrameFormat::get(
       detail::ParameterTraits<FlowId>::tag) const {
@@ -35,9 +30,6 @@ namespace adm {
   bool FrameFormat::has(detail::ParameterTraits<FrameType>::tag) const {
     return true;
   }
-  bool FrameFormat::has(detail::ParameterTraits<TimeReference>::tag) const {
-    return true;
-  }
   bool FrameFormat::has(detail::ParameterTraits<FlowId>::tag) const {
     return flowId_ != boost::none;
   }
@@ -48,29 +40,17 @@ namespace adm {
   // ---- Setter ---- //
   /// @brief FrameFormatId setter
   void FrameFormat::set(FrameFormatId id) { id_ = id; }
-  void FrameFormat::set(TimeReference timeReference) {
-    timeReference_ = timeReference;
-  }
   /// @brief FlowId setter
   void FrameFormat::set(FlowId flowId) { flowId_ = flowId; }
   /// @brief CountToFull setter
   void FrameFormat::set(CountToFull countToFull) { countToFull_ = countToFull; }
 
   // ---- Unsetter ---- //
-  void FrameFormat::unset(detail::ParameterTraits<TimeReference>::tag) {
-    timeReference_ = boost::none;
-  }
   void FrameFormat::unset(detail::ParameterTraits<FlowId>::tag) {
     flowId_ = boost::none;
   }
   void FrameFormat::unset(detail::ParameterTraits<CountToFull>::tag) {
     countToFull_ = boost::none;
-  }
-
-  // ---- isDefault ---- //
-  bool FrameFormat::isDefault(
-      detail::ParameterTraits<TimeReference>::tag) const {
-    return timeReference_ == boost::none;
   }
 
   // ---- Common ---- //

@@ -76,9 +76,13 @@ namespace adm {
    */
 
   namespace detail {
+    template <>
+    TimeReference getDefault<TimeReference>();
+
     using FrameFormatBase = HasParameters<
         RequiredParameter<FrameStart>, RequiredParameter<FrameDuration>,
-        RequiredParameter<FrameType>, OptionalParameter<NumMetadataChunks>,
+        RequiredParameter<FrameType>, DefaultParameter<TimeReference>,
+        OptionalParameter<NumMetadataChunks>,
         OptionalParameter<CountToSameChunk>, OptionalParameter<ChangedIds>>;
   }  // namespace detail
 
@@ -167,11 +171,10 @@ namespace adm {
     using detail::FrameFormatBase::has;
     using detail::FrameFormatBase::isDefault;
     using detail::FrameFormatBase::set;
+    using detail::FrameFormatBase::unset;
 
     /// @brief FrameFormatId setter
     ADM_EXPORT void set(FrameFormatId id);
-    /// @brief TimeReference setter
-    ADM_EXPORT void set(TimeReference timeReference);
     /// @brief FlowId setter
     ADM_EXPORT void set(FlowId id);
     /// @brief CountToFull setter
@@ -195,18 +198,14 @@ namespace adm {
    private:
     ADM_EXPORT FrameFormatId
         get(detail::ParameterTraits<FrameFormatId>::tag) const;
-    ADM_EXPORT TimeReference
-        get(detail::ParameterTraits<TimeReference>::tag) const;
     ADM_EXPORT FlowId get(detail::ParameterTraits<FlowId>::tag) const;
     ADM_EXPORT CountToFull get(detail::ParameterTraits<CountToFull>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<FrameFormatId>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<TimeReference>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FlowId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FrameType>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<CountToFull>::tag) const;
 
-    ADM_EXPORT void unset(detail::ParameterTraits<TimeReference>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<FlowId>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<CountToFull>::tag);
 
@@ -215,11 +214,7 @@ namespace adm {
       return false;
     }
 
-    ADM_EXPORT bool isDefault(
-        detail::ParameterTraits<TimeReference>::tag) const;
-
     FrameFormatId id_;
-    boost::optional<TimeReference> timeReference_;
     boost::optional<FlowId> flowId_;
     boost::optional<CountToFull> countToFull_;
   };
