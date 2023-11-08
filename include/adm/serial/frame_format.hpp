@@ -33,8 +33,6 @@ namespace adm {
   enum class FrameTypeValue { HEADER, FULL, DIVIDED, INTERMEDIATE, ALL };
   /// @brief string conversion function for FrameTypeValue
   std::string formatValue(FrameTypeValue value);
-  /// @brief ostream operator for FrameTypeValue
-  std::ostream &operator<<(std::ostream &, FrameTypeValue);
 
   /// @brief Tag for NamedType ::FrameType
   struct FrameTypeTag {};

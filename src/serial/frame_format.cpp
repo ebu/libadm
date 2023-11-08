@@ -74,20 +74,25 @@ namespace adm {
 
   // ---- Common ---- //
   void FrameFormat::print(std::ostream& os) const {
-    os << get<FrameFormatId>() << std::endl;
-    os << " (start=" << formatTimecode(get<FrameStart>().get()) << std::endl;
-    os << ", duration=" << formatTimecode(get<FrameDuration>().get()) << std::endl;
-    os << ", timeReference=" << std::endl;
-    os << get<TimeReference>().get() << std::endl;
+    os << get<FrameFormatId>();
+    os << " (";
+    os << "start=" << formatTimecode(get<FrameStart>().get());
+    os << ", duration=" << formatTimecode(get<FrameDuration>().get());
+    os << ", type=" << formatValue(get<FrameType>().get());
+    os << ", timeReference=" << get<TimeReference>().get();
     if (has<FlowId>()) {
-      os << ", flowID=" << get<FlowId>() << std::endl;
+      os << ", flowID=" << get<FlowId>();
     }
-    os << ", type=";
-    os << get<FrameType>().get() << std::endl;
     if (has<CountToFull>()) {
-      os << ", countToFull=" << get<CountToFull>() << std::endl;
+      os << ", countToFull=" << get<CountToFull>();
     }
-    os << ")";
+    if (has<NumMetadataChunks>()) {
+      os << ", numMetadataChunks" << get<NumMetadataChunks>();
+    }
+    if (has<CountToSameChunk>()) {
+      os << ", numMetadataChunks" << get<CountToSameChunk>();
+    }
+    os << ")" << std::endl;
   }
 
   std::string formatValue(FrameTypeValue value) {
@@ -108,10 +113,5 @@ namespace adm {
         return "all";
       }
     }
-  }
-
-  std::ostream& operator<<(std::ostream& os, FrameTypeValue value) {
-    os << formatValue(value);
-    return os;
   }
 }  // namespace adm
