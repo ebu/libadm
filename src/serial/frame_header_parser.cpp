@@ -80,10 +80,28 @@ namespace adm {
     }
 
     namespace {
+      Status parseStatus(std::string attribute) {
+        if (attribute == "new") {
+          return Status{StatusValue::NEW};
+        }
+        if (attribute == "changed") {
+          return Status{StatusValue::CHANGED};
+        }
+        if (attribute == "extended") {
+          return Status{StatusValue::EXTENDED};
+        }
+        if (attribute == "expired") {
+          return Status{StatusValue::EXPIRED};
+        }
+        throw std::runtime_error(
+            attribute.append("is not a valid 'status' value. Valid values are: "
+                             "'new', 'changed', 'extended' and 'expired'"));
+      }
+
       template <typename T>
       typename T::value_type parseIdRef(NodePtr idRefNode) {
         auto id = detail::IDRefTraits<T>::parseId(idRefNode->value());
-        auto status = parseAttribute<Status>(idRefNode, "status");
+        auto status = parseAttribute<Status>(idRefNode, "status", &parseStatus);
         return typename T::value_type{id, status};
       }
 

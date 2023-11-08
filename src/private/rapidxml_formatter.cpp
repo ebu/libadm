@@ -33,6 +33,8 @@ namespace adm {
       std::string toString(const FrameType &frameType) {
         return formatValue(frameType.get());
       }
+      std::string toString(const Status &status) {
+        return formatValue(status.get());
       }
 
       struct MultiElementAttributeFormatter {
@@ -700,11 +702,11 @@ namespace adm {
     namespace {
       template <typename T>
       void formatIdRef(XmlNode &parent, const ChangedIds &ids) {
-        for (auto ref : ids.get<T>()) {
+        for (auto const &ref : ids.get<T>()) {
           auto refNode = parent.addNode(detail::IDRefTraits<T>::elementName);
           refNode.setValue(formatId(
               ref.template get<typename detail::IDRefTraits<T>::id_type>()));
-          refNode.addAttribute("status", ref.template get<Status>().get());
+          refNode.template addAttribute<Status>(&ref, "status");
         }
       }
     }  // namespace

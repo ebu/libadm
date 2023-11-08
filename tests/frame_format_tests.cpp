@@ -176,9 +176,12 @@ TEST_CASE("ChangedIDs correctly written - BS2125-1 A2.2, 2nd example") {
       FrameFormatId{FrameIndex{4}}, FrameStart{3s}, FrameDuration{1s},
       FrameType{FrameTypeValue::FULL},
       ChangedIds{AudioChannelFormatIdRefs{
-          {parseAudioChannelFormatId("AC_00031001"), Status("changed")},
-          {parseAudioChannelFormatId("AC_00031002"), Status("expired")},
-          {parseAudioChannelFormatId("AC_00031003"), Status("extended")}}}});
+                                     {parseAudioChannelFormatId("AC_00031001"),
+                                      Status(StatusValue::CHANGED)},
+                                     {parseAudioChannelFormatId("AC_00031002"),
+                                      Status(StatusValue::EXPIRED)},
+                                     {parseAudioChannelFormatId("AC_00031003"),
+                                      Status(StatusValue::EXTENDED)}}}});
   std::stringstream ss("changedids.xml");
   writeXml(ss, adm::Document::create(), header);
   REQUIRE(ss.str() == CHANGED_IDS_A2_2);
@@ -194,11 +197,11 @@ TEST_CASE("ChangedIDs correctly parsed - BS2125-1 A2.2, 2nd example") {
   REQUIRE(channelFormatRefs.size() == 3);
   REQUIRE(formatId(channelFormatRefs[0].get<AudioChannelFormatId>()) ==
           "AC_00031001");
-  REQUIRE(channelFormatRefs[0].get<Status>().get() == "changed");
+  REQUIRE(channelFormatRefs[0].get<Status>().get() == StatusValue::CHANGED);
   REQUIRE(formatId(channelFormatRefs[1].get<AudioChannelFormatId>()) ==
           "AC_00031002");
-  REQUIRE(channelFormatRefs[1].get<Status>().get() == "expired");
+  REQUIRE(channelFormatRefs[1].get<Status>().get() == StatusValue::EXPIRED);
   REQUIRE(formatId(channelFormatRefs[2].get<AudioChannelFormatId>()) ==
           "AC_00031003");
-  REQUIRE(channelFormatRefs[2].get<Status>().get() == "extended");
+  REQUIRE(channelFormatRefs[2].get<Status>().get() == StatusValue::EXTENDED);
 }

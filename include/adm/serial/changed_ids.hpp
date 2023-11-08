@@ -4,9 +4,13 @@
 #include <adm/elements.hpp>
 
 namespace adm {
+  enum class StatusValue { NEW, CHANGED, EXTENDED, EXPIRED };
+
   /// Tag for status
   struct StatusTag {};
-  using Status = detail::NamedType<std::string, StatusTag>;
+  using Status = detail::NamedType<StatusValue, StatusTag>;
+
+  std::string formatValue(StatusValue status);
 
   // useful for templated access
 
@@ -46,6 +50,7 @@ namespace adm {
     // no set to ensure ID check, doesn't really need to be mutable
     using detail::AddWrapperMethods<IDRef<T>>::get;
     using detail::AddWrapperMethods<IDRef<T>>::has;
+    using detail::AddWrapperMethods<IDRef<T>>::isDefault;
     using detail::IDRefBase<T>::get;
     using detail::IDRefBase<T>::has;
 
