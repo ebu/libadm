@@ -81,8 +81,8 @@ namespace adm {
   AudioPackFormatId parseAudioPackFormatId(const std::string& id) {
     // AP_yyyyxxxx
     detail::IDParser parser("AudioPackFormatId", id);
-    parser.check_size(11);
     parser.check_prefix("AP_", 3);
+    parser.check_size(11);
     auto type = parser.parse_hex(3, 4);
     auto value = parser.parse_hex(7, 4);
     return AudioPackFormatId(TypeDescriptor(type),

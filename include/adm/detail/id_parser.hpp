@@ -23,19 +23,32 @@ namespace adm {
       void check_size(size_t size) {
         if (id.size() != size) {
           std::ostringstream errorString;
-          errorString << "invalid " << type << " (wrong length): " << id;
+          errorString << "invalid " << type << " (wrong length, should be "
+                      << std::to_string(size) << " characters): " << id;
           throw std::runtime_error(errorString.str());
         }
       }
 
+      void check_prefix(const char *prefix, size_t size) const {
+        assert(prefix && prefix[size] == 0);
+        check_prefix(std::string(prefix));
+      }
+
       /// check that the start of the ID matches the given prefix
-      void check_prefix(const char *prefix, size_t prefix_len) const {
-        assert(prefix[prefix_len] == 0);
-        for (size_t i = 0; i < prefix_len; i++)
-          if (id[i] != prefix[i]) {
-            std::ostringstream errorString;
-            errorString << "invalid " << type << " (wrong prefix): " << id;
-            throw std::runtime_error(errorString.str());
+      void check_prefix(std::string const &prefix) const {
+        auto prefix_error = [this](std::string const &prefix) {
+          std::ostringstream errorString;
+          errorString << "invalid " << type << " (incorrect prefix, should be '"
+                      << prefix << "'): " << id;
+          throw std::runtime_error(errorString.str());
+        };
+
+        if (prefix.size() > id.size()) {
+          prefix_error(prefix);
+        }
+        for (size_t i = 0; i < prefix.size(); i++)
+          if (id[i] != prefix.at(i)) {
+            prefix_error(prefix);
           }
       }
 

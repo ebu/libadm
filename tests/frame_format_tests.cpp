@@ -299,3 +299,13 @@ TEST_CASE("FlowId parsing") {
   auto id = format.get<FlowId>();
   REQUIRE(id == FLOW_ID);
 }
+
+// note we can't implement the defaults as they depend on the Flow type not the frame types
+TEST_CASE("CountToFull") {
+  auto createHeader = [](FrameTypeValue frameType) {
+    return FrameHeader{FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0s},
+                                   FrameDuration{1s}, FrameType{frameType}}};
+  };
+  auto header = createHeader(FrameTypeValue::FULL);
+  REQUIRE(header.)
+}

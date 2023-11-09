@@ -60,8 +60,8 @@ namespace adm {
   AudioTrackUidId parseAudioTrackUidId(const std::string& id) {
     // ATU_xxxxxxxx
     detail::IDParser parser("AudioChannelFormatId", id);
-    parser.check_size(12);
     parser.check_prefix("ATU_", 4);
+    parser.check_size(12);
     auto value = parser.parse_hex(4, 8);
     return AudioTrackUidId(AudioTrackUidIdValue(value));
   }

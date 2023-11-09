@@ -105,8 +105,8 @@ namespace adm {
   AudioTrackFormatId parseAudioTrackFormatId(const std::string& id) {
     // AT_yyyyxxxx_zz
     detail::IDParser parser("AudioTrackFormatId", id);
-    parser.check_size(14);
     parser.check_prefix("AT_", 3);
+    parser.check_size(14);
     auto type = parser.parse_hex(3, 4);
     auto value = parser.parse_hex(7, 4);
     parser.check_underscore(11);

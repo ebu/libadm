@@ -87,8 +87,8 @@ namespace adm {
   AudioChannelFormatId parseAudioChannelFormatId(const std::string& id) {
     // AC_yyyyxxxx
     detail::IDParser parser("AudioChannelFormatId", id);
-    parser.check_size(11);
     parser.check_prefix("AC_", 3);
+    parser.check_size(11);
     auto type = parser.parse_hex(3, 4);
     auto value = parser.parse_hex(7, 4);
     return AudioChannelFormatId(TypeDescriptor(type),
