@@ -264,3 +264,38 @@ TEST_CASE("Total time timeReference") {
   REQUIRE(format.isDefault<TimeReference>());
   REQUIRE(format.get<TimeReference>() == TimeReferenceValue::TOTAL);
 }
+
+namespace {
+  auto FLOW_ID = "1f399874-dfa9-4a9b-82cd-fedc483d1223";
+
+  //clang-format off
+  auto constexpr FLOW_ID_XML = R"(<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000001" start="00:00:00.00000" duration="00:00:01.00000" type="full" flowID="1f399874-dfa9-4a9b-82cd-fedc483d1223"/>
+	</frameHeader>
+	<audioFormatExtended/>
+</frame>
+
+)";
+  //clang-format on
+}  // namespace
+
+TEST_CASE("FlowId writing") {
+  FrameHeader header{FrameFormat{
+      FrameFormatId{FrameIndex{1}}, FrameStart{0s}, FrameDuration{1s},
+      FrameType{FrameTypeValue::FULL}, FlowId{FLOW_ID}}};
+  auto document = Document::create();
+  std::stringstream ss;
+  writeXml(ss, document, header);
+  REQUIRE(ss.str() == FLOW_ID_XML);
+}
+
+TEST_CASE("FlowId parsing") {
+  std::stringstream ss{FLOW_ID_XML};
+  auto header = parseFrameHeader(ss);
+  auto format = header.get<FrameFormat>();
+  REQUIRE(format.has<FlowId>());
+  auto id = format.get<FlowId>();
+  REQUIRE(id == FLOW_ID);
+}

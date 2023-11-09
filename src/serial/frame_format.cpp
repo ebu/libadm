@@ -14,10 +14,6 @@ namespace adm {
       detail::ParameterTraits<FrameFormatId>::tag) const {
     return id_;
   }
-  FlowId FrameFormat::get(
-      detail::ParameterTraits<FlowId>::tag) const {
-    return flowId_.get();
-  }
   CountToFull FrameFormat::get(
       detail::ParameterTraits<CountToFull>::tag) const {
     return countToFull_.get();
@@ -30,9 +26,6 @@ namespace adm {
   bool FrameFormat::has(detail::ParameterTraits<FrameType>::tag) const {
     return true;
   }
-  bool FrameFormat::has(detail::ParameterTraits<FlowId>::tag) const {
-    return flowId_ != boost::none;
-  }
   bool FrameFormat::has(detail::ParameterTraits<CountToFull>::tag) const {
     return countToFull_ != boost::none;
   }
@@ -40,15 +33,9 @@ namespace adm {
   // ---- Setter ---- //
   /// @brief FrameFormatId setter
   void FrameFormat::set(FrameFormatId id) { id_ = id; }
-  /// @brief FlowId setter
-  void FrameFormat::set(FlowId flowId) { flowId_ = flowId; }
   /// @brief CountToFull setter
   void FrameFormat::set(CountToFull countToFull) { countToFull_ = countToFull; }
 
-  // ---- Unsetter ---- //
-  void FrameFormat::unset(detail::ParameterTraits<FlowId>::tag) {
-    flowId_ = boost::none;
-  }
   void FrameFormat::unset(detail::ParameterTraits<CountToFull>::tag) {
     countToFull_ = boost::none;
   }
