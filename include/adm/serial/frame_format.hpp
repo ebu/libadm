@@ -59,21 +59,6 @@ namespace adm {
 
   /// @brief Tag for FrameFormat
   struct FrameFormatTag {};
-  /**
-   * @ingroup sadm
-   * @brief Class representation of the frameFormat SADM element
-   *
-   * Supported parameters:
-   *   - FrameFormatId
-   *   - ::FrameStart
-   *   - ::FrameDuration
-   *   - ::TimeReference
-   *   - ::FrameType
-   *   - ::CountToFull
-   *   - ::NumMetadataChunks
-   *   - ::CountToSameChunk
-   *   - ::ChangedIds
-   */
 
   namespace detail {
     template <>
@@ -87,6 +72,7 @@ namespace adm {
   }  // namespace detail
 
   /**
+   * @ingroup sadm
    * @brief Class representation of the frameFormat ADM element
    *
    * \rst
@@ -105,7 +91,7 @@ namespace adm {
    * +------------------------+--------------------------------+------------------------------+
    * | flowId                 | :type:`FlowID`                 | :class:`OptionalParameter`   |
    * +------------------------+--------------------------------+------------------------------+
-   * | countToFull            | :type:`CountToFull`            | :class:`DefaultParameter`    |
+   * | countToFull            | :type:`CountToFull`            | :class:`OptionalParameter`    |
    * +------------------------+--------------------------------+------------------------------+
    * | numMetadataChunks      | :type:`NumMetadataChunks`      | :class:`OptionalParameter`   |
    * +------------------------+--------------------------------+------------------------------+
@@ -116,6 +102,7 @@ namespace adm {
    * \endrst
    *
    * Note that:
+   * - countToFull has defaults dependent on the flow type, as this is not known at this level they are not implemented
    * - numMetadataChunks is required for frame type divided and not permitted for other frame types.
    * - countToSameChunk is optional for frame type divided and not permitted for other frame types.
    */
