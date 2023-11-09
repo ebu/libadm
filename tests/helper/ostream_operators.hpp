@@ -46,4 +46,14 @@ namespace adm {
     os << formatValue(value);
     return os;
   }
+
+  std::ostream& operator<<(std::ostream& os, const FrameTypeValue& value) {
+    os << formatValue(value);
+    return os;
+  }
+
+  std::ostream& operator<<(std::ostream& os, const StatusValue& value) {
+    os << formatValue(value);
+    return os;
+  }
 }  // namespace adm

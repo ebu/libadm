@@ -1,5 +1,6 @@
 #include <sstream>
 #include <fstream>
+#include <adm/utilities/object_creation.hpp>
 #include <catch2/catch.hpp>
 #include <adm/serial/frame_format.hpp>
 #include <adm/serial/frame_header.hpp>
@@ -300,12 +301,146 @@ TEST_CASE("FlowId parsing") {
   REQUIRE(id == FLOW_ID);
 }
 
+namespace {
+  //clang-format off
+  auto constexpr ALL_PARAMS_XML = R"(<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000001" start="00:00:00.00000" duration="00:00:01.00000" type="divided" timeReference="total" flowID="1f399874-dfa9-4a9b-82cd-fedc483d1223" countToFull="2" numMetadataChunks="2" countToSameChunk="3">
+			<changedIDs>
+				<audioChannelFormatIDRef status="new">AC_00011001</audioChannelFormatIDRef>
+				<audioPackFormatIDRef status="new">AP_00011001</audioPackFormatIDRef>
+				<audioTrackUIDRef status="changed">ATU_00000001</audioTrackUIDRef>
+				<audioTrackFormatIDRef status="changed">AT_00011010_01</audioTrackFormatIDRef>
+				<audioStreamFormatIDRef status="expired">AS_00011010</audioStreamFormatIDRef>
+				<audioObjectIDRef status="new">AO_1001</audioObjectIDRef>
+				<audioObjectIDRef status="new">AO_1002</audioObjectIDRef>
+				<audioContentIDRef status="new">ACO_0011</audioContentIDRef>
+				<audioProgrammeIDRef status="new">APR_0011</audioProgrammeIDRef>
+			</changedIDs>
+		</frameFormat>
+	</frameHeader>
+	<audioFormatExtended/>
+</frame>
+
+)";
+  //clang-format on
+}  // namespace
 // note we can't implement the defaults as they depend on the Flow type not the frame types
-TEST_CASE("CountToFull") {
-  auto createHeader = [](FrameTypeValue frameType) {
-    return FrameHeader{FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0s},
-                                   FrameDuration{1s}, FrameType{frameType}}};
+TEST_CASE("Write all FrameFormat parameters") {
+  auto createFormat = [](FrameTypeValue frameType) {
+    return FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0s},
+                       FrameDuration{1s}, FrameType{frameType}};
   };
-  auto header = createHeader(FrameTypeValue::FULL);
-  REQUIRE(header.)
+  auto format = createFormat(FrameTypeValue::DIVIDED);
+  format.set(CountToSameChunk{3});
+  format.set(NumMetadataChunks{2});
+  format.set(TimeReference{TimeReferenceValue::TOTAL});
+  format.set(FlowId(FLOW_ID));
+  format.set(CountToFull{2});
+  ChangedIds ids;
+  ids.add(IDRef<AudioChannelFormat>{parseAudioChannelFormatId("AC_00011001"),
+                                    Status{StatusValue::NEW}});
+  ids.add(IDRef<AudioPackFormat>{parseAudioPackFormatId("AP_00011001"),
+                                 Status{StatusValue::NEW}});
+  ids.add(IDRef<AudioTrackUid>{parseAudioTrackUidId("ATU_00000001"),
+                               Status{StatusValue::CHANGED}});
+  ids.add(IDRef<AudioTrackFormat>{parseAudioTrackFormatId("AT_00011010_01"),
+                                  Status{StatusValue::CHANGED}});
+  ids.add(IDRef<AudioStreamFormat>{parseAudioStreamFormatId("AS_00011010"),
+                                   Status{StatusValue::EXPIRED}});
+  ids.add(IDRef<AudioObject>{parseAudioObjectId("AO_1001"),
+                             Status{StatusValue::NEW}});
+  ids.add(IDRef<AudioObject>{parseAudioObjectId("AO_1002"),
+                             Status{StatusValue::NEW}});
+  ids.add(IDRef<AudioContent>{parseAudioContentId("ACO_0011"),
+                              Status{StatusValue::NEW}});
+  ids.add(IDRef<AudioProgramme>{parseAudioProgrammeId("APR_0011"),
+                                Status{StatusValue::NEW}});
+  format.set(std::move(ids));
+  std::stringstream ss;
+  writeXml(ss, Document::create(), FrameHeader{format});
+  REQUIRE(ss.str() == ALL_PARAMS_XML);
+}
+
+TEST_CASE("Read all FrameFormat parameters") {
+  std::stringstream ss{ALL_PARAMS_XML};
+  auto header = parseFrameHeader(ss);
+  auto format = header.get<FrameFormat>();
+  REQUIRE(format.get<FrameType>() == FrameTypeValue::DIVIDED);
+  REQUIRE(format.get<CountToSameChunk>() == 3);
+  REQUIRE(format.get<NumMetadataChunks>() == 2);
+  REQUIRE(format.get<TimeReference>() == TimeReferenceValue::TOTAL);
+  REQUIRE(format.get<FlowId>() == FLOW_ID);
+  REQUIRE(format.get<CountToFull>() == 2);
+  REQUIRE(format.has<ChangedIds>());
+  auto changedIds = format.get<ChangedIds>();
+
+  SECTION("AudioChannelFormat references") {
+    auto acfs = changedIds.get<AudioChannelFormatIdRefs>();
+    REQUIRE(acfs.size() == 1);
+    REQUIRE(acfs[0].get<AudioChannelFormatId>() ==
+            parseAudioChannelFormatId("AC_00011001"));
+    REQUIRE(acfs[0].get<Status>() == StatusValue::NEW);
+  }
+
+  SECTION("AudioPackFormat references") {
+    auto apfs = changedIds.get<AudioPackFormatIdRefs>();
+    REQUIRE(apfs.size() == 1);
+    REQUIRE(formatId(apfs[0].get<AudioPackFormatId>()) == "AP_00011001");
+    REQUIRE(apfs[0].get<Status>() == StatusValue::NEW);
+  }
+
+  SECTION("AudioTrackUid references") {
+    auto atus = changedIds.get<AudioTrackUidIdRefs>();
+    REQUIRE(atus.size() == 1);
+    REQUIRE(formatId(atus[0].get<AudioTrackUidId>()) == "ATU_00000001");
+    REQUIRE(atus[0].get<Status>() == StatusValue::CHANGED);
+  }
+
+  SECTION("AudioTrackFormat references") {
+    auto atfs = changedIds.get<AudioTrackFormatIdRefs>();
+    REQUIRE(atfs.size() == 1);
+    REQUIRE(formatId(atfs[0].get<AudioTrackFormatId>()) == "AT_00011010_01");
+    REQUIRE(atfs[0].get<Status>() == StatusValue::CHANGED);
+  }
+
+  SECTION("AudioStreamFormat references") {
+    auto asfs = changedIds.get<AudioStreamFormatIdRefs>();
+    REQUIRE(asfs.size() == 1);
+    REQUIRE(formatId(asfs[0].get<AudioStreamFormatId>()) == "AS_00011010");
+    REQUIRE(asfs[0].get<Status>() == StatusValue::EXPIRED);
+  }
+  SECTION("AudioObject references") {
+    auto aos = changedIds.get<AudioObjectIdRefs>();
+    REQUIRE(aos.size() == 2);
+    REQUIRE(formatId(aos[0].get<AudioObjectId>()) == "AO_1001");
+    REQUIRE(formatId(aos[1].get<AudioObjectId>()) == "AO_1002");
+    REQUIRE(aos[0].get<Status>() == StatusValue::NEW);
+    REQUIRE(aos[1].get<Status>() == StatusValue::NEW);
+  }
+  SECTION("AudioContent references") {
+    auto acos = changedIds.get<AudioContentIdRefs>();
+    REQUIRE(acos.size() == 1);
+    REQUIRE(formatId(acos[0].get<AudioContentId>()) == "ACO_0011");
+    REQUIRE(acos[0].get<Status>() == StatusValue::NEW);
+  }
+  SECTION("AudioProgramme references") {
+    auto aprs = changedIds.get<AudioProgrammeIdRefs>();
+    REQUIRE(aprs.size() == 1);
+    REQUIRE(formatId(aprs[0].get<AudioProgrammeId>()) == "APR_0011");
+    REQUIRE(aprs[0].get<Status>() == StatusValue::NEW);
+  }
+}
+
+TEST_CASE("Initialise IdRefs from elements") {
+  auto doc = Document::create();
+  auto holder = addSimpleObjectTo(doc, "test");
+  ChangedIds ids;
+  ids.add(createIdRef(holder.audioObject, Status{StatusValue::NEW}));
+  auto objectRefs = ids.get<AudioObjectIdRefs>();
+  REQUIRE(objectRefs.size() == 1);
+  REQUIRE(objectRefs.front().get<AudioObjectId>() ==
+          holder.audioObject->get<AudioObjectId>());
+  REQUIRE(objectRefs.front().get<Status>() == StatusValue::NEW);
 }

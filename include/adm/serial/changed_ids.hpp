@@ -27,9 +27,6 @@ namespace adm {
   class IDRef : private detail::IDRefBase<T>,
                 private detail::AddWrapperMethods<IDRef<T>> {
    public:
-    IDRef(std::shared_ptr<T const> const& el, Status status)
-        : IDRef(el->get<T::id_type>(), std::move(status)) {}
-
     IDRef(typename T::id_type id, Status status) {
       if (id == typename T::id_type{}) {
         /* Not using shared pointers to elements as header is outside document.
@@ -61,6 +58,12 @@ namespace adm {
              lhs.get<Status>().get() == rhs.get<Status>().get();
     }
   };
+
+  template <typename T>
+  IDRef<T> createIdRef(std::shared_ptr<T> element, Status status) {
+    return IDRef<T>{element->template get<typename T::id_type>(),
+                    std::move(status)};
+  }
 
   /// Tags for IdRefs
   struct AudioChannelFormatIdRefsTag {};
