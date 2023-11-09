@@ -108,10 +108,10 @@ namespace adm {
    */
   class FrameFormat : private detail::FrameFormatBase {
    public:
-    typedef FrameFormatTag tag;
+    using tag = FrameFormatTag;
     /// Type that holds the id for this element;
-    typedef FrameFormatId id_type;
-    
+    using id_type = FrameFormatId;
+
     /**
      * @brief Constructor template
      *
@@ -211,33 +211,32 @@ namespace adm {
   template <typename... Parameters>
   FrameFormat::FrameFormat(FrameFormatId id, FrameStart start,
                            FrameDuration duration, FrameType frameType, Parameters... optionalNamedArgs)
-      : id_(id) {
-    detail::setNamedOptionHelper(
-        this, std::move(start), std::move(duration), std::move(frameType),
-        std::forward<Parameters>(optionalNamedArgs)...);
+      : id_(std::move(id)) {
+    detail::setNamedOptionHelper(this, std::move(start), std::move(duration),
+                                 frameType, std::move(optionalNamedArgs)...);
   }
 
   template <typename Parameter>
   Parameter FrameFormat::get() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
+    using Tag = typename detail::ParameterTraits<Parameter>::tag;
     return get(Tag());
   }
 
   template <typename Parameter>
   bool FrameFormat::has() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
+    using Tag = typename detail::ParameterTraits<Parameter>::tag;
     return has(Tag());
   }
 
   template <typename Parameter>
   bool FrameFormat::isDefault() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
+    using Tag = typename detail::ParameterTraits<Parameter>::tag;
     return isDefault(Tag());
   }
 
   template <typename Parameter>
   void FrameFormat::unset() {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
+    using Tag = typename detail::ParameterTraits<Parameter>::tag;
     return unset(Tag());
   }
 
