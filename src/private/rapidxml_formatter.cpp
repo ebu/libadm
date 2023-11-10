@@ -746,7 +746,7 @@ namespace adm {
       node.addOptionalAttribute<TransportName>(&format, "transportName");
       node.addOptionalAttribute<NumTracks>(&format, "numTracks");
       node.addOptionalAttribute<NumIds>(&format, "numIDs");
-      for (const auto &audioTrack : format.audioTracks()) {
+      for (const auto &audioTrack : format.get<AudioTracks>()) {
         auto trackNode = node.addNode("audioTrack");
         trackNode.addAttribute<TrackId>(&audioTrack, "trackID");
         trackNode.addOptionalAttribute<FormatDescriptor>(

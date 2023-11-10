@@ -6,22 +6,6 @@
 
 namespace adm {
 
-  // ---- AudioTracks ---- //
-  void TransportTrackFormat::add(const AudioTrack& audioTrack) {
-    audioTracks_.push_back(audioTrack);
-  }
-
-  AudioTrackConstRange TransportTrackFormat::audioTracks() const {
-    return boost::make_iterator_range(audioTracks_.cbegin(),
-                                      audioTracks_.cend());
-  }
-
-  AudioTrackRange TransportTrackFormat::audioTracks() {
-    return boost::make_iterator_range(audioTracks_.begin(), audioTracks_.end());
-  }
-
-  void TransportTrackFormat::clearAudioTracks() { audioTracks_.clear(); }
-
   // ---- Common ---- //
   void TransportTrackFormat::print(std::ostream& os) const {
     os << get<TransportId>();

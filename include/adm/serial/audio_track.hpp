@@ -126,6 +126,11 @@ namespace adm {
      */
     void print(std::ostream &os) const;
 
+    friend bool operator==(AudioTrack const& lhs, AudioTrack const& rhs) {
+      return std::tie(lhs.trackId_, lhs.format_, lhs.audioTrackUidIds_) ==
+             std::tie(rhs.trackId_, rhs.format_, rhs.audioTrackUidIds_);
+    }
+
    private:
     ADM_EXPORT TrackId get(detail::ParameterTraits<TrackId>::tag) const;
     ADM_EXPORT FormatDescriptor

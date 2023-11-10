@@ -12,11 +12,6 @@
 
 namespace adm {
 
-  using AudioTrackConstRange =
-      boost::iterator_range<std::vector<AudioTrack>::const_iterator>;
-  using AudioTrackRange =
-      boost::iterator_range<std::vector<AudioTrack>::iterator>;
-
   /// @brief Tag for NamedType ::TransportName
   struct TransportNameTag {};
   /// @brief NamedType for the TransportName attribute
@@ -30,11 +25,19 @@ namespace adm {
   /// @brief NamedType for the NumIds attribute
   using NumIds = detail::NamedType<unsigned int, NumIdsTag>;
 
+  struct AudioTracksTag {};
+  using AudioTracks = std::vector<AudioTrack>;
+
   namespace detail {
+    template <>
+    ADM_EXPORT struct ParameterTraits<AudioTracks> {
+      using tag = AudioTracksTag;
+    };
     using TransportTrackFormatBase =
         HasParameters<RequiredParameter<TransportId>,
                       OptionalParameter<TransportName>,
-                      OptionalParameter<NumTracks>, OptionalParameter<NumIds>>;
+                      OptionalParameter<NumTracks>, OptionalParameter<NumIds>,
+                      VectorParameter<AudioTracks>>;
   }
 
   /// @brief Tag for TransportTrackFormat
@@ -71,30 +74,13 @@ namespace adm {
     using detail::AddWrapperMethods<TransportTrackFormat>::get;
     using detail::AddWrapperMethods<TransportTrackFormat>::unset;
     using detail::AddWrapperMethods<TransportTrackFormat>::isDefault;
+    using detail::TransportTrackFormatBase::add;
     using detail::TransportTrackFormatBase::get;
     using detail::TransportTrackFormatBase::has;
     using detail::TransportTrackFormatBase::isDefault;
+    using detail::TransportTrackFormatBase::remove;
     using detail::TransportTrackFormatBase::set;
     using detail::TransportTrackFormatBase::unset;
-
-    /**
-     * @brief Add AudioTrack
-     */
-    ADM_EXPORT void add(const AudioTrack &audioTrack);
-
-    /**
-     * @brief AudioTrack container getter
-     *
-     * @returns ContainerProxy containing all AudioTracks.
-     */
-    ADM_EXPORT AudioTrackConstRange audioTracks() const;
-
-    /**
-     * @brief AudioTrack container getter
-     *
-     * @returns ContainerProxy containing all AudioTracks.
-     */
-    ADM_EXPORT AudioTrackRange audioTracks();
 
     /**
      * @brief Clear AudioTracks
@@ -108,9 +94,6 @@ namespace adm {
      */
     void print(std::ostream &os) const;
     friend class detail::AddWrapperMethods<TransportTrackFormat>;
-
-   private:
-    std::vector<AudioTrack> audioTracks_;
   };
 
   // ---- Implementation ---- //
