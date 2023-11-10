@@ -753,7 +753,7 @@ namespace adm {
             &audioTrack, "formatLabel", &formatFormatLabel);
         trackNode.addOptionalAttribute<FormatDescriptor>(
             &audioTrack, "formatDefinition", &formatFormatDefinition);
-        for (const auto &uidId : audioTrack.audioTrackUidIds()) {
+        for (const auto &uidId : audioTrack.get<AudioTrackUidRefs>()) {
           trackNode.addElement("audioTrackUIDRef", formatId(uidId));
         }
       }
