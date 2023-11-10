@@ -34,7 +34,7 @@ int main() {
 
   reassignIds(document);
 
-  auto trackFormat = TransportTrackFormat();
+  auto trackFormat = TransportTrackFormat(TransportId(TransportIdValue(1)));
 
   AudioTrack audioTrack1(TrackId(1));
   audioTrack1.add(holder1.audioTrackUid->get<AudioTrackUidId>());

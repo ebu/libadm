@@ -6,54 +6,6 @@
 
 namespace adm {
 
-  // ---- Getter ---- //
-  TransportId TransportTrackFormat::get(
-      detail::ParameterTraits<TransportId>::tag) const {
-    return transportId_;
-  }
-  TransportName TransportTrackFormat::get(
-      detail::ParameterTraits<TransportName>::tag) const {
-    return transportName_.get();
-  }
-  NumTracks TransportTrackFormat::get(
-      detail::ParameterTraits<NumTracks>::tag) const {
-    return NumTracks(audioTracks_.size());
-  }
-  NumIds TransportTrackFormat::get(detail::ParameterTraits<NumIds>::tag) const {
-    unsigned int numIdsCounter = 0;
-    for (const auto audioTrack : audioTracks_) {
-      numIdsCounter += audioTrack.audioTrackUidIds().size();
-    }
-    return NumIds(numIdsCounter);
-  }
-
-  // ---- Has ---- //
-  bool TransportTrackFormat::has(
-      detail::ParameterTraits<TransportId>::tag) const {
-    return true;
-  }
-  bool TransportTrackFormat::has(
-      detail::ParameterTraits<TransportName>::tag) const {
-    return transportName_ != boost::none;
-  }
-  bool TransportTrackFormat::has(
-      detail::ParameterTraits<NumTracks>::tag) const {
-    return true;
-  }
-  bool TransportTrackFormat::has(detail::ParameterTraits<NumIds>::tag) const {
-    return true;
-  }
-
-  // ---- Setter ---- //
-  void TransportTrackFormat::set(TransportId id) { transportId_ = id; }
-  void TransportTrackFormat::set(TransportName name) { transportName_ = name; }
-
-  // ---- Unsetter ---- //
-  void TransportTrackFormat::unset(
-      detail::ParameterTraits<TransportName>::tag) {
-    transportName_ = boost::none;
-  }
-
   // ---- AudioTracks ---- //
   void TransportTrackFormat::add(const AudioTrack& audioTrack) {
     audioTracks_.push_back(audioTrack);

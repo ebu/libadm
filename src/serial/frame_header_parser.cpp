@@ -208,7 +208,7 @@ namespace adm {
           NodePtr transportTrackFormatNode) {
         TransportId tr_id = parseAttribute<TransportId>(
             transportTrackFormatNode, "transportID", &parseTransportId);
-        return {tr_id};
+        return TransportTrackFormat{tr_id};
       }
 
       void parseAllAudioTracks(NodePtr transportTrackFormatNode,

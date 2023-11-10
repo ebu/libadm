@@ -8,6 +8,7 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
+#include "adm/detail/auto_base.hpp"
 
 namespace adm {
 
@@ -29,6 +30,13 @@ namespace adm {
   /// @brief NamedType for the NumIds attribute
   using NumIds = detail::NamedType<unsigned int, NumIdsTag>;
 
+  namespace detail {
+    using TransportTrackFormatBase =
+        HasParameters<RequiredParameter<TransportId>,
+                      OptionalParameter<TransportName>,
+                      OptionalParameter<NumTracks>, OptionalParameter<NumIds>>;
+  }
+
   /// @brief Tag for TransportTrackFormat
   struct TransportTrackFormatTag {};
   /**
@@ -41,11 +49,13 @@ namespace adm {
    *   - ::NumTracks
    *   - ::NumIds
    */
-  class TransportTrackFormat {
+  class TransportTrackFormat
+      : public detail::TransportTrackFormatBase,
+        private detail::AddWrapperMethods<TransportTrackFormat> {
    public:
-    typedef TransportTrackFormatTag tag;
+    using tag = TransportTrackFormatTag;
     /// Type that holds the id for this element;
-    typedef TransportId id_type;
+    using id_type = TransportId;
 
     /**
      * @brief Constructor template
@@ -54,59 +64,22 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    TransportTrackFormat(Parameters... optionalNamedArgs);
+    explicit TransportTrackFormat(TransportId id,
+                                  Parameters... optionalNamedArgs);
 
-    /**
-     * @brief ADM parameter getter template
-     *
-     * Templated getter with the wanted ADM parameter type as template
-     * argument. If currently no value is available trying to get the adm
-     * parameter will result in an exception. Check with the has method before
-     */
-    template <typename Parameter>
-    Parameter get() const;
-
-    /**
-     * @brief ADM parameter has template
-     *
-     * Templated has method with the ADM parameter type as template argument.
-     * Returns true if the ADM parameter is set or has a default value.
-     */
-    template <typename Parameter>
-    bool has() const;
-
-    /**
-     * @brief ADM parameter isDefault template
-     *
-     * Templated isDefault method with the ADM parameter type as template
-     * argument. Returns true if the ADM parameter is the default value.
-     */
-    template <typename Parameter>
-    bool isDefault() const;
-
-    /// @brief TransportId setter
-    ADM_EXPORT void set(TransportId id);
-    /// @brief TransportName setter
-    ADM_EXPORT void set(TransportName name);
-    /// @brief TransportId setter
-    ADM_EXPORT void set(NumTracks numTracks);
-    /// @brief TransportName setter
-    ADM_EXPORT void set(NumIds numIds);
-
-    /**
-     * @brief ADM parameter unset template
-     *
-     * Templated unset method with the ADM parameter type as template
-     * argument. Removes an ADM parameter if it is optional or resets it to
-     * the default value if there is one.
-     */
-    template <typename Parameter>
-    void unset();
+    using detail::AddWrapperMethods<TransportTrackFormat>::has;
+    using detail::AddWrapperMethods<TransportTrackFormat>::get;
+    using detail::AddWrapperMethods<TransportTrackFormat>::unset;
+    using detail::AddWrapperMethods<TransportTrackFormat>::isDefault;
+    using detail::TransportTrackFormatBase::get;
+    using detail::TransportTrackFormatBase::has;
+    using detail::TransportTrackFormatBase::isDefault;
+    using detail::TransportTrackFormatBase::set;
+    using detail::TransportTrackFormatBase::unset;
 
     /**
      * @brief Add AudioTrack
      */
-
     ADM_EXPORT void add(const AudioTrack &audioTrack);
 
     /**
@@ -134,61 +107,18 @@ namespace adm {
      * @brief Print overview to ostream
      */
     void print(std::ostream &os) const;
+    friend class detail::AddWrapperMethods<TransportTrackFormat>;
 
    private:
-    ADM_EXPORT TransportId get(detail::ParameterTraits<TransportId>::tag) const;
-    ADM_EXPORT TransportName
-        get(detail::ParameterTraits<TransportName>::tag) const;
-    ADM_EXPORT NumTracks get(detail::ParameterTraits<NumTracks>::tag) const;
-    ADM_EXPORT NumIds get(detail::ParameterTraits<NumIds>::tag) const;
-
-    ADM_EXPORT bool has(detail::ParameterTraits<TransportId>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<TransportName>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<NumTracks>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<NumIds>::tag) const;
-
-    template <typename Tag>
-    bool isDefault(Tag) const {
-      return false;
-    }
-
-    ADM_EXPORT void unset(detail::ParameterTraits<TransportName>::tag);
-
-    TransportId transportId_;
-    boost::optional<TransportName> transportName_;
     std::vector<AudioTrack> audioTracks_;
   };
 
   // ---- Implementation ---- //
 
   template <typename... Parameters>
-  TransportTrackFormat::TransportTrackFormat(Parameters... optionalNamedArgs) {
-    detail::setNamedOptionHelper(
-        this, std::forward<Parameters>(optionalNamedArgs)...);
+  TransportTrackFormat::TransportTrackFormat(TransportId id,
+                                             Parameters... optionalNamedArgs) {
+    detail::setNamedOptionHelper(this, std::move(id),
+                                 std::move(optionalNamedArgs)...);
   }
-
-  template <typename Parameter>
-  Parameter TransportTrackFormat::get() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return get(Tag());
-  }
-
-  template <typename Parameter>
-  bool TransportTrackFormat::has() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return has(Tag());
-  }
-
-  template <typename Parameter>
-  bool TransportTrackFormat::isDefault() const {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return isDefault(Tag());
-  }
-
-  template <typename Parameter>
-  void TransportTrackFormat::unset() {
-    typedef typename detail::ParameterTraits<Parameter>::tag Tag;
-    return unset(Tag());
-  }
-
 }  // namespace adm
