@@ -46,6 +46,7 @@ namespace adm {
     }
 
     void set(typename T::id_type id) {}
+
     // no set to ensure ID check, doesn't really need to be mutable
     using detail::AddWrapperMethods<ChangedId<T>>::get;
     using detail::AddWrapperMethods<ChangedId<T>>::has;
@@ -143,6 +144,11 @@ namespace adm {
    public:
     template <typename... Parameters>
     explicit ChangedIds(Parameters&&... parameters);
+
+    template <typename ElementT>
+    void add(std::shared_ptr<ElementT> const& element, Status status) {
+      add(createChangedId(element, std::move(status)));
+    }
 
     using tag = ChangedIdsTag;
     using detail::ChangedIdsBase::add;

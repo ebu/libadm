@@ -433,11 +433,14 @@ TEST_CASE("Read all FrameFormat parameters") {
   }
 }
 
-TEST_CASE("Initialise IdRefs from elements") {
+TEST_CASE("Add ChangedIds using elements directly") {
   auto doc = Document::create();
   auto holder = addSimpleObjectTo(doc, "test");
   ChangedIds ids;
-  ids.add(createChangedId(holder.audioObject, Status{StatusValue::NEW}));
+  ids.add(holder.audioObject, Status{StatusValue::NEW});
+  CHECK_THROWS(
+      ids.add(AudioObject::create(AudioObjectName{"non_document_object"}),
+              Status{StatusValue::NEW}));
   auto objectRefs = ids.get<ChangedAudioObjectIds>();
   REQUIRE(objectRefs.size() == 1);
   REQUIRE(objectRefs.front().get<AudioObjectId>() ==
