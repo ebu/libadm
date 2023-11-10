@@ -16,18 +16,18 @@ namespace adm {
 
   namespace detail {
     template <typename T>
-    using IDRefBase = HasParameters<RequiredParameter<typename T::id_type>,
-                                    RequiredParameter<Status>>;
+    using ChangedIdBase = HasParameters<RequiredParameter<typename T::id_type>,
+                                        RequiredParameter<Status>>;
   }
 
   /**
    * @brief Template class for referring to any of the changedIDs sub-elements
    */
   template <typename T>
-  class IDRef : private detail::IDRefBase<T>,
-                private detail::AddWrapperMethods<IDRef<T>> {
+  class ChangedId : private detail::ChangedIdBase<T>,
+                    private detail::AddWrapperMethods<ChangedId<T>> {
    public:
-    IDRef(typename T::id_type id, Status status) {
+    ChangedId(typename T::id_type id, Status status) {
       if (id == typename T::id_type{}) {
         /* Not using shared pointers to elements as header is outside document.
         * This means we need to check IDs have been assigned
@@ -37,22 +37,24 @@ namespace adm {
             "Cannot reference a default ID - either add the referred element"
             "to a document or manually assign a valid ID value");
       }
-      detail::IDRefBase<T>::set(id);
-      detail::IDRefBase<T>::set(status);
+      detail::ChangedIdBase<T>::set(id);
+      detail::ChangedIdBase<T>::set(status);
     }
 
-    void set(Status status) { detail::IDRefBase<T>::set(std::move(status)); }
+    void set(Status status) {
+      detail::ChangedIdBase<T>::set(std::move(status));
+    }
 
     void set(typename T::id_type id) {}
     // no set to ensure ID check, doesn't really need to be mutable
-    using detail::AddWrapperMethods<IDRef<T>>::get;
-    using detail::AddWrapperMethods<IDRef<T>>::has;
-    using detail::AddWrapperMethods<IDRef<T>>::isDefault;
-    using detail::IDRefBase<T>::get;
-    using detail::IDRefBase<T>::has;
+    using detail::AddWrapperMethods<ChangedId<T>>::get;
+    using detail::AddWrapperMethods<ChangedId<T>>::has;
+    using detail::AddWrapperMethods<ChangedId<T>>::isDefault;
+    using detail::ChangedIdBase<T>::get;
+    using detail::ChangedIdBase<T>::has;
 
-    friend class detail::AddWrapperMethods<IDRef<T>>;
-    friend bool operator==(IDRef<T> const& lhs, IDRef<T> const& rhs) {
+    friend class detail::AddWrapperMethods<ChangedId<T>>;
+    friend bool operator==(ChangedId<T> const& lhs, ChangedId<T> const& rhs) {
       using id_t = typename T::id_type;
       return lhs.get<id_t>() == rhs.get<id_t>() &&
              lhs.get<Status>().get() == rhs.get<Status>().get();
@@ -60,50 +62,51 @@ namespace adm {
   };
 
   template <typename T>
-  IDRef<T> createIdRef(std::shared_ptr<T> element, Status status) {
-    return IDRef<T>{element->template get<typename T::id_type>(),
-                    std::move(status)};
+  ChangedId<T> createChangedId(std::shared_ptr<T> element, Status status) {
+    return ChangedId<T>{element->template get<typename T::id_type>(),
+                        std::move(status)};
   }
 
   /// Tags for IdRefs
-  struct AudioChannelFormatIdRefsTag {};
-  struct AudioPackFormatIdRefsTag {};
-  struct AudioTrackUidIdRefsTag {};
-  struct AudioTrackFormatIdRefsTag {};
-  struct AudioStreamFormatIdRefsTag {};
-  struct AudioObjectIdRefsTag {};
-  struct AudioContentIdRefsTag {};
-  struct AudioProgrammeIdRefsTag {};
+  struct ChangedAudioChannelFormatIdsTag {};
+  struct ChangedAudioPackFormatIdsTag {};
+  struct ChangedAudioTrackUidIdsTag {};
+  struct ChangedAudioTrackFormatIdsTag {};
+  struct ChangedAudioStreamFormatIdsTag {};
+  struct ChangedAudioObjectIdsTag {};
+  struct ChangedAudioContentIdsTag {};
+  struct ChangedAudioProgrammeIdsTag {};
 
-  using AudioChannelFormatIdRefs = std::vector<IDRef<AudioChannelFormat>>;
-  using AudioPackFormatIdRefs = std::vector<IDRef<AudioPackFormat>>;
-  using AudioTrackUidIdRefs = std::vector<IDRef<AudioTrackUid>>;
-  using AudioTrackFormatIdRefs = std::vector<IDRef<AudioTrackFormat>>;
-  using AudioStreamFormatIdRefs = std::vector<IDRef<AudioStreamFormat>>;
-  using AudioObjectIdRefs = std::vector<IDRef<AudioObject>>;
-  using AudioContentIdRefs = std::vector<IDRef<AudioContent>>;
-  using AudioProgrammeIdRefs = std::vector<IDRef<AudioProgramme>>;
+  using ChangedAudioChannelFormatIds =
+      std::vector<ChangedId<AudioChannelFormat>>;
+  using ChangedAudioPackFormatIds = std::vector<ChangedId<AudioPackFormat>>;
+  using ChangedAudioTrackUidIds = std::vector<ChangedId<AudioTrackUid>>;
+  using ChangedAudioTrackFormatIds = std::vector<ChangedId<AudioTrackFormat>>;
+  using ChangedAudioStreamFormatIds = std::vector<ChangedId<AudioStreamFormat>>;
+  using ChangedAudioObjectIds = std::vector<ChangedId<AudioObject>>;
+  using ChangedAudioContentIds = std::vector<ChangedId<AudioContent>>;
+  using ChangedAudioProgrammeIds = std::vector<ChangedId<AudioProgramme>>;
 
   /// Traits for IDRefs
-  ADD_TRAIT(AudioChannelFormatIdRefs, AudioChannelFormatIdRefsTag)
-  ADD_TRAIT(AudioPackFormatIdRefs, AudioPackFormatIdRefsTag)
-  ADD_TRAIT(AudioTrackUidIdRefs, AudioTrackUidIdRefsTag)
-  ADD_TRAIT(AudioTrackFormatIdRefs, AudioTrackFormatIdRefsTag)
-  ADD_TRAIT(AudioStreamFormatIdRefs, AudioStreamFormatIdRefsTag)
-  ADD_TRAIT(AudioObjectIdRefs, AudioObjectIdRefsTag)
-  ADD_TRAIT(AudioContentIdRefs, AudioContentIdRefsTag)
-  ADD_TRAIT(AudioProgrammeIdRefs, AudioProgrammeIdRefsTag)
+  ADD_TRAIT(ChangedAudioChannelFormatIds, ChangedAudioChannelFormatIdsTag)
+  ADD_TRAIT(ChangedAudioPackFormatIds, ChangedAudioPackFormatIdsTag)
+  ADD_TRAIT(ChangedAudioTrackUidIds, ChangedAudioTrackUidIdsTag)
+  ADD_TRAIT(ChangedAudioTrackFormatIds, ChangedAudioTrackFormatIdsTag)
+  ADD_TRAIT(ChangedAudioStreamFormatIds, ChangedAudioStreamFormatIdsTag)
+  ADD_TRAIT(ChangedAudioObjectIds, ChangedAudioObjectIdsTag)
+  ADD_TRAIT(ChangedAudioContentIds, ChangedAudioContentIdsTag)
+  ADD_TRAIT(ChangedAudioProgrammeIds, ChangedAudioProgrammeIdsTag)
 
   namespace detail {
     using ChangedIdsBase =
-        HasParameters<VectorParameter<AudioChannelFormatIdRefs>,
-                      VectorParameter<AudioContentIdRefs>,
-                      VectorParameter<AudioPackFormatIdRefs>,
-                      VectorParameter<AudioTrackUidIdRefs>,
-                      VectorParameter<AudioTrackFormatIdRefs>,
-                      VectorParameter<AudioStreamFormatIdRefs>,
-                      VectorParameter<AudioObjectIdRefs>,
-                      VectorParameter<AudioProgrammeIdRefs>>;
+        HasParameters<VectorParameter<ChangedAudioChannelFormatIds>,
+                      VectorParameter<ChangedAudioContentIds>,
+                      VectorParameter<ChangedAudioPackFormatIds>,
+                      VectorParameter<ChangedAudioTrackUidIds>,
+                      VectorParameter<ChangedAudioTrackFormatIds>,
+                      VectorParameter<ChangedAudioStreamFormatIds>,
+                      VectorParameter<ChangedAudioObjectIds>,
+                      VectorParameter<ChangedAudioProgrammeIds>>;
   }  // namespace detail
 
   struct ChangedIdsTag {};
@@ -111,26 +114,29 @@ namespace adm {
    * @brief Class representation of the audioContent ADM element
    *
    * \rst
-   * +--------------------------+----------------------------------+----------------------------+
-   * | ADM Parameter            | Parameter Type                   | Pattern Type               |
-   * +==========================+==================================+============================+
-   * | status                   | :type:`Status`                   | :class:`RequiredParameter` |
-   * +--------------------------+----------------------------------+----------------------------+
-   * | audioChannelFormatIdRef  | :type:`AudioChannelIdRefs`       | :class:`VectorParameter`   |
-   * +--------------------------+----------------------------------+----------------------------+
-   * | audioPackFormatIdRef     | :type:`AudioPackFormatIdRefs`    | :class:`VectorParameter`   |
-   * +--------------------------+----------------------------------+----------------------------+
-   * | audioTrackUIDRef         | :type:`AudioTrackUIDIdRefs`      | :class:`VectorParameter`   |
-   * +--------------------------+----------------------------------+----------------------------+
-   * | audioStreamFormatIDRef   | :type:`AudioStreamFormatIDRefs`  | :class:`VectorParameter`   |
-   * +--------------------------+----------------------------------+----------------------------+
-   * | audioObjectIDRef         | :type:`AudioObjectIDRefs`        | :class:`VectorParameter`   |
-   * +--------------------------+----------------------------------+----------------------------+
-   * | audioContentIDRef        | :type:`AudioContentIDRefs`       | :class:`VectorParameter`   |
-   * +--------------------------+----------------------------------+----------------------------+
-   * | audioProgrammeIDRef      | :type:`AudioProgrammeIDRefs`     | :class:`VectorParameter`   |
-   * +--------------------------+----------------------------------+----------------------------+
+   * +--------------------------+--------------------------------------+---------------------------+
+   * | ADM Parameter            | Parameter Type                       | Pattern Type              |
+   * +==========================+======================================+===========================+
+   * | status                   | :type:`Status`                       | :class:`RequiredParameter`|
+   * +--------------------------+--------------------------------------+---------------------------+
+   * | audioChannelFormatIdRef  | :type:`ChangedAudioChannelFormatIds` | :class:`VectorParameter`  |
+   * +--------------------------+--------------------------------------+---------------------------+
+   * | audioPackFormatIdRef     | :type:`ChangedAudioPackFormatIds`    | :class:`VectorParameter`  |
+   * +--------------------------+--------------------------------------+---------------------------+
+   * | audioTrackUIDRef         | :type:`ChangedAudioTrackUIDIds`      | :class:`VectorParameter`  |
+   * +--------------------------+--------------------------------------+---------------------------+
+   * | audioStreamFormatIDRef   | :type:`ChangedAudioStreamFormatIds`  | :class:`VectorParameter`  |
+   * +--------------------------+--------------------------------------+---------------------------+
+   * | audioObjectIDRef         | :type:`ChangedAudioObjectIds`        | :class:`VectorParameter`  |
+   * +--------------------------+--------------------------------------+---------------------------+
+   * | audioContentIDRef        | :type:`ChangedAudioContentIds`       | :class:`VectorParameter`  |
+   * +--------------------------+--------------------------------------+---------------------------+
+   * | audioProgrammeIDRef      | :type:`ChangedAudioProgrammeIds`     | :class:`VectorParameter`  |
+   * +--------------------------+--------------------------------------+---------------------------+
    * \endrst
+   * @note type names are different to amd sub-element name, to avoid confusion with the similarly named
+   * audioTrackUidRef element in audioTrack, and to reflect the fact it encapsulates id and status rather
+   * than just the id.
    */
   class ChangedIds : public detail::ChangedIdsBase,
                      private detail::AddWrapperMethods<ChangedIds> {

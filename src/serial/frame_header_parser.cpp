@@ -100,7 +100,7 @@ namespace adm {
 
       template <typename T>
       typename T::value_type parseIdRef(NodePtr idRefNode) {
-        auto id = detail::IDRefTraits<T>::parseId(idRefNode->value());
+        auto id = detail::ChangedIdTraits<T>::parseId(idRefNode->value());
         auto status = parseAttribute<Status>(idRefNode, "status", &parseStatus);
         return typename T::value_type{id, status};
       }
@@ -108,20 +108,20 @@ namespace adm {
       template <typename T>
       void addIdReferences(NodePtr changedIdsNode, ChangedIds& changedIds) {
         addOptionalElements<typename T::value_type>(
-            changedIdsNode, detail::IDRefTraits<T>::elementName, changedIds,
+            changedIdsNode, detail::ChangedIdTraits<T>::elementName, changedIds,
             &parseIdRef<T>);
       }
 
       ChangedIds parseChangedIds(NodePtr changedIdsNode) {
         ChangedIds ids;
-        addIdReferences<AudioChannelFormatIdRefs>(changedIdsNode, ids);
-        addIdReferences<AudioPackFormatIdRefs>(changedIdsNode, ids);
-        addIdReferences<AudioTrackUidIdRefs>(changedIdsNode, ids);
-        addIdReferences<AudioTrackFormatIdRefs>(changedIdsNode, ids);
-        addIdReferences<AudioStreamFormatIdRefs>(changedIdsNode, ids);
-        addIdReferences<AudioObjectIdRefs>(changedIdsNode, ids);
-        addIdReferences<AudioContentIdRefs>(changedIdsNode, ids);
-        addIdReferences<AudioProgrammeIdRefs>(changedIdsNode, ids);
+        addIdReferences<ChangedAudioChannelFormatIds>(changedIdsNode, ids);
+        addIdReferences<ChangedAudioPackFormatIds>(changedIdsNode, ids);
+        addIdReferences<ChangedAudioTrackUidIds>(changedIdsNode, ids);
+        addIdReferences<ChangedAudioTrackFormatIds>(changedIdsNode, ids);
+        addIdReferences<ChangedAudioStreamFormatIds>(changedIdsNode, ids);
+        addIdReferences<ChangedAudioObjectIds>(changedIdsNode, ids);
+        addIdReferences<ChangedAudioContentIds>(changedIdsNode, ids);
+        addIdReferences<ChangedAudioProgrammeIds>(changedIdsNode, ids);
         return ids;
       }
 

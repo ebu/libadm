@@ -706,23 +706,24 @@ namespace adm {
       template <typename T>
       void formatIdRef(XmlNode &parent, const ChangedIds &ids) {
         for (auto const &ref : ids.get<T>()) {
-          auto refNode = parent.addNode(detail::IDRefTraits<T>::elementName);
-          refNode.setValue(formatId(
-              ref.template get<typename detail::IDRefTraits<T>::id_type>()));
+          auto refNode =
+              parent.addNode(detail::ChangedIdTraits<T>::elementName);
+          refNode.setValue(formatId(ref.template get<
+                       typename detail::ChangedIdTraits<T>::id_type>()));
           refNode.template addAttribute<Status>(&ref, "status");
         }
       }
     }  // namespace
 
     void formatChangedIds(XmlNode &node, const ChangedIds &changedIds) {
-      formatIdRef<AudioChannelFormatIdRefs>(node, changedIds);
-      formatIdRef<AudioPackFormatIdRefs>(node, changedIds);
-      formatIdRef<AudioTrackUidIdRefs>(node, changedIds);
-      formatIdRef<AudioTrackFormatIdRefs>(node, changedIds);
-      formatIdRef<AudioStreamFormatIdRefs>(node, changedIds);
-      formatIdRef<AudioObjectIdRefs>(node, changedIds);
-      formatIdRef<AudioContentIdRefs>(node, changedIds);
-      formatIdRef<AudioProgrammeIdRefs>(node, changedIds);
+      formatIdRef<ChangedAudioChannelFormatIds>(node, changedIds);
+      formatIdRef<ChangedAudioPackFormatIds>(node, changedIds);
+      formatIdRef<ChangedAudioTrackUidIds>(node, changedIds);
+      formatIdRef<ChangedAudioTrackFormatIds>(node, changedIds);
+      formatIdRef<ChangedAudioStreamFormatIds>(node, changedIds);
+      formatIdRef<ChangedAudioObjectIds>(node, changedIds);
+      formatIdRef<ChangedAudioContentIds>(node, changedIds);
+      formatIdRef<ChangedAudioProgrammeIds>(node, changedIds);
     }
 
     void formatFrameFormat(XmlNode &node, const FrameFormat &format) {
