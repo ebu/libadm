@@ -96,6 +96,16 @@ namespace adm {
     friend class detail::AddWrapperMethods<TransportTrackFormat>;
   };
 
+  inline bool operator==(TransportTrackFormat const& lhs,
+                         TransportTrackFormat const& rhs) {
+    auto result = lhs.get<TransportId>() == rhs.get<TransportId>();
+    result = result && lhs.get<TransportName>() == rhs.get<TransportName>();
+    result = result && lhs.get<NumTracks>() == rhs.get<NumTracks>();
+    result = result && lhs.get<NumIds>() == rhs.get<NumIds>();
+    result = result && lhs.get<AudioTracks>() == rhs.get<AudioTracks>();
+    return result;
+  }
+
   // ---- Implementation ---- //
 
   template <typename... Parameters>

@@ -765,7 +765,7 @@ namespace adm {
                                    &formatFrameFormat);
       node.addOptionalElement<ProfileList>(&header, "profileList",
                                            &formatProfileList);
-      for (const auto &transportTrack : header.transportTrackFormats()) {
+      for (const auto &transportTrack : header.get<TransportTrackFormats>()) {
         node.addElement(transportTrack, "transportTrackFormat",
                         &formatTransportTrackFormat);
       }

@@ -13,21 +13,18 @@
 #include <vector>
 
 namespace adm {
-
-  class Frame;
-
-  using TransportTrackFormatConstRange =
-      boost::iterator_range<std::vector<TransportTrackFormat>::const_iterator>;
-  using TransportTrackFormatRange =
-      boost::iterator_range<std::vector<TransportTrackFormat>::iterator>;
+  using TransportTrackFormats = std::vector<TransportTrackFormat>;
+  struct TransportTrackFormatsTag {};
+  ADD_TRAIT(TransportTrackFormats, TransportTrackFormatsTag)
 
   /// @brief Tag for FrameHeader
   struct FrameHeaderTag {};
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<ProfileList>;
-
-    using FrameHeaderBase = HasParameters<OptionalParameter<ProfileList>>;
+    using FrameHeaderBase =
+        HasParameters<OptionalParameter<ProfileList>,
+                      VectorParameter<TransportTrackFormats>>;
   }  // namespace detail
   /**
    * @ingroup sadm
@@ -45,23 +42,19 @@ namespace adm {
 
     template <typename... Parameters>
     ADM_EXPORT explicit FrameHeader(FrameFormat format,
-                                    Parameters&&... parameters);
+                                    Parameters... parameters);
     ADM_EXPORT FrameHeader(const FrameHeader&) = default;
     ADM_EXPORT FrameHeader(FrameHeader&&) = default;
     ADM_EXPORT FrameHeader& operator=(const FrameHeader&) = default;
     ADM_EXPORT FrameHeader& operator=(FrameHeader&&) = default;
 
-    ADM_EXPORT void add(const TransportTrackFormat& transportTrackFormat);
     ADM_EXPORT void set(FrameFormat frameFormat);
 
-    ADM_EXPORT TransportTrackFormatConstRange transportTrackFormats() const;
-    ADM_EXPORT TransportTrackFormatRange transportTrackFormats();
-
-    ADM_EXPORT void clearTransportTrackFormats();
-
+    using detail::FrameHeaderBase::add;
     using detail::FrameHeaderBase::get;
     using detail::FrameHeaderBase::has;
     using detail::FrameHeaderBase::isDefault;
+    using detail::FrameHeaderBase::remove;
     using detail::FrameHeaderBase::set;
     using detail::FrameHeaderBase::unset;
     using detail::AddWrapperMethods<FrameHeader>::has;
@@ -78,12 +71,11 @@ namespace adm {
     ADM_EXPORT inline bool is_default(FrameFormat::tag) const { return false; }
 
     FrameFormat frameFormat_;
-    std::vector<TransportTrackFormat> transportTrackFormats_;
   };
 
   template <typename... Parameters>
-  FrameHeader::FrameHeader(FrameFormat format, Parameters&&... parameters)
+  FrameHeader::FrameHeader(FrameFormat format, Parameters... parameters)
       : frameFormat_{std::move(format)} {
-    detail::setNamedOptionHelper(this, std::forward<Parameters>(parameters)...);
+    detail::setNamedOptionHelper(this, std::move(parameters)...);
   }
 }  // namespace adm
