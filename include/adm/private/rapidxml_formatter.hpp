@@ -43,7 +43,8 @@ namespace adm {
         XmlNode &node, const std::shared_ptr<const AudioPackFormat> packFormat);
     void formatAudioChannelFormat(
         XmlNode &node,
-        const std::shared_ptr<const AudioChannelFormat> channelFormat);
+        const std::shared_ptr<const AudioChannelFormat> channelFormat,
+        TimeReference timeReference);
     void formatAudioStreamFormat(
         XmlNode &node,
         const std::shared_ptr<const AudioStreamFormat> streamFormat);
@@ -56,15 +57,20 @@ namespace adm {
     void formatProfile(XmlNode &node, const Profile &profile);
 
     void formatBlockFormatDirectSpeakers(
-        XmlNode &node, const AudioBlockFormatDirectSpeakers &audioBlock);
+        XmlNode &node, const AudioBlockFormatDirectSpeakers &audioBlock,
+        TimeReference timeReference);
     void formatBlockFormatMatrix(XmlNode &node,
-                                 const AudioBlockFormatMatrix &audioBlock);
+                                 const AudioBlockFormatMatrix &audioBlock,
+                                 TimeReference timeReference);
     void formatBlockFormatObjects(XmlNode &node,
-                                  const AudioBlockFormatObjects &audioBlock);
+                                  const AudioBlockFormatObjects &audioBlock,
+                                  TimeReference timeReference);
     void formatBlockFormatHoa(XmlNode &node,
-                              const AudioBlockFormatHoa &audioBlock);
+                              const AudioBlockFormatHoa &audioBlock,
+                              TimeReference timeReference);
     void formatBlockFormatBinaural(XmlNode &node,
-                                   const AudioBlockFormatBinaural &audioBlock);
+                                   const AudioBlockFormatBinaural &audioBlock,
+                                   TimeReference timeReference);
 
     void formatSpeakerLabels(XmlNode &parentNode, const std::string &name,
                              const SpeakerLabels &speakerLabels);

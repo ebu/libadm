@@ -39,10 +39,8 @@ namespace adm {
 
     using AudioBlockFormatHoaBase =
         HasParameters<RequiredParameter<AudioBlockFormatId>,
-                      DefaultParameter<Rtime>, OptionalParameter<Duration>,
-                      OptionalParameter<Lstart>, OptionalParameter<Lduration>, 
-                      OptionalParameter<InitializeBlock>, 
-                      OptionalParameter<Order>, OptionalParameter<Degree>,
+                      DefaultParameter<Rtime>, OptionalParameter<Duration>, OptionalParameter<InitializeBlock>,
+        OptionalParameter<Order>, OptionalParameter<Degree>,
                       DefaultParameter<Normalization>,
                       DefaultParameter<NfcRefDist>,
                       DefaultParameter<Gain>,
@@ -69,9 +67,13 @@ namespace adm {
    * +---------------------+------------------------------+----------------------------+
    * | duration            | :type:`Duration`             | :class:`OptionalParameter` |
    * +---------------------+------------------------------+----------------------------+
-   * | lstart              | :type:`Lstart`               | :class:`OptionalParameter` |
+   * | lstart              | :type:`Rtime` (by using      |                            |
+   * |                     |     LOCAL TimeReference      |                            |
+   * |                     |     in FrameHeader)          |                            |
    * +---------------------+------------------------------+----------------------------+
-   * | lduration           | :type:`Lduration`            | :class:`OptionalParameter` |
+   * | lduration           | :type:`Duration` (by using   |                            |
+   * |                     |      LOCAL TimeReference     |                            |
+   * |                     |      in FrameHeader)         |                            |
    * +---------------------+------------------------------+----------------------------+
    * | initializeBlock     | :type:`InitializeBlock`      | :class:`OptionalParameter` |
    * +---------------------+------------------------------+----------------------------+

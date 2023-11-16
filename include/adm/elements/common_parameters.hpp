@@ -54,10 +54,6 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<Duration>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS
-        OptionalParameter<Lstart>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS
-        OptionalParameter<Lduration>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<InitializeBlock>;
 
     extern template class ADM_EXPORT_TEMPLATE_METHODS

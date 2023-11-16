@@ -25,7 +25,10 @@ namespace adm {
         return static_cast<bool>(options & flag);
       }
 
-      void add_document_to_node(XmlNode& audioFormatExtended, std::shared_ptr<Document const> document) {
+      void add_document_to_node(XmlNode& audioFormatExtended,
+                                std::shared_ptr<Document const> document,
+                                TimeReference timeReference = TimeReference{
+                                    TimeReferenceValue::TOTAL}) {
         // clang-format off
         audioFormatExtended.addOptionalAttribute<Version>(document, "version");
         audioFormatExtended.addOptionalElement<ProfileList>(document, "profileList", &formatProfileList);
@@ -33,7 +36,9 @@ namespace adm {
         audioFormatExtended.addBaseElements<AudioContent, AudioContentId>(document, "audioContent", &formatAudioContent);
         audioFormatExtended.addBaseElements<AudioObject, AudioObjectId>(document, "audioObject", &formatAudioObject);
         audioFormatExtended.addBaseElements<AudioPackFormat, AudioPackFormatId>(document, "audioPackFormat", &formatAudioPackFormat);
-        audioFormatExtended.addBaseElements<AudioChannelFormat, AudioChannelFormatId>(document, "audioChannelFormat", &formatAudioChannelFormat);
+        audioFormatExtended.addBaseElements<AudioChannelFormat, AudioChannelFormatId>(document, "audioChannelFormat",
+                                                                                      [timeReference](XmlNode& node, std::shared_ptr<const AudioChannelFormat> channelFormat){formatAudioChannelFormat(
+                                                                                          node, std::move(channelFormat), timeReference);});
         audioFormatExtended.addBaseElements<AudioStreamFormat, AudioStreamFormatId>(document, "audioStreamFormat", &formatAudioStreamFormat);
         audioFormatExtended.addBaseElements<AudioTrackFormat, AudioTrackFormatId>(document, "audioTrackFormat", &formatAudioTrackFormat);
 
@@ -84,7 +89,8 @@ namespace adm {
       } else {
         formatExtended = root.addNode("audioFormatExtended");
       }
-      add_document_to_node(formatExtended, document);
+      add_document_to_node(formatExtended, document,
+                           frameHeader.get<FrameFormat>().get<TimeReference>());
       return stream << xmlDocument;
     }
   }  // namespace xml

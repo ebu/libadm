@@ -522,15 +522,26 @@ namespace adm {
       return profileList;
     }
 
+    namespace {
+      template <typename T>
+      void addTimeParametersToBlock(NodePtr node, T& audioBlockFormat) {
+        setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat,
+                                    &parseTimecode);
+        setOptionalAttribute<Duration>(node, "duration", audioBlockFormat,
+                                       &parseTimecode);
+        setOptionalAttribute<Rtime>(node, "lstart", audioBlockFormat,
+                                    &parseTimecode);
+        setOptionalAttribute<Duration>(node, "lduration", audioBlockFormat,
+                                       &parseTimecode);
+      }
+    }  // namespace
+
     AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(
         NodePtr node) {
       AudioBlockFormatDirectSpeakers audioBlockFormat;
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
-      setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Lstart>(node, "lstart", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Lduration>(node, "lduration", audioBlockFormat, &parseTimecode);
+      addTimeParametersToBlock(node, audioBlockFormat);
       setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
       setMultiElement<SpeakerPosition>(node, "position", audioBlockFormat, &parseSpeakerPosition);
       addOptionalElements<SpeakerLabel>(node, "speakerLabel", audioBlockFormat, &parseSpeakerLabel);
@@ -699,10 +710,7 @@ namespace adm {
       AudioBlockFormatObjects audioBlockFormat{SphericalPosition()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
-      setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Lstart>(node, "lstart", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Lduration>(node, "lduration", audioBlockFormat, &parseTimecode);
+      addTimeParametersToBlock(node, audioBlockFormat);
       setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
 
       setOptionalElement<Cartesian>(node, "cartesian", audioBlockFormat);
@@ -938,10 +946,7 @@ namespace adm {
       AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
-      setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Duration>(node, "duration", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Lstart>(node, "lstart", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Lduration>(node, "lduration", audioBlockFormat, &parseTimecode);
+      addTimeParametersToBlock(node, audioBlockFormat);
       setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
       setOptionalElement<Order>(node, "order", audioBlockFormat);
       setOptionalElement<Degree>(node, "degree", audioBlockFormat);
@@ -960,12 +965,7 @@ namespace adm {
     AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node) {
       AudioBlockFormatBinaural audioBlockFormat;
 
-      setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat,
-                                  &parseTimecode);
-      setOptionalAttribute<Duration>(node, "duration", audioBlockFormat,
-                                     &parseTimecode);
-      setOptionalAttribute<Lstart>(node, "lstart", audioBlockFormat, &parseTimecode);
-      setOptionalAttribute<Lduration>(node, "lduration", audioBlockFormat, &parseTimecode);
+      addTimeParametersToBlock(node, audioBlockFormat);
       setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
       setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);

@@ -2,12 +2,6 @@
 #include "adm/utilities/element_io.hpp"
 
 namespace adm {
-  namespace detail {
-    template <>
-    TimeReference getDefault<TimeReference>() {
-      return TimeReference{TimeReferenceValue::TOTAL};
-    };
-  }  // namespace detail
 
   // ---- Getter ---- //
   FrameFormatId FrameFormat::get(

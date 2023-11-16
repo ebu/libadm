@@ -52,9 +52,7 @@ namespace adm {
 
     using AudioBlockFormatObjectsBase = HasParameters<
         RequiredParameter<AudioBlockFormatId>, DefaultParameter<Rtime>,
-        OptionalParameter<Duration>, OptionalParameter<Lstart>,
-        OptionalParameter<Lduration>, 
-        OptionalParameter<InitializeBlock>, DefaultParameter<Width>,
+        OptionalParameter<Duration>, OptionalParameter<InitializeBlock>, DefaultParameter<Width>,
         DefaultParameter<Height>, DefaultParameter<Depth>,
         DefaultParameter<Diffuse>, DefaultParameter<Gain>,
         DefaultParameter<Importance>, DefaultParameter<HeadphoneVirtualise>,
@@ -77,9 +75,13 @@ namespace adm {
    * +---------------------+------------------------------+----------------------------+
    * | duration            | :type:`Duration`             | :class:`OptionalParameter` |
    * +---------------------+------------------------------+----------------------------+
-   * | lstart              | :type:`LStart`               | :class:`OptionalParameter` |
+   * | lstart              | :type:`Rtime` (by using      |                            |
+   * |                     |     LOCAL TimeReference      |                            |
+   * |                     |     in FrameHeader)          |                            |
    * +---------------------+------------------------------+----------------------------+
-   * | lduration           | :type:`Lduration`            | :class:`OptionalParameter` |
+   * | lduration           | :type:`Duration` (by using   |                            |
+   * |                     |      LOCAL TimeReference     |                            |
+   * |                     |      in FrameHeader)         |                            |
    * +---------------------+------------------------------+----------------------------+
    * | initializeBlock     | :type:`InitializeBlock`      | :class:`OptionalParameter` |
    * +---------------------+------------------------------+----------------------------+

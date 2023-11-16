@@ -69,10 +69,10 @@ TEST_CASE("xml_time_format_sadm") {
       REQUIRE(channelFormat);
       auto firstBlockFormat = *(
           channelFormat->getElements<AudioBlockFormatDirectSpeakers>().begin());
-      REQUIRE(firstBlockFormat.has<Lstart>());
-      REQUIRE(firstBlockFormat.get<Lstart>().get() == FractionalTime{1, 2});
-      REQUIRE(firstBlockFormat.has<Lduration>());
-      REQUIRE(firstBlockFormat.get<Lduration>().get() == FractionalTime{5, 4});
+      REQUIRE(firstBlockFormat.has<Rtime>());
+      REQUIRE(firstBlockFormat.get<Rtime>().get() == FractionalTime{1, 2});
+      REQUIRE(firstBlockFormat.has<Duration>());
+      REQUIRE(firstBlockFormat.get<Duration>().get() == FractionalTime{5, 4});
     }
 
     SECTION("Objects") {
@@ -81,10 +81,10 @@ TEST_CASE("xml_time_format_sadm") {
       REQUIRE(channelFormat);
       auto firstBlockFormat =
           *(channelFormat->getElements<AudioBlockFormatObjects>().begin());
-      REQUIRE(firstBlockFormat.has<Lstart>());
-      REQUIRE(firstBlockFormat.get<Lstart>().get() == FractionalTime{1, 2});
-      REQUIRE(firstBlockFormat.has<Lduration>());
-      REQUIRE(firstBlockFormat.get<Lduration>().get() == FractionalTime{5, 4});
+      REQUIRE(firstBlockFormat.has<Rtime>());
+      REQUIRE(firstBlockFormat.get<Rtime>().get() == FractionalTime{1, 2});
+      REQUIRE(firstBlockFormat.has<Duration>());
+      REQUIRE(firstBlockFormat.get<Duration>().get() == FractionalTime{5, 4});
     }
   }
 

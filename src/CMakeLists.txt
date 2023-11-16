@@ -64,7 +64,6 @@ add_library(adm
   private/rapidxml_formatter.cpp
   private/xml_writer.cpp
   private/document_parser.cpp
-  private/base_xml_parser.cpp
   detail/id_assigner.cpp
   parse.cpp
   parse_sadm.cpp

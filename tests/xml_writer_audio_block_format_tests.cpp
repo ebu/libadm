@@ -6,6 +6,7 @@
 #include "adm/utilities/object_creation.hpp"
 #include "adm/write.hpp"
 #include "helper/file_comparator.hpp"
+#include "adm/serial.hpp"
 
 using namespace adm;
 namespace {
@@ -213,11 +214,83 @@ TEST_CASE("write specified Binaural block sadm") {
       AudioChannelFormatName("Test"), TypeDefinition::BINAURAL);
   doc->add(channelFormat);
   auto blockFormat = AudioBlockFormatBinaural{
-      Lstart{std::chrono::seconds(0)}, Lduration{std::chrono::seconds(1)},
+      Rtime{std::chrono::seconds(0)}, Duration{std::chrono::seconds(1)},
       Gain::fromLinear(0.5), Importance{5}};
   channelFormat->add(blockFormat);
 
   // Removed as giving a failure even those file matches string
   /*auto xml = getXml(doc);
   CHECK_THAT(xml, EqualsXmlFile("write_specified_binaural_block_sadm"));*/
+}
+
+namespace {
+  //clang-format off
+  constexpr const char* LOCAL_XML = R"(<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000001" start="00:00:00.00000" duration="00:00:01.00000" type="full" timeReference="local"/>
+	</frameHeader>
+	<audioFormatExtended>
+		<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="Objects Format" typeLabel="0003" typeDefinition="Objects">
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" lstart="00:00:01.00000" lduration="00:00:02.00000">
+				<position coordinate="X">0.000000</position>
+				<position coordinate="Y">1.000000</position>
+				<cartesian>1</cartesian>
+			</audioBlockFormat>
+		</audioChannelFormat>
+	</audioFormatExtended>
+</frame>
+
+)";
+
+  constexpr const char* TOTAL_XML = R"(<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000001" start="00:00:00.00000" duration="00:00:01.00000" type="full" timeReference="total"/>
+	</frameHeader>
+	<audioFormatExtended>
+		<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="Objects Format" typeLabel="0003" typeDefinition="Objects">
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" rtime="00:00:01.00000" duration="00:00:02.00000">
+				<position coordinate="X">0.000000</position>
+				<position coordinate="Y">1.000000</position>
+				<cartesian>1</cartesian>
+			</audioBlockFormat>
+		</audioChannelFormat>
+	</audioFormatExtended>
+</frame>
+
+)";
+
+  //clang-format on
+}  // namespace
+
+TEST_CASE("Time reference writing") {
+  using namespace std::chrono_literals;
+  Rtime start{1s};
+  Duration duration{2s};
+  CartesianPosition position{X{0}, Y{1}};
+  auto document = Document::create();
+  //  auto holder = addSimpleObjectTo(document, "test");
+  FrameFormat format{FrameFormatId{FrameIndex{1}}, Start{0s}, Duration{1s},
+                     FrameType{FrameTypeValue::FULL}};
+  SECTION("Objects, total time") {
+    format.set(TimeReference{TimeReferenceValue::TOTAL});
+    auto channelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName{"Objects Format"}, TypeDefinition::OBJECTS);
+    channelFormat->add(AudioBlockFormatObjects{position, start, duration});
+    document->add(channelFormat);
+    std::stringstream ss;
+    writeXml(ss, document, FrameHeader{format});
+    REQUIRE(ss.str() == TOTAL_XML);
+  }
+  SECTION("Objects, local time") {
+    format.set(TimeReference{TimeReferenceValue::LOCAL});
+    auto channelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName{"Objects Format"}, TypeDefinition::OBJECTS);
+    channelFormat->add(AudioBlockFormatObjects{position, start, duration});
+    document->add(channelFormat);
+    std::stringstream ss;
+    writeXml(ss, document, FrameHeader{format});
+    REQUIRE(ss.str() == LOCAL_XML);
+  }
 }

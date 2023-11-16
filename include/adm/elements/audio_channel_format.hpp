@@ -53,6 +53,11 @@ namespace adm {
 
   /// @brief Tag for AudioChannelFormat
   struct AudioChannelFormatTag {};
+
+  namespace detail {
+    using AudioChannelFormatBase =
+        detail::HasParameters<DefaultParameter<TimeReference>>;
+  }
   /**
    * @brief Class representation of the audioChannelFormat ADM element
    *
@@ -76,7 +81,8 @@ namespace adm {
    * Note that TypeDescriptor can only be set in the constructor.
    */
   class AudioChannelFormat
-      : public std::enable_shared_from_this<AudioChannelFormat> {
+      : public std::enable_shared_from_this<AudioChannelFormat>,
+        public detail::AudioChannelFormatBase {
    public:
     typedef AudioChannelFormatTag tag;
     /// Type that holds the id for this element;
@@ -131,7 +137,9 @@ namespace adm {
      */
     template <typename Parameter>
     bool isDefault() const;
+    using detail::AudioChannelFormatBase::isDefault;
 
+    using detail::AudioChannelFormatBase::set;
     /// @brief AudioChannelFormatId setter
     ADM_EXPORT void set(AudioChannelFormatId id);
     /// @brief AudioChannelFormatName setter
@@ -148,6 +156,7 @@ namespace adm {
      */
     template <typename Parameter>
     void unset();
+    using detail::AudioChannelFormatBase::unset;
 
     /**
      * @brief Add AudioBlockFormats
@@ -208,6 +217,7 @@ namespace adm {
     ADM_EXPORT AudioChannelFormat(const AudioChannelFormat &) = default;
     ADM_EXPORT AudioChannelFormat(AudioChannelFormat &&) = default;
 
+    using detail::AudioChannelFormatBase::get;
     ADM_EXPORT AudioChannelFormatId
         get(detail::ParameterTraits<AudioChannelFormatId>::tag) const;
     ADM_EXPORT AudioChannelFormatName
@@ -222,12 +232,12 @@ namespace adm {
         detail::ParameterTraits<AudioChannelFormatName>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<TypeDescriptor>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Frequency>::tag) const;
+    using detail::AudioChannelFormatBase::has;
 
     template <typename Tag>
     bool isDefault(Tag) const {
       return false;
     }
-
     ADM_EXPORT void unset(detail::ParameterTraits<Frequency>::tag);
 
     // ----- AudioBlockFormats ----- //

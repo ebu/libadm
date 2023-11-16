@@ -118,6 +118,10 @@ namespace adm {
      private:
       NodePtr node_;
       bool discardDefaultValues_ = true;
+
+      template <typename ElementType, typename Callable>
+      void addBlock(const ElementType &admElement, const std::string &name,
+                    Callable formatter, TimeReference timeReference);
     };
 
     inline std::ostream &operator<<(std::ostream &os, XmlDocument const &doc) {

@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <boost/variant.hpp>
+#include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 
@@ -91,18 +92,21 @@ namespace adm {
   struct RtimeTag {};
   /// @brief NamedType for the rtime attribute
   using Rtime = detail::NamedType<Time, RtimeTag>;
-  /// @brief Tag for NamedType ::Lstart
-  struct LstartTag {};
-  /// @brief NamedType for the lstart attribute
-  using Lstart = detail::NamedType<Time, LstartTag>;
-  /// @brief Tag for NamedType ::Lduration
-  struct LdurationTag {};
-  /// @brief NamedType for the lduration attribute
-  using Lduration = detail::NamedType<Time, LdurationTag>;
   /// @brief Tag for NamedType ::InitializeBlock
   struct InitializeBlockTag {};
   /// @brief NamedType for the InitializeBlock attribute
   using InitializeBlock = detail::NamedType<bool, InitializeBlockTag>;
+
+  enum class TimeReferenceValue { TOTAL, LOCAL };
+  /// @brief Tag for NamedType ::TimeReference
+  struct TimeReferenceTag {};
+  /// @brief NamedType for the TimeReference attribute
+  using TimeReference = detail::NamedType<TimeReferenceValue, TimeReferenceTag>;
+
+  namespace detail {
+    template <>
+    TimeReference getDefault<TimeReference>();
+  }
 
   /// @brief Parse an adm timecode and convert it to a std::chrono::duration
   ADM_EXPORT Time parseTimecode(const std::string& timecode);
