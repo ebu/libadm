@@ -150,9 +150,9 @@ namespace adm {
       FrameFormat createFrameFormat(NodePtr frameFormatNode) {
         FrameFormatId id = parseAttribute<FrameFormatId>(
             frameFormatNode, "frameFormatID", &parseFrameFormatId);
-        FrameStart start = parseAttribute<FrameStart>(frameFormatNode, "start",
-                                                      &parseTimecode);
-        FrameDuration duration = parseAttribute<FrameDuration>(
+        Start start =
+            parseAttribute<Start>(frameFormatNode, "start", &parseTimecode);
+        Duration duration = parseAttribute<Duration>(
             frameFormatNode, "duration", &parseTimecode);
         FrameType type =
             parseAttribute<FrameType>(frameFormatNode, "type", &parseFrameType);

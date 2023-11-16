@@ -728,8 +728,8 @@ namespace adm {
 
     void formatFrameFormat(XmlNode &node, const FrameFormat &format) {
       node.addAttribute<FrameFormatId>(&format, "frameFormatID");
-      node.addAttribute<FrameStart>(&format, "start");
-      node.addAttribute<FrameDuration>(&format, "duration");
+      node.addAttribute<Start>(&format, "start");
+      node.addAttribute<Duration>(&format, "duration");
       node.addAttribute<FrameType>(&format, "type");
       node.addOptionalAttribute<TimeReference>(&format, "timeReference");
       node.addOptionalAttribute<FlowId>(&format, "flowID");

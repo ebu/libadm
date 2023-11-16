@@ -117,9 +117,8 @@ R"(<?xml version="1.0" encoding="utf-8"?>
 // clang-format on
 
 TEST_CASE("NumMetadataChunks correctly written as attribute") {
-  FrameHeader header{FrameFormat{
-      FrameFormatId{FrameIndex{1}}, FrameStart{0ms}, FrameDuration{1s},
-      FrameType(FrameTypeValue::DIVIDED), NumMetadataChunks{3}}};
+  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0ms}, Duration{1s},
+                  FrameType(FrameTypeValue::DIVIDED), NumMetadataChunks{3}}};
   auto document = Document::create();
   std::stringstream out;
   writeXml(out, document, header);
@@ -136,9 +135,8 @@ TEST_CASE("NumMetadataChunks correctly parsed from attribute") {
 }
 
 TEST_CASE("CountToSameChunk correctly written as attribute") {
-  FrameHeader header{FrameFormat{
-      FrameFormatId{FrameIndex{1}}, FrameStart{0ms}, FrameDuration{1s},
-      FrameType(FrameTypeValue::DIVIDED), CountToSameChunk{3}}};
+  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0ms}, Duration{1s},
+                  FrameType(FrameTypeValue::DIVIDED), CountToSameChunk{3}}};
   auto document = Document::create();
   std::stringstream out;
   writeXml(out, document, header);
@@ -174,9 +172,8 @@ static constexpr const char* CHANGED_IDS_A2_2 =
 //clang-format on
 
 TEST_CASE("ChangedIDs correctly written - BS2125-1 A2.2, 2nd example") {
-  FrameHeader header(FrameFormat{
-      FrameFormatId{FrameIndex{4}}, FrameStart{3s}, FrameDuration{1s},
-      FrameType{FrameTypeValue::FULL},
+  FrameHeader header(FrameFormat{FrameFormatId{FrameIndex{4}}, Start{3s},
+                                 Duration{1s}, FrameType{FrameTypeValue::FULL},
                                  ChangedIds{ChangedAudioChannelFormatIds{
                                      {parseAudioChannelFormatId("AC_00031001"),
                                       Status(StatusValue::CHANGED)},
@@ -229,7 +226,7 @@ TEST_CASE(
     "Local time timeReference correctly written - BS2125-1 A2.5, example 3") {
   using namespace std::chrono_literals;
   FrameHeader header{FrameFormat{
-      FrameFormatId{FrameIndex{3}}, FrameStart{1s}, FrameDuration{500ms},
+      FrameFormatId{FrameIndex{3}}, Start{1s}, Duration{500ms},
       FrameType{FrameTypeValue::FULL}, TimeReference{TimeReferenceValue::LOCAL},
       ChangedIds{ChangedAudioChannelFormatIds{
           {parseAudioChannelFormatId("AC_00031001"),
@@ -250,8 +247,8 @@ TEST_CASE(
 }
 
 TEST_CASE("Total time timeReference") {
-  FrameFormat format(FrameFormatId{FrameIndex{1}}, FrameStart(1s),
-                     FrameDuration(1s), FrameType(FrameTypeValue::FULL));
+  FrameFormat format(FrameFormatId{FrameIndex{1}}, Start(1s), Duration(1s),
+                     FrameType(FrameTypeValue::FULL));
   REQUIRE(format.has<TimeReference>());
   REQUIRE(format.isDefault<TimeReference>());
   REQUIRE(format.get<TimeReference>() == TimeReferenceValue::TOTAL);
@@ -283,9 +280,8 @@ namespace {
 }  // namespace
 
 TEST_CASE("FlowId writing") {
-  FrameHeader header{FrameFormat{
-      FrameFormatId{FrameIndex{1}}, FrameStart{0s}, FrameDuration{1s},
-      FrameType{FrameTypeValue::FULL}, FlowId{FLOW_ID}}};
+  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0s},
+                                 Duration{1s}, FrameType{FrameTypeValue::FULL}, FlowId{FLOW_ID}}};
   auto document = Document::create();
   std::stringstream ss;
   writeXml(ss, document, header);
@@ -329,8 +325,8 @@ namespace {
 // note we can't implement the defaults as they depend on the Flow type not the frame types
 TEST_CASE("Write all FrameFormat parameters") {
   auto createFormat = [](FrameTypeValue frameType) {
-    return FrameFormat{FrameFormatId{FrameIndex{1}}, FrameStart{0s},
-                       FrameDuration{1s}, FrameType{frameType}};
+    return FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0s}, Duration{1s},
+                       FrameType{frameType}};
   };
   auto format = createFormat(FrameTypeValue::DIVIDED);
   format.set(CountToSameChunk{3});

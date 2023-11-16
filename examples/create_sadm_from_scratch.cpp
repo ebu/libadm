@@ -10,9 +10,8 @@ int main() {
   using namespace adm;
   auto uuid = "1f399874-dfa9-4a9b-82cd-fedc483d1223";
   auto frameFormatId = parseFrameFormatId("FF_00000001");
-  auto frameHeader = FrameHeader{FrameFormat{
-      frameFormatId, FrameStart(std::chrono::milliseconds(0)),
-                  FrameDuration(std::chrono::milliseconds(40)),
+  auto frameHeader = FrameHeader{FrameFormat{frameFormatId, Start(std::chrono::milliseconds(0)),
+                  Duration(std::chrono::milliseconds(40)),
                   FrameType(FrameTypeValue::FULL), FlowId{uuid}}};
   auto document = Document::create();
 

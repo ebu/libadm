@@ -44,8 +44,8 @@ namespace adm {
   void FrameFormat::print(std::ostream& os) const {
     os << get<FrameFormatId>();
     os << " (";
-    os << "start=" << formatTimecode(get<FrameStart>().get());
-    os << ", duration=" << formatTimecode(get<FrameDuration>().get());
+    os << "start=" << formatTimecode(get<Start>().get());
+    os << ", duration=" << formatTimecode(get<Duration>().get());
     os << ", type=" << formatValue(get<FrameType>().get());
     os << ", timeReference=" << formatValue(get<TimeReference>().get());
     if (has<FlowId>()) {

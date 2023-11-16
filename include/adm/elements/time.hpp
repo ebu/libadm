@@ -103,15 +103,6 @@ namespace adm {
   struct InitializeBlockTag {};
   /// @brief NamedType for the InitializeBlock attribute
   using InitializeBlock = detail::NamedType<bool, InitializeBlockTag>;
-  /// @brief Tag for NamedType ::FrameStart
-  struct FrameStartTag {};
-  /// @brief NamedType for the sadm start attribute
-  using FrameStart = detail::NamedType<Time, FrameStartTag>;
-  /// @brief Tag for NamedType ::FrameDuration
-  struct FrameDurationTag {};
-  /// @brief NamedType for the sadm duration attribute
-  using FrameDuration =
-      detail::NamedType<Time, FrameDurationTag>;
 
   /// @brief Parse an adm timecode and convert it to a std::chrono::duration
   ADM_EXPORT Time parseTimecode(const std::string& timecode);

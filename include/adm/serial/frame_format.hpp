@@ -64,10 +64,11 @@ namespace adm {
     template <>
     TimeReference getDefault<TimeReference>();
 
-    using FrameFormatBase = HasParameters<
-        RequiredParameter<FrameStart>, RequiredParameter<FrameDuration>,
-        RequiredParameter<FrameType>, DefaultParameter<TimeReference>,
-        OptionalParameter<NumMetadataChunks>,
+    using FrameFormatBase =
+        HasParameters<RequiredParameter<Start>, RequiredParameter<Duration>,
+                      RequiredParameter<FrameType>,
+                      DefaultParameter<TimeReference>,
+                      OptionalParameter<NumMetadataChunks>,
         OptionalParameter<CountToSameChunk>, OptionalParameter<ChangedIds>,
         OptionalParameter<FlowId>>;
   }  // namespace detail
@@ -120,7 +121,7 @@ namespace adm {
      * in random order after the mandatory ADM parameters.
      */
     template <typename... Parameters>
-    FrameFormat(FrameFormatId id, FrameStart start, FrameDuration duration,
+    FrameFormat(FrameFormatId id, Start start, Duration duration,
                 FrameType frameType, Parameters... optionalNamedArgs);
     ADM_EXPORT FrameFormat(const FrameFormat &) = default;
     ADM_EXPORT FrameFormat(FrameFormat &&) = default;
@@ -204,8 +205,8 @@ namespace adm {
   // ---- Implementation ---- //
 
   template <typename... Parameters>
-  FrameFormat::FrameFormat(FrameFormatId id, FrameStart start,
-                           FrameDuration duration, FrameType frameType, Parameters... optionalNamedArgs)
+  FrameFormat::FrameFormat(FrameFormatId id, Start start, Duration duration,
+                           FrameType frameType, Parameters... optionalNamedArgs)
       : id_(std::move(id)) {
     detail::setNamedOptionHelper(this, std::move(start), std::move(duration),
                                  frameType, std::move(optionalNamedArgs)...);
