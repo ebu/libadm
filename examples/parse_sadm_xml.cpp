@@ -11,7 +11,8 @@ int main(int argc, char const *argv[]) {
 
   std::string fileName = argv[1];
   auto header = adm::parseFrameHeader(fileName);
-  auto document = adm::parseXml(fileName, adm::xml::ParserOptions::recursive_node_search);
+  auto document = adm::parseXml(fileName, header,
+                                adm::xml::ParserOptions::recursive_node_search);
 
   // write XML data to stdout
   std::stringstream xmlStream;
