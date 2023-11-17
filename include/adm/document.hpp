@@ -49,8 +49,6 @@ namespace adm {
                    private detail::DocumentBase,
                    public detail::AddWrapperMethods<Document> {
    public:
-     virtual ~Document() = default;
-
     /**
      * @brief Static helper function to create an Document
      *
