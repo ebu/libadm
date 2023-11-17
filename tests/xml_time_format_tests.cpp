@@ -53,7 +53,10 @@ TEST_CASE("xml_time_format") {
 }
 
 TEST_CASE("xml_time_format_sadm") {
-  auto document = parseXml("xml_parser/time_format_sadm.xml");
+  // has lstart/lduration but parsing without FrameHeader so assumes total timeReference
+  CHECK_THROWS(parseXml("xml_parser/time_format_sadm.xml"));
+  auto document = parseXml("xml_parser/time_format_sadm.xml",
+                           xml::ParserOptions::permit_time_reference_mismatch);
 
   SECTION("parser") {
     SECTION("DirectSpeakers") {

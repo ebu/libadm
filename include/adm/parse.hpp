@@ -9,6 +9,7 @@
 namespace adm {
 
   class Document;
+  class FrameHeader;
 
   namespace xml {
     /**
@@ -33,6 +34,7 @@ namespace adm {
       none = 0x0,  ///< default behaviour
       recursive_node_search =
           0x1,  ///< recursively search whole xml for audioFormatExtended node
+      permit_time_reference_mismatch = 0x2
     };
   }  // namespace xml
 
@@ -55,6 +57,18 @@ namespace adm {
 
   /**
    * @brief Parse an XML representation of the Audio Definition Model
+   * using FrameHeader to check for consistency
+   *
+   * Convenience wrapper for files using `parseXml(std::istream&)`
+   * @param filename XML file to read and parse
+   * @param options Options to influence the XML parser behaviour
+   */
+  ADM_EXPORT std::shared_ptr<Document> parseXml(
+      const std::string& filename, FrameHeader const& header,
+      xml::ParserOptions options = xml::ParserOptions::none);
+
+  /**
+   * @brief Parse an XML representation of the Audio Definition Model
    *
    * Parse adm data from an `std::istream`.
    * @param stream input stream to parse XML data
@@ -62,6 +76,18 @@ namespace adm {
    */
   ADM_EXPORT std::shared_ptr<Document> parseXml(
       std::istream& stream,
+      xml::ParserOptions options = xml::ParserOptions::none);
+
+  /**
+   * @brief Parse an XML representation of the Audio Definition Model
+   * using FrameHeader to check for consistency
+   *
+   * Parse adm data from an `std::istream`.
+   * @param stream input stream to parse XML data
+   * @param options Options to influence the XML parser behaviour
+   */
+  ADM_EXPORT std::shared_ptr<Document> parseXml(
+      std::istream& stream, FrameHeader const& header,
       xml::ParserOptions options = xml::ParserOptions::none);
 
   /**

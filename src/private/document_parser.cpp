@@ -119,12 +119,23 @@ namespace adm {
         throw error::XmlParsingError("audioFormatExtended node not found");
       }
       return document_;
-    }  // namespace xml
+    }
 
+    boost::optional<TimeReference> DocumentParser::getTimeReference() const {
+      if (isSet(options_, ParserOptions::permit_time_reference_mismatch)) {
+        return boost::optional<TimeReference>{};
+      } else {
+        if (!frameHeader_) {
+          return TimeReference(TimeReferenceValue::TOTAL);
+        } else {
+          return frameHeader_->get<FrameFormat>().get<TimeReference>();
+        }
+      }
+    }
 
     NodePtr findAudioFormatExtendedNodeCore(NodePtr node) {
-        auto coreMetadataNodes = detail::findElements(node, "coreMetadata");
-        if (coreMetadataNodes.size() != 1) {
+      auto coreMetadataNodes = detail::findElements(node, "coreMetadata");
+      if (coreMetadataNodes.size() != 1) {
           return nullptr;
         }
         auto formatNodes =
@@ -422,7 +433,8 @@ namespace adm {
       if (audioChannelFormat->get<TypeDescriptor>() ==
           TypeDefinition::DIRECT_SPEAKERS) {
         for (auto& element : elements) {
-          audioChannelFormat->add(parseAudioBlockFormatDirectSpeakers(element));
+          audioChannelFormat->add(
+              parseAudioBlockFormatDirectSpeakers(element, getTimeReference()));
         }
       } else if (audioChannelFormat->get<TypeDescriptor>() ==
                  TypeDefinition::MATRIX) {
@@ -432,17 +444,20 @@ namespace adm {
       } else if (audioChannelFormat->get<TypeDescriptor>() ==
                  TypeDefinition::OBJECTS) {
         for (auto& element : elements) {
-          audioChannelFormat->add(parseAudioBlockFormatObjects(element));
+          audioChannelFormat->add(
+              parseAudioBlockFormatObjects(element, getTimeReference()));
         }
       } else if (audioChannelFormat->get<TypeDescriptor>() ==
                  TypeDefinition::HOA) {
         for (auto& element : elements) {
-          audioChannelFormat->add(parseAudioBlockFormatHoa(element));
+          audioChannelFormat->add(
+              parseAudioBlockFormatHoa(element, getTimeReference()));
         }
       } else if (audioChannelFormat->get<TypeDescriptor>() ==
                  TypeDefinition::BINAURAL) {
         for (auto& element : elements) {
-          audioChannelFormat->add(parseAudioBlockFormatBinaural(element));
+          audioChannelFormat->add(
+              parseAudioBlockFormatBinaural(element, getTimeReference()));
         }
       }
       return audioChannelFormat;
@@ -506,6 +521,9 @@ namespace adm {
       // clang-format on
       return audioTrackUid;
     }
+    void DocumentParser::setHeader(FrameHeader header) {
+      frameHeader_ = std::move(header);
+    }
 
     Profile parseProfile(NodePtr node) {
       auto value = parseValue<ProfileValue>(node);
@@ -524,24 +542,62 @@ namespace adm {
 
     namespace {
       template <typename T>
-      void addTimeParametersToBlock(NodePtr node, T& audioBlockFormat) {
+      void addTimeParametersToBlock(
+          NodePtr node, T& audioBlockFormat,
+          boost::optional<TimeReference> timeReference) {
         setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat,
-                                    &parseTimecode);
+            [timeReference](const std::string& timeCode) {
+              if (timeReference &&
+                  *timeReference == TimeReferenceValue::LOCAL) {
+                throw std::runtime_error(
+                    "'rtime' used in audioBlockFormat, when FrameHeader "
+                    "timeReference is 'local'. Either the timeReference should "
+                    "be 'total' or 'lstart' should be used.");
+              }
+              return parseTimecode(timeCode);
+            });
         setOptionalAttribute<Duration>(node, "duration", audioBlockFormat,
-                                       &parseTimecode);
+            [timeReference](const std::string& timeCode) {
+              if (timeReference &&
+                  *timeReference == TimeReferenceValue::LOCAL) {
+                throw std::runtime_error(
+                    "'duration' used in audioBlockFormat, when FrameHeader "
+                    "timeReference is 'local'. Either the timeReference should "
+                    "be 'total' or 'lduration' should be used.");
+              }
+              return parseTimecode(timeCode);
+            });
         setOptionalAttribute<Rtime>(node, "lstart", audioBlockFormat,
-                                    &parseTimecode);
+            [timeReference](const std::string& timeCode) {
+              if (timeReference &&
+                  *timeReference == TimeReferenceValue::TOTAL) {
+                throw std::runtime_error(
+                    "'lstart' used in audioBlockFormat, when FrameHeader "
+                    "timeReference is 'total'. Either the timeReference should "
+                    "be 'local' or 'rtime' should be used.");
+              }
+              return parseTimecode(timeCode);
+            });
         setOptionalAttribute<Duration>(node, "lduration", audioBlockFormat,
-                                       &parseTimecode);
+            [timeReference](const std::string& timeCode) {
+              if (timeReference &&
+                  *timeReference == TimeReferenceValue::TOTAL) {
+                throw std::runtime_error(
+                    "'lduration' used in audioBlockFormat when FrameHeader "
+                    "timeReference is 'total'. Either the timeReference should "
+                    "be 'local' or 'duration' should be used.");
+              }
+              return parseTimecode(timeCode);
+            });
       }
     }  // namespace
 
     AudioBlockFormatDirectSpeakers parseAudioBlockFormatDirectSpeakers(
-        NodePtr node) {
+        NodePtr node, boost::optional<TimeReference> timeReference) {
       AudioBlockFormatDirectSpeakers audioBlockFormat;
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
-      addTimeParametersToBlock(node, audioBlockFormat);
+      addTimeParametersToBlock(node, audioBlockFormat, timeReference);
       setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
       setMultiElement<SpeakerPosition>(node, "position", audioBlockFormat, &parseSpeakerPosition);
       addOptionalElements<SpeakerLabel>(node, "speakerLabel", audioBlockFormat, &parseSpeakerLabel);
@@ -706,11 +762,12 @@ namespace adm {
       return headphoneVirtualise;
     }
 
-    AudioBlockFormatObjects parseAudioBlockFormatObjects(NodePtr node) {
+    AudioBlockFormatObjects parseAudioBlockFormatObjects(
+        NodePtr node, boost::optional<TimeReference> timeReference) {
       AudioBlockFormatObjects audioBlockFormat{SphericalPosition()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
-      addTimeParametersToBlock(node, audioBlockFormat);
+      addTimeParametersToBlock(node, audioBlockFormat, timeReference);
       setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
 
       setOptionalElement<Cartesian>(node, "cartesian", audioBlockFormat);
@@ -942,11 +999,12 @@ namespace adm {
       return AudioProgrammeReferenceScreen();
     }
 
-    AudioBlockFormatHoa parseAudioBlockFormatHoa(NodePtr node) {
+    AudioBlockFormatHoa parseAudioBlockFormatHoa(
+        NodePtr node, boost::optional<TimeReference> timeReference) {
       AudioBlockFormatHoa audioBlockFormat{Order(), Degree()};
       // clang-format off
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
-      addTimeParametersToBlock(node, audioBlockFormat);
+      addTimeParametersToBlock(node, audioBlockFormat, timeReference);
       setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
       setOptionalElement<Order>(node, "order", audioBlockFormat);
       setOptionalElement<Degree>(node, "degree", audioBlockFormat);
@@ -962,10 +1020,11 @@ namespace adm {
       return audioBlockFormat;
     }
 
-    AudioBlockFormatBinaural parseAudioBlockFormatBinaural(NodePtr node) {
+    AudioBlockFormatBinaural parseAudioBlockFormatBinaural(
+        NodePtr node, boost::optional<TimeReference> timeReference) {
       AudioBlockFormatBinaural audioBlockFormat;
 
-      addTimeParametersToBlock(node, audioBlockFormat);
+      addTimeParametersToBlock(node, audioBlockFormat, timeReference);
       setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
       setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
