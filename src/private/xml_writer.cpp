@@ -50,7 +50,7 @@ namespace adm {
         }
         // clang-format on
       }
-    }
+    }  // namespace
 
     using NodePtr = rapidxml::xml_node<>*;
 
@@ -72,7 +72,8 @@ namespace adm {
       return stream << xmlDocument;
     }
 
-    SadmXmlWriter::SadmXmlWriter(SadmWriterOptions options) : options_{options} {}
+    SadmXmlWriter::SadmXmlWriter(SadmWriterOptions options)
+        : options_{options} {}
     std::ostream& SadmXmlWriter::write(std::shared_ptr<const Document> document,
                                        const FrameHeader& frameHeader,
                                        std::ostream& stream) {
@@ -84,7 +85,7 @@ namespace adm {
       root.addAttribute("version", "ITU-R_BS.2125-1");
       root.addElement(frameHeader, "frameHeader", &formatFrameHeader);
       XmlNode formatExtended;
-      if(isSet(options_, SadmWriterOptions::core_metadata)) {
+      if (isSet(options_, SadmWriterOptions::core_metadata)) {
         formatExtended = xmlDocument.addCoreMetadataAudioFormatExtended(root);
       } else {
         formatExtended = root.addNode("audioFormatExtended");

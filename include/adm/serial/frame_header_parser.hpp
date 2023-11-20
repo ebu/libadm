@@ -32,21 +32,20 @@ namespace adm {
    */
   namespace xml {
     using NodePtr = rapidxml::xml_node<>*;
-        
+
     class FrameHeaderParser {
      public:
-      FrameHeaderParser(
-      const std::string& filename,
-          ParserOptions options = ParserOptions::none);
+      FrameHeaderParser(const std::string& filename,
+                        ParserOptions options = ParserOptions::none);
 
-      explicit FrameHeaderParser(
-          std::istream& stream, ParserOptions options = ParserOptions::none);
+      explicit FrameHeaderParser(std::istream& stream,
+                                 ParserOptions options = ParserOptions::none);
 
       FrameHeader parse();
 
      private:
-      explicit FrameHeaderParser(
-          rapidxml::file<> file, ParserOptions options = ParserOptions::none);
+      explicit FrameHeaderParser(rapidxml::file<> file,
+                                 ParserOptions options = ParserOptions::none);
       /// add an element to both the document and idMap_
       template <typename Element>
       void add(std::shared_ptr<Element> el);

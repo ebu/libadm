@@ -24,14 +24,16 @@ namespace adm {
   };
 
   namespace detail {
-    template<typename T>
-    void validateStringList(std::string const& type, std::string const& value, T&& list) {
-      for(auto const& element : list) {
+    template <typename T>
+    void validateStringList(std::string const& type, std::string const& value,
+                            T&& list) {
+      for (auto const& element : list) {
         if (element == value) return;
       }
       std::stringstream msg;
-      msg << "'" << value << "' is not a valid " << type << ". Permitted values are:";
-      for(auto const& element : list) {
+      msg << "'" << value << "' is not a valid " << type
+          << ". Permitted values are:";
+      for (auto const& element : list) {
         msg << " '" << element << "'";
       }
       throw InvalidStringError(msg.str());
@@ -95,49 +97,47 @@ namespace adm {
 
     struct ScreenEdgeValidator {
       static void validate(const std::string& value) {
-        validateStringList("ScreenEdge",
-                           value,
-                           std::array<std::string, 4>{"left", "right", "top", "bottom"});
+        validateStringList(
+            "ScreenEdge", value,
+            std::array<std::string, 4>{"left", "right", "top", "bottom"});
       }
     };
 
     struct HorizontalEdgeValidator {
       static void validate(const std::string& value) {
-        validateStringList("HorizontalEdge",
-                           value,
+        validateStringList("HorizontalEdge", value,
                            std::array<std::string, 2>{"left", "right"});
       }
     };
 
     struct VerticalEdgeValidator {
       static void validate(const std::string& value) {
-        validateStringList("VerticalEdge",
-                           value,
+        validateStringList("VerticalEdge", value,
                            std::array<std::string, 2>{"top", "bottom"});
       }
     };
 
     struct FrequencyTypeValidator {
       static void validate(const std::string& value) {
-        validateStringList("FrequencyType",
-                           value,
+        validateStringList("FrequencyType", value,
                            std::array<std::string, 2>{"lowPass", "highPass"});
       }
     };
 
     struct CoordinateValueValidator {
       static void validate(const std::string& value) {
-        validateStringList("CoordinateValue",
-                           value,
-                           std::array<std::string, 6>{"azimuth", "elevation", "distance", "X", "Y", "Z"});
+        validateStringList(
+            "CoordinateValue", value,
+            std::array<std::string, 6>{"azimuth", "elevation", "distance", "X",
+                                       "Y", "Z"});
       }
     };
 
     struct SphericalCoordinateValueValidator {
       static void validate(const std::string& value) {
-        validateStringList("SphericalCoordinateValue",
-                           value,
-                           std::array<std::string, 3>{"azimuth", "elevation", "distance"});
+        validateStringList(
+            "SphericalCoordinateValue", value,
+            std::array<std::string, 3>{"azimuth", "elevation", "distance"});
       }
     };
 
@@ -174,9 +174,7 @@ namespace adm {
     };
 
     struct CountToFullValueValidator {
-      static void validate(const unsigned int& value) {
-        return;
-      }
+      static void validate(const unsigned int& value) { return; }
     };
 
   }  // namespace detail

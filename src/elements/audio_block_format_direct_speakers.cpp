@@ -120,7 +120,8 @@ namespace adm {
       detail::ParameterTraits<SpeakerLabels>::tag) {
     speakerLabels_.clear();
   }
-  void AudioBlockFormatDirectSpeakers::unset(detail::ParameterTraits<Cartesian>::tag) {
+  void AudioBlockFormatDirectSpeakers::unset(
+      detail::ParameterTraits<Cartesian>::tag) {
     cartesian_ = boost::none;
   }
 

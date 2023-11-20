@@ -52,11 +52,12 @@ namespace adm {
 
     using AudioBlockFormatObjectsBase = HasParameters<
         RequiredParameter<AudioBlockFormatId>, DefaultParameter<Rtime>,
-        OptionalParameter<Duration>, OptionalParameter<InitializeBlock>, DefaultParameter<Width>,
-        DefaultParameter<Height>, DefaultParameter<Depth>,
-        DefaultParameter<Diffuse>, DefaultParameter<Gain>,
-        DefaultParameter<Importance>, DefaultParameter<HeadphoneVirtualise>,
-        DefaultParameter<HeadLocked>, DefaultParameter<ScreenRef>>;
+        OptionalParameter<Duration>, OptionalParameter<InitializeBlock>,
+        DefaultParameter<Width>, DefaultParameter<Height>,
+        DefaultParameter<Depth>, DefaultParameter<Diffuse>,
+        DefaultParameter<Gain>, DefaultParameter<Importance>,
+        DefaultParameter<HeadphoneVirtualise>, DefaultParameter<HeadLocked>,
+        DefaultParameter<ScreenRef>>;
   }  // namespace detail
 
   /**

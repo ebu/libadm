@@ -146,7 +146,8 @@ namespace adm {
   std::vector<std::shared_ptr<const Element>> Route::getAllOf() const {
     std::vector<std::shared_ptr<const Element>> vec;
     for (auto ritem : route_) {
-      if (isVariantType<std::shared_ptr<const Element>, ElementConstVariant>(ritem)) {
+      if (isVariantType<std::shared_ptr<const Element>, ElementConstVariant>(
+              ritem)) {
         vec.push_back(boost::get<std::shared_ptr<const Element>>(ritem));
       }
     }

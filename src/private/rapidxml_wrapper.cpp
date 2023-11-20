@@ -27,7 +27,8 @@ namespace adm {
       return audioFormatExtendedNode;
     }
 
-    XmlNode XmlDocument::addCoreMetadataAudioFormatExtended(XmlNode& parent) const {
+    XmlNode XmlDocument::addCoreMetadataAudioFormatExtended(
+        XmlNode &parent) const {
       auto coreMetaDataNode = parent.addNode("coreMetadata");
       auto formatNode = coreMetaDataNode.addNode("format");
       auto audioFormatExtendedNode = formatNode.addNode("audioFormatExtended");

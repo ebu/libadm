@@ -46,9 +46,7 @@ namespace adm {
   }
 
   // ---- Common ---- //
-  void TransportId::print(std::ostream& os) const {
-    os << formatId(*this);
-  }
+  void TransportId::print(std::ostream& os) const { os << formatId(*this); }
 
   TransportId parseTransportId(const std::string& id) {
     // TP_xxxx

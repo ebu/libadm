@@ -46,8 +46,8 @@ namespace adm {
     };
 
     enum class SadmWriterOptions : unsigned {
-      none = 0x0, ///< default behaviour
-      core_metadata = 0x1, ///< audioFormatExtended inside coreMetadata/format/
+      none = 0x0,  ///< default behaviour
+      core_metadata = 0x1,  ///< audioFormatExtended inside coreMetadata/format/
       write_default_values = 0x2,  ///< write default values
     };
   }  // namespace xml
@@ -103,8 +103,7 @@ namespace adm {
    * @param options Options to influence the XML generator behaviour
    */
   ADM_EXPORT std::ostream& writeXml(
-      std::ostream& stream,
-      std::shared_ptr<const Document> admDocument,
+      std::ostream& stream, std::shared_ptr<const Document> admDocument,
       FrameHeader const& frameHeader,
       xml::SadmWriterOptions options = xml::SadmWriterOptions::none);
   /**

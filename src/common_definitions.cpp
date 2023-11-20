@@ -160,7 +160,7 @@ namespace adm {
     std::stringstream commonDefinitions;
     getEmbeddedFile("common_definitions.xml", commonDefinitions);
     xml::DocumentParser parser(commonDefinitions,
-                          xml::ParserOptions::recursive_node_search);
+                               xml::ParserOptions::recursive_node_search);
     return parser.parse();
   }
 

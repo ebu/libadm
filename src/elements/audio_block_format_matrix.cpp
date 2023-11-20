@@ -64,5 +64,5 @@ namespace adm {
       detail::ParameterTraits<InitializeBlock>::tag) {
     initializeBlock_ = boost::none;
   }
-  
+
 }  // namespace adm

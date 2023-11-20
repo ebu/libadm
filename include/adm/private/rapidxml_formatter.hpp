@@ -97,7 +97,7 @@ namespace adm {
     void formatFrameFormat(XmlNode &node, const FrameFormat &format);
     void formatTransportTrackFormat(XmlNode &node,
                                     const TransportTrackFormat &format);
-                                    
+
     namespace detail {
       std::string toString(const std::string &string);
       std::string toString(const Time &time);

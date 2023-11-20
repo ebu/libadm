@@ -71,7 +71,7 @@ namespace adm {
     using detail::AudioTrackBase::set;
     using detail::AudioTrackBase::unset;
 
-    void print(std::ostream &os) const;
+    void print(std::ostream& os) const;
 
     friend bool operator==(AudioTrack const& lhs, AudioTrack const& rhs) {
       auto result = lhs.get<TrackId>() == rhs.get<TrackId>();

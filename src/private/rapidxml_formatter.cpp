@@ -716,7 +716,8 @@ namespace adm {
         for (auto const &ref : ids.get<T>()) {
           auto refNode =
               parent.addNode(detail::ChangedIdTraits<T>::elementName);
-          refNode.setValue(formatId(ref.template get<
+          refNode.setValue(
+              formatId(ref.template get<
                        typename detail::ChangedIdTraits<T>::id_type>()));
           refNode.template addAttribute<Status>(&ref, "status");
         }
@@ -778,7 +779,7 @@ namespace adm {
                         &formatTransportTrackFormat);
       }
     }
-    
+
     void formatProfileList(XmlNode &node, const ProfileList &profileList) {
       node.addVectorElements<Profiles>(&profileList, "profile", &formatProfile);
     }

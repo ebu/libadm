@@ -38,7 +38,7 @@ namespace adm {
                       OptionalParameter<TransportName>,
                       OptionalParameter<NumTracks>, OptionalParameter<NumIds>,
                       VectorParameter<AudioTracks>>;
-  }
+  }  // namespace detail
 
   /// @brief Tag for TransportTrackFormat
   struct TransportTrackFormatTag {};
@@ -92,7 +92,7 @@ namespace adm {
     /**
      * @brief Print overview to ostream
      */
-    void print(std::ostream &os) const;
+    void print(std::ostream& os) const;
     friend class detail::AddWrapperMethods<TransportTrackFormat>;
   };
 

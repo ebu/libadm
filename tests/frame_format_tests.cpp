@@ -117,7 +117,8 @@ R"(<?xml version="1.0" encoding="utf-8"?>
 // clang-format on
 
 TEST_CASE("NumMetadataChunks correctly written as attribute") {
-  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0ms}, Duration{1s},
+  FrameHeader header{
+      FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0ms}, Duration{1s},
                   FrameType(FrameTypeValue::DIVIDED), NumMetadataChunks{3}}};
   auto document = Document::create();
   std::stringstream out;
@@ -135,7 +136,8 @@ TEST_CASE("NumMetadataChunks correctly parsed from attribute") {
 }
 
 TEST_CASE("CountToSameChunk correctly written as attribute") {
-  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0ms}, Duration{1s},
+  FrameHeader header{
+      FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0ms}, Duration{1s},
                   FrameType(FrameTypeValue::DIVIDED), CountToSameChunk{3}}};
   auto document = Document::create();
   std::stringstream out;
@@ -281,7 +283,8 @@ namespace {
 
 TEST_CASE("FlowId writing") {
   FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0s},
-                                 Duration{1s}, FrameType{FrameTypeValue::FULL}, FlowId{FLOW_ID}}};
+                                 Duration{1s}, FrameType{FrameTypeValue::FULL},
+                                 FlowId{FLOW_ID}}};
   auto document = Document::create();
   std::stringstream ss;
   writeXml(ss, document, header);

@@ -37,8 +37,8 @@ namespace adm {
   /// @brief Tag for NamedType ::CountToFull
   struct CountToFullTag {};
   /// @brief NamedType for the CountToFull attribute
-  using CountToFull = detail::NamedType<unsigned int, CountToFullTag,
-                                        detail::DefaultValidator>;
+  using CountToFull =
+      detail::NamedType<unsigned int, CountToFullTag, detail::DefaultValidator>;
   /// @brief Tag for NamedType ::NumMetadataChunks
   struct NumMetadataChunksTag {};
   /// @brief NamedType for the NumMetadataChunks attribute
@@ -61,8 +61,8 @@ namespace adm {
                       RequiredParameter<FrameType>,
                       DefaultParameter<TimeReference>,
                       OptionalParameter<NumMetadataChunks>,
-        OptionalParameter<CountToSameChunk>, OptionalParameter<ChangedIds>,
-        OptionalParameter<FlowId>>;
+                      OptionalParameter<CountToSameChunk>,
+                      OptionalParameter<ChangedIds>, OptionalParameter<FlowId>>;
   }  // namespace detail
 
   /**

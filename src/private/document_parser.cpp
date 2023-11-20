@@ -24,7 +24,8 @@ namespace adm {
           document_(destDocument),
           idMap_(*destDocument) {}
 
-    DocumentParser::DocumentParser(const std::string& filename, ParserOptions options,
+    DocumentParser::DocumentParser(const std::string& filename,
+                                   ParserOptions options,
                                    std::shared_ptr<Document> destDocument)
         : DocumentParser(rapidxml::file<>{filename.c_str()}, options,
                          std::move(destDocument)) {}
@@ -51,7 +52,7 @@ namespace adm {
 
       root = findFrameAudioFormatExtended(xmlDocument.first_node());
 
-      if(!root) {
+      if (!root) {
         if (isSet(options_, ParserOptions::recursive_node_search)) {
           root = findAudioFormatExtendedNodeFullRecursive(
               xmlDocument.first_node());
@@ -136,19 +137,19 @@ namespace adm {
     NodePtr findAudioFormatExtendedNodeCore(NodePtr node) {
       auto coreMetadataNodes = detail::findElements(node, "coreMetadata");
       if (coreMetadataNodes.size() != 1) {
-          return nullptr;
-        }
-        auto formatNodes =
-        detail::findElements(coreMetadataNodes.at(0), "format");
-        if (formatNodes.size() != 1) {
-          return nullptr;
-        }
-        auto audioFormatExtendedNodes =
-        detail::findElements(formatNodes.at(0), "audioFormatExtended");
-        if (audioFormatExtendedNodes.size() != 1) {
-          return nullptr;
-        }
-        return audioFormatExtendedNodes.at(0);
+        return nullptr;
+      }
+      auto formatNodes =
+          detail::findElements(coreMetadataNodes.at(0), "format");
+      if (formatNodes.size() != 1) {
+        return nullptr;
+      }
+      auto audioFormatExtendedNodes =
+          detail::findElements(formatNodes.at(0), "audioFormatExtended");
+      if (audioFormatExtendedNodes.size() != 1) {
+        return nullptr;
+      }
+      return audioFormatExtendedNodes.at(0);
     };
 
     /**
@@ -189,7 +190,7 @@ namespace adm {
     }
 
     NodePtr find_node_in_siblings(NodePtr node, std::string const& name) {
-      while(node) {
+      while (node) {
         if (std::string(node->name()) == name) break;
         node = node->next_sibling();
       }
@@ -199,9 +200,10 @@ namespace adm {
     NodePtr findFrameAudioFormatExtended(NodePtr node) {
       auto frame = find_node_in_siblings(node, "frame");
       NodePtr audioFormatExtended{nullptr};
-      if(frame) {
-        audioFormatExtended = find_node_in_siblings(frame->first_node(), "audioFormatExtended");
-        if(!audioFormatExtended) {
+      if (frame) {
+        audioFormatExtended =
+            find_node_in_siblings(frame->first_node(), "audioFormatExtended");
+        if (!audioFormatExtended) {
           audioFormatExtended = findAudioFormatExtendedNodeCore(frame);
         }
       }
@@ -233,7 +235,8 @@ namespace adm {
       return audioProgramme;
     }
 
-    std::shared_ptr<AudioContent> DocumentParser::parseAudioContent(NodePtr node) {
+    std::shared_ptr<AudioContent> DocumentParser::parseAudioContent(
+        NodePtr node) {
       // clang-format off
       auto name = parseAttribute<AudioContentName>(node, "audioContentName");
       auto id = parseAttribute<AudioContentId>(node, "audioContentID", &parseAudioContentId);
@@ -254,7 +257,8 @@ namespace adm {
       return audioContent;
     }
 
-    std::shared_ptr<AudioObject> DocumentParser::parseAudioObject(NodePtr node) {
+    std::shared_ptr<AudioObject> DocumentParser::parseAudioObject(
+        NodePtr node) {
       // clang-format off
       auto name = parseAttribute<AudioObjectName>(node, "audioObjectName");
       auto id = parseAttribute<AudioObjectId>(node, "audioObjectID", &parseAudioObjectId);
@@ -504,7 +508,8 @@ namespace adm {
       return audioTrackFormat;
     }
 
-    std::shared_ptr<AudioTrackUid> DocumentParser::parseAudioTrackUid(NodePtr node) {
+    std::shared_ptr<AudioTrackUid> DocumentParser::parseAudioTrackUid(
+        NodePtr node) {
       // clang-format off
       auto id = parseAttribute<AudioTrackUidId>(node, "UID", &parseAudioTrackUidId);
       if(idMap_.contains(id)) {
@@ -545,7 +550,8 @@ namespace adm {
       void addTimeParametersToBlock(
           NodePtr node, T& audioBlockFormat,
           boost::optional<TimeReference> timeReference) {
-        setOptionalAttribute<Rtime>(node, "rtime", audioBlockFormat,
+        setOptionalAttribute<Rtime>(
+            node, "rtime", audioBlockFormat,
             [timeReference](const std::string& timeCode) {
               if (timeReference &&
                   *timeReference == TimeReferenceValue::LOCAL) {
@@ -556,7 +562,8 @@ namespace adm {
               }
               return parseTimecode(timeCode);
             });
-        setOptionalAttribute<Duration>(node, "duration", audioBlockFormat,
+        setOptionalAttribute<Duration>(
+            node, "duration", audioBlockFormat,
             [timeReference](const std::string& timeCode) {
               if (timeReference &&
                   *timeReference == TimeReferenceValue::LOCAL) {
@@ -567,7 +574,8 @@ namespace adm {
               }
               return parseTimecode(timeCode);
             });
-        setOptionalAttribute<Rtime>(node, "lstart", audioBlockFormat,
+        setOptionalAttribute<Rtime>(
+            node, "lstart", audioBlockFormat,
             [timeReference](const std::string& timeCode) {
               if (timeReference &&
                   *timeReference == TimeReferenceValue::TOTAL) {
@@ -578,7 +586,8 @@ namespace adm {
               }
               return parseTimecode(timeCode);
             });
-        setOptionalAttribute<Duration>(node, "lduration", audioBlockFormat,
+        setOptionalAttribute<Duration>(
+            node, "lduration", audioBlockFormat,
             [timeReference](const std::string& timeCode) {
               if (timeReference &&
                   *timeReference == TimeReferenceValue::TOTAL) {
@@ -1025,7 +1034,8 @@ namespace adm {
       AudioBlockFormatBinaural audioBlockFormat;
 
       addTimeParametersToBlock(node, audioBlockFormat, timeReference);
-      setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
+      setOptionalAttribute<InitializeBlock>(node, "initializeBlock",
+                                            audioBlockFormat);
       setOptionalElement<Gain>(node, "gain", audioBlockFormat, &parseGain);
       setOptionalElement<Importance>(node, "importance", audioBlockFormat);
 

@@ -66,12 +66,12 @@ namespace adm {
       if (lhs.template has<Rtime>() && rhs.template has<Rtime>()) {
         if (lhs.template get<Rtime>() == rhs.template get<Rtime>()) {
           if (lhs.template has<Duration>() && rhs.template has<Duration>()) {
-            return lhs.template get<Duration>().get().asNanoseconds() < 
+            return lhs.template get<Duration>().get().asNanoseconds() <
                    rhs.template get<Duration>().get().asNanoseconds();
           }
         }
 
-        return lhs.template get<Rtime>().get().asNanoseconds() < 
+        return lhs.template get<Rtime>().get().asNanoseconds() <
                rhs.template get<Rtime>().get().asNanoseconds();
       }
 

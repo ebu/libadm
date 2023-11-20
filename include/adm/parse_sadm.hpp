@@ -9,10 +9,11 @@
 
 namespace adm {
 
-  ADM_EXPORT FrameHeader parseFrameHeader(
-    std::istream& stream, adm::xml::ParserOptions = adm::xml::ParserOptions::none);
-  
-  
-  ADM_EXPORT FrameHeader parseFrameHeader(
-    std::string const& fileName, adm::xml::ParserOptions = adm::xml::ParserOptions::none);
+  ADM_EXPORT FrameHeader
+  parseFrameHeader(std::istream& stream,
+                   adm::xml::ParserOptions = adm::xml::ParserOptions::none);
+
+  ADM_EXPORT FrameHeader
+  parseFrameHeader(std::string const& fileName,
+                   adm::xml::ParserOptions = adm::xml::ParserOptions::none);
 }  // namespace adm

@@ -14,17 +14,15 @@ namespace adm {
   namespace xml {
     FrameHeaderParser::FrameHeaderParser(const std::string& filename,
                                          ParserOptions options)
-        : FrameHeaderParser(rapidxml::file<>(filename.c_str()), options){}
+        : FrameHeaderParser(rapidxml::file<>(filename.c_str()), options) {}
 
     FrameHeaderParser::FrameHeaderParser(std::istream& stream,
                                          ParserOptions options)
-        : FrameHeaderParser(rapidxml::file<>(stream), options){}
+        : FrameHeaderParser(rapidxml::file<>(stream), options) {}
 
     FrameHeaderParser::FrameHeaderParser(rapidxml::file<> file,
                                          ParserOptions options)
-        : file{std::move(file)},
-          options{std::move(options)}
-    {}
+        : file{std::move(file)}, options{std::move(options)} {}
 
     /// Check if a option/flag is set
     /**
@@ -36,7 +34,7 @@ namespace adm {
     /*inline bool isSet(ParserOptions options, ParserOptions flag) {
       return static_cast<bool>(options & flag);
     }*/
-    
+
     FrameHeader FrameHeaderParser::parse() {
       rapidxml::xml_document<> document;
       document.parse<0>(file.data());
@@ -56,7 +54,6 @@ namespace adm {
       throw std::runtime_error("frameHeader not found");
     }  // namespace xml
 
-    
     /**
      * @brief Find the top level element 'frame'
      *
@@ -68,7 +65,8 @@ namespace adm {
      */
     NodePtr FrameHeaderParser::findFrameNode(NodePtr root) {
       // ituADM is for common definitions reading
-      if (std::string(root->name()) == "frame" || std::string(root->name()) == "ituADM") {
+      if (std::string(root->name()) == "frame" ||
+          std::string(root->name()) == "ituADM") {
         return root;
       } else {
         if (root->first_node()) {

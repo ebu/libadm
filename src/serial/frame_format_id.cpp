@@ -23,9 +23,7 @@ namespace adm {
   }
 
   // ---- Common ---- //
-  void FrameFormatId::print(std::ostream& os) const {
-    os << formatId(*this);
-  }
+  void FrameFormatId::print(std::ostream& os) const { os << formatId(*this); }
 
   namespace {
     bool is_valid_frame_format_id_size(std::string const& id) {

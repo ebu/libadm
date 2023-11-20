@@ -74,9 +74,9 @@ namespace adm {
       BaseXmlParser(rapidxml::file<> file, ParserOptions options);
 
       template <typename Doctype>
-      void parseAudioFormatExtended(NodePtr root, Doctype &doc) {
+      void parseAudioFormatExtended(NodePtr root, Doctype& doc) {
         for (NodePtr node = root->first_node(); node;
-              node = node->next_sibling()) {
+             node = node->next_sibling()) {
           std::string nodeName(node->name(), node->name_size());
 
           if (nodeName == "audioProgramme") {
@@ -154,7 +154,7 @@ namespace adm {
 
       /// add an element to both the document and idMap_
       template <typename Element, typename Doctype>
-      void add(std::shared_ptr<Element> el, Doctype &doc) {
+      void add(std::shared_ptr<Element> el, Doctype& doc) {
         doc->add(el);
         idMap_.add(std::move(el));
       }
@@ -175,8 +175,8 @@ namespace adm {
       template <typename Doctype>
       void resolveTrackUidReferences(
           const std::map<std::shared_ptr<AudioObject>,
-                        std::vector<AudioTrackUidId>>& map,
-                        Doctype &doc) {
+                         std::vector<AudioTrackUidId>>& map,
+          Doctype& doc) {
         for (const auto& entry : map) {
           for (const auto& id : entry.second) {
             if (*id.get<AudioTrackUidIdValue>() == 0)
