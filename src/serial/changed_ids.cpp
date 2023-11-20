@@ -11,4 +11,5 @@ std::string adm::formatValue(adm::StatusValue status) {
     case StatusValue::EXPIRED:
       return "expired";
   }
+  throw std::runtime_error("Unsupported StatusValue");
 }

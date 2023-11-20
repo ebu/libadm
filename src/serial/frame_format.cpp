@@ -75,6 +75,7 @@ namespace adm {
         return "all";
       }
     }
+    throw std::runtime_error("Unsupported FrameTypeValue");
   }
 
   std::string formatValue(TimeReferenceValue value) {
@@ -86,5 +87,6 @@ namespace adm {
         return "local";
       }
     }
+    throw std::runtime_error("Unsupported TimeReferenceValue");
   }
 }  // namespace adm

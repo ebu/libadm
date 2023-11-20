@@ -20,8 +20,6 @@ namespace adm {
   /// @brief Tag for FrameHeader
   struct FrameHeaderTag {};
   namespace detail {
-    extern template class ADM_EXPORT_TEMPLATE_METHODS
-        OptionalParameter<ProfileList>;
     using FrameHeaderBase =
         HasParameters<OptionalParameter<ProfileList>,
                       VectorParameter<TransportTrackFormats>>;

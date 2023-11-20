@@ -105,7 +105,7 @@ namespace adm {
 
   namespace detail {
     template <>
-    TimeReference getDefault<TimeReference>();
+    ADM_EXPORT TimeReference getDefault<TimeReference>();
   }
 
   /// @brief Parse an adm timecode and convert it to a std::chrono::duration

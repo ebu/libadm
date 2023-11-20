@@ -20,8 +20,6 @@ namespace adm {
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<Version>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS
-        OptionalParameter<ProfileList>;
 
     using DocumentBase = HasParameters<OptionalParameter<Version>,
                                        OptionalParameter<ProfileList>>;

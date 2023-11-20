@@ -10,7 +10,7 @@ namespace adm {
   struct StatusTag {};
   using Status = detail::NamedType<StatusValue, StatusTag>;
 
-  std::string formatValue(StatusValue status);
+  ADM_EXPORT std::string formatValue(StatusValue status);
 
   // useful for templated access
 
@@ -57,8 +57,9 @@ namespace adm {
     friend class detail::AddWrapperMethods<ChangedId<T>>;
     friend bool operator==(ChangedId<T> const& lhs, ChangedId<T> const& rhs) {
       using id_t = typename T::id_type;
-      return lhs.get<id_t>() == rhs.get<id_t>() &&
-             lhs.get<Status>().get() == rhs.get<Status>().get();
+      return lhs.template get<id_t>() == rhs.template get<id_t>() &&
+             lhs.template get<Status>().get() ==
+                 rhs.template get<Status>().get();
     }
   };
 

@@ -30,7 +30,7 @@ namespace adm {
 
   namespace detail {
     template <>
-    ADM_EXPORT struct ParameterTraits<AudioTracks> {
+    struct ParameterTraits<AudioTracks> {
       using tag = AudioTracksTag;
     };
     using TransportTrackFormatBase =
