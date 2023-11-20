@@ -18,10 +18,6 @@ namespace adm {
       detail::ParameterTraits<Duration>::tag) const {
     return duration_.get();
   }
-  InitializeBlock AudioBlockFormatBinaural::get(
-      detail::ParameterTraits<InitializeBlock>::tag) const {
-    return initializeBlock_.get();
-  }
 
   // ---- Has ---- //
   bool AudioBlockFormatBinaural::has(
@@ -36,10 +32,6 @@ namespace adm {
       detail::ParameterTraits<Duration>::tag) const {
     return duration_ != boost::none;
   }
-  bool AudioBlockFormatBinaural::has(
-      detail::ParameterTraits<InitializeBlock>::tag) const {
-    return initializeBlock_ != boost::none;
-  }
 
   // ---- isDefault ---- //
   bool AudioBlockFormatBinaural::isDefault(
@@ -53,9 +45,6 @@ namespace adm {
   void AudioBlockFormatBinaural::set(Duration duration) {
     duration_ = duration;
   }
-  void AudioBlockFormatBinaural::set(InitializeBlock initializeBlock) {
-    initializeBlock_ = initializeBlock;
-  }
 
   // ---- Unsetter ---- //
   void AudioBlockFormatBinaural::unset(detail::ParameterTraits<Rtime>::tag) {
@@ -64,9 +53,5 @@ namespace adm {
   void AudioBlockFormatBinaural::unset(detail::ParameterTraits<Duration>::tag) {
     duration_ = boost::none;
   }
-  void AudioBlockFormatBinaural::unset(
-      detail::ParameterTraits<InitializeBlock>::tag) {
-    initializeBlock_ = boost::none;
-  }
-  
+
 }  // namespace adm
