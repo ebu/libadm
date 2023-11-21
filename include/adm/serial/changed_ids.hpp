@@ -27,7 +27,7 @@ namespace adm {
   class ChangedId : private detail::ChangedIdBase<T>,
                     private detail::AddWrapperMethods<ChangedId<T>> {
    public:
-    ChangedId(typename T::id_type id, Status status) {
+    ADM_EXPORT ChangedId(typename T::id_type id, Status status) {
       if (id == typename T::id_type{}) {
         /* Not using shared pointers to elements as header is outside document.
         * This means we need to check IDs have been assigned
@@ -41,12 +41,6 @@ namespace adm {
       detail::ChangedIdBase<T>::set(status);
     }
 
-    void set(Status status) {
-      detail::ChangedIdBase<T>::set(std::move(status));
-    }
-
-    void set(typename T::id_type id) {}
-
     // no set to ensure ID check, doesn't really need to be mutable
     using detail::AddWrapperMethods<ChangedId<T>>::get;
     using detail::AddWrapperMethods<ChangedId<T>>::has;
@@ -55,7 +49,8 @@ namespace adm {
     using detail::ChangedIdBase<T>::has;
 
     friend class detail::AddWrapperMethods<ChangedId<T>>;
-    friend bool operator==(ChangedId<T> const& lhs, ChangedId<T> const& rhs) {
+    ADM_EXPORT friend bool operator==(ChangedId<T> const& lhs,
+                                      ChangedId<T> const& rhs) {
       using id_t = typename T::id_type;
       return lhs.template get<id_t>() == rhs.template get<id_t>() &&
              lhs.template get<Status>().get() ==

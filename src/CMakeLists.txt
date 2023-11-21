@@ -107,6 +107,9 @@ if(ADM_HIDE_INTERNAL_SYMBOLS AND BUILD_SHARED_LIBS)
     VISIBILITY_INLINES_HIDDEN TRUE)
 endif()
 
+# Use /bigobj when compiling on windows
+target_compile_options(adm PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/bigobj>)
+
 ############################################################
 # enable C++14 support
 ############################################################

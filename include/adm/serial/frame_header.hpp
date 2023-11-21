@@ -39,8 +39,7 @@ namespace adm {
     typedef FrameHeaderTag tag;
 
     template <typename... Parameters>
-    ADM_EXPORT explicit FrameHeader(FrameFormat format,
-                                    Parameters... parameters);
+    explicit FrameHeader(FrameFormat format, Parameters... parameters);
     ADM_EXPORT FrameHeader(const FrameHeader&) = default;
     ADM_EXPORT FrameHeader(FrameHeader&&) = default;
     ADM_EXPORT FrameHeader& operator=(const FrameHeader&) = default;
