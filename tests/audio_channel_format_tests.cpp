@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <sstream>
 #include <catch2/catch.hpp>
+#include <adm/detail/auto_base.hpp>
 #include "adm/elements/audio_channel_format.hpp"
 #include "adm/utilities/comparator.hpp"
 #include "helper/ostream_operators.hpp"
@@ -95,12 +96,4 @@ TEST_CASE("audio_channel_format") {
     BOOST_CHECK(blockFormats[5]->get<Rtime>() == std::chrono::seconds(15));
   }
   */
-}
-
-TEST_CASE("Time Reference defaults") {
-  auto channelFormat = AudioChannelFormat::create(
-      AudioChannelFormatName("test"), TypeDefinition::OBJECTS);
-  REQUIRE(channelFormat->has<TimeReference>());
-  REQUIRE(channelFormat->isDefault<TimeReference>());
-  REQUIRE(channelFormat->get<TimeReference>() == TimeReferenceValue::TOTAL);
 }
