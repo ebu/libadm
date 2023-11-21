@@ -8,7 +8,7 @@
 
 namespace adm {
 
-  /*std::shared_ptr<AudioTrackUid> AudioTrackUid::getSilent(
+  std::shared_ptr<AudioTrackUid> AudioTrackUid::getSilent(
       std::shared_ptr<Document>& document) {
     AudioTrackUidId id{AudioTrackUidIdValue{0}};
 
@@ -20,7 +20,7 @@ namespace adm {
     trackUid = std::shared_ptr<AudioTrackUid>(new AudioTrackUid());
     trackUid->id_ = id;
     return trackUid;
-  }*/
+  }
 
   std::shared_ptr<AudioTrackUid> AudioTrackUid::getSilent() {
     auto uid = std::shared_ptr<AudioTrackUid>(new AudioTrackUid());
