@@ -10,7 +10,6 @@
 #include "adm/parse_sadm.hpp"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
-#include "adm/private/base_xml_parser.hpp"
 
 #include "adm/serial/frame_format.hpp"
 #include "adm/serial/frame_format_id.hpp"
