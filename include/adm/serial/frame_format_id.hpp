@@ -68,7 +68,7 @@ namespace adm {
      */
     void print(std::ostream& os) const;
 
-    friend class AddWrapperMethods<FrameFormatId>;
+    friend class detail::AddWrapperMethods<FrameFormatId>;
   };
 
   // ---- Free functions ---- //
