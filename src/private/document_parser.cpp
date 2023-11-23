@@ -84,11 +84,6 @@ namespace adm {
             add(parseAudioStreamFormat(node));
           } else if (nodeName == "audioTrackFormat") {
             add(parseAudioTrackFormat(node));
-          } else if (nodeName == "profileList") {
-            if (document_->has<ProfileList>())
-              throw error::XmlParsingError(
-                  "found more than one profileList element");
-            document_->set(parseProfileList(node));
           }
         }
         resolveReferences(programmeContentRefs_);

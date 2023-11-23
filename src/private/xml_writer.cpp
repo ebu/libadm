@@ -31,7 +31,6 @@ namespace adm {
                                     TimeReferenceValue::TOTAL}) {
         // clang-format off
         audioFormatExtended.addOptionalAttribute<Version>(document, "version");
-        audioFormatExtended.addOptionalElement<ProfileList>(document, "profileList", &formatProfileList);
         audioFormatExtended.addBaseElements<AudioProgramme, AudioProgrammeId>(document, "audioProgramme", &formatAudioProgramme);
         audioFormatExtended.addBaseElements<AudioContent, AudioContentId>(document, "audioContent", &formatAudioContent);
         audioFormatExtended.addBaseElements<AudioObject, AudioObjectId>(document, "audioObject", &formatAudioObject);

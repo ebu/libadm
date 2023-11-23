@@ -21,8 +21,7 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<Version>;
 
-    using DocumentBase = HasParameters<OptionalParameter<Version>,
-                                       OptionalParameter<ProfileList>>;
+    using DocumentBase = HasParameters<OptionalParameter<Version>>;
   }  // namespace detail
 
   /**
@@ -34,7 +33,6 @@ namespace adm {
    * | ADM Parameter | Parameter Type      | Pattern Type               |
    * +===============+=====================+============================+
    * | version       | :type:`Version`     | :class:`OptionalParameter` |
-   * | profileList   | :type:`ProfileList` | :class:`OptionalParameter`                           |
    * +---------------+---------------------+----------------------------+
    * \endrst
    *

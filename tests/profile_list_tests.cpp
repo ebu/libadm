@@ -4,6 +4,7 @@
 #include "adm/document.hpp"
 #include "adm/parse.hpp"
 #include "adm/write.hpp"
+#include "adm/parse_sadm.hpp"
 #include "helper/file_comparator.hpp"
 #include "adm/serial.hpp"
 
@@ -44,11 +45,10 @@ TEST_CASE("ProfileList parameters") {
   check_vector_param<Profiles>(profileList, canBeSetTo(Profiles{profile}));
 }
 
-TEST_CASE("xml/profileList") {
-  auto document = parseXml("xml_parser/profile_list.xml");
-
-  REQUIRE(document->has<ProfileList>());
-  auto profileList = document->get<ProfileList>();
+TEST_CASE("sadm xml/profilelist") {
+  auto header = parseFrameHeader("profile_list_frame_header.accepted.xml");
+  REQUIRE(header.has<ProfileList>());
+  auto profileList = header.get<ProfileList>();
   auto profiles = profileList.get<Profiles>();
   REQUIRE(profiles.size() == 2);
 
@@ -63,19 +63,8 @@ TEST_CASE("xml/profileList") {
   CHECK(profiles.at(1).get<ProfileLevel>() == "level2");
 
   std::stringstream xml;
-  writeXml(xml, document);
-
-  CHECK_THAT(xml.str(), EqualsXmlFile("profile_list"));
-}
-
-TEST_CASE("sadm xml/profilelist") {
-  auto document = parseXml("xml_parser/profile_list.xml");
-  std::stringstream xml;
   using namespace std::chrono_literals;
-  FrameHeader header{
-      FrameFormat{FrameFormatId{FrameIndex{1}}, Start{0s}, Duration{500ms},
-                  FrameType{FrameTypeValue::FULL}},
-      document->get<ProfileList>()};
+  auto document = Document::create();
   writeXml(xml, document, header);
   CHECK_THAT(xml.str(), EqualsXmlFile("profile_list_frame_header"));
 }

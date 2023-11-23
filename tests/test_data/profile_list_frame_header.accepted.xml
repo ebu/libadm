@@ -7,11 +7,6 @@
 			<profile profileName="name2" profileVersion="version2" profileLevel="level2">value2</profile>
 		</profileList>
 	</frameHeader>
-	<audioFormatExtended>
-		<profileList>
-			<profile profileName="name1" profileVersion="version1" profileLevel="level1">value1</profile>
-			<profile profileName="name2" profileVersion="version2" profileLevel="level2">value2</profile>
-		</profileList>
-	</audioFormatExtended>
+	<audioFormatExtended/>
 </frame>
 
