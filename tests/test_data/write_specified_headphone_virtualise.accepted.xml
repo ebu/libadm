@@ -17,7 +17,6 @@
 						<position coordinate="X">0.000000</position>
 						<position coordinate="Y">0.000000</position>
 						<headphoneVirtualise bypass="0" DRR="30.000000"/>
-						<cartesian>1</cartesian>
 					</audioBlockFormat>
 				</audioChannelFormat>
 				<audioChannelFormat audioChannelFormatID="AC_00041001" audioChannelFormatName="TestHoa" typeLabel="0004" typeDefinition="HOA">

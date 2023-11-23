@@ -355,7 +355,6 @@ namespace adm {
       // clang-format on
       node.addOptionalElement<Gain>(&audioBlock, "gain", &formatGain);
       node.addOptionalElement<Importance>(&audioBlock, "importance");
-      node.addOptionalElement<Cartesian>(&audioBlock, "cartesian");
     }
 
     void formatSpeakerLabels(XmlNode &parentNode, const std::string &name,
