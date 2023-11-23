@@ -9,7 +9,7 @@ namespace adm {
     template class DefaultParameter<TimeReference>;
     template <>
     TimeReference getDefault<TimeReference>() {
-      return TimeReference{TimeReferenceValue::TOTAL};
+      return TimeReference::TOTAL;
     };
   }  // namespace detail
 

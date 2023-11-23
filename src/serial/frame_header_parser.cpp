@@ -80,20 +80,20 @@ namespace adm {
     namespace {
       Status parseStatus(std::string attribute) {
         if (attribute == "new") {
-          return Status{StatusValue::NEW};
+          return Status::NEW;
         }
         if (attribute == "changed") {
-          return Status{StatusValue::CHANGED};
+          return Status::CHANGED;
         }
         if (attribute == "extended") {
-          return Status{StatusValue::EXTENDED};
+          return Status::EXTENDED;
         }
         if (attribute == "expired") {
-          return Status{StatusValue::EXPIRED};
+          return Status::EXPIRED;
         }
-        throw std::runtime_error(
-            attribute.append("is not a valid 'status' value. Valid values are: "
-                             "'new', 'changed', 'extended' and 'expired'"));
+        throw std::runtime_error(attribute.append(
+            " is not a valid 'status' value. Valid values are: "
+            "'new', 'changed', 'extended' and 'expired'"));
       }
 
       template <typename T>
@@ -125,19 +125,19 @@ namespace adm {
 
       FrameType parseFrameType(std::string const& attribute) {
         if (attribute == "full") {
-          return FrameType{FrameTypeValue::FULL};
+          return FrameType::FULL;
         }
         if (attribute == "header") {
-          return FrameType{FrameTypeValue::HEADER};
+          return FrameType::HEADER;
         }
         if (attribute == "intermediate") {
-          return FrameType{FrameTypeValue::INTERMEDIATE};
+          return FrameType::INTERMEDIATE;
         }
         if (attribute == "all") {
-          return FrameType{FrameTypeValue::ALL};
+          return FrameType::ALL;
         }
         if (attribute == "divided") {
-          return FrameType{FrameTypeValue::DIVIDED};
+          return FrameType::DIVIDED;
         }
         throw std::runtime_error(
             attribute +
@@ -159,10 +159,10 @@ namespace adm {
 
       TimeReference parseTimeReference(std::string attribute) {
         if (attribute == "local") {
-          return TimeReference{TimeReferenceValue::LOCAL};
+          return TimeReference::LOCAL;
         }
         if (attribute == "total") {
-          return TimeReference{TimeReferenceValue::TOTAL};
+          return TimeReference::TOTAL;
         }
         throw std::runtime_error(attribute +
                                  " is not a valid value for timeReference. "

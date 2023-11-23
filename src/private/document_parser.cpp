@@ -122,7 +122,7 @@ namespace adm {
         return boost::optional<TimeReference>{};
       } else {
         if (!frameHeader_) {
-          return TimeReference(TimeReferenceValue::TOTAL);
+          return TimeReference::TOTAL;
         } else {
           return frameHeader_->get<FrameFormat>().get<TimeReference>();
         }
@@ -548,8 +548,7 @@ namespace adm {
         setOptionalAttribute<Rtime>(
             node, "rtime", audioBlockFormat,
             [timeReference](const std::string& timeCode) {
-              if (timeReference &&
-                  *timeReference == TimeReferenceValue::LOCAL) {
+              if (timeReference && *timeReference == TimeReference::LOCAL) {
                 throw std::runtime_error(
                     "'rtime' used in audioBlockFormat, when FrameHeader "
                     "timeReference is 'local'. Either the timeReference should "
@@ -560,8 +559,7 @@ namespace adm {
         setOptionalAttribute<Duration>(
             node, "duration", audioBlockFormat,
             [timeReference](const std::string& timeCode) {
-              if (timeReference &&
-                  *timeReference == TimeReferenceValue::LOCAL) {
+              if (timeReference && *timeReference == TimeReference::LOCAL) {
                 throw std::runtime_error(
                     "'duration' used in audioBlockFormat, when FrameHeader "
                     "timeReference is 'local'. Either the timeReference should "
@@ -572,8 +570,7 @@ namespace adm {
         setOptionalAttribute<Rtime>(
             node, "lstart", audioBlockFormat,
             [timeReference](const std::string& timeCode) {
-              if (timeReference &&
-                  *timeReference == TimeReferenceValue::TOTAL) {
+              if (timeReference && *timeReference == TimeReference::TOTAL) {
                 throw std::runtime_error(
                     "'lstart' used in audioBlockFormat, when FrameHeader "
                     "timeReference is 'total'. Either the timeReference should "
@@ -584,8 +581,7 @@ namespace adm {
         setOptionalAttribute<Duration>(
             node, "lduration", audioBlockFormat,
             [timeReference](const std::string& timeCode) {
-              if (timeReference &&
-                  *timeReference == TimeReferenceValue::TOTAL) {
+              if (timeReference && *timeReference == TimeReference::TOTAL) {
                 throw std::runtime_error(
                     "'lduration' used in audioBlockFormat when FrameHeader "
                     "timeReference is 'total'. Either the timeReference should "

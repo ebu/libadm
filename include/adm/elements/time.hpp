@@ -97,11 +97,16 @@ namespace adm {
   /// @brief NamedType for the InitializeBlock attribute
   using InitializeBlock = detail::NamedType<bool, InitializeBlockTag>;
 
-  enum class TimeReferenceValue { TOTAL, LOCAL };
+  enum class TimeReference { TOTAL, LOCAL };
   /// @brief Tag for NamedType ::TimeReference
   struct TimeReferenceTag {};
-  /// @brief NamedType for the TimeReference attribute
-  using TimeReference = detail::NamedType<TimeReferenceValue, TimeReferenceTag>;
+
+  namespace detail {
+    template <>
+    struct ParameterTraits<TimeReference> {
+      using tag = TimeReferenceTag;
+    };
+  }  // namespace detail
 
   namespace detail {
     template <>

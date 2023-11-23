@@ -40,8 +40,8 @@ namespace adm {
     os << " (";
     os << "start=" << formatTimecode(get<Start>().get());
     os << ", duration=" << formatTimecode(get<Duration>().get());
-    os << ", type=" << formatValue(get<FrameType>().get());
-    os << ", timeReference=" << formatValue(get<TimeReference>().get());
+    os << ", type=" << formatValue(get<FrameType>());
+    os << ", timeReference=" << formatValue(get<TimeReference>());
     if (has<FlowId>()) {
       os << ", flowID=" << get<FlowId>();
     }
@@ -57,36 +57,36 @@ namespace adm {
     os << ")" << std::endl;
   }
 
-  std::string formatValue(FrameTypeValue value) {
+  std::string formatValue(FrameType value) {
     switch (value) {
-      case FrameTypeValue::HEADER: {
+      case FrameType::HEADER: {
         return "header";
       }
-      case FrameTypeValue::FULL: {
+      case FrameType::FULL: {
         return "full";
       }
-      case FrameTypeValue::DIVIDED: {
+      case FrameType::DIVIDED: {
         return "divided";
       }
-      case FrameTypeValue::INTERMEDIATE: {
+      case FrameType::INTERMEDIATE: {
         return "intermediate";
       }
-      case FrameTypeValue::ALL: {
+      case FrameType::ALL: {
         return "all";
       }
     }
-    throw std::runtime_error("Unsupported FrameTypeValue");
+    throw std::runtime_error("Unsupported FrameType");
   }
 
-  std::string formatValue(TimeReferenceValue value) {
+  std::string formatValue(TimeReference value) {
     switch (value) {
-      case TimeReferenceValue::TOTAL: {
+      case TimeReference::TOTAL: {
         return "total";
       }
-      case TimeReferenceValue::LOCAL: {
+      case TimeReference::LOCAL: {
         return "local";
       }
     }
-    throw std::runtime_error("Unsupported TimeReferenceValue");
+    throw std::runtime_error("Unsupported TimeReference");
   }
 }  // namespace adm

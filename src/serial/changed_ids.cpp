@@ -13,15 +13,15 @@ namespace adm {
   }  // namespace detail
 }  // namespace adm
 
-std::string adm::formatValue(adm::StatusValue status) {
+std::string adm::formatValue(adm::Status status) {
   switch (status) {
-    case StatusValue::NEW:
+    case Status::NEW:
       return "new";
-    case StatusValue::CHANGED:
+    case Status::CHANGED:
       return "changed";
-    case StatusValue::EXTENDED:
+    case Status::EXTENDED:
       return "extended";
-    case StatusValue::EXPIRED:
+    case Status::EXPIRED:
       return "expired";
   }
   throw std::runtime_error("Unsupported StatusValue");

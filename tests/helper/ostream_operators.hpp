@@ -42,17 +42,17 @@ namespace adm {
     return os;
   }
 
-  std::ostream& operator<<(std::ostream& os, const TimeReferenceValue& value) {
+  std::ostream& operator<<(std::ostream& os, TimeReference value) {
     os << formatValue(value);
     return os;
   }
 
-  std::ostream& operator<<(std::ostream& os, const FrameTypeValue& value) {
+  std::ostream& operator<<(std::ostream& os, FrameType value) {
     os << formatValue(value);
     return os;
   }
 
-  std::ostream& operator<<(std::ostream& os, const StatusValue& value) {
+  std::ostream& operator<<(std::ostream& os, Status value) {
     os << formatValue(value);
     return os;
   }

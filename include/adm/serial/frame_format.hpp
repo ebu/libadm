@@ -23,17 +23,23 @@ namespace adm {
   /// @brief NamedType for the FlowId attribute
   using FlowId = detail::NamedType<std::string, FlowIdTag>;
 
-  ADM_EXPORT std::string formatValue(TimeReferenceValue value);
+  ADM_EXPORT std::string formatValue(TimeReference value);
 
   /// @brief Enum type for permitted values of FrameType
-  enum class FrameTypeValue { HEADER, FULL, DIVIDED, INTERMEDIATE, ALL };
+  enum class FrameType { HEADER, FULL, DIVIDED, INTERMEDIATE, ALL };
   /// @brief string conversion function for FrameTypeValue
-  ADM_EXPORT std::string formatValue(FrameTypeValue value);
+  ADM_EXPORT std::string formatValue(FrameType value);
 
   /// @brief Tag for NamedType ::FrameType
   struct FrameTypeTag {};
-  /// @brief NamedType for the FrameType attribute
-  using FrameType = detail::NamedType<FrameTypeValue, FrameTypeTag>;
+
+  namespace detail {
+    template <>
+    struct ParameterTraits<FrameType> {
+      using tag = FrameTypeTag;
+    };
+  }  // namespace detail
+
   /// @brief Tag for NamedType ::CountToFull
   struct CountToFullTag {};
   /// @brief NamedType for the CountToFull attribute

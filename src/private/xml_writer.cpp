@@ -25,10 +25,10 @@ namespace adm {
         return static_cast<bool>(options & flag);
       }
 
-      void add_document_to_node(XmlNode& audioFormatExtended,
-                                std::shared_ptr<Document const> document,
-                                TimeReference timeReference = TimeReference{
-                                    TimeReferenceValue::TOTAL}) {
+      void add_document_to_node(
+          XmlNode& audioFormatExtended,
+          std::shared_ptr<Document const> document,
+          TimeReference timeReference = TimeReference::TOTAL) {
         // clang-format off
         audioFormatExtended.addOptionalAttribute<Version>(document, "version");
         audioFormatExtended.addBaseElements<AudioProgramme, AudioProgrammeId>(document, "audioProgramme", &formatAudioProgramme);

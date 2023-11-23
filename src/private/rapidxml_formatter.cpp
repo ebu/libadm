@@ -18,7 +18,7 @@ namespace adm {
       template <typename T>
       void addBlockTimeParameters(T const &block, XmlNode &node,
                                   TimeReference timeReference) {
-        if (timeReference == TimeReferenceValue::TOTAL) {
+        if (timeReference == TimeReference::TOTAL) {
           node.addOptionalAttribute<Rtime>(&block, "rtime");
           node.addOptionalAttribute<Duration>(&block, "duration");
         } else {
@@ -48,14 +48,12 @@ namespace adm {
       std::string toString(const AudioTrackUidId &id) { return formatId(id); }
       std::string toString(const FrameFormatId &id) { return formatId(id); }
       std::string toString(const TransportId &id) { return formatId(id); }
-      std::string toString(const FrameType &frameType) {
-        return formatValue(frameType.get());
+      std::string toString(FrameType frameType) {
+        return formatValue(frameType);
       }
-      std::string toString(const Status &status) {
-        return formatValue(status.get());
-      }
-      std::string toString(const TimeReference &timeReference) {
-        return formatValue(timeReference.get());
+      std::string toString(Status status) { return formatValue(status); }
+      std::string toString(TimeReference timeReference) {
+        return formatValue(timeReference);
       }
 
       struct MultiElementAttributeFormatter {

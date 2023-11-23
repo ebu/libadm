@@ -4,13 +4,18 @@
 #include <adm/elements.hpp>
 
 namespace adm {
-  enum class StatusValue { NEW, CHANGED, EXTENDED, EXPIRED };
+  enum class Status { NEW, CHANGED, EXTENDED, EXPIRED };
 
   /// Tag for status
   struct StatusTag {};
-  using Status = detail::NamedType<StatusValue, StatusTag>;
+  namespace detail {
+    template <>
+    struct ParameterTraits<Status> {
+      using tag = StatusTag;
+    };
+  }  // namespace detail
 
-  ADM_EXPORT std::string formatValue(StatusValue status);
+  ADM_EXPORT std::string formatValue(Status status);
 
   // useful for templated access
 
@@ -53,8 +58,7 @@ namespace adm {
                                       ChangedId<T> const& rhs) {
       using id_t = typename T::id_type;
       return lhs.template get<id_t>() == rhs.template get<id_t>() &&
-             lhs.template get<Status>().get() ==
-                 rhs.template get<Status>().get();
+             lhs.template get<Status>() == rhs.template get<Status>();
     }
   };
 

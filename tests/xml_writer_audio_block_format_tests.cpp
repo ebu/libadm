@@ -272,9 +272,9 @@ TEST_CASE("Time reference writing") {
   auto document = Document::create();
   //  auto holder = addSimpleObjectTo(document, "test");
   FrameFormat format{FrameFormatId{FrameIndex{1}}, Start{0s}, Duration{1s},
-                     FrameType{FrameTypeValue::FULL}};
+                     FrameType::FULL};
   SECTION("Objects, total time") {
-    format.set(TimeReference{TimeReferenceValue::TOTAL});
+    format.set(TimeReference::TOTAL);
     auto channelFormat = AudioChannelFormat::create(
         AudioChannelFormatName{"Objects Format"}, TypeDefinition::OBJECTS);
     channelFormat->add(AudioBlockFormatObjects{position, start, duration});
@@ -284,7 +284,7 @@ TEST_CASE("Time reference writing") {
     REQUIRE(ss.str() == TOTAL_XML);
   }
   SECTION("Objects, local time") {
-    format.set(TimeReference{TimeReferenceValue::LOCAL});
+    format.set(TimeReference::LOCAL);
     auto channelFormat = AudioChannelFormat::create(
         AudioChannelFormatName{"Objects Format"}, TypeDefinition::OBJECTS);
     channelFormat->add(AudioBlockFormatObjects{position, start, duration});
