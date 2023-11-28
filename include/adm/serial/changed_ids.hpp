@@ -27,6 +27,17 @@ namespace adm {
 
   /**
    * @brief Template class for referring to any of the changedIDs sub-elements
+   * @tparam T the ADM element type to which the change refers.
+   *
+   * \rst
+   * +---------------------------+--------------------------------------+---------------------------+
+   * | ADM Parameter             | Parameter Type                       | Pattern Type              |
+   * +===========================+======================================+===========================+
+   * | status                    | :type:`Status`                       | :class:`RequiredParameter`|
+   * +---------------------------+--------------------------------------+---------------------------+
+   * | ADM element ID type for T | :type:`T::id_type`                   | :class:`RequiredParameter`|
+   * +---------------------------+--------------------------------------+---------------------------+
+   * \endrst
    */
   template <typename T>
   class ChangedId : private detail::ChangedIdBase<T>,
@@ -112,19 +123,17 @@ namespace adm {
 
   struct ChangedIdsTag {};
   /**
-   * @brief Class representation of the audioContent ADM element
+   * @brief Class representation of the changedIDs SADM element
    *
    * \rst
    * +--------------------------+--------------------------------------+---------------------------+
    * | ADM Parameter            | Parameter Type                       | Pattern Type              |
    * +==========================+======================================+===========================+
-   * | status                   | :type:`Status`                       | :class:`RequiredParameter`|
-   * +--------------------------+--------------------------------------+---------------------------+
    * | audioChannelFormatIdRef  | :type:`ChangedAudioChannelFormatIds` | :class:`VectorParameter`  |
    * +--------------------------+--------------------------------------+---------------------------+
    * | audioPackFormatIdRef     | :type:`ChangedAudioPackFormatIds`    | :class:`VectorParameter`  |
    * +--------------------------+--------------------------------------+---------------------------+
-   * | audioTrackUIDRef         | :type:`ChangedAudioTrackUIDIds`      | :class:`VectorParameter`  |
+   * | audioTrackUIDRef         | :type:`ChangedAudioTrackUidIds`      | :class:`VectorParameter`  |
    * +--------------------------+--------------------------------------+---------------------------+
    * | audioStreamFormatIDRef   | :type:`ChangedAudioStreamFormatIds`  | :class:`VectorParameter`  |
    * +--------------------------+--------------------------------------+---------------------------+

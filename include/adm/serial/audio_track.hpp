@@ -42,13 +42,13 @@ namespace adm {
    * +----------------------+-------------------------------+------------------------------+
    * | ADM Parameter        | Parameter Type                | Pattern Type                 |
    * +======================+===============================+==============================+
-   * | trackID              | :class:`TrackId`              | :class:`RequiredParameter`   |
+   * | trackID              | :type:`TrackId`               | :class:`RequiredParameter`   |
    * +----------------------+-------------------------------+------------------------------+
    * | formatLabel          | :class:`FormatDescriptor`     | :class:`OptionalParameter`   |
    * +----------------------+-------------------------------+------------------------------+
    * | formatDefinition     | :class:`FormatDescriptor`     | :class:`OptionalParameter`   |
    * +----------------------+-------------------------------+------------------------------+
-   * | audioTrackUIDRef     | :class:`AudioTrackUidRefs`    | :class:`VectorParameter`     |
+   * | audioTrackUIDRef     | :type:`AudioTrackUidRefs`     | :class:`VectorParameter`     |
    * +----------------------+-------------------------------+------------------------------+
    * \endrst
    */

@@ -80,17 +80,17 @@ namespace adm {
    * +========================+================================+==============================+
    * | frameFormatID          | :class:`FrameFormatId`         | :class:`RequiredParameter`   |
    * +------------------------+--------------------------------+------------------------------+
-   * | start                  | :type:`FrameStart`             | :class:`RequiredParameter`   |
+   * | start                  | :type:`Start`                  | :class:`RequiredParameter`   |
    * +------------------------+--------------------------------+------------------------------+
-   * | duration               | :type:`FrameDuration`          | :class:`RequiredParameter`   |
+   * | duration               | :type:`Duration`               | :class:`RequiredParameter`   |
    * +------------------------+--------------------------------+------------------------------+
    * | type                   | :type:`FrameType`              | :class:`RequiredParameter`   |
    * +------------------------+--------------------------------+------------------------------+
    * | timeReference          | :type:`TimeReference`          | :class:`DefaultParameter`    |
    * +------------------------+--------------------------------+------------------------------+
-   * | flowId                 | :type:`FlowID`                 | :class:`OptionalParameter`   |
+   * | flowId                 | :type:`FlowId`                 | :class:`OptionalParameter`   |
    * +------------------------+--------------------------------+------------------------------+
-   * | countToFull            | :type:`CountToFull`            | :class:`OptionalParameter`    |
+   * | countToFull            | :type:`CountToFull`            | :class:`OptionalParameter`   |
    * +------------------------+--------------------------------+------------------------------+
    * | numMetadataChunks      | :type:`NumMetadataChunks`      | :class:`OptionalParameter`   |
    * +------------------------+--------------------------------+------------------------------+

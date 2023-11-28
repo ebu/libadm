@@ -13,11 +13,12 @@ namespace adm {
 
   /// @brief Tag for FrameFormatIdValue
   struct FrameIndexTag {};
-  /// @brief NamedType for the FrameFormatIdValue attribute
+  /// @brief NamedType for the frame index portion of a FrameId
   using FrameIndex = detail::NamedType<unsigned int, FrameIndexTag/*,
                                        detail::FrameIndexValidator*/>; // TODO fix validators for default constructed NamedTypes
 
   struct ChunkIndexTag {};
+  /// @brief NamedType for the chunk index portion of a FrameId
   using ChunkIndex = detail::NamedType<unsigned int, ChunkIndexTag/*,
                                        detail::ChunkIndexValidator*/>; // TODO fix validators for default constructed NamedTypes
 
@@ -28,7 +29,25 @@ namespace adm {
                                             OptionalParameter<ChunkIndex>>;
   }  // namespace detail
 
-  /// @brief Representation of an FrameFormatId
+  /**
+   * @ingroup sadm
+   * @brief Class representation of a frameFormatId element
+   *
+   * \rst
+   * +------------------------+---------------------------------------------------------------+
+   * | Parameter Type         | Description                                                   |
+   * +========================+===============================================================+
+   * | :type:`FrameIndex`     | The index of the current frame within a flow                  |
+   * +------------------------+---------------------------------------------------------------+
+   * | :type:`ChunkIndex`     | The chunk of the current frame if using divided frames        |
+   * +------------------------+---------------------------------------------------------------+
+   * \endrst
+   *
+   * Note that:
+   * - If ChunkIndex is not set, the FF_xxxxxxxx id format will be used
+   * - If ChunkIndex is set, the FF_xxxxxxxx_zz id format will be used
+   * - ChunkIndex only has meaning in divided frame mode
+   */
   class FrameFormatId : private detail::FrameFormatIdBase,
                         private detail::AddWrapperMethods<FrameFormatId> {
    public:

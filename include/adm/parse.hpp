@@ -1,4 +1,4 @@
-/// @file xml_parser.hpp
+/// @file parse.hpp
 #pragma once
 #include <string>
 #include <memory>
@@ -34,7 +34,8 @@ namespace adm {
       none = 0x0,  ///< default behaviour
       recursive_node_search =
           0x1,  ///< recursively search whole xml for audioFormatExtended node
-      permit_time_reference_mismatch = 0x2
+      permit_time_reference_mismatch =
+          0x2  ///< do not report a mismatch between the FrameHeader TimeReference and audioBlockFormat lstart/rtime lduration/duration as an error
     };
   }  // namespace xml
 
