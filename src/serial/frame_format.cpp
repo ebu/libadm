@@ -13,9 +13,6 @@ namespace adm {
   bool FrameFormat::has(detail::ParameterTraits<FrameFormatId>::tag) const {
     return true;
   }
-  bool FrameFormat::has(detail::ParameterTraits<FrameType>::tag) const {
-    return true;
-  }
 
   // ---- Setter ---- //
   /// @brief FrameFormatId setter

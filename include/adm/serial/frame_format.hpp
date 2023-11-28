@@ -182,7 +182,6 @@ namespace adm {
         get(detail::ParameterTraits<FrameFormatId>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<FrameFormatId>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<FrameType>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
