@@ -62,13 +62,12 @@ namespace adm {
 
   namespace detail {
 
-    using FrameFormatBase =
-        HasParameters<RequiredParameter<Start>, RequiredParameter<Duration>,
-                      RequiredParameter<FrameType>,
-                      DefaultParameter<TimeReference>,
-                      OptionalParameter<NumMetadataChunks>,
-                      OptionalParameter<CountToSameChunk>,
-                      OptionalParameter<ChangedIds>, OptionalParameter<FlowId>>;
+    using FrameFormatBase = HasParameters<
+        RequiredParameter<Start>, RequiredParameter<Duration>,
+        RequiredParameter<FrameType>, DefaultParameter<TimeReference>,
+        OptionalParameter<NumMetadataChunks>,
+        OptionalParameter<CountToSameChunk>, OptionalParameter<ChangedIds>,
+        OptionalParameter<FlowId>, OptionalParameter<CountToFull>>;
   }  // namespace detail
 
   /**
@@ -162,8 +161,6 @@ namespace adm {
 
     /// @brief FrameFormatId setter
     ADM_EXPORT void set(FrameFormatId id);
-    /// @brief CountToFull setter
-    ADM_EXPORT void set(CountToFull countToFull);
 
     /**
      * @brief ADM parameter unset template
@@ -183,13 +180,9 @@ namespace adm {
    private:
     ADM_EXPORT FrameFormatId
         get(detail::ParameterTraits<FrameFormatId>::tag) const;
-    ADM_EXPORT CountToFull get(detail::ParameterTraits<CountToFull>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<FrameFormatId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<FrameType>::tag) const;
-    ADM_EXPORT bool has(detail::ParameterTraits<CountToFull>::tag) const;
-
-    ADM_EXPORT void unset(detail::ParameterTraits<CountToFull>::tag);
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -197,7 +190,6 @@ namespace adm {
     }
 
     FrameFormatId id_;
-    boost::optional<CountToFull> countToFull_;
   };
 
   // ---- Implementation ---- //

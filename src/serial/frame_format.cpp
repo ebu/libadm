@@ -8,10 +8,6 @@ namespace adm {
       detail::ParameterTraits<FrameFormatId>::tag) const {
     return id_;
   }
-  CountToFull FrameFormat::get(
-      detail::ParameterTraits<CountToFull>::tag) const {
-    return countToFull_.get();
-  }
 
   // ---- Has ---- //
   bool FrameFormat::has(detail::ParameterTraits<FrameFormatId>::tag) const {
@@ -20,19 +16,11 @@ namespace adm {
   bool FrameFormat::has(detail::ParameterTraits<FrameType>::tag) const {
     return true;
   }
-  bool FrameFormat::has(detail::ParameterTraits<CountToFull>::tag) const {
-    return countToFull_ != boost::none;
-  }
 
   // ---- Setter ---- //
   /// @brief FrameFormatId setter
   void FrameFormat::set(FrameFormatId id) { id_ = id; }
   /// @brief CountToFull setter
-  void FrameFormat::set(CountToFull countToFull) { countToFull_ = countToFull; }
-
-  void FrameFormat::unset(detail::ParameterTraits<CountToFull>::tag) {
-    countToFull_ = boost::none;
-  }
 
   // ---- Common ---- //
   void FrameFormat::print(std::ostream& os) const {
