@@ -83,13 +83,6 @@ namespace adm {
     using detail::TransportTrackFormatBase::unset;
 
     /**
-     * @brief Clear AudioTracks
-     *
-     * Removes all audioTracks from the TransportTrackFormat
-     */
-    ADM_EXPORT void clearAudioTracks();
-
-    /**
      * @brief Print overview to ostream
      */
     void print(std::ostream& os) const;
