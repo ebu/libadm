@@ -42,15 +42,26 @@ namespace adm {
 
   /// @brief Tag for TransportTrackFormat
   struct TransportTrackFormatTag {};
+
   /**
    * @ingroup sadm
    * @brief Class representation of the transportTrackFormat SADM element
    *
-   * Supported parameters:
-   *   - TransportId
-   *   - ::TransportName
-   *   - ::NumTracks
-   *   - ::NumIds
+   * \rst
+   * +----------------------+----------------------------+------------------------------+
+   * | ADM Parameter        | Parameter Type             | Pattern Type                 |
+   * +======================+============================+==============================+
+   * | transportID          | :class:`TransportId`       | :class:`RequiredParameter`   |
+   * +----------------------+----------------------------+------------------------------+
+   * | transportName        | :type:`TransportName`      | :class:`OptionalParameter`   |
+   * +----------------------+----------------------------+------------------------------+
+   * | numTracks            | :type:`NumTracks`          | :class:`OptionalParameter`   |
+   * +----------------------+----------------------------+------------------------------+
+   * | numIDs               | :type:`NumIds`             | :class:`OptionalParameter`   |
+   * +----------------------+----------------------------+------------------------------+
+   * | audioTrack           | :type:`AudioTracks`        | :class:`VectorParameter`     |
+   * +----------------------+----------------------------+------------------------------+
+   * \endrst
    */
   class TransportTrackFormat
       : public detail::TransportTrackFormatBase,

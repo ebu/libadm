@@ -36,12 +36,21 @@ namespace adm {
   struct AudioTrackTag {};
   /**
    * @ingroup sadm
-   * @brief Class representation for SADM element audioTrack
+   * @brief Class representation of the audioTrack SADM element
    *
-   * Supported parameters:
-   *   - ::TrackId
-   *   - \link #FormatDescriptor FormatLabel\endlink
-   *   - \link #FormatDescriptor FormatDefintion\endlink
+   * \rst
+   * +----------------------+-------------------------------+------------------------------+
+   * | ADM Parameter        | Parameter Type                | Pattern Type                 |
+   * +======================+===============================+==============================+
+   * | trackID              | :class:`TrackId`              | :class:`RequiredParameter`   |
+   * +----------------------+-------------------------------+------------------------------+
+   * | formatLabel          | :class:`FormatDescriptor`     | :class:`OptionalParameter`   |
+   * +----------------------+-------------------------------+------------------------------+
+   * | formatDefinition     | :class:`FormatDescriptor`     | :class:`OptionalParameter`   |
+   * +----------------------+-------------------------------+------------------------------+
+   * | audioTrackUIDRef     | :class:`AudioTrackUidRefs`    | :class:`VectorParameter`     |
+   * +----------------------+-------------------------------+------------------------------+
+   * \endrst
    */
   class AudioTrack : public detail::AudioTrackBase,
                      private detail::AddWrapperMethods<AudioTrack> {

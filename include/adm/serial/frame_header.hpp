@@ -28,10 +28,17 @@ namespace adm {
    * @ingroup sadm
    * @brief Class representation of the frameHeader SADM element
    *
-   * Supported elements:
-   *   - FrameFormat
-   *   - ProfileList
-   *   - TransportTrackFormat
+   * \rst
+   * +----------------------+-------------------------------+------------------------------+
+   * | ADM Parameter        | Parameter Type                | Pattern Type                 |
+   * +======================+===============================+==============================+
+   * | frameFormat          | :class:`FrameFormat`          | :class:`RequiredParameter`   |
+   * +----------------------+-------------------------------+------------------------------+
+   * | profileList          | :class:`ProfileList`          | :class:`OptionalParameter`   |
+   * +----------------------+-------------------------------+------------------------------+
+   * | transportTrackFormat | :type:`TransportTrackFormats` | :class:`VectorParameter`     |
+   * +----------------------+-------------------------------+------------------------------+
+   * \endrst
    */
   class FrameHeader : public detail::FrameHeaderBase,
                       private detail::AddWrapperMethods<FrameHeader> {
