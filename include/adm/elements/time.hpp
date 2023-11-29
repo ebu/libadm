@@ -9,8 +9,6 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 
-#include <iostream>
-
 namespace adm {
 
   /// @brief storage for ADM times of format 'hh:mm:ss.zzzzzSfffff'
