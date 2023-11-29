@@ -262,4 +262,5 @@ namespace adm {
   void reassignIds(std::shared_ptr<Document> document) {
     reassignAllIds(document);
   }
+
 }  // namespace adm
