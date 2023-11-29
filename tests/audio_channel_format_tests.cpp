@@ -1,15 +1,11 @@
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #include <algorithm>
-#include <sstream>
 #include <catch2/catch.hpp>
-#include <adm/detail/auto_base.hpp>
 #include "adm/elements/audio_channel_format.hpp"
 #include "adm/utilities/comparator.hpp"
-#include "helper/ostream_operators.hpp"
-
-using namespace adm;
 
 TEST_CASE("audio_channel_format") {
+  using namespace adm;
   // Basic tests
   {
     auto audioChannelFormat =
