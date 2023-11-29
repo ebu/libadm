@@ -1,9 +1,9 @@
 #pragma once
-#include "adm/export.h"
-#include <memory>
+
+#include "adm/document.hpp"
 
 namespace adm {
-  class Document;
+
   ADM_EXPORT std::shared_ptr<Document> deepCopy(
       std::shared_ptr<const Document> document);
 
