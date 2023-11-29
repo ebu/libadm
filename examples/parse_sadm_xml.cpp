@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
-#include "adm/parse_sadm.hpp"
+#include <adm/serial.hpp>
+#include "adm/parse.hpp"
 #include "adm/write.hpp"
 
 int main(int argc, char const *argv[]) {

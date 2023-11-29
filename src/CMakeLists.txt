@@ -66,7 +66,6 @@ add_library(adm
   private/document_parser.cpp
   detail/id_assigner.cpp
   parse.cpp
-  parse_sadm.cpp
   write.cpp
   serial/audio_track.cpp
   serial/changed_ids.cpp

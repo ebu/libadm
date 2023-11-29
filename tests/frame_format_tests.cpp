@@ -6,7 +6,7 @@
 #include <adm/serial/frame_header.hpp>
 #include <adm/document.hpp>
 #include <adm/write.hpp>
-#include <adm/parse_sadm.hpp>
+#include <adm/parse.hpp>
 #include <adm/serial/changed_ids.hpp>
 #include "helper/ostream_operators.hpp"
 

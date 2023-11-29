@@ -7,7 +7,7 @@
 #include "adm/document.hpp"
 #include "adm/elements.hpp"
 #include "adm/errors.hpp"
-#include "adm/parse_sadm.hpp"
+#include "adm/parse.hpp"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
 

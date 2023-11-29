@@ -3,6 +3,7 @@
 #include <string>
 #include "adm/common_definitions.hpp"
 #include "adm/private/document_parser.hpp"
+#include "adm/serial/frame_header_parser.hpp"
 
 namespace adm {
   class FrameHeader;
@@ -33,6 +34,18 @@ namespace adm {
     auto commonDefinitions = getCommonDefinitions();
     xml::DocumentParser parser(stream, options, commonDefinitions);
     parser.setHeader(header);
+    return parser.parse();
+  }
+
+  FrameHeader parseFrameHeader(std::istream& stream,
+                               xml::ParserOptions options) {
+    xml::FrameHeaderParser parser(stream, options);
+    return parser.parse();
+  }
+
+  FrameHeader parseFrameHeader(std::string const& fileName,
+                               xml::ParserOptions options) {
+    xml::FrameHeaderParser parser(fileName, options);
     return parser.parse();
   }
 }  // namespace adm

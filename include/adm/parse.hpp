@@ -92,6 +92,30 @@ namespace adm {
       xml::ParserOptions options = xml::ParserOptions::none);
 
   /**
+   * @brief Parse an XML representation of a serial ADM frame and return
+   * the frameHeader element as an adm::FrameHeader object
+   *
+   * Parse data from a `std::istream`.
+   * @param stream input stream from which to parse XML data
+   * @param options Options to influence the parser behaviour
+   */
+  ADM_EXPORT FrameHeader
+  parseFrameHeader(std::istream& stream,
+                   adm::xml::ParserOptions = adm::xml::ParserOptions::none);
+
+  /**
+   * @brief Parse an XML representation of a serial ADM frame and return
+   * the frameHeader element as an adm::FrameHeader object
+   *
+   * Parse data from a file.
+   * @param fileName Name of the input file from which to parse XML data
+   * @param options Options to influence the parser behaviour
+   */
+  ADM_EXPORT FrameHeader
+  parseFrameHeader(std::string const& fileName,
+                   adm::xml::ParserOptions = adm::xml::ParserOptions::none);
+
+  /**
    * @}
    */
 }  // namespace adm

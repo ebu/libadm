@@ -1,6 +1,7 @@
 #include <catch2/catch.hpp>
 #include <sstream>
-#include <adm/parse_sadm.hpp>
+#include <adm/serial.hpp>
+#include <adm/parse.hpp>
 
 namespace {
   constexpr const char* MINIMAL_HEADER =
