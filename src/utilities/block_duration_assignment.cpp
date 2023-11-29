@@ -7,7 +7,6 @@
 #include <map>
 #include <stdexcept>
 #include <adm/utilities/time_conversion.hpp>
-#include <iostream>
 
 namespace adm {
 
