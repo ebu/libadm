@@ -52,7 +52,7 @@ namespace adm {
    * +----------------------+-------------------------------+------------------------------+
    * \endrst
    */
-  class AudioTrack : public detail::AudioTrackBase,
+  class AudioTrack : private detail::AudioTrackBase,
                      private detail::AddWrapperMethods<AudioTrack> {
    public:
     typedef AudioTrackTag tag;

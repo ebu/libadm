@@ -148,7 +148,7 @@ namespace adm {
    * audioTrackUidRef element in audioTrack, and to reflect the fact it encapsulates id and status rather
    * than just the id.
    */
-  class ChangedIds : public detail::ChangedIdsBase,
+  class ChangedIds : private detail::ChangedIdsBase,
                      private detail::AddWrapperMethods<ChangedIds> {
    public:
     template <typename... Parameters>

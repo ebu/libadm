@@ -35,7 +35,7 @@ namespace adm {
   }  // namespace detail
 
   class Profile : private detail::ProfileBase,
-                  public detail::AddWrapperMethods<Profile> {
+                  private detail::AddWrapperMethods<Profile> {
    public:
     using tag = ProfileTag;
 
@@ -88,7 +88,7 @@ namespace adm {
   struct ProfileceListTag {};
 
   class ProfileList : private detail::ProfileListBase,
-                      public detail::AddWrapperMethods<ProfileList> {
+                      private detail::AddWrapperMethods<ProfileList> {
    public:
     using tag = ProfileceListTag;
 

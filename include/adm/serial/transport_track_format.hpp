@@ -64,7 +64,7 @@ namespace adm {
    * \endrst
    */
   class TransportTrackFormat
-      : public detail::TransportTrackFormatBase,
+      : private detail::TransportTrackFormatBase,
         private detail::AddWrapperMethods<TransportTrackFormat> {
    public:
     using tag = TransportTrackFormatTag;

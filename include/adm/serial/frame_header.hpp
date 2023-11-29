@@ -40,7 +40,7 @@ namespace adm {
    * +----------------------+-------------------------------+------------------------------+
    * \endrst
    */
-  class FrameHeader : public detail::FrameHeaderBase,
+  class FrameHeader : private detail::FrameHeaderBase,
                       private detail::AddWrapperMethods<FrameHeader> {
    public:
     typedef FrameHeaderTag tag;
