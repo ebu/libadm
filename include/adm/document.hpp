@@ -26,14 +26,13 @@ namespace adm {
 
   /**
    * @brief Class representation of a whole ADM document
-   * @headerfile document.hpp <adm/document.hpp>
    *
    * \rst
-   * +---------------+---------------------+----------------------------+
-   * | ADM Parameter | Parameter Type      | Pattern Type               |
-   * +===============+=====================+============================+
-   * | version       | :type:`Version`     | :class:`OptionalParameter` |
-   * +---------------+---------------------+----------------------------+
+   * +---------------+-----------------+----------------------------+
+   * | ADM Parameter | Parameter Type  | Pattern Type               |
+   * +===============+=================+============================+
+   * | version       | :type:`Version` | :class:`OptionalParameter` |
+   * +---------------+-----------------+----------------------------+
    * \endrst
    *
    * Note that:
