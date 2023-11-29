@@ -21,8 +21,6 @@
 #include "adm/export.h"
 #include <type_traits>
 
-#include <iostream>
-
 namespace adm {
 
   class Document;
@@ -53,7 +51,6 @@ namespace adm {
 
   /// @brief Tag for AudioChannelFormat
   struct AudioChannelFormatTag {};
-
   /**
    * @brief Class representation of the audioChannelFormat ADM element
    *
@@ -228,6 +225,7 @@ namespace adm {
     bool isDefault(Tag) const {
       return false;
     }
+
     ADM_EXPORT void unset(detail::ParameterTraits<Frequency>::tag);
 
     // ----- AudioBlockFormats ----- //
