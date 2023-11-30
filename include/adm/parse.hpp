@@ -23,11 +23,6 @@ namespace adm {
      * are defined for this type. Thus options may be combined by `OR`-ing the
      * respective values.
      *
-     * @note No options have been implemented so far. As soon as this is done,
-     * provide an usage example, a list describing the member constants
-     * (options) and which options can be combined. Refer to
-     * [std::filesystem::copy_options](http://en.cppreference.com/w/cpp/filesystem/copy_options)
-     * for an example.
      * @ingroup xml
      */
     enum class ParserOptions : unsigned {
@@ -57,8 +52,9 @@ namespace adm {
       xml::ParserOptions options = xml::ParserOptions::none);
 
   /**
-   * @brief Parse an XML representation of the Audio Definition Model
-   * using FrameHeader to check for consistency
+   * @brief Parse an xml document containing an audioFormatExtended
+   * node into an adm::Document, using a SADM FrameHeader to check for consistency.
+   * Primarily intended for parsing sadm frames.
    *
    * Convenience wrapper for files using `parseXml(std::istream&)`
    * @param filename XML file to read and parse
@@ -80,8 +76,9 @@ namespace adm {
       xml::ParserOptions options = xml::ParserOptions::none);
 
   /**
-   * @brief Parse an XML representation of the Audio Definition Model
-   * using FrameHeader to check for consistency
+   * @brief Parse an xml document containing an audioFormatExtended
+   * node into an adm::Document, using a SADM FrameHeader to check for consistency.
+   * Primarily intended for parsing sadm frames.
    *
    * Parse adm data from an `std::istream`.
    * @param stream input stream to parse XML data
