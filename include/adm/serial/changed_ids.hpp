@@ -75,8 +75,7 @@ namespace adm {
 
   template <typename T>
   ChangedId<T> createChangedId(std::shared_ptr<T> element, Status status) {
-    return ChangedId<T>{element->template get<typename T::id_type>(),
-                        std::move(status)};
+    return ChangedId<T>{element->template get<typename T::id_type>(), status};
   }
 
   /// Tags for IdRefs
@@ -156,7 +155,7 @@ namespace adm {
 
     template <typename ElementT>
     void add(std::shared_ptr<ElementT> const& element, Status status) {
-      add(createChangedId(element, std::move(status)));
+      add(createChangedId(element, status));
     }
 
     using tag = ChangedIdsTag;
