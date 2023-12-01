@@ -1,6 +1,5 @@
 #include "adm/serial/frame_header_parser.hpp"
 #include "adm/private/xml_parser_helper.hpp"
-#include "adm/common_definitions.hpp"
 #include "adm/errors.hpp"
 #include "adm/private/rapidxml_utils.hpp"
 #include "rapidxml/rapidxml.hpp"
@@ -8,7 +7,7 @@
 #include <iostream>
 #include "adm/private/document_parser.hpp"
 #include "adm/serial/changed_ids.hpp"
-#include "adm/private/id_ref_traits.hpp"
+#include "adm/private/changed_id_traits.hpp"
 
 namespace adm {
   namespace xml {

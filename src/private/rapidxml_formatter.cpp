@@ -2,7 +2,7 @@
 #include "adm/private/rapidxml_wrapper.hpp"
 #include "adm/serial/frame_format_id.hpp"
 #include <adm/serial/changed_ids.hpp>
-#include "adm/private/id_ref_traits.hpp"
+#include "adm/private/changed_id_traits.hpp"
 
 namespace adm {
   namespace xml {

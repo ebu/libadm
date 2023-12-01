@@ -1,5 +1,5 @@
-#ifndef LIBADM_ID_REF_TRAITS_HPP
-#define LIBADM_ID_REF_TRAITS_HPP
+#ifndef LIBADM_CHANGED_ID_TRAITS_HPP
+#define LIBADM_CHANGED_ID_TRAITS_HPP
 
 #include "adm/serial/changed_ids.hpp"
 #include "xml_parser_helper.hpp"
@@ -70,4 +70,4 @@ namespace adm {
   }  // namespace xml
 }  // namespace adm
 
-#endif  //LIBADM_ID_REF_TRAITS_HPP
+#endif  //LIBADM_CHANGED_ID_TRAITS_HPP
