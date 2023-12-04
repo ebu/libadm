@@ -153,6 +153,22 @@ namespace adm {
       auto audioTrackUidId = audioTrackUid->template get<AudioTrackUidId>();
       audioTrackUidId.set(audioTrackUidIdValue);
       audioTrackUid->set(audioTrackUidId);
+      auto audioChannelFormat =
+          audioTrackUid->getReference<adm::AudioChannelFormat>();
+      if (audioChannelFormat) {
+        auto audioChannelFormatId =
+            audioChannelFormat->template get<AudioChannelFormatId>();
+        if (!isCommonDefinitionsId(audioChannelFormatId)) {
+          auto channelFormatType =
+              audioChannelFormat->get<TypeDescriptor>();
+          auto channelFormatIdValue =
+              AudioChannelFormatIdValue(audioTrackUidIdValue.get() + 0x1000u); // non-common-def offset
+          audioChannelFormatId.set(channelFormatIdValue);
+          audioChannelFormatId.set(channelFormatType);
+          audioChannelFormat->set(audioChannelFormatId);
+          reassignAudioBlockFormatIds(audioChannelFormat);
+        }
+      }
       ++audioTrackUidIdValue;
     }
   }
