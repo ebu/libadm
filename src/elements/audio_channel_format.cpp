@@ -54,7 +54,7 @@ namespace adm {
       assignNewIdValue<AudioBlockFormatBinaural>();
     } else {
       std::stringstream errorString;
-      errorString << "missmatch between TypeDefinition of AudioChannelFormat ("
+      errorString << "mismatch between TypeDefinition of AudioChannelFormat ("
                   << formatTypeDefinition(get<TypeDescriptor>())
                   << ") and AudioChannelFormatId ("
                   << formatTypeDefinition(id.get<TypeDescriptor>()) << ")";

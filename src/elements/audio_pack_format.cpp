@@ -46,7 +46,7 @@ namespace adm {
       id_ = id;
     } else {
       std::stringstream errorString;
-      errorString << "missmatch between TypeDefinition of AudioPackFormat ("
+      errorString << "mismatch between TypeDefinition of AudioPackFormat ("
                   << formatTypeDefinition(get<TypeDescriptor>())
                   << ") and AudioPackFormatId ("
                   << formatTypeDefinition(id.get<TypeDescriptor>()) << ")";
