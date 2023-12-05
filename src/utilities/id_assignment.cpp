@@ -12,6 +12,30 @@ namespace adm {
   void reassignAudioBlockFormatIds(
       std::shared_ptr<AudioChannelFormat> channelFormat);
 
+  uint16_t getAvailableIdValue(
+      std::shared_ptr<adm::Document> doc, const adm::TypeDescriptor& td) {
+
+    // We want to find a matching set of available ATF, ASF and ACF ID's
+    AudioChannelFormatId acfId;
+    AudioStreamFormatId asfId;
+    AudioTrackFormatId atfId;
+
+    acfId.set(td);
+    asfId.set(td);
+    atfId.set(td);
+    atfId.set(AudioTrackFormatIdCounter{0x01u});
+
+    for (uint16_t val = 0x1001u; val <= 0xFFFFu; val++) {
+      acfId.set(AudioChannelFormatIdValue{val});
+      asfId.set(AudioStreamFormatIdValue{val});
+      atfId.set(AudioTrackFormatIdValue{val});
+      if (!doc->lookup(acfId) && !doc->lookup(asfId) && !doc->lookup(atfId)) {
+        return val;
+      }
+    }
+    throw std::runtime_error("No more ID's available");
+  }
+
   template <typename It>
   void undefineIds(It begin, It end) {
     for (auto it = begin; it != end; ++it) {
@@ -89,22 +113,44 @@ namespace adm {
   template <typename It>
   void reassignAudioStreamFormatIds(It begin, It end) {
     undefineIds(begin, end);
-    auto audioStreamFormatIdValue = AudioStreamFormatIdValue(0x1001u);
     for (auto it = begin; it != end; ++it) {
       auto audioStreamFormat = *it;
+      auto doc = audioStreamFormat->getParent().lock();
+      if (!doc) {
+        // If ASF doesn't belong to a doc, don't process this tree
+        continue;
+      }
+      auto audioChannelFormat =
+          audioStreamFormat->template getReference<AudioChannelFormat>();
+      if (!audioChannelFormat) {
+        // If no ACF, don't process this tree - it's redundant
+        // This is similar to previous logic, since the TD component of ID's
+        // was pulled from the ACF, so no ACF left an undef TD type in
+        // ASF ID and all associated ATF ID's 
+        continue;
+      }
+      auto td = audioChannelFormat->template get<TypeDescriptor>();
+      auto idValue = getAvailableIdValue(doc, td);
+
+      // AudioStreamFormat
       auto audioStreamFormatId =
           audioStreamFormat->template get<AudioStreamFormatId>();
       if (!isCommonDefinitionsId(audioStreamFormatId)) {
-        audioStreamFormatId.set(audioStreamFormatIdValue);
-        if (auto audioChannelFormat =
-                audioStreamFormat
-                    ->template getReference<AudioChannelFormat>()) {
-          audioStreamFormatId.set(
-              audioChannelFormat->template get<TypeDescriptor>());
-        }
+        audioStreamFormatId.set(AudioStreamFormatIdValue{idValue});
         audioStreamFormat->set(audioStreamFormatId);
       }
-      auto audioTrackFormatIdCounter = AudioTrackFormatIdCounter(0x01u);
+
+      // AudioChannelFormat
+      auto audioChannelFormatId =
+          audioChannelFormat->template get<AudioChannelFormatId>();
+      if (!isCommonDefinitionsId(audioChannelFormatId)) {
+        audioChannelFormatId.set(AudioChannelFormatIdValue{idValue});
+        audioChannelFormat->set(audioChannelFormatId);
+        reassignAudioBlockFormatIds(audioChannelFormat);
+      }
+
+      // AudioTrackFormats
+      AudioTrackFormatIdCounter audioTrackFormatIdCounter{0x01u};
       for (auto& weakAudioTrackFormat :
            audioStreamFormat->getAudioTrackFormatReferences()) {
         auto audioTrackFormat = weakAudioTrackFormat.lock();
@@ -114,33 +160,13 @@ namespace adm {
         auto audioTrackFormatId =
             audioTrackFormat->template get<AudioTrackFormatId>();
         if (!isCommonDefinitionsId(audioTrackFormatId)) {
-          auto trackFormatIdValue = AudioTrackFormatIdValue(
-              audioStreamFormatId.template get<AudioStreamFormatIdValue>()
-                  .get());
-          audioTrackFormatId.set(trackFormatIdValue);
-          audioTrackFormatId.set(
-              audioStreamFormatId.template get<TypeDescriptor>());
+          audioTrackFormatId.set(AudioTrackFormatIdValue{idValue});
           audioTrackFormatId.set(audioTrackFormatIdCounter);
           audioTrackFormat->set(audioTrackFormatId);
-          ++audioTrackFormatIdCounter;
+          audioTrackFormatIdCounter++;
         }
       }
-      if (auto audioChannelFormat =
-              audioStreamFormat->template getReference<AudioChannelFormat>()) {
-        auto audioChannelFormatId =
-            audioChannelFormat->template get<AudioChannelFormatId>();
-        if (!isCommonDefinitionsId(audioChannelFormatId)) {
-          auto channelFormatIdValue = AudioChannelFormatIdValue(
-              audioStreamFormatId.template get<AudioStreamFormatIdValue>()
-                  .get());
-          audioChannelFormatId.set(channelFormatIdValue);
-          audioChannelFormatId.set(
-              audioStreamFormatId.template get<TypeDescriptor>());
-          audioChannelFormat->set(audioChannelFormatId);
-          reassignAudioBlockFormatIds(audioChannelFormat);
-        }
-      }
-      ++audioStreamFormatIdValue;
+
     }
   }
 
@@ -161,12 +187,14 @@ namespace adm {
         if (!isCommonDefinitionsId(audioChannelFormatId)) {
           auto channelFormatType =
               audioChannelFormat->get<TypeDescriptor>();
-          auto channelFormatIdValue =
-              AudioChannelFormatIdValue(audioTrackUidIdValue.get() + 0x1000u); // non-common-def offset
-          audioChannelFormatId.set(channelFormatIdValue);
-          audioChannelFormatId.set(channelFormatType);
-          audioChannelFormat->set(audioChannelFormatId);
-          reassignAudioBlockFormatIds(audioChannelFormat);
+          auto doc = audioChannelFormat->getParent().lock();
+          if (doc) {
+            auto idValue = getAvailableIdValue(doc, channelFormatType);
+            audioChannelFormatId.set(channelFormatType);
+            audioChannelFormatId.set(AudioChannelFormatIdValue{idValue});
+            audioChannelFormat->set(audioChannelFormatId);
+            reassignAudioBlockFormatIds(audioChannelFormat);
+          }
         }
       }
       ++audioTrackUidIdValue;
