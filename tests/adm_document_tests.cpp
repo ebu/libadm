@@ -282,7 +282,7 @@ TEST_CASE("copy_document_all_adm_elements") {
 
   // add to document1 and reassign ids
   admDocument->add(myProgramme);
-  // reassignIds(admDocument);
+  reassignIds(admDocument);
 
   REQUIRE(admDocument->getElements<AudioProgramme>().size() == 1);
   REQUIRE(admDocument->getElements<AudioContent>().size() == 1);
