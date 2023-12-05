@@ -178,17 +178,19 @@ namespace adm {
       audioTrackUidId.set(audioTrackUidIdValue);
       audioTrackUid->set(audioTrackUidId);
       auto audioChannelFormat =
-          audioTrackUid->getReference<adm::AudioChannelFormat>();
+          audioTrackUid->template getReference<adm::AudioChannelFormat>();
       if (audioChannelFormat) {
         auto audioChannelFormatId =
             audioChannelFormat->template get<AudioChannelFormatId>();
         if (!isCommonDefinitionsId(audioChannelFormatId)) {
-          auto channelFormatType = audioChannelFormat->get<TypeDescriptor>();
+          auto channelFormatType =
+              audioChannelFormat->template get<TypeDescriptor>();
           auto doc = audioChannelFormat->getParent().lock();
           if (doc) {
             auto idValue = getAvailableIdValue(doc, channelFormatType);
+            AudioChannelFormatIdValue audioChannelFormatIdValue{idValue};
             audioChannelFormatId.set(channelFormatType);
-            audioChannelFormatId.set(AudioChannelFormatIdValue{idValue});
+            audioChannelFormatId.set(audioChannelFormatIdValue);
             audioChannelFormat->set(audioChannelFormatId);
             reassignAudioBlockFormatIds(audioChannelFormat);
           }
