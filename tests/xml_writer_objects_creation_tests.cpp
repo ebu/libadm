@@ -25,7 +25,8 @@ TEST_CASE("write_simple_object_short_structure") {
   using namespace adm;
 
   auto document = Document::create();
-  addSimpleObjectShortStructureTo(document, "My Simple Short Structured Object");
+  addSimpleObjectShortStructureTo(document,
+                                  "My Simple Short Structured Object");
   reassignIds(document);
 
   std::stringstream xml;
