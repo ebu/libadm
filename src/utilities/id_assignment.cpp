@@ -12,9 +12,8 @@ namespace adm {
   void reassignAudioBlockFormatIds(
       std::shared_ptr<AudioChannelFormat> channelFormat);
 
-  uint16_t getAvailableIdValue(
-      std::shared_ptr<adm::Document> doc, const adm::TypeDescriptor& td) {
-
+  uint16_t getAvailableIdValue(std::shared_ptr<adm::Document> doc,
+                               const adm::TypeDescriptor& td) {
     // We want to find a matching set of available ATF, ASF and ACF ID's
     AudioChannelFormatId acfId;
     AudioStreamFormatId asfId;
@@ -126,7 +125,7 @@ namespace adm {
         // If no ACF, don't process this tree - it's redundant
         // This is similar to previous logic, since the TD component of ID's
         // was pulled from the ACF, so no ACF left an undef TD type in
-        // ASF ID and all associated ATF ID's 
+        // ASF ID and all associated ATF ID's
         continue;
       }
       auto td = audioChannelFormat->template get<TypeDescriptor>();
@@ -166,7 +165,6 @@ namespace adm {
           audioTrackFormatIdCounter++;
         }
       }
-
     }
   }
 
@@ -185,8 +183,7 @@ namespace adm {
         auto audioChannelFormatId =
             audioChannelFormat->template get<AudioChannelFormatId>();
         if (!isCommonDefinitionsId(audioChannelFormatId)) {
-          auto channelFormatType =
-              audioChannelFormat->get<TypeDescriptor>();
+          auto channelFormatType = audioChannelFormat->get<TypeDescriptor>();
           auto doc = audioChannelFormat->getParent().lock();
           if (doc) {
             auto idValue = getAvailableIdValue(doc, channelFormatType);
