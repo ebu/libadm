@@ -285,11 +285,14 @@ namespace adm {
     /**
      * Initialize all audioTrackFormatIds and audioChanneldFormatIds to zero.
      * The reason behind this is, that the reassignAudioStreamFormatIds
-     * algorithm only gives new Ids to audioTrackFormats and
-     * audioChannelFormats which are referenced by a audioStreamFormat. This
-     * should be the right way to do it. Unreferenced elements will get an ID
-     * with value 0 and are thereby marked as elements which should be
-     * ignored.
+     * algorithm only gives new IDs to audioTrackFormats and
+     * audioChannelFormats which are referenced by an audioStreamFormat. 
+     * Additionally, audioStreamFormats are only given a valid ID if they 
+     * reference an audioChannelFormat. This should be the right way to do it 
+     * for 2076-0/1 structures. Unreferenced elements will get an ID with 
+     * value 0 and are thereby marked as elements which should be ignored.
+     * For 2076-2 structures, reassignAudioTrackUidIds will apply a unique ID
+     * to audioChannelFormats referenced directly from audioTrackUids.
      */
     undefineIds(document->template getElements<AudioTrackFormat>().begin(),
                 document->template getElements<AudioTrackFormat>().end());
