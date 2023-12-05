@@ -135,6 +135,7 @@ namespace adm {
       auto audioStreamFormatId =
           audioStreamFormat->template get<AudioStreamFormatId>();
       if (!isCommonDefinitionsId(audioStreamFormatId)) {
+        audioStreamFormatId.set(td);
         audioStreamFormatId.set(AudioStreamFormatIdValue{idValue});
         audioStreamFormat->set(audioStreamFormatId);
       }
@@ -143,6 +144,7 @@ namespace adm {
       auto audioChannelFormatId =
           audioChannelFormat->template get<AudioChannelFormatId>();
       if (!isCommonDefinitionsId(audioChannelFormatId)) {
+        audioChannelFormatId.set(td);
         audioChannelFormatId.set(AudioChannelFormatIdValue{idValue});
         audioChannelFormat->set(audioChannelFormatId);
         reassignAudioBlockFormatIds(audioChannelFormat);
@@ -159,6 +161,7 @@ namespace adm {
         auto audioTrackFormatId =
             audioTrackFormat->template get<AudioTrackFormatId>();
         if (!isCommonDefinitionsId(audioTrackFormatId)) {
+          audioTrackFormatId.set(td);
           audioTrackFormatId.set(AudioTrackFormatIdValue{idValue});
           audioTrackFormatId.set(audioTrackFormatIdCounter);
           audioTrackFormat->set(audioTrackFormatId);
