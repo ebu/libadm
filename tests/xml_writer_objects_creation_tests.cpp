@@ -21,6 +21,19 @@ TEST_CASE("write_simple_object") {
   CHECK_THAT(xml.str(), EqualsXmlFile("write_simple_object"));
 }
 
+TEST_CASE("write_simple_object_short_structure") {
+  using namespace adm;
+
+  auto document = Document::create();
+  addSimpleObjectShortStructureTo(document, "My Simple Short Structured Object");
+  reassignIds(document);
+
+  std::stringstream xml;
+  writeXml(xml, document);
+
+  CHECK_THAT(xml.str(), EqualsXmlFile("write_simple_object_short_structure"));
+}
+
 TEST_CASE("write_simple_common_definitions_object") {
   using namespace adm;
 
@@ -41,4 +54,24 @@ TEST_CASE("write_simple_common_definitions_object") {
 
   CHECK_THAT(xml.str(),
              EqualsXmlFile("write_simple_common_definitions_object"));
+}
+
+TEST_CASE("write_mixed_objects_and_structures") {
+  using namespace adm;
+
+  auto document = Document::create();
+  addCommonDefinitionsTo(document);
+  addSimpleObjectTo(document, "Simple Object 1");
+  addSimpleObjectShortStructureTo(document,
+                                  "Simple Object 2 (short structured)");
+  addSimpleCommonDefinitionsObjectTo(document, "5.1 Object 3", "0+5+0");
+  addSimpleObjectTo(document, "Simple Object 4");
+  addSimpleObjectShortStructureTo(document,
+                                  "Simple Object 5 (short structured)");
+  reassignIds(document);
+
+  std::stringstream xml;
+  writeXml(xml, document);
+
+  CHECK_THAT(xml.str(), EqualsXmlFile("write_mixed_objects_and_structures"));
 }

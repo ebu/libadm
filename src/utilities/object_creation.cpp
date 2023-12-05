@@ -39,6 +39,34 @@ namespace adm {
     return holder;
   }
 
+  SimpleObjectHolder createSimpleObjectShortStructure(const std::string& name) {
+    // create without ASF and ATF refs
+    SimpleObjectHolder holder;
+    holder.audioObject = AudioObject::create(AudioObjectName(name));
+
+    holder.audioPackFormat = AudioPackFormat::create(AudioPackFormatName(name),
+                                                     TypeDefinition::OBJECTS);
+    holder.audioChannelFormat = AudioChannelFormat::create(
+        AudioChannelFormatName(name), TypeDefinition::OBJECTS);
+    holder.audioTrackUid = AudioTrackUid::create();
+
+    // reference
+    holder.audioObject->addReference(holder.audioPackFormat);
+    holder.audioPackFormat->addReference(holder.audioChannelFormat);
+    holder.audioObject->addReference(holder.audioTrackUid);
+    holder.audioTrackUid->setReference(holder.audioChannelFormat);
+    holder.audioTrackUid->setReference(holder.audioPackFormat);
+
+    return holder;
+  }
+
+  SimpleObjectHolder addSimpleObjectShortStructureTo(
+      std::shared_ptr<Document> document, const std::string& name) {
+    auto holder = createSimpleObjectShortStructure(name);
+    document->add(holder.audioObject);
+    return holder;
+  }
+
   SimpleCommonDefinitionsObjectHolder addSimpleCommonDefinitionsObjectTo(
       std::shared_ptr<Document> document, const std::string& name,
       const std::string& speakerLayout) {
