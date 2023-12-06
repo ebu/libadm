@@ -258,7 +258,7 @@ namespace adm {
   }
 
   AudioPackFormatId IdReassigner::IdIssuer::issueAudioPackFormatId(
-      TypeDescriptor typeDescriptor) {
+      const TypeDescriptor& typeDescriptor) {
     auto it = nextAudioPackFormatIdValue
                   .insert(std::make_pair(typeDescriptor, 0x1001))
                   .first;
@@ -269,7 +269,7 @@ namespace adm {
   }
 
   AudioChannelFormatId IdReassigner::IdIssuer::issueAudioChannelFormatId(
-      TypeDescriptor typeDescriptor) {
+      const TypeDescriptor& typeDescriptor) {
     auto it = nextAudioChannelStreamTrackFormatIdValue
                   .insert(std::make_pair(typeDescriptor, 0x1001))
                   .first;
@@ -279,7 +279,7 @@ namespace adm {
     return id;
   }
   uint16_t IdReassigner::IdIssuer::issueAudioChannelStreamTrackFormatIdValue(
-      TypeDescriptor typeDescriptor) {
+      const TypeDescriptor& typeDescriptor) {
     auto it = nextAudioChannelStreamTrackFormatIdValue
                   .insert(std::make_pair(typeDescriptor, 0x1001))
                   .first;

@@ -120,11 +120,11 @@ namespace adm {
       AudioContentId issueAudioContentId();
       AudioObjectId issueAudioObjectId();
       AudioTrackUidId issueAudioTrackUidId();
-      AudioPackFormatId issueAudioPackFormatId(TypeDescriptor typeDescriptor);
+      AudioPackFormatId issueAudioPackFormatId(const TypeDescriptor& typeDescriptor);
       AudioChannelFormatId issueAudioChannelFormatId(
-          TypeDescriptor typeDescriptor);
+          const TypeDescriptor& typeDescriptor);
       uint16_t issueAudioChannelStreamTrackFormatIdValue(
-          TypeDescriptor typeDescriptor);
+          const TypeDescriptor& typeDescriptor);
 
      private:
       AudioProgrammeIdValue nextAudioProgrammeIdValue{0x1001};
