@@ -11,19 +11,22 @@ namespace adm {
   /**
    * @brief Reassign ids of an Document
    *
-   * Assigns new ids to all the elements wihtin an Document. Unreferenced
-   * audioTrackFormats and audioChannelFormats which are not referenced by an
-   * audioStreamFormat get an Id with the value zero and are thereby marked as
+   * Assigns new IDs to all the elements wihtin an Document. 
+   * audioTrackFormats which are not referenced by an audioStreamFormat get an
+   * ID with the value zero and are thereby marked as ADM elements which
+   * should be ignored.
+   * audioChannelFormats which are not referenced by an audioStreamFormat or
+   * an audioTrackUid get an ID with the value zero and are thereby marked as
    * ADM elements which should be ignored.
    *
    * @note
-   * Element that already have Ids with a value in the range 0x0001-0x0fff
+   * Element that already have IDs with a value in the range 0x0001-0x0fff
    * will not get new Ids assigned, as they are considered to be common
    * definitions.
    */
   ADM_EXPORT void reassignIds(std::shared_ptr<Document> document);
 
-  /** @name Check if id is a common definitions id
+  /** @name Check if ID is a common definitions ID
    */
   ///@{
   inline bool isCommonDefinitionsId(AudioProgrammeId id) {
@@ -61,9 +64,9 @@ namespace adm {
   }
   ///@}
 
-  /** @name Check if id is undefined
+  /** @name Check if ID is undefined
    *
-   * An id is undefined if type, value and counter are 0u.
+   * An ID is undefined if type, value and counter are 0u.
    */
   ///@{
   inline bool isUndefined(AudioProgrammeId id) {
