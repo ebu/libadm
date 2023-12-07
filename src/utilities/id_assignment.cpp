@@ -234,26 +234,35 @@ namespace adm {
 
   IdReassigner::IdIssuer::IdIssuer() {}
   AudioProgrammeId IdReassigner::IdIssuer::issueAudioProgrammeId() {
+    if (nextAudioProgrammeIdValue > 0xFFFFu)
+      throw std::runtime_error("No AudioProgrammeId available");
     AudioProgrammeId id;
-    id.set(nextAudioProgrammeIdValue++);
+    id.set(AudioProgrammeIdValue(nextAudioProgrammeIdValue++));
     return id;
   }
 
   AudioContentId IdReassigner::IdIssuer::issueAudioContentId() {
+    if (nextAudioContentIdValue > 0xFFFFu)
+      throw std::runtime_error("No AudioContentId available");
     AudioContentId id;
-    id.set(nextAudioContentIdValue++);
+    id.set(AudioContentIdValue(nextAudioContentIdValue++));
     return id;
   }
 
   AudioObjectId IdReassigner::IdIssuer::issueAudioObjectId() {
+    if (nextAudioObjectIdValue > 0xFFFFu)
+      throw std::runtime_error("No AudioObjectId available");
     AudioObjectId id;
-    id.set(nextAudioObjectIdValue++);
+    id.set(AudioObjectIdValue(nextAudioObjectIdValue++));
     return id;
   }
 
   AudioTrackUidId IdReassigner::IdIssuer::issueAudioTrackUidId() {
+    if (nextAudioTrackUidIdValue > 0xFFFFFFFFu)
+      throw std::runtime_error("No AudioTrackUidId available");
     AudioTrackUidId id;
-    id.set(nextAudioTrackUidIdValue++);
+    id.set(AudioTrackUidIdValue(
+        static_cast<uint32_t>(nextAudioTrackUidIdValue++)));
     return id;
   }
 
@@ -262,9 +271,11 @@ namespace adm {
     auto it = nextAudioPackFormatIdValue
                   .insert(std::make_pair(typeDescriptor, 0x1001))
                   .first;
+    if (it->second > 0xFFFFu)
+      throw std::runtime_error("No AudioPackFormatId available");
     AudioPackFormatId id;
     id.set(typeDescriptor);
-    id.set(it->second++);
+    id.set(AudioPackFormatIdValue(it->second++));
     return id;
   }
 
@@ -273,6 +284,8 @@ namespace adm {
     auto it = nextAudioChannelStreamTrackFormatIdValue
                   .insert(std::make_pair(typeDescriptor, 0x1001))
                   .first;
+    if (it->second > 0xFFFFu)
+      throw std::runtime_error("No AudioChannelFormatId available");
     AudioChannelFormatId id;
     id.set(typeDescriptor);
     id.set(AudioChannelFormatIdValue(it->second++));
@@ -283,7 +296,11 @@ namespace adm {
     auto it = nextAudioChannelStreamTrackFormatIdValue
                   .insert(std::make_pair(typeDescriptor, 0x1001))
                   .first;
-    return it->second++;
+    if (it->second > 0xFFFFu)
+      throw std::runtime_error(
+          "No common AudioChannelFormat, AudioStreamFormat, AudioTrackFormat "
+          "ID value available");
+    return static_cast<uint16_t>(it->second++);
   }
 
 }  // namespace adm

@@ -128,13 +128,12 @@ namespace adm {
           const TypeDescriptor& typeDescriptor);
 
      private:
-      AudioProgrammeIdValue nextAudioProgrammeIdValue{0x1001};
-      AudioContentIdValue nextAudioContentIdValue{0x1001};
-      AudioObjectIdValue nextAudioObjectIdValue{0x1001};
-      AudioTrackUidIdValue nextAudioTrackUidIdValue{0x00000001};
-      std::map<TypeDescriptor, AudioPackFormatIdValue>
-          nextAudioPackFormatIdValue;
-      std::map<TypeDescriptor, uint16_t>
+      uint32_t nextAudioProgrammeIdValue{0x1001u};
+      uint32_t nextAudioContentIdValue{0x1001u};
+      uint32_t nextAudioObjectIdValue{0x1001u};
+      uint64_t nextAudioTrackUidIdValue{0x00000001u};
+      std::map<TypeDescriptor, uint32_t> nextAudioPackFormatIdValue;
+      std::map<TypeDescriptor, uint32_t>
           nextAudioChannelStreamTrackFormatIdValue;
 
     } idIssuer;
