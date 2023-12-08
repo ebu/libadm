@@ -67,7 +67,7 @@ namespace adm {
 
   /** @name Check if ID is undefined
    *
-   * An ID is undefined if type, value and counter are 0u.
+   * returns true if the parameter IdType::value_type is not set
    */
   ///@{
   inline bool isUndefined(AudioProgrammeId id) {
@@ -96,50 +96,5 @@ namespace adm {
     return (id == AudioBlockFormatId());
   }
   ///@}
-
-  class IdReassigner {
-   public:
-    IdReassigner(std::shared_ptr<Document> document);
-
-   private:
-    void reassignAllIds();
-
-    void reassignAudioProgrammeIds();
-    void reassignAudioContentIds();
-    void reassignAudioObjectIds();
-    void reassignAudioPackFormatIds();
-    void reassignAudioStreamFormatIds();
-    void reassignAudioTrackUidIds();
-    void reassignAudioBlockFormatIds(
-        std::shared_ptr<AudioChannelFormat> audioChannelFormat);
-
-    class IdIssuer {
-     public:
-      IdIssuer();
-      AudioProgrammeId issueAudioProgrammeId();
-      AudioContentId issueAudioContentId();
-      AudioObjectId issueAudioObjectId();
-      AudioTrackUidId issueAudioTrackUidId();
-      AudioPackFormatId issueAudioPackFormatId(
-          const TypeDescriptor& typeDescriptor);
-      AudioChannelFormatId issueAudioChannelFormatId(
-          const TypeDescriptor& typeDescriptor);
-      uint16_t issueAudioChannelStreamTrackFormatIdValue(
-          const TypeDescriptor& typeDescriptor);
-
-     private:
-      AudioProgrammeIdValue nextAudioProgrammeIdValue{0x1001};
-      AudioContentIdValue nextAudioContentIdValue{0x1001};
-      AudioObjectIdValue nextAudioObjectIdValue{0x1001};
-      AudioTrackUidIdValue nextAudioTrackUidIdValue{0x00000001};
-      std::map<TypeDescriptor, AudioPackFormatIdValue>
-          nextAudioPackFormatIdValue;
-      std::map<TypeDescriptor, uint16_t>
-          nextAudioChannelStreamTrackFormatIdValue;
-
-    } idIssuer;
-
-    std::shared_ptr<Document> document;
-  };
 
 }  // namespace adm
