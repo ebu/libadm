@@ -22,6 +22,7 @@ namespace adm {
   class AudioStreamFormatId {
    public:
     typedef AudioStreamFormatIdTag tag;
+    using value_type = AudioStreamFormatIdValue;
 
     /**
      * @brief Constructor template

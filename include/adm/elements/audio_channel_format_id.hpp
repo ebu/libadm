@@ -22,6 +22,7 @@ namespace adm {
   class AudioChannelFormatId {
    public:
     typedef AudioChannelFormatIdTag tag;
+    using value_type = AudioChannelFormatIdValue;
 
     /**
      * @brief Constructor template

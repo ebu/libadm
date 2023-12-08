@@ -22,6 +22,7 @@ namespace adm {
   class AudioPackFormatId {
    public:
     typedef AudioPackFormatIdTag tag;
+    using value_type = AudioPackFormatIdValue;
 
     /**
      * @brief Constructor template

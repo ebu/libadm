@@ -22,6 +22,7 @@ namespace adm {
   class AudioProgrammeId {
    public:
     typedef AudioProgrammeIdTag tag;
+    using value_type = AudioProgrammeIdValue;
 
     /**
      * @brief Constructor template

@@ -28,6 +28,7 @@ namespace adm {
   class AudioBlockFormatId {
    public:
     typedef AudioBlockFormatIdTag tag;
+    using value_type = AudioBlockFormatIdValue;
 
     /**
      * @brief Constructor template
