@@ -5,10 +5,9 @@ namespace adm {
   class IdReassigner {
    public:
     IdReassigner(std::shared_ptr<Document> document);
-
-   private:
     void reassignAllIds();
 
+   private:
     void reassignAudioProgrammeIds();
     void reassignAudioContentIds();
     void reassignAudioObjectIds();
@@ -59,13 +58,12 @@ namespace adm {
   }
 
   void reassignIds(std::shared_ptr<Document> document) {
-    IdReassigner{document};
+    IdReassigner idReassigner(document);
+    idReassigner.reassignAllIds();
   }
 
   IdReassigner::IdReassigner(std::shared_ptr<Document> document)
-      : document{document} {
-    reassignAllIds();
-  }
+      : document{document} {}
 
   void IdReassigner::reassignAllIds() {
     reassignAudioProgrammeIds();
