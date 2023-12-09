@@ -185,6 +185,8 @@ namespace adm {
           if (idValue == 0)
             idValue = idIssuer.issueAudioChannelStreamTrackFormatIdValue(
                 typeDescriptor);
+          if (audioTrackFormatIdCounter > 0xFFu)
+            throw std::runtime_error("No AudioTrackFormatIdCounter available");
           audioTrackFormatId.set(typeDescriptor);
           audioTrackFormatId.set(AudioTrackFormatIdValue{idValue});
           audioTrackFormatId.set(audioTrackFormatIdCounter);
