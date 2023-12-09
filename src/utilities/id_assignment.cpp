@@ -104,12 +104,14 @@ namespace adm {
         continue;
       }
       auto typeDescriptor = audioChannelFormat->get<TypeDescriptor>();
-      auto idValue =
-          idIssuer.issueAudioChannelStreamTrackFormatIdValue(typeDescriptor);
+      uint16_t idValue = 0; // don't issue unless needed
 
       // AudioStreamFormat
       auto audioStreamFormatId = audioStreamFormat->get<AudioStreamFormatId>();
       if (!isCommonDefinitionsId(audioStreamFormatId)) {
+        if (idValue == 0)
+          idValue = idIssuer.issueAudioChannelStreamTrackFormatIdValue(
+              typeDescriptor);
         audioStreamFormatId.set(typeDescriptor);
         audioStreamFormatId.set(AudioStreamFormatIdValue{idValue});
         audioStreamFormat->set(audioStreamFormatId);
@@ -119,6 +121,9 @@ namespace adm {
       auto audioChannelFormatId =
           audioChannelFormat->get<AudioChannelFormatId>();
       if (!isCommonDefinitionsId(audioChannelFormatId)) {
+        if (idValue == 0)
+          idValue = idIssuer.issueAudioChannelStreamTrackFormatIdValue(
+              typeDescriptor);
         audioChannelFormatId.set(typeDescriptor);
         audioChannelFormatId.set(AudioChannelFormatIdValue{idValue});
         audioChannelFormat->set(audioChannelFormatId);
@@ -135,6 +140,9 @@ namespace adm {
         }
         auto audioTrackFormatId = audioTrackFormat->get<AudioTrackFormatId>();
         if (!isCommonDefinitionsId(audioTrackFormatId)) {
+          if (idValue == 0)
+          idValue = idIssuer.issueAudioChannelStreamTrackFormatIdValue(
+              typeDescriptor);
           audioTrackFormatId.set(typeDescriptor);
           audioTrackFormatId.set(AudioTrackFormatIdValue{idValue});
           audioTrackFormatId.set(audioTrackFormatIdCounter);
