@@ -277,9 +277,7 @@ namespace adm {
 
   AudioPackFormatId IdReassigner::IdIssuer::issueAudioPackFormatId(
       const TypeDescriptor& typeDescriptor) {
-    auto it = nextAudioPackFormatIdValue
-                  .insert(std::make_pair(typeDescriptor, 0x1001))
-                  .first;
+    auto it = nextAudioPackFormatIdValue.emplace(typeDescriptor, 0x1001).first;
     if (it->second > 0xFFFFu)
       throw std::runtime_error("No AudioPackFormatId available");
     AudioPackFormatId id;
@@ -290,9 +288,9 @@ namespace adm {
 
   AudioChannelFormatId IdReassigner::IdIssuer::issueAudioChannelFormatId(
       const TypeDescriptor& typeDescriptor) {
-    auto it = nextAudioChannelStreamTrackFormatIdValue
-                  .insert(std::make_pair(typeDescriptor, 0x1001))
-                  .first;
+    auto it =
+        nextAudioChannelStreamTrackFormatIdValue.emplace(typeDescriptor, 0x1001)
+            .first;
     if (it->second > 0xFFFFu)
       throw std::runtime_error("No AudioChannelFormatId available");
     AudioChannelFormatId id;
@@ -302,9 +300,9 @@ namespace adm {
   }
   uint16_t IdReassigner::IdIssuer::issueAudioChannelStreamTrackFormatIdValue(
       const TypeDescriptor& typeDescriptor) {
-    auto it = nextAudioChannelStreamTrackFormatIdValue
-                  .insert(std::make_pair(typeDescriptor, 0x1001))
-                  .first;
+    auto it =
+        nextAudioChannelStreamTrackFormatIdValue.emplace(typeDescriptor, 0x1001)
+            .first;
     if (it->second > 0xFFFFu)
       throw std::runtime_error(
           "No common AudioChannelFormat, AudioStreamFormat, AudioTrackFormat "
