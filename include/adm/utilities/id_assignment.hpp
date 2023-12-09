@@ -97,48 +97,4 @@ namespace adm {
   }
   ///@}
 
-  class IdReassigner {
-   public:
-    IdReassigner(std::shared_ptr<Document> document);
-
-   private:
-    void reassignAllIds();
-
-    void reassignAudioProgrammeIds();
-    void reassignAudioContentIds();
-    void reassignAudioObjectIds();
-    void reassignAudioPackFormatIds();
-    void reassignAudioStreamFormatIds();
-    void reassignAudioTrackUidIds();
-    void reassignAudioBlockFormatIds(
-        std::shared_ptr<AudioChannelFormat> audioChannelFormat);
-
-    class IdIssuer {
-     public:
-      IdIssuer();
-      AudioProgrammeId issueAudioProgrammeId();
-      AudioContentId issueAudioContentId();
-      AudioObjectId issueAudioObjectId();
-      AudioTrackUidId issueAudioTrackUidId();
-      AudioPackFormatId issueAudioPackFormatId(
-          const TypeDescriptor& typeDescriptor);
-      AudioChannelFormatId issueAudioChannelFormatId(
-          const TypeDescriptor& typeDescriptor);
-      uint16_t issueAudioChannelStreamTrackFormatIdValue(
-          const TypeDescriptor& typeDescriptor);
-
-     private:
-      uint32_t nextAudioProgrammeIdValue{0x1001u};
-      uint32_t nextAudioContentIdValue{0x1001u};
-      uint32_t nextAudioObjectIdValue{0x1001u};
-      uint64_t nextAudioTrackUidIdValue{0x00000001u};
-      std::map<TypeDescriptor, uint32_t> nextAudioPackFormatIdValue;
-      std::map<TypeDescriptor, uint32_t>
-          nextAudioChannelStreamTrackFormatIdValue;
-
-    } idIssuer;
-
-    std::shared_ptr<Document> document;
-  };
-
 }  // namespace adm
