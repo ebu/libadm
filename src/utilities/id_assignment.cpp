@@ -24,12 +24,11 @@ namespace adm {
       AudioContentId issueAudioContentId();
       AudioObjectId issueAudioObjectId();
       AudioTrackUidId issueAudioTrackUidId();
-      AudioPackFormatId issueAudioPackFormatId(
-          const TypeDescriptor& typeDescriptor);
+      AudioPackFormatId issueAudioPackFormatId(TypeDescriptor typeDescriptor);
       AudioChannelFormatId issueAudioChannelFormatId(
-          const TypeDescriptor& typeDescriptor);
+          TypeDescriptor typeDescriptor);
       uint16_t issueAudioChannelStreamTrackFormatIdValue(
-          const TypeDescriptor& typeDescriptor);
+          TypeDescriptor typeDescriptor);
 
      private:
       uint32_t nextAudioProgrammeIdValue{0x1001u};
@@ -318,7 +317,7 @@ namespace adm {
   }
 
   AudioPackFormatId IdReassigner::IdIssuer::issueAudioPackFormatId(
-      const TypeDescriptor& typeDescriptor) {
+      TypeDescriptor typeDescriptor) {
     auto it = nextAudioPackFormatIdValue.emplace(typeDescriptor, 0x1001).first;
     if (it->second > 0xFFFFu)
       throw std::runtime_error("No AudioPackFormatId available");
@@ -329,7 +328,7 @@ namespace adm {
   }
 
   AudioChannelFormatId IdReassigner::IdIssuer::issueAudioChannelFormatId(
-      const TypeDescriptor& typeDescriptor) {
+      TypeDescriptor typeDescriptor) {
     auto it =
         nextAudioChannelStreamTrackFormatIdValue.emplace(typeDescriptor, 0x1001)
             .first;
@@ -341,7 +340,7 @@ namespace adm {
     return id;
   }
   uint16_t IdReassigner::IdIssuer::issueAudioChannelStreamTrackFormatIdValue(
-      const TypeDescriptor& typeDescriptor) {
+      TypeDescriptor typeDescriptor) {
     auto it =
         nextAudioChannelStreamTrackFormatIdValue.emplace(typeDescriptor, 0x1001)
             .first;
