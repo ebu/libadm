@@ -104,7 +104,8 @@ namespace adm {
         continue;
       }
       auto typeDescriptor = audioChannelFormat->get<TypeDescriptor>();
-      uint16_t idValue = 0;  // don't issue unless needed
+      uint16_t idValue =
+          0;  // don't issue unless needed - 0 (invalid) denotes unset
 
       // AudioStreamFormat
       auto audioStreamFormatId = audioStreamFormat->get<AudioStreamFormatId>();
