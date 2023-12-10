@@ -72,8 +72,9 @@ namespace adm {
    *
    * Creates an `AudioObject` including referenced `AudioPackFormat` and
    * `AudioChannelFormat` of type `TypeDefinition::OBJECTS`, as well an
-   * `AudioTrackUid`. This creates a shorter structure than 
-   * `createSimpleObject` as supported by 2076-2.
+   * `AudioTrackUid`. The audioTrackUID references the audioChannelFormat 
+   * directly, without an audioTrackFormat and audioStreamFormat, as 
+   * supported by BS.2076-2.
    *
    * @param name Name that will be used for the created
    * `Audio{Object,PackFormat,ChannelFormat}`.
