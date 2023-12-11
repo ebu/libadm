@@ -12,6 +12,12 @@ namespace adm {
    * after being cleared and are therefore marked as elements to
    * be ignored.
    * 
+   * @note This class differs from IdAssigner in that it is more
+   * efficient for this purpose. IdAssigner uses lookups to find
+   * an available ID, which has exponential complexity. 
+   * IdReassigner uses the IdIssuer class to track ID's through
+   * simple incrementation and so has linear complexity.
+   * 
    * @param document Document that will have element ID's 
    * reassigned.
    */

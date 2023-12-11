@@ -9,7 +9,17 @@ namespace adm {
   class Document;
 
   namespace detail {
-
+    /**
+     * @brief Assigns a unique ID to elements.
+     *
+     * Works by using lookups to find the next available element 
+     * ID.
+     * 
+     * @note This class differs from IdReassigner in that it can
+     * function on a document which already has elements with ID's
+     * which you wish to maintain. However, the trade-off is that
+     * it is less efficient.
+     */
     class IdAssigner {
      public:
       ADM_EXPORT AudioProgrammeId assignId(AudioProgramme& programme);
