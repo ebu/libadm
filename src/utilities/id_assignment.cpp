@@ -1,7 +1,20 @@
 #include "adm/utilities/id_assignment.hpp"
 
 namespace adm {
-
+  /**
+   * @brief Reassigns ID's to all elements within a Document.
+   *
+   * Works by clearing existing ID's and then reassigning unique
+   * ID's to each element. For AudioTrackFormat, AudioStreamFormat
+   * and AudioChannelFormat, new ID's are only assigned if they
+   * form a functional part of the ADM though releationships to
+   * other elements. Those that don't do not get assigned new ID's
+   * after being cleared and are therefore marked as elements to
+   * be ignored.
+   * 
+   * @param document Document that will have element ID's 
+   * reassigned.
+   */
   class IdReassigner {
    public:
     IdReassigner(std::shared_ptr<Document> document);
@@ -17,6 +30,16 @@ namespace adm {
     void reassignAudioBlockFormatIds(
         std::shared_ptr<AudioChannelFormat> audioChannelFormat);
 
+    /**
+     * @brief Class responsible for issuing new ID's for elements.
+     *
+     * Starts at initial ID values and counts up as ID's are 
+     * handed out. Ensures ID's are sequential and unique.
+     * A single ID value can also be issued for a related group
+     * of AudioTrackFormat, AudioStreamFormat and 
+     * AudioChannelFormat elements to make the ADM XML easier to
+     * follow.
+     */
     class IdIssuer {
      public:
       IdIssuer();

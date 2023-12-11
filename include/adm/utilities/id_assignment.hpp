@@ -10,19 +10,19 @@
 namespace adm {
 
   /**
-   * @brief Reassign ids of an Document
+   * @brief Reassign ID's of a Document
    *
-   * Assigns new IDs to all the elements wihtin an Document. 
-   * audioTrackFormats which are not referenced by an audioStreamFormat get an
+   * Assigns new IDs to all the elements within an Document. 
+   * AudioTrackFormats which are not referenced by an AudioStreamFormat get an
    * ID with the value zero and are thereby marked as ADM elements which
    * should be ignored.
-   * audioChannelFormats which are not referenced by an audioStreamFormat or
-   * an audioTrackUid get an ID with the value zero and are thereby marked as
+   * AudioChannelFormats which are not referenced by an AudioStreamFormat or
+   * an AudioTrackUid get an ID with the value zero and are thereby marked as
    * ADM elements which should be ignored.
    *
    * @note
-   * Element that already have IDs with a value in the range 0x0001-0x0fff
-   * will not get new Ids assigned, as they are considered to be common
+   * Elements that already have ID's with a value in the range 0x0001-0x0fff
+   * will not get new ID's assigned, as they are considered to be common
    * definitions.
    */
   ADM_EXPORT void reassignIds(std::shared_ptr<Document> document);
