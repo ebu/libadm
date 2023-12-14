@@ -173,9 +173,5 @@ namespace adm {
       }
     };
 
-    struct CountToFullValueValidator {
-      static void validate(const unsigned int& value) { return; }
-    };
-
   }  // namespace detail
 }  // namespace adm
