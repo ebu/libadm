@@ -54,6 +54,24 @@ namespace adm {
   ADM_EXPORT const std::map<std::string, adm::AudioTrackFormatId>
   audioTrackFormatLookupTable();
 
+    /**
+   * @brief Lookup table for AudioStreamFormats
+   *
+   * Specified speaker labels:
+   *
+   *  - M+000, M+022, M-022, M+SC, M-SC, M+030, M-030, M+045, M-045,
+   *    M+060, M-060, M+090, M-090, M+110, M-110, M+135, M-135, M+180
+   *  - U+000, U+030, U-030, U+045, U-045, U+090, U-090, U+110, U-110,
+   *    U+135, U-135, U+180, UH+180
+   *  - T+000, B+000, B+045, B-045
+   *  - LFE1, LFE2
+   *
+   * @return Map with the speaker label specified in ITU-R BS.2051 as key and
+   * the corresponding AudioStreamFormatID as value.
+   */
+  ADM_EXPORT const std::map<std::string, adm::AudioStreamFormatId>
+  audioStreamFormatLookupTable();
+
   /**
    * @brief Lookup table for SpeakerLabels of loudspeaker setup
    *
@@ -87,5 +105,12 @@ namespace adm {
    */
   ADM_EXPORT const adm::AudioTrackFormatId audioTrackFormatHoaLookup(
       int order, int degree, std::string normalization);
+  ADM_EXPORT const adm::AudioTrackFormatId audioTrackFormatHoaLookup(
+      int order, int degree, int normalization);
+
+  ADM_EXPORT const adm::AudioStreamFormatId audioStreamFormatHoaLookup(
+      int order, int degree, std::string normalization);
+  ADM_EXPORT const adm::AudioStreamFormatId audioStreamFormatHoaLookup(
+      int order, int degree, int normalization);
 
 }  // namespace adm
