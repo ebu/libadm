@@ -246,70 +246,39 @@ namespace adm {
     }
   }
 
+  namespace {
+    template <typename T>
+    void reassignBlockFormats(std::shared_ptr<AudioChannelFormat> const& acf) {
+      auto descriptor = acf->get<TypeDescriptor>();
+      auto idValue =
+          AudioBlockFormatIdValue(acf->get<AudioChannelFormatId>()
+                                      .get<AudioChannelFormatIdValue>()
+                                      .get());
+      auto idCounter = AudioBlockFormatIdCounter(0x00000001u);
+      for (auto& block : acf->getElements<T>()) {
+        auto id = block.template get<AudioBlockFormatId>();
+        id.set(descriptor);
+        id.set(idValue);
+        id.set(idCounter);
+        block.set(id);
+        ++idCounter;
+      }
+    }
+  }  // namespace
+
   void IdReassigner::reassignAudioBlockFormatIds(
       std::shared_ptr<AudioChannelFormat> audioChannelFormat) {
     auto typeDefinition = audioChannelFormat->get<TypeDescriptor>();
-    auto audioChannelFormatIdValue =
-        audioChannelFormat->get<AudioChannelFormatId>()
-            .get<AudioChannelFormatIdValue>();
-    auto audioBlockFormatIdValue =
-        AudioBlockFormatIdValue(audioChannelFormatIdValue.get());
-    auto audioBlockFormatIdCounter = AudioBlockFormatIdCounter(0x00000001u);
     if (typeDefinition == TypeDefinition::DIRECT_SPEAKERS) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatDirectSpeakers>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatDirectSpeakers>(audioChannelFormat);
     } else if (typeDefinition == TypeDefinition::MATRIX) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatMatrix>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatMatrix>(audioChannelFormat);
     } else if (typeDefinition == TypeDefinition::OBJECTS) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatObjects>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatObjects>(audioChannelFormat);
     } else if (typeDefinition == TypeDefinition::HOA) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatHoa>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatHoa>(audioChannelFormat);
     } else if (typeDefinition == TypeDefinition::BINAURAL) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatBinaural>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatBinaural>(audioChannelFormat);
     }
   }
 
