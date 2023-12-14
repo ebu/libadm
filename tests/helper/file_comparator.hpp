@@ -12,12 +12,16 @@ class FileComparator : public Catch::MatcherBase<std::string> {
 
   virtual bool match(const std::string& received) const override {
     bool check_successful = false;
-    std::ifstream acceptedFile(filename_ + ".accepted." + extension_);
+    std::string acceptedFilePath = filename_ + ".accepted." + extension_;
+    std::ifstream acceptedFile(acceptedFilePath);
     if (acceptedFile.is_open()) {
       std::string acceptedStr((std::istreambuf_iterator<char>(acceptedFile)),
                               std::istreambuf_iterator<char>());
       check_successful = (acceptedStr == received);
       acceptedFile.close();
+    } else {
+      std::string msg("FileComparator - Unable to open test data: ");
+      throw std::runtime_error(msg + acceptedFilePath);
     }
     // write to file if not successful
     if (!check_successful) {

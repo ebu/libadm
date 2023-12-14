@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<audioObject audioObjectID="AO_1001" audioObjectName="My Simple Short Structured Object">
+					<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+					<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+				</audioObject>
+				<audioPackFormat audioPackFormatID="AP_00031001" audioPackFormatName="My Simple Short Structured Object" typeLabel="0003" typeDefinition="Objects">
+					<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
+				</audioPackFormat>
+				<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="My Simple Short Structured Object" typeLabel="0003" typeDefinition="Objects"/>
+				<audioTrackUID UID="ATU_00000001">
+					<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
+					<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+				</audioTrackUID>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+

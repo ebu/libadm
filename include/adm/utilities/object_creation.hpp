@@ -43,7 +43,7 @@ namespace adm {
   };
 
   /**
-   * @brief Create `AudioObject` hierarchie for single
+   * @brief Create `AudioObject` hierarchy for single
    * `TypeDefinition::OBJECTS`-type element
    *
    * Creates an `AudioObject` including referenced `AudioPackFormat` and
@@ -66,6 +66,31 @@ namespace adm {
   ADM_EXPORT SimpleObjectHolder addSimpleObjectTo(
       std::shared_ptr<Document> document, const std::string& name);
 
+  /**
+   * @brief Create `AudioObject` hierarchy for single
+   * `TypeDefinition::OBJECTS`-type element
+   *
+   * Creates an `AudioObject` including referenced `AudioPackFormat` and
+   * `AudioChannelFormat` of type `TypeDefinition::OBJECTS`, as well an
+   * `AudioTrackUid`. The audioTrackUID references the audioChannelFormat 
+   * directly, without an audioTrackFormat and audioStreamFormat, as 
+   * supported by BS.2076-2.
+   *
+   * @param name Name that will be used for the created
+   * `Audio{Object,PackFormat,ChannelFormat}`.
+   */
+  ADM_EXPORT SimpleObjectHolder
+  createSimpleObjectShortStructure(const std::string& name);
+
+  /**
+   * @brief Create and add `AudioObject` hierarchy for single
+   * `TypeDefinition::OBJECTS`-type element
+   *
+   * same as `createSimpleObjectShortStructure`, but the elements 
+   * are automatically added to the given document
+   */
+  ADM_EXPORT SimpleObjectHolder addSimpleObjectShortStructureTo(
+      std::shared_ptr<Document> document, const std::string& name);
   /**
    * @brief Create and add `AudioObject` with common definitions direct speakers
    * channel bed to document

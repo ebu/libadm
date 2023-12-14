@@ -1,16 +1,77 @@
 #include "adm/utilities/id_assignment.hpp"
 
 namespace adm {
+  /**
+   * @brief Reassigns ID's to all elements within a Document.
+   *
+   * Works by clearing existing ID's and then reassigning unique
+   * ID's to each element. For AudioTrackFormat, AudioStreamFormat
+   * and AudioChannelFormat, new ID's are only assigned if they
+   * form a functional part of the ADM though releationships to
+   * other elements. Those that don't do not get assigned new ID's
+   * after being cleared and are therefore marked as elements to
+   * be ignored.
+   * 
+   * @note This class differs from IdAssigner in that it is more
+   * efficient for this purpose. IdAssigner uses lookups to find
+   * an available ID, which has exponential complexity. 
+   * IdReassigner uses the IdIssuer class to track ID's through
+   * simple incrementation and so has linear complexity.
+   * 
+   * @param document Document that will have element ID's 
+   * reassigned.
+   */
+  class IdReassigner {
+   public:
+    IdReassigner(std::shared_ptr<Document> document);
+    void reassignAllIds();
 
-  void reassignAudioProgrammeIds(std::shared_ptr<Document> document);
-  void reassignAudioContentIds(std::shared_ptr<Document> document);
-  void reassignAudioObjectIds(std::shared_ptr<Document> document);
-  void reassignAudioPackFormatIds(std::shared_ptr<Document> document);
-  void reassignAudioStreamFormatIds(std::shared_ptr<Document> document);
+   private:
+    void reassignAudioProgrammeIds();
+    void reassignAudioContentIds();
+    void reassignAudioObjectIds();
+    void reassignAudioPackFormatIds();
+    void reassignAudioStreamFormatIds();
+    void reassignAudioTrackUidIds();
+    void reassignAudioBlockFormatIds(
+        std::shared_ptr<AudioChannelFormat> audioChannelFormat);
 
-  void reassignAudioTrackUidIds(std::shared_ptr<Document> document);
-  void reassignAudioBlockFormatIds(
-      std::shared_ptr<AudioChannelFormat> channelFormat);
+    /**
+     * @brief Class responsible for issuing new ID's for elements.
+     *
+     * Starts at initial ID values and counts up as ID's are 
+     * handed out. Ensures ID's are sequential and unique.
+     * A single ID value can also be issued for a related group
+     * of AudioTrackFormat, AudioStreamFormat and 
+     * AudioChannelFormat elements to make the ADM XML easier to
+     * follow.
+     */
+    class IdIssuer {
+     public:
+      IdIssuer();
+      AudioProgrammeId issueAudioProgrammeId();
+      AudioContentId issueAudioContentId();
+      AudioObjectId issueAudioObjectId();
+      AudioTrackUidId issueAudioTrackUidId();
+      AudioPackFormatId issueAudioPackFormatId(TypeDescriptor typeDescriptor);
+      AudioChannelFormatId issueAudioChannelFormatId(
+          TypeDescriptor typeDescriptor);
+      uint16_t issueAudioChannelStreamTrackFormatIdValue(
+          TypeDescriptor typeDescriptor);
+
+     private:
+      uint32_t nextAudioProgrammeIdValue{0x1001u};
+      uint32_t nextAudioContentIdValue{0x1001u};
+      uint32_t nextAudioObjectIdValue{0x1001u};
+      uint64_t nextAudioTrackUidIdValue{0x00000001u};
+      std::map<TypeDescriptor, uint32_t> nextAudioPackFormatIdValue;
+      std::map<TypeDescriptor, uint32_t>
+          nextAudioChannelStreamTrackFormatIdValue;
+
+    } idIssuer;
+
+    std::shared_ptr<Document> document;
+  };
 
   template <typename It>
   void undefineIds(It begin, It end) {
@@ -24,243 +85,270 @@ namespace adm {
     }
   }
 
-  template <typename It>
-  void reassignAudioProgrammeIds(It begin, It end) {
-    auto audioProgrammeIdValue = AudioProgrammeIdValue(0x1001u);
-    undefineIds(begin, end);
-    for (auto it = begin; it != end; ++it) {
-      auto audioProgramme = *it;
-      auto audioProgrammeId = audioProgramme->template get<AudioProgrammeId>();
+  void reassignIds(std::shared_ptr<Document> document) {
+    IdReassigner idReassigner(document);
+    idReassigner.reassignAllIds();
+  }
+
+  IdReassigner::IdReassigner(std::shared_ptr<Document> document)
+      : document{document} {}
+
+  void IdReassigner::reassignAllIds() {
+    reassignAudioProgrammeIds();
+    reassignAudioContentIds();
+    reassignAudioObjectIds();
+    reassignAudioPackFormatIds();
+    /**
+     * Initialize all audioTrackFormatIds and audioChanneldFormatIds to zero.
+     * The reason behind this is, that the reassignAudioStreamFormatIds
+     * algorithm only gives new IDs to audioTrackFormats and
+     * audioChannelFormats which are referenced by an audioStreamFormat. 
+     * Additionally, audioStreamFormats are only given a valid ID if they 
+     * reference an audioChannelFormat. This should be the right way to do it 
+     * for 2076-0/1 structures. Unreferenced elements will get an ID with 
+     * value 0 and are thereby marked as elements which should be ignored.
+     * For 2076-2 structures, reassignAudioTrackUidIds will apply a unique ID
+     * to audioChannelFormats referenced directly from audioTrackUids.
+     */
+    undefineIds(document->getElements<AudioTrackFormat>().begin(),
+                document->getElements<AudioTrackFormat>().end());
+    undefineIds(document->getElements<AudioChannelFormat>().begin(),
+                document->getElements<AudioChannelFormat>().end());
+    reassignAudioStreamFormatIds();
+    reassignAudioTrackUidIds();
+  }
+
+  void IdReassigner::reassignAudioProgrammeIds() {
+    auto audioProgrammes = document->getElements<AudioProgramme>();
+    undefineIds(audioProgrammes.begin(), audioProgrammes.end());
+    for (auto audioProgramme : audioProgrammes) {
+      auto audioProgrammeId = audioProgramme->get<AudioProgrammeId>();
       if (!isCommonDefinitionsId(audioProgrammeId)) {
-        audioProgrammeId.set(audioProgrammeIdValue);
-        audioProgramme->set(audioProgrammeId);
-        ++audioProgrammeIdValue;
+        audioProgramme->set(idIssuer.issueAudioProgrammeId());
       }
     }
   }
 
-  template <typename It>
-  void reassignAudioContentIds(It begin, It end) {
-    undefineIds(begin, end);
-    auto audioContentIdValue = AudioContentIdValue(0x1001u);
-    for (auto it = begin; it != end; ++it) {
-      auto audioContent = *it;
-      auto audioContentId = audioContent->template get<AudioContentId>();
+  void IdReassigner::reassignAudioContentIds() {
+    auto audioContents = document->getElements<AudioContent>();
+    undefineIds(audioContents.begin(), audioContents.end());
+    for (auto audioContent : audioContents) {
+      auto audioContentId = audioContent->get<AudioContentId>();
       if (!isCommonDefinitionsId(audioContentId)) {
-        audioContentId.set(audioContentIdValue);
-        audioContent->set(audioContentId);
-        ++audioContentIdValue;
+        audioContent->set(idIssuer.issueAudioContentId());
       }
     }
   }
 
-  template <typename It>
-  void reassignAudioObjectIds(It begin, It end) {
-    undefineIds(begin, end);
-    auto audioObjectIdValue = AudioObjectIdValue(0x1001u);
-    for (auto it = begin; it != end; ++it) {
-      auto audioObject = *it;
-      auto audioObjectId = audioObject->template get<AudioObjectId>();
+  void IdReassigner::reassignAudioObjectIds() {
+    auto audioObjects = document->getElements<AudioObject>();
+    undefineIds(audioObjects.begin(), audioObjects.end());
+    for (auto audioObject : audioObjects) {
+      auto audioObjectId = audioObject->get<AudioObjectId>();
       if (!isCommonDefinitionsId(audioObjectId)) {
-        audioObjectId.set(audioObjectIdValue);
-        audioObject->set(audioObjectId);
-        ++audioObjectIdValue;
+        audioObject->set(idIssuer.issueAudioObjectId());
       }
     }
   }
 
-  template <typename It>
-  void reassignAudioPackFormatIds(It begin, It end) {
-    undefineIds(begin, end);
-    auto audioPackFormatIdValue = AudioPackFormatIdValue(0x1001u);
-    for (auto it = begin; it != end; ++it) {
-      auto audioPackFormat = *it;
-      auto typeDescriptor = audioPackFormat->template get<TypeDescriptor>();
-      auto audioPackFormatId =
-          audioPackFormat->template get<AudioPackFormatId>();
+  void IdReassigner::reassignAudioPackFormatIds() {
+    auto audioPackFormats = document->getElements<AudioPackFormat>();
+    undefineIds(audioPackFormats.begin(), audioPackFormats.end());
+    for (auto audioPackFormat : audioPackFormats) {
+      auto typeDescriptor = audioPackFormat->get<TypeDescriptor>();
+      auto audioPackFormatId = audioPackFormat->get<AudioPackFormatId>();
       if (!isCommonDefinitionsId(audioPackFormatId)) {
-        audioPackFormat->set(
-            AudioPackFormatId(typeDescriptor, audioPackFormatIdValue));
-        ++audioPackFormatIdValue;
+        audioPackFormat->set(idIssuer.issueAudioPackFormatId(typeDescriptor));
       }
     }
   }
 
-  template <typename It>
-  void reassignAudioStreamFormatIds(It begin, It end) {
-    undefineIds(begin, end);
-    auto audioStreamFormatIdValue = AudioStreamFormatIdValue(0x1001u);
-    for (auto it = begin; it != end; ++it) {
-      auto audioStreamFormat = *it;
-      auto audioStreamFormatId =
-          audioStreamFormat->template get<AudioStreamFormatId>();
+  void IdReassigner::reassignAudioStreamFormatIds() {
+    auto audioStreamFormats = document->getElements<AudioStreamFormat>();
+    undefineIds(audioStreamFormats.begin(), audioStreamFormats.end());
+    for (auto audioStreamFormat : audioStreamFormats) {
+      auto audioChannelFormat =
+          audioStreamFormat->getReference<AudioChannelFormat>();
+      if (!audioChannelFormat) {
+        // If no ACF, don't process this tree - it's redundant
+        continue;
+      }
+      auto typeDescriptor = audioChannelFormat->get<TypeDescriptor>();
+      uint16_t idValue =
+          0;  // don't issue unless needed - 0 (invalid) denotes unset
+
+      // AudioStreamFormat
+      auto audioStreamFormatId = audioStreamFormat->get<AudioStreamFormatId>();
       if (!isCommonDefinitionsId(audioStreamFormatId)) {
-        audioStreamFormatId.set(audioStreamFormatIdValue);
-        if (auto audioChannelFormat =
-                audioStreamFormat
-                    ->template getReference<AudioChannelFormat>()) {
-          audioStreamFormatId.set(
-              audioChannelFormat->template get<TypeDescriptor>());
-        }
+        if (idValue == 0)
+          idValue = idIssuer.issueAudioChannelStreamTrackFormatIdValue(
+              typeDescriptor);
+        audioStreamFormatId.set(typeDescriptor);
+        audioStreamFormatId.set(AudioStreamFormatIdValue{idValue});
         audioStreamFormat->set(audioStreamFormatId);
       }
-      auto audioTrackFormatIdCounter = AudioTrackFormatIdCounter(0x01u);
+
+      // AudioChannelFormat
+      auto audioChannelFormatId =
+          audioChannelFormat->get<AudioChannelFormatId>();
+      if (!isCommonDefinitionsId(audioChannelFormatId)) {
+        if (idValue == 0)
+          idValue = idIssuer.issueAudioChannelStreamTrackFormatIdValue(
+              typeDescriptor);
+        audioChannelFormatId.set(typeDescriptor);
+        audioChannelFormatId.set(AudioChannelFormatIdValue{idValue});
+        audioChannelFormat->set(audioChannelFormatId);
+        reassignAudioBlockFormatIds(audioChannelFormat);
+      }
+
+      // AudioTrackFormats
+      AudioTrackFormatIdCounter audioTrackFormatIdCounter{0x01u};
       for (auto& weakAudioTrackFormat :
            audioStreamFormat->getAudioTrackFormatReferences()) {
         auto audioTrackFormat = weakAudioTrackFormat.lock();
         if (!audioTrackFormat) {
           continue;
         }
-        auto audioTrackFormatId =
-            audioTrackFormat->template get<AudioTrackFormatId>();
+        auto audioTrackFormatId = audioTrackFormat->get<AudioTrackFormatId>();
         if (!isCommonDefinitionsId(audioTrackFormatId)) {
-          auto trackFormatIdValue = AudioTrackFormatIdValue(
-              audioStreamFormatId.template get<AudioStreamFormatIdValue>()
-                  .get());
-          audioTrackFormatId.set(trackFormatIdValue);
-          audioTrackFormatId.set(
-              audioStreamFormatId.template get<TypeDescriptor>());
+          if (idValue == 0)
+            idValue = idIssuer.issueAudioChannelStreamTrackFormatIdValue(
+                typeDescriptor);
+          if (audioTrackFormatIdCounter > 0xFFu)
+            throw std::runtime_error("No AudioTrackFormatIdCounter available");
+          audioTrackFormatId.set(typeDescriptor);
+          audioTrackFormatId.set(AudioTrackFormatIdValue{idValue});
           audioTrackFormatId.set(audioTrackFormatIdCounter);
           audioTrackFormat->set(audioTrackFormatId);
-          ++audioTrackFormatIdCounter;
+          audioTrackFormatIdCounter++;
         }
       }
-      if (auto audioChannelFormat =
-              audioStreamFormat->template getReference<AudioChannelFormat>()) {
+    }
+  }
+
+  void IdReassigner::reassignAudioTrackUidIds() {
+    auto audioTrackUids = document->getElements<AudioTrackUid>();
+    undefineIds(audioTrackUids.begin(), audioTrackUids.end());
+    for (auto audioTrackUid : audioTrackUids) {
+      audioTrackUid->set(idIssuer.issueAudioTrackUidId());
+      auto audioChannelFormat =
+          audioTrackUid->getReference<adm::AudioChannelFormat>();
+      if (audioChannelFormat) {
         auto audioChannelFormatId =
-            audioChannelFormat->template get<AudioChannelFormatId>();
+            audioChannelFormat->get<AudioChannelFormatId>();
         if (!isCommonDefinitionsId(audioChannelFormatId)) {
-          auto channelFormatIdValue = AudioChannelFormatIdValue(
-              audioStreamFormatId.template get<AudioStreamFormatIdValue>()
-                  .get());
-          audioChannelFormatId.set(channelFormatIdValue);
-          audioChannelFormatId.set(
-              audioStreamFormatId.template get<TypeDescriptor>());
-          audioChannelFormat->set(audioChannelFormatId);
+          auto typeDescriptor = audioChannelFormat->get<TypeDescriptor>();
+          audioChannelFormat->set(
+              idIssuer.issueAudioChannelFormatId(typeDescriptor));
           reassignAudioBlockFormatIds(audioChannelFormat);
         }
       }
-      ++audioStreamFormatIdValue;
     }
   }
 
-  template <typename It>
-  void reassignAudioTrackUidIds(It begin, It end) {
-    undefineIds(begin, end);
-    auto audioTrackUidIdValue = AudioTrackUidIdValue(0x00000001u);
-    for (auto it = begin; it != end; ++it) {
-      auto audioTrackUid = *it;
-      auto audioTrackUidId = audioTrackUid->template get<AudioTrackUidId>();
-      audioTrackUidId.set(audioTrackUidIdValue);
-      audioTrackUid->set(audioTrackUidId);
-      ++audioTrackUidIdValue;
+  namespace {
+    template <typename T>
+    void reassignBlockFormats(std::shared_ptr<AudioChannelFormat> const& acf) {
+      auto descriptor = acf->get<TypeDescriptor>();
+      auto idValue =
+          AudioBlockFormatIdValue(acf->get<AudioChannelFormatId>()
+                                      .get<AudioChannelFormatIdValue>()
+                                      .get());
+      auto idCounter = AudioBlockFormatIdCounter(0x00000001u);
+      for (auto& block : acf->getElements<T>()) {
+        auto id = block.template get<AudioBlockFormatId>();
+        id.set(descriptor);
+        id.set(idValue);
+        id.set(idCounter);
+        block.set(id);
+        ++idCounter;
+      }
     }
-  }
+  }  // namespace
 
-  void reassignAudioBlockFormatIds(
+  void IdReassigner::reassignAudioBlockFormatIds(
       std::shared_ptr<AudioChannelFormat> audioChannelFormat) {
     auto typeDefinition = audioChannelFormat->get<TypeDescriptor>();
-    auto audioChannelFormatIdValue =
-        audioChannelFormat->get<AudioChannelFormatId>()
-            .get<AudioChannelFormatIdValue>();
-    auto audioBlockFormatIdValue =
-        AudioBlockFormatIdValue(audioChannelFormatIdValue.get());
-    auto audioBlockFormatIdCounter = AudioBlockFormatIdCounter(0x00000001u);
     if (typeDefinition == TypeDefinition::DIRECT_SPEAKERS) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatDirectSpeakers>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatDirectSpeakers>(audioChannelFormat);
     } else if (typeDefinition == TypeDefinition::MATRIX) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatMatrix>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatMatrix>(audioChannelFormat);
     } else if (typeDefinition == TypeDefinition::OBJECTS) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatObjects>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatObjects>(audioChannelFormat);
     } else if (typeDefinition == TypeDefinition::HOA) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatHoa>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatHoa>(audioChannelFormat);
     } else if (typeDefinition == TypeDefinition::BINAURAL) {
-      auto audioBlockFormats =
-          audioChannelFormat->getElements<AudioBlockFormatBinaural>();
-      for (auto& audioBlockFormat : audioBlockFormats) {
-        auto audioBlockFormatId = audioBlockFormat.get<AudioBlockFormatId>();
-        audioBlockFormatId.set(typeDefinition);
-        audioBlockFormatId.set(audioBlockFormatIdValue);
-        audioBlockFormatId.set(audioBlockFormatIdCounter);
-        audioBlockFormat.set(audioBlockFormatId);
-        ++audioBlockFormatIdCounter;
-      }
+      reassignBlockFormats<AudioBlockFormatBinaural>(audioChannelFormat);
     }
   }
 
-  template <typename DocumentType>
-  void reassignAllIds(DocumentType document) {
-    reassignAudioProgrammeIds(
-        document->template getElements<AudioProgramme>().begin(),
-        document->template getElements<AudioProgramme>().end());
-    reassignAudioContentIds(
-        document->template getElements<AudioContent>().begin(),
-        document->template getElements<AudioContent>().end());
-    reassignAudioObjectIds(
-        document->template getElements<AudioObject>().begin(),
-        document->template getElements<AudioObject>().end());
-    reassignAudioPackFormatIds(
-        document->template getElements<AudioPackFormat>().begin(),
-        document->template getElements<AudioPackFormat>().end());
-    /**
-     * Initialize all audioTrackFormatIds and audioChanneldFormatIds to zero.
-     * The reason behind this is, that the reassignAudioStreamFormatIds
-     * algorithm only gives new Ids to audioTrackFormats and
-     * audioChannelFormats which are referenced by a audioStreamFormat. This
-     * should be the right way to do it. Unreferenced elements will get an ID
-     * with value 0 and are thereby marked as elements which should be
-     * ignored.
-     */
-    undefineIds(document->template getElements<AudioTrackFormat>().begin(),
-                document->template getElements<AudioTrackFormat>().end());
-    undefineIds(document->template getElements<AudioChannelFormat>().begin(),
-                document->template getElements<AudioChannelFormat>().end());
-    reassignAudioStreamFormatIds(
-        document->template getElements<AudioStreamFormat>().begin(),
-        document->template getElements<AudioStreamFormat>().end());
-    reassignAudioTrackUidIds(
-        document->template getElements<AudioTrackUid>().begin(),
-        document->template getElements<AudioTrackUid>().end());
+  IdReassigner::IdIssuer::IdIssuer() {}
+  AudioProgrammeId IdReassigner::IdIssuer::issueAudioProgrammeId() {
+    if (nextAudioProgrammeIdValue > 0xFFFFu)
+      throw std::runtime_error("No AudioProgrammeId available");
+    AudioProgrammeId id;
+    id.set(AudioProgrammeIdValue(nextAudioProgrammeIdValue++));
+    return id;
   }
 
-  void reassignIds(std::shared_ptr<Document> document) {
-    reassignAllIds(document);
+  AudioContentId IdReassigner::IdIssuer::issueAudioContentId() {
+    if (nextAudioContentIdValue > 0xFFFFu)
+      throw std::runtime_error("No AudioContentId available");
+    AudioContentId id;
+    id.set(AudioContentIdValue(nextAudioContentIdValue++));
+    return id;
+  }
+
+  AudioObjectId IdReassigner::IdIssuer::issueAudioObjectId() {
+    if (nextAudioObjectIdValue > 0xFFFFu)
+      throw std::runtime_error("No AudioObjectId available");
+    AudioObjectId id;
+    id.set(AudioObjectIdValue(nextAudioObjectIdValue++));
+    return id;
+  }
+
+  AudioTrackUidId IdReassigner::IdIssuer::issueAudioTrackUidId() {
+    if (nextAudioTrackUidIdValue > 0xFFFFFFFFu)
+      throw std::runtime_error("No AudioTrackUidId available");
+    AudioTrackUidId id;
+    id.set(AudioTrackUidIdValue(
+        static_cast<uint32_t>(nextAudioTrackUidIdValue++)));
+    return id;
+  }
+
+  AudioPackFormatId IdReassigner::IdIssuer::issueAudioPackFormatId(
+      TypeDescriptor typeDescriptor) {
+    auto it = nextAudioPackFormatIdValue.emplace(typeDescriptor, 0x1001).first;
+    if (it->second > 0xFFFFu)
+      throw std::runtime_error("No AudioPackFormatId available");
+    AudioPackFormatId id;
+    id.set(typeDescriptor);
+    id.set(AudioPackFormatIdValue(it->second++));
+    return id;
+  }
+
+  AudioChannelFormatId IdReassigner::IdIssuer::issueAudioChannelFormatId(
+      TypeDescriptor typeDescriptor) {
+    auto it =
+        nextAudioChannelStreamTrackFormatIdValue.emplace(typeDescriptor, 0x1001)
+            .first;
+    if (it->second > 0xFFFFu)
+      throw std::runtime_error("No AudioChannelFormatId available");
+    AudioChannelFormatId id;
+    id.set(typeDescriptor);
+    id.set(AudioChannelFormatIdValue(it->second++));
+    return id;
+  }
+  uint16_t IdReassigner::IdIssuer::issueAudioChannelStreamTrackFormatIdValue(
+      TypeDescriptor typeDescriptor) {
+    auto it =
+        nextAudioChannelStreamTrackFormatIdValue.emplace(typeDescriptor, 0x1001)
+            .first;
+    if (it->second > 0xFFFFu)
+      throw std::runtime_error(
+          "No common AudioChannelFormat, AudioStreamFormat, AudioTrackFormat "
+          "ID value available");
+    return static_cast<uint16_t>(it->second++);
   }
 
 }  // namespace adm
