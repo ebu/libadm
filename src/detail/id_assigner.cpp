@@ -4,8 +4,56 @@
 #include "adm/elements.hpp"
 
 namespace adm {
-
   namespace detail {
+    namespace {
+      struct DefaultFilter {
+        template <typename T>
+        bool operator()(T const&) const {
+          return true;
+        }
+      };
+      // original recursive lookup method was O(N^2), this is O(NlogN)
+      // N for filter by type / value
+      // NlogN for sort
+      // logN for lower_bound
+      // N for adjacent_find
+      // if using pre-sorted vectors would be O(N)
+      template <typename ElementT, typename CounterT,
+                typename FilterPredicate = DefaultFilter>
+      CounterT nextCounter(adm::Document const& doc, CounterT preferredCounter,
+                           FilterPredicate predicate = FilterPredicate{}) {
+        auto elements = doc.getElements<ElementT>();
+        // Filter ids by predicate, collect counter values in container
+        std::vector<typename CounterT::value_type> counters;
+        for (auto const& el : elements) {
+          auto id = el->template get<typename ElementT::id_type>();
+          if (predicate(id)) {
+            counters.push_back(id.template get<CounterT>().get());
+          }
+        }
+        // sort counters so we can use fast algorithms
+        std::sort(counters.begin(), counters.end());
+        // find the position where all elements are >= preferred value
+        auto lowerBound = std::lower_bound(counters.begin(), counters.end(),
+                                           preferredCounter.get());
+        // if this is the end of the vector or lower bound is not equal to preferred, preferred is free so use it
+        if (lowerBound == counters.end() ||
+            *lowerBound != preferredCounter.get()) {
+          return preferredCounter;
+        }
+
+        // starting from the preferred value, find the next free value by looking for gaps in sequence
+        auto it = std::adjacent_find(
+            lowerBound, counters.end(),
+            [](auto lhs, auto rhs) { return lhs + 1 != rhs; });
+        // if no gaps use next available value
+        if (it == counters.end()) {
+          return CounterT(counters.back() + 1);
+        }
+        // if gap, use that
+        return CounterT((*it) + 1);
+      }
+    }  // namespace
 
     const Document& IdAssigner::document() const { return *document_; }
 
@@ -20,9 +68,7 @@ namespace adm {
         idValue =
             programme.get<AudioProgrammeId>().get<AudioProgrammeIdValue>();
       }
-      while (document().lookup(AudioProgrammeId(idValue))) {
-        ++idValue;
-      }
+      idValue = nextCounter<AudioProgramme>(document(), idValue);
       auto id = AudioProgrammeId(idValue);
       programme.set(id);
       return id;
@@ -36,9 +82,7 @@ namespace adm {
       if (!isUndefined(content.get<AudioContentId>())) {
         idValue = content.get<AudioContentId>().get<AudioContentIdValue>();
       }
-      while (document().lookup(AudioContentId(idValue))) {
-        ++idValue;
-      }
+      idValue = nextCounter<AudioContent>(document(), idValue);
       auto id = AudioContentId(idValue);
       content.set(id);
       return id;
@@ -52,9 +96,7 @@ namespace adm {
       if (!isUndefined(object.get<AudioObjectId>())) {
         idValue = object.get<AudioObjectId>().get<AudioObjectIdValue>();
       }
-      while (document().lookup(AudioObjectId(idValue))) {
-        ++idValue;
-      }
+      idValue = nextCounter<AudioObject>(document(), idValue);
       auto id = AudioObjectId(idValue);
       object.set(id);
       return id;
@@ -70,9 +112,10 @@ namespace adm {
         idValue =
             packFormat.get<AudioPackFormatId>().get<AudioPackFormatIdValue>();
       }
-      while (document().lookup(AudioPackFormatId(typeDescriptor, idValue))) {
-        ++idValue;
-      }
+      idValue = nextCounter<AudioPackFormat>(
+          document(), idValue, [typeDescriptor](AudioPackFormatId const& id) {
+            return id.get<TypeDescriptor>() == typeDescriptor;
+          });
       auto id = AudioPackFormatId(typeDescriptor, idValue);
       packFormat.set(id);
       return id;
@@ -89,9 +132,11 @@ namespace adm {
         idValue = channelFormat.get<AudioChannelFormatId>()
                       .get<AudioChannelFormatIdValue>();
       }
-      while (document().lookup(AudioChannelFormatId(typeDescriptor, idValue))) {
-        ++idValue;
-      }
+      idValue = nextCounter<AudioChannelFormat>(
+          document(), idValue,
+          [typeDescriptor](AudioChannelFormatId const& id) {
+            return id.get<TypeDescriptor>() == typeDescriptor;
+          });
       auto id = AudioChannelFormatId(typeDescriptor, idValue);
       channelFormat.set(id);
       return id;
@@ -117,9 +162,10 @@ namespace adm {
           typeDescriptor = packFormat->get<TypeDescriptor>();
         }
       }
-      while (document().lookup(AudioStreamFormatId(typeDescriptor, idValue))) {
-        ++idValue;
-      }
+      idValue = nextCounter<AudioStreamFormat>(
+          document(), idValue, [typeDescriptor](AudioStreamFormatId const& id) {
+            return id.get<TypeDescriptor>() == typeDescriptor;
+          });
       auto id = AudioStreamFormatId(typeDescriptor, idValue);
       streamFormat.set(id);
       return id;
@@ -148,10 +194,12 @@ namespace adm {
           typeDescriptor = streamFormatId.get<TypeDescriptor>();
         }
       }
-      while (document().lookup(
-          AudioTrackFormatId(typeDescriptor, idValue, idCounter))) {
-        ++idCounter;
-      }
+      idCounter = nextCounter<AudioTrackFormat>(
+          document(), idCounter,
+          [&typeDescriptor, &idValue](AudioTrackFormatId const& id) {
+            return id.get<TypeDescriptor>() == typeDescriptor &&
+                   id.get<AudioTrackFormatIdValue>() == idValue;
+          });
       auto id = AudioTrackFormatId(typeDescriptor, idValue, idCounter);
       trackFormat.set(id);
       return id;
@@ -166,9 +214,7 @@ namespace adm {
       if (!isUndefined(trackUid.get<AudioTrackUidId>())) {
         idValue = trackUid.get<AudioTrackUidId>().get<AudioTrackUidIdValue>();
       }
-      while (document().lookup(AudioTrackUidId(idValue))) {
-        ++idValue;
-      }
+      idValue = nextCounter<AudioTrackUid>(document(), idValue);
       auto id = AudioTrackUidId(idValue);
       trackUid.set(id);
       return id;
