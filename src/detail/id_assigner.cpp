@@ -25,6 +25,7 @@ namespace adm {
         auto elements = doc.getElements<ElementT>();
         // Filter ids by predicate, collect counter values in container
         std::vector<typename CounterT::value_type> counters;
+        counters.reserve(elements.size());
         for (auto const& el : elements) {
           auto id = el->template get<typename ElementT::id_type>();
           if (predicate(id)) {
