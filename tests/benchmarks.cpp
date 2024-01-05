@@ -32,6 +32,21 @@ TEST_CASE("adding lots of objects to document") {
   BENCHMARK("add to document") { return add_to_document(); };
 }
 
+TEST_CASE("copying document with lots of objects and common defs") {
+  auto const n = 200;
+  std::vector<SimpleObjectHolder> holders;
+  holders.reserve(n);
+  for (auto i = 0; i != n; ++i) {
+    holders.push_back(createSimpleObject(std::to_string(i)));
+  }
+  auto doc = getCommonDefinitions();
+  for (auto const& holder : holders) {
+    doc->add(holder.audioObject);
+  }
+
+  BENCHMARK("deepCopy()") { return doc->deepCopy(); };
+}
+
 TEST_CASE("lots of blocks") {
   auto generate = []() {
     auto doc = Document::create();
