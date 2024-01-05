@@ -5,6 +5,7 @@
 #include "adm/utilities/copy.hpp"
 #include "adm/utilities/lookup.hpp"
 #include "adm/detail/id_assigner.hpp"
+#include "adm/private/copy.hpp"
 
 #include <algorithm>
 
@@ -20,7 +21,46 @@ namespace adm {
   }
 
   std::shared_ptr<Document> Document::deepCopy() const {
-    return adm::deepCopy(shared_from_this());
+    auto copy = Document::create();
+    copy->audioProgrammes_.reserve(audioProgrammes_.size());
+    copy->audioContents_.reserve(audioContents_.size());
+    copy->audioObjects_.reserve(audioObjects_.size());
+    copy->audioPackFormats_.reserve(audioPackFormats_.size());
+    copy->audioChannelFormats_.reserve(audioChannelFormats_.size());
+    copy->audioStreamFormats_.reserve(audioStreamFormats_.size());
+    copy->audioTrackFormats_.reserve(audioTrackFormats_.size());
+    copy->audioTrackUids_.reserve(audioTrackUids_.size());
+
+    auto elements = copyAllElements(shared_from_this());
+    if (has<Version>()) copy->set(get<Version>());
+    for (auto& e : elements) {
+      if (auto v = boost::get<std::shared_ptr<AudioProgramme>>(&e)) {
+        AudioProgrammeAttorney::setParent(*v, copy);
+        copy->audioProgrammes_.push_back(*v);
+      } else if (auto v = boost::get<std::shared_ptr<AudioContent>>(&e)) {
+        AudioContentAttorney::setParent(*v, copy);
+        copy->audioContents_.push_back(*v);
+      } else if (auto v = boost::get<std::shared_ptr<AudioObject>>(&e)) {
+        AudioObjectAttorney::setParent(*v, copy);
+        copy->audioObjects_.push_back(*v);
+      } else if (auto v = boost::get<std::shared_ptr<AudioPackFormat>>(&e)) {
+        AudioPackFormatAttorney::setParent(*v, copy);
+        copy->audioPackFormats_.push_back(*v);
+      } else if (auto v = boost::get<std::shared_ptr<AudioChannelFormat>>(&e)) {
+        AudioChannelFormatAttorney::setParent(*v, copy);
+        copy->audioChannelFormats_.push_back(*v);
+      } else if (auto v = boost::get<std::shared_ptr<AudioStreamFormat>>(&e)) {
+        AudioStreamFormatAttorney::setParent(*v, copy);
+        copy->audioStreamFormats_.push_back(*v);
+      } else if (auto v = boost::get<std::shared_ptr<AudioTrackFormat>>(&e)) {
+        AudioTrackFormatAttorney::setParent(*v, copy);
+        copy->audioTrackFormats_.push_back(*v);
+      } else if (auto v = boost::get<std::shared_ptr<AudioTrackUid>>(&e)) {
+        AudioTrackUidAttorney::setParent(*v, copy);
+        copy->audioTrackUids_.push_back(*v);
+      }
+    }
+    return copy;
   }
 
   // ---- add elements ---- //
