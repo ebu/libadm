@@ -5,14 +5,14 @@ namespace adm {
 
   struct ElementMapping {
     // clang-format off
-    std::map<std::shared_ptr<const AudioProgramme>, std::shared_ptr<AudioProgramme>> audioProgramme;
-    std::map<std::shared_ptr<const AudioContent>, std::shared_ptr<AudioContent>> audioContent;
-    std::map<std::shared_ptr<const AudioObject>, std::shared_ptr<AudioObject>> audioObject;
-    std::map<std::shared_ptr<const AudioPackFormat>, std::shared_ptr<AudioPackFormat>> audioPackFormat;
-    std::map<std::shared_ptr<const AudioChannelFormat>, std::shared_ptr<AudioChannelFormat>> audioChannelFormat;
-    std::map<std::shared_ptr<const AudioStreamFormat>, std::shared_ptr<AudioStreamFormat>> audioStreamFormat;
-    std::map<std::shared_ptr<const AudioTrackFormat>, std::shared_ptr<AudioTrackFormat>> audioTrackFormat;
-    std::map<std::shared_ptr<const AudioTrackUid>, std::shared_ptr<AudioTrackUid>> audioTrackUid;
+    std::unordered_map<std::shared_ptr<const AudioProgramme>, std::shared_ptr<AudioProgramme>> audioProgramme;
+    std::unordered_map<std::shared_ptr<const AudioContent>, std::shared_ptr<AudioContent>> audioContent;
+    std::unordered_map<std::shared_ptr<const AudioObject>, std::shared_ptr<AudioObject>> audioObject;
+    std::unordered_map<std::shared_ptr<const AudioPackFormat>, std::shared_ptr<AudioPackFormat>> audioPackFormat;
+    std::unordered_map<std::shared_ptr<const AudioChannelFormat>, std::shared_ptr<AudioChannelFormat>> audioChannelFormat;
+    std::unordered_map<std::shared_ptr<const AudioStreamFormat>, std::shared_ptr<AudioStreamFormat>> audioStreamFormat;
+    std::unordered_map<std::shared_ptr<const AudioTrackFormat>, std::shared_ptr<AudioTrackFormat>> audioTrackFormat;
+    std::unordered_map<std::shared_ptr<const AudioTrackUid>, std::shared_ptr<AudioTrackUid>> audioTrackUid;
     // clang-format on
   };
 
