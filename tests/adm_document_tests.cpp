@@ -268,6 +268,21 @@ TEST_CASE("copy_document_no_duplicates") {
               ->getReferences<AudioContent>()[0] != myContent);
 }
 
+template <typename El>
+bool equalIds(std::shared_ptr<El> const& lhs, std::shared_ptr<El> const& rhs) {
+  using id_t = typename El::id_type;
+  auto lhsId = lhs->template get<id_t>();
+  auto rhsId = rhs->template get<id_t>();
+  return lhsId == rhsId;
+};
+
+using namespace adm;
+template <typename El>
+std::shared_ptr<El const> getFirst(Document const& doc) {
+  auto elements = doc.getElements<El>();
+  return elements.front();
+}
+
 TEST_CASE("copy_document_all_adm_elements") {
   using namespace adm;
 
@@ -303,6 +318,23 @@ TEST_CASE("copy_document_all_adm_elements") {
   REQUIRE(copy->getElements<AudioTrackFormat>().size() == 1);
   REQUIRE(copy->getElements<AudioStreamFormat>().size() == 1);
   REQUIRE(copy->getElements<AudioChannelFormat>().size() == 1);
+
+  REQUIRE(equalIds(getFirst<AudioProgramme>(*admDocument),
+                   getFirst<AudioProgramme>(*copy)));
+  REQUIRE(equalIds(getFirst<AudioContent>(*admDocument),
+                   getFirst<AudioContent>(*copy)));
+  REQUIRE(equalIds(getFirst<AudioObject>(*admDocument),
+                   getFirst<AudioObject>(*copy)));
+  REQUIRE(equalIds(getFirst<AudioPackFormat>(*admDocument),
+                   getFirst<AudioPackFormat>(*copy)));
+  REQUIRE(equalIds(getFirst<AudioChannelFormat>(*admDocument),
+                   getFirst<AudioChannelFormat>(*copy)));
+  REQUIRE(equalIds(getFirst<AudioTrackFormat>(*admDocument),
+                   getFirst<AudioTrackFormat>(*copy)));
+  REQUIRE(equalIds(getFirst<AudioStreamFormat>(*admDocument),
+                   getFirst<AudioStreamFormat>(*copy)));
+  REQUIRE(equalIds(getFirst<AudioTrackUid>(*admDocument),
+                   getFirst<AudioTrackUid>(*copy)));
 
   REQUIRE(admDocument->getElements<AudioProgramme>()[0] !=
           copy->getElements<AudioProgramme>()[0]);

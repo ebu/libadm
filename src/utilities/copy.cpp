@@ -5,9 +5,7 @@
 namespace adm {
 
   std::shared_ptr<Document> deepCopy(std::shared_ptr<const Document> document) {
-    auto copy = Document::create();
-    deepCopyTo(document, copy);
-    return copy;
+    return document->deepCopy();
   }
 
   void deepCopyTo(std::shared_ptr<const Document> src,
