@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include <boost/variant.hpp>
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include "adm/elements.hpp"
 #include "adm/element_variant.hpp"
@@ -44,10 +44,10 @@ namespace adm {
   template <typename ElementSrc, typename ElementDest>
   void resolveReferences(
       const std::shared_ptr<const ElementSrc>& element,
-      const std::map<std::shared_ptr<const ElementSrc>,
-                     std::shared_ptr<ElementSrc>>& mappingSrc,
-      const std::map<std::shared_ptr<const ElementDest>,
-                     std::shared_ptr<ElementDest>>& mappingDest) {
+      const std::unordered_map<std::shared_ptr<const ElementSrc>,
+                               std::shared_ptr<ElementSrc>>& mappingSrc,
+      const std::unordered_map<std::shared_ptr<const ElementDest>,
+                               std::shared_ptr<ElementDest>>& mappingDest) {
     for (const auto& reference :
          element->template getReferences<ElementDest>()) {
       mappingSrc.at(element)->addReference(mappingDest.at(reference));
@@ -56,10 +56,11 @@ namespace adm {
 
   inline void resolveReferences(
       const std::shared_ptr<const AudioStreamFormat>& element,
-      const std::map<std::shared_ptr<const AudioStreamFormat>,
-                     std::shared_ptr<AudioStreamFormat>>& mappingSrc,
-      const std::map<std::shared_ptr<const AudioTrackFormat>,
-                     std::shared_ptr<AudioTrackFormat>>& mappingDest) {
+      const std::unordered_map<std::shared_ptr<const AudioStreamFormat>,
+                               std::shared_ptr<AudioStreamFormat>>& mappingSrc,
+      const std::unordered_map<std::shared_ptr<const AudioTrackFormat>,
+                               std::shared_ptr<AudioTrackFormat>>&
+          mappingDest) {
     for (const auto& weakReference : element->getAudioTrackFormatReferences()) {
       auto reference = weakReference.lock();
       if (reference) {
@@ -72,10 +73,10 @@ namespace adm {
   template <typename ElementSrc, typename ElementDest>
   void resolveReference(
       const std::shared_ptr<const ElementSrc>& element,
-      const std::map<std::shared_ptr<const ElementSrc>,
-                     std::shared_ptr<ElementSrc>>& mappingSrc,
-      const std::map<std::shared_ptr<const ElementDest>,
-                     std::shared_ptr<ElementDest>>& mappingDest) {
+      const std::unordered_map<std::shared_ptr<const ElementSrc>,
+                               std::shared_ptr<ElementSrc>>& mappingSrc,
+      const std::unordered_map<std::shared_ptr<const ElementDest>,
+                               std::shared_ptr<ElementDest>>& mappingDest) {
     if (auto reference = element->template getReference<ElementDest>()) {
       mappingSrc.at(element)->setReference(mappingDest.at(reference));
     }
@@ -84,10 +85,10 @@ namespace adm {
   template <typename ElementSrc, typename ElementDest>
   void resolveComplementaries(
       const std::shared_ptr<const ElementSrc>& element,
-      const std::map<std::shared_ptr<const ElementSrc>,
-                     std::shared_ptr<ElementSrc>>& mappingSrc,
-      const std::map<std::shared_ptr<const ElementDest>,
-                     std::shared_ptr<ElementDest>>& mappingDest) {
+      const std::unordered_map<std::shared_ptr<const ElementSrc>,
+                               std::shared_ptr<ElementSrc>>& mappingSrc,
+      const std::unordered_map<std::shared_ptr<const ElementDest>,
+                               std::shared_ptr<ElementDest>>& mappingDest) {
     for (const auto& reference : element->getComplementaryObjects()) {
       mappingSrc.at(element)->addComplementary(mappingDest.at(reference));
     }
