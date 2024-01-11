@@ -1,6 +1,7 @@
 #include <catch2/catch.hpp>
 #include "adm/common_definitions.hpp"
 #include "adm/utilities/copy.hpp"
+#include "adm/utilities/object_creation.hpp"
 #include "adm/parse.hpp"
 #include "adm/write.hpp"
 #include <sstream>
@@ -12,6 +13,38 @@ TEST_CASE("common_definitions") {
 
   auto common_defs = adm::getCommonDefinitions();
   BENCHMARK("copy") { return adm::deepCopy(common_defs); };
+}
+
+TEST_CASE("adding lots of objects to document") {
+  auto const n = 200;
+  auto add_to_document = [n]() {
+    std::vector<SimpleObjectHolder> holders;
+    holders.reserve(n);
+    for (auto i = 0; i != n; ++i) {
+      holders.push_back(createSimpleObject(std::to_string(i)));
+    }
+    auto doc = Document::create();
+    for (auto const& holder : holders) {
+      doc->add(holder.audioObject);
+    }
+  };
+
+  BENCHMARK("add to document") { return add_to_document(); };
+}
+
+TEST_CASE("copying document with lots of objects and common defs") {
+  auto const n = 200;
+  std::vector<SimpleObjectHolder> holders;
+  holders.reserve(n);
+  for (auto i = 0; i != n; ++i) {
+    holders.push_back(createSimpleObject(std::to_string(i)));
+  }
+  auto doc = getCommonDefinitions();
+  for (auto const& holder : holders) {
+    doc->add(holder.audioObject);
+  }
+
+  BENCHMARK("deepCopy()") { return doc->deepCopy(); };
 }
 
 TEST_CASE("lots of blocks") {
