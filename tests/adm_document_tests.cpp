@@ -4,6 +4,8 @@
 #include "adm/utilities/id_assignment.hpp"
 #include "adm/utilities/copy.hpp"
 #include "adm/utilities/object_creation.hpp"
+#include "adm/parse.hpp"
+#include "adm/write.hpp"
 
 TEST_CASE("basic_document") {
   using namespace adm;
@@ -628,4 +630,15 @@ TEST_CASE("remove_elements") {
     REQUIRE(streamFormat->getAudioTrackFormatReferences().size() == 0);
     REQUIRE(trackUid->getReference<AudioTrackFormat>() == nullptr);
   }
+}
+
+// Tests deepcopy using a modified version of the kitchen sink test material from https://qc.ebu.io/testmaterial
+TEST_CASE("Copy the kitchen sink") {
+  auto document = parseXml("sink.xml");
+  std::stringstream xml;
+  writeXml(xml, document);
+  auto documentCopy = document->deepCopy();
+  std::stringstream xmlCopy;
+  writeXml(xmlCopy, documentCopy);
+  REQUIRE(xml.str() == xmlCopy.str());
 }
