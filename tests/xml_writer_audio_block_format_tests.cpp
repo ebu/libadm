@@ -209,6 +209,8 @@ TEST_CASE("write specified Binaural block") {
 }
 
 TEST_CASE("write specified Binaural block sadm") {
+  using namespace std::chrono_literals;
+
   auto doc = Document::create();
   auto channelFormat = AudioChannelFormat::create(
       AudioChannelFormatName("Test"), TypeDefinition::BINAURAL);
@@ -218,9 +220,12 @@ TEST_CASE("write specified Binaural block sadm") {
       Gain::fromLinear(0.5), Importance{5}};
   channelFormat->add(blockFormat);
 
-  // Removed as giving a failure even those file matches string
-  /*auto xml = getXml(doc);
-  CHECK_THAT(xml, EqualsXmlFile("write_specified_binaural_block_sadm"));*/
+  FrameFormat format{FrameFormatId{FrameIndex{1}}, Start{0s}, Duration{1s},
+                     FrameType::FULL, TimeReference::LOCAL};
+
+  std::stringstream ss;
+  writeXml(ss, doc, FrameHeader{format});
+  CHECK_THAT(ss.str(), EqualsXmlFile("write_specified_binaural_block_sadm"));
 }
 
 namespace {
