@@ -36,6 +36,8 @@ option(ADM_HIDE_INTERNAL_SYMBOLS "Hide symbols by default" TRUE)
 option(ADM_UNIT_TESTS "Build units tests" ${IS_ROOT_PROJECT})
 option(ADM_EXAMPLES "Build examples" ${IS_ROOT_PROJECT})
 option(ADM_PACKAGE_AND_INSTALL "Package and install libadm" ${IS_ROOT_PROJECT})
+option(ADM_DISABLE_MSVC_EXCEPTION_DLL_BOUNDARY_WARNINGS "Disable warnings C4275 and C4251 for exceptions derived
+  from std::exception in errors.hpp" OFF)
 include(GNUInstallDirs)
 set(ADM_INSTALL_LIB_DIR ${CMAKE_INSTALL_LIBDIR} CACHE PATH "Installation directory for libraries")
 set(ADM_INSTALL_BIN_DIR ${CMAKE_INSTALL_BINDIR} CACHE PATH "Installation directory for binaries")
