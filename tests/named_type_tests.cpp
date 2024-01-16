@@ -64,6 +64,41 @@ TEST_CASE("NamedType_range_check") {
   REQUIRE(upper_limit == 10);
 }
 
+class MoveOnly {
+ public:
+  MoveOnly() : value(0) {}
+  MoveOnly(int value) : value(value) {}
+
+  MoveOnly(MoveOnly const &) = delete;
+  MoveOnly &operator=(MoveOnly const &) = delete;
+
+  MoveOnly(MoveOnly &&) = default;
+  MoveOnly &operator=(MoveOnly &&) = default;
+
+  int get() const { return value; }
+
+ private:
+  int value;
+};
+
+struct MoveOnlyTag {};
+using NamedMoveOnly = adm::detail::NamedType<MoveOnly, MoveOnlyTag>;
+
+TEST_CASE("NamedType_move") {
+  NamedMoveOnly value{MoveOnly{1}};
+
+  MoveOnly moved = std::move(value).get();
+  REQUIRE(moved.get() == 1);
+  REQUIRE(value.get().get() == 0);
+
+  MoveOnly moved_from_temporary = std::move(NamedMoveOnly{MoveOnly{2}}).get();
+  REQUIRE(moved_from_temporary.get() == 2);
+
+  value = MoveOnly{3};
+  NamedMoveOnly moved_from_named(std::move(value));
+  REQUIRE(moved_from_named.get().get() == 3);
+}
+
 TEST_CASE("screen_edge_validator") {
   using namespace adm;
   struct ScreenEdgeLockTag {};

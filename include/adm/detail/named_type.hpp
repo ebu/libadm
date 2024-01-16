@@ -56,7 +56,13 @@ namespace adm {
         return *this;
       }
 
-      T const& get() const { return value_; }
+      T const& get() const& { return value_; }
+
+      T get() && {
+        T tmp = std::move(value_);
+        *this = getNamedTypeDefault<NamedType>();
+        return tmp;
+      }
 
       bool operator==(const NamedType<T, Tag, Validator>& other) const {
         return this->get() == other.get();
