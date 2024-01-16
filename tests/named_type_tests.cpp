@@ -52,6 +52,16 @@ TEST_CASE("NamedType_range_check") {
   NamedIntegerRange goodValue(5);
   REQUIRE_THROWS_AS(NamedIntegerRange(12), OutOfRangeError);
   REQUIRE_THROWS_AS(NamedIntegerRange(-1), OutOfRangeError);
+
+  NamedIntegerRange lower_limit(0);
+  REQUIRE_THROWS_AS(lower_limit--, OutOfRangeError);
+  REQUIRE_THROWS_AS(--lower_limit, OutOfRangeError);
+  REQUIRE(lower_limit == 0);
+
+  NamedIntegerRange upper_limit(10);
+  REQUIRE_THROWS_AS(upper_limit++, OutOfRangeError);
+  REQUIRE_THROWS_AS(++upper_limit, OutOfRangeError);
+  REQUIRE(upper_limit == 10);
 }
 
 TEST_CASE("screen_edge_validator") {

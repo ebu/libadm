@@ -112,7 +112,10 @@ namespace adm {
       }
 
       NamedType<T, Tag, Validator>& operator++() {
-        ++value_;
+        T tmp = value_;
+        tmp++;
+        Validator::validate(tmp);
+        value_ = std::move(tmp);
         return *this;
       }
 
@@ -123,7 +126,10 @@ namespace adm {
       }
 
       NamedType<T, Tag, Validator>& operator--() {
-        --value_;
+        T tmp = value_;
+        tmp--;
+        Validator::validate(tmp);
+        value_ = std::move(tmp);
         return *this;
       }
 
