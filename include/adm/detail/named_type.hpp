@@ -33,6 +33,11 @@ namespace adm {
 
       NamedType() : NamedType(getNamedTypeDefault<NamedType>()) {}
 
+      NamedType(const NamedType&) = default;
+      NamedType(NamedType&&) = default;
+      NamedType& operator=(const NamedType&) = default;
+      NamedType& operator=(NamedType&&) = default;
+
       explicit NamedType(T const& value) : value_(value) {
         Validator::validate(get());
       }
