@@ -27,130 +27,12 @@ namespace adm {
     // This is done using multiple inheritance: given a set of *Base classes,
     // we can make a derived class using HasParameters which inherits from all
     // of them.
-    //
-    // The problem this presents is that the derived class needs a using
-    // declaration pointing to each method in the base classes, in order to
-    // bring them into one overload set, but we can't have a using declaration
-    // which points to a method which doesn't exist.
-    //
-    // To make this work, each *Base class defines some flags (defined in
-    // Flags) which says which sets of methods it implements. When Combine is
-    // used to combine two *Base classes together, these flags are or-ed in the
-    // resulting class, and the correct specialisations of the Combine* classes
-    // are selected by and-ing the flags (we only need the using declarations
-    // if both bases have the methods defined).
-    //
-    // To enable all combinations without making the dreaded diamond, these are
-    // chained, with the actual inheritance happening in CombineRaw. When
-    // combining A and B we have an inheritance hierarchy like:
-    //
-    // Combine<A, B>
-    //  -> ApplyIf<CombineGetSetHas<A, B>, X>
-    //      -> ApplyIf<CombineIsDefaultUnset<A, B>, Y>
-    //          -> CombineRaw<A, B>
-    //              -> A
-    //              -> B
-    //
-    // where X and Y are the flags controlling whether Combine* is applied or
-    // not.
-    //
-    // Combine is used by HasParameters, which recursively combines many *Base
-    // classes.
-    //
-    // For variant types, there is one base class which implements the methods
-    // for the variant type (e.g. OptionalParameter<variant<...>>), and one
-    // base class for each of the types T in the variant, e.g.
-    // VariantTypeParameter<Param, T>.
-    //
-    // VariantTypeParameter classes must inherit from OptionalParameter in
-    // order to access the variant (through the get/set methods). This could be
-    // implemented by templating VariantTypeParameter on the list of types of
-    // the variant, and each inheriting from the next, but each of these
-    // classes is to be explicitly instantiated, and the meaning of these
-    // parameters in the explicit instantiations would not be clear.
-    //
-    // Instead, each VariantTypeParameter inherits from OptionalParameter, and
-    // virtual inheritance is used to avoid ambiguity. These are then combined
-    // together in VariantParameter using HasParameters, so that only one type
-    // has to be added to the base class list to cover the whole variant.
-    //
-    // For clarity, if we have P = OptionalParameter<variant<A, B>>, then the
-    // inheritance structure looks like:
-    //
-    // VariantParameter<P>
-    //  -> VariantTypeParameter<P, A>
-    //      -> P
-    //  -> VariantTypeParameter<P, B>
-    //      -> P
 
 #ifndef IN_DOXYGEN
-
-    struct Flags {
-      static constexpr bool has_get_set_has = false;
-      static constexpr bool has_isDefault_unset = false;
-      static constexpr bool has_add_remove = false;
-    };
-
-    /// a subclass of Base, with using declarations for set, get and has in A
-    /// and B
-    template <typename A, typename B, typename Base>
-    struct CombineGetSetHas : public Base {
-      using A::get;
-      using B::get;
-
-      using A::set;
-      using B::set;
-
-      using A::has;
-      using B::has;
-    };
-
-    /// a subclass of Base, with using declarations for isDefault and unset in A
-    /// and B
-    template <typename A, typename B, typename Base>
-    struct CombineIsDefaultUnset : public Base {
-      using A::isDefault;
-      using B::isDefault;
-
-      using A::unset;
-      using B::unset;
-    };
-
-    /// a subclass of Base, with using declarations for add and remove in A and
-    /// B
-    template <typename A, typename B, typename Base>
-    struct CombineAddRemove : public Base {
-      using A::add;
-      using B::add;
-
-      using A::remove;
-      using B::remove;
-    };
-
-    /// a subclass of A and B, with methods according to their Flags
-    template <typename A, typename B>
-    struct Combine
-        : public ApplyIf<
-              A::has_add_remove && B::has_add_remove, CombineAddRemove, A, B,
-              ApplyIf<A::has_get_set_has && B::has_get_set_has,
-                      CombineGetSetHas, A, B,
-                      ApplyIf<A::has_isDefault_unset && B::has_isDefault_unset,
-                              CombineIsDefaultUnset, A, B, CombineRaw<A, B>>>> {
-      static constexpr bool has_get_set_has =
-          A::has_get_set_has || B::has_get_set_has;
-      static constexpr bool has_isDefault_unset =
-          A::has_isDefault_unset || B::has_isDefault_unset;
-      static constexpr bool has_add_remove =
-          A::has_add_remove || B::has_add_remove;
-    };
-
     /// make a class derived from the given base classes, combining the
     /// get, set, has, isDefault and unset overloads
-    template <typename B, typename... BTail>
-    struct HasParameters : public Combine<B, HasParameters<BTail...>> {};
-
-    template <typename B>
-    struct HasParameters<B> : public B {};
+    template <typename... Bases>
+    using HasParameters = Combine<TypeList<Bases...>>;
 
     /// Get the default value of T parameters. Specialise this to add custom
     /// defaults.
@@ -163,10 +45,10 @@ namespace adm {
     /// combine these together using HasParameters
     template <typename T,
               typename Tag = typename detail::ParameterTraits<T>::tag>
-    class RequiredParameter : public Flags {
+    class RequiredParameter {
      public:
       using ParameterType = T;
-      static constexpr bool has_get_set_has = true;
+      static constexpr Flags flags = Flags::HAS_GET_SET_HAS;
 
       ADM_BASE_EXPORT T get(Tag) const { return value_; }
       ADM_BASE_EXPORT void set(T value) { value_ = std::move(value); }
@@ -181,11 +63,11 @@ namespace adm {
     /// HasParameters
     template <typename T,
               typename Tag = typename detail::ParameterTraits<T>::tag>
-    class OptionalParameter : public Flags {
+    class OptionalParameter {
      public:
       using ParameterType = T;
-      static constexpr bool has_get_set_has = true;
-      static constexpr bool has_isDefault_unset = true;
+      static constexpr Flags flags =
+          Flags::HAS_GET_SET_HAS | Flags::HAS_ISDEFAULT_UNSET;
 
       ADM_BASE_EXPORT T get(Tag) const { return value_.get(); }
       ADM_BASE_EXPORT void set(T value) { value_ = std::move(value); }
@@ -202,11 +84,11 @@ namespace adm {
     /// combine these together using HasParameters
     template <typename T,
               typename Tag = typename detail::ParameterTraits<T>::tag>
-    class DefaultParameter : public Flags {
+    class DefaultParameter {
      public:
       using ParameterType = T;
-      static constexpr bool has_get_set_has = true;
-      static constexpr bool has_isDefault_unset = true;
+      static constexpr Flags flags =
+          Flags::HAS_GET_SET_HAS | Flags::HAS_ISDEFAULT_UNSET;
 
       ADM_BASE_EXPORT T get(Tag) const {
         return boost::get_optional_value_or(value_, getDefault<T>());
@@ -232,14 +114,14 @@ namespace adm {
     /// associated with.
     template <typename T,
               typename Tag = typename detail::ParameterTraits<T>::tag>
-    class VectorParameter : public Flags {
+    class VectorParameter {
       using Value = typename T::value_type;
 
      public:
       using ParameterType = T;
-      static constexpr bool has_get_set_has = true;
-      static constexpr bool has_isDefault_unset = true;
-      static constexpr bool has_add_remove = true;
+      static constexpr Flags flags = Flags::HAS_GET_SET_HAS |
+                                     Flags::HAS_ISDEFAULT_UNSET |
+                                     Flags::HAS_ADD_REMOVE;
 
       ADM_BASE_EXPORT T get(Tag) const { return value_; }
       ADM_BASE_EXPORT void set(T value) { value_ = std::move(value); }
