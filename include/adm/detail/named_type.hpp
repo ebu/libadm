@@ -44,6 +44,18 @@ namespace adm {
       explicit NamedType(T&& value) : value_(std::move(value)) {
         Validator::validate(get());
       }
+
+      NamedType& operator=(const T& value) {
+        Validator::validate(value);
+        value_ = value;
+        return *this;
+      }
+      NamedType& operator=(T&& value) {
+        Validator::validate(value);
+        value_ = std::move(value);
+        return *this;
+      }
+
       T const& get() const { return value_; }
 
       bool operator==(const NamedType<T, Tag, Validator>& other) const {
