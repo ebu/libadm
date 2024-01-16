@@ -9,6 +9,15 @@ namespace adm {
   /// @brief Implementation details
   namespace detail {
 
+    /// Get the default value for some NamedType; specialise this to add custom
+    /// defaults. Note that this is mainly used to make NamedType values
+    /// default-constructable when the validator doesn't accept the default
+    /// value of the underlying type.
+    template <typename NT>
+    NT getNamedTypeDefault() {
+      return NT{typename NT::value_type{}};
+    }
+
     /**
      * @brief Named type class
      *
@@ -22,7 +31,8 @@ namespace adm {
       typedef T value_type;
       typedef Tag tag;
 
-      NamedType() : value_() { Validator::validate(get()); }
+      NamedType() : NamedType(getNamedTypeDefault<NamedType>()) {}
+
       explicit NamedType(T const& value) : value_(value) {
         Validator::validate(get());
       }
