@@ -35,6 +35,13 @@ namespace adm {
    */
   using LowPass = detail::NamedType<float, LowPassTag, detail::MinValidator<0>>;
 
+  namespace detail {
+    template <>
+    inline FrequencyType getNamedTypeDefault<FrequencyType>() {
+      return FrequencyType{"lowPass"};
+    }
+  }  // namespace detail
+
   /// @brief Tag for Frequency class
   struct FrequencyTag {};
   /**

@@ -13,7 +13,7 @@
 namespace adm {
   namespace detail {
     template <>
-    inline Importance getDefault<Importance>() {
+    inline Importance getNamedTypeDefault<Importance>() {
       return Importance{10};
     }
 
@@ -23,22 +23,22 @@ namespace adm {
     }
 
     template <>
-    inline Rtime getDefault<Rtime>() {
+    inline Rtime getNamedTypeDefault<Rtime>() {
       return Rtime{std::chrono::nanoseconds{0}};
     }
 
     template <>
-    inline HeadLocked getDefault<HeadLocked>() {
+    inline HeadLocked getNamedTypeDefault<HeadLocked>() {
       return HeadLocked{false};
     }
 
     template <>
-    inline ScreenRef getDefault<ScreenRef>() {
+    inline ScreenRef getNamedTypeDefault<ScreenRef>() {
       return ScreenRef{false};
     }
 
     template <>
-    inline Normalization getDefault<Normalization>() {
+    inline Normalization getNamedTypeDefault<Normalization>() {
       return Normalization{"SN3D"};
     }
 

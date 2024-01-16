@@ -36,6 +36,23 @@ namespace adm {
   using VerticalEdge = detail::NamedType<std::string, VerticalEdgeTag,
                                          detail::VerticalEdgeValidator>;
 
+  namespace detail {
+    template <>
+    inline ScreenEdge getNamedTypeDefault<ScreenEdge>() {
+      return ScreenEdge{"left"};
+    }
+
+    template <>
+    inline HorizontalEdge getNamedTypeDefault<HorizontalEdge>() {
+      return HorizontalEdge{"left"};
+    }
+
+    template <>
+    inline VerticalEdge getNamedTypeDefault<VerticalEdge>() {
+      return VerticalEdge{"top"};
+    }
+  }  // namespace detail
+
   /// @brief Tag for ScreenEdgeLock class
   struct ScreenEdgeLockTag {};
   /**
