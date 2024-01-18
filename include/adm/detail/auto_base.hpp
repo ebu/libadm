@@ -326,7 +326,7 @@ namespace adm {
     /// When using this with OptionalParameter<V>, the following classes should
     /// be explicitly instantiated:
     /// - OptionalParameter<V> (not VariantParameter<...>)
-    /// - One VariantParameter<OptionalParameter<V>, T> for each T in V.
+    /// - One VariantTypeParameter<OptionalParameter<V>, T> for each T in V.
     template <typename VariantParam>
     using VariantParameter = typename VariantParameterHelper<
         VariantParam, typename VariantParam::ParameterType>::type;
