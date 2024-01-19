@@ -43,9 +43,10 @@ namespace adm {
 
     /// base class with set/get/has methods for a required parameter of type T
     /// combine these together using HasParameters
-    template <typename T,
-              typename Tag = typename detail::ParameterTraits<T>::tag>
+    template <typename T>
     class RequiredParameter {
+      using Tag = typename detail::ParameterTraits<T>::tag;
+
      public:
       using ParameterType = T;
       static constexpr Flags flags = Flags::HAS_GET_SET_HAS;
@@ -61,9 +62,10 @@ namespace adm {
     /// base class with set/get/has/isDefault/unset methods for an optional
     /// parameter of type T with no default. combine these together using
     /// HasParameters
-    template <typename T,
-              typename Tag = typename detail::ParameterTraits<T>::tag>
+    template <typename T>
     class OptionalParameter {
+      using Tag = typename detail::ParameterTraits<T>::tag;
+
      public:
       using ParameterType = T;
       static constexpr Flags flags =
@@ -82,9 +84,10 @@ namespace adm {
     /// base class with set/get/has/isDefault/unset methods for an optional
     /// parameter of type T, which has a default provided by DefaultParameter.
     /// combine these together using HasParameters
-    template <typename T,
-              typename Tag = typename detail::ParameterTraits<T>::tag>
+    template <typename T>
     class DefaultParameter {
+      using Tag = typename detail::ParameterTraits<T>::tag;
+
      public:
       using ParameterType = T;
       static constexpr Flags flags =
@@ -112,9 +115,9 @@ namespace adm {
     /// base class for storage of multiple elements in a std::vector.
     /// T should be a std::vector<Something>, as this is what the tag is
     /// associated with.
-    template <typename T,
-              typename Tag = typename detail::ParameterTraits<T>::tag>
+    template <typename T>
     class VectorParameter {
+      using Tag = typename detail::ParameterTraits<T>::tag;
       using Value = typename T::value_type;
 
      public:
