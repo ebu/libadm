@@ -101,7 +101,7 @@ namespace adm {
   typedef boost::variant<NonDialogueContentKind, DialogueContentKind,
                          MixedContentKind>
       ContentKind;
-
+  struct ContentKindTag {};
   ADD_TRAIT(ContentKind, ContentKindTag);
 
 }  // namespace adm

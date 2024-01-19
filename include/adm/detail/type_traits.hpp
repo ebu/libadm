@@ -9,7 +9,6 @@ namespace adm {
   namespace detail {               \
     template <>                    \
     struct ParameterTraits<TYPE> { \
-      struct TAG {};               \
       typedef TAG tag;             \
     };                             \
   }

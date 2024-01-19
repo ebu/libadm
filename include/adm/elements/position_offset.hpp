@@ -140,6 +140,7 @@ namespace adm {
   /// @brief Type to hold a SphericalPositionOffset or CartesianPositionOffset
   typedef boost::variant<SphericalPositionOffset, CartesianPositionOffset>
       PositionOffset;
+  struct PositionOffsetTag {};
   ADD_TRAIT(PositionOffset, PositionOffsetTag);
 
   // ---- Free functions ---- //

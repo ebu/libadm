@@ -22,15 +22,17 @@ namespace adm {
   struct SpeakerLabelTag {};
   /// @brief NamedType for a speaker label
   using SpeakerLabel = detail::NamedType<std::string, SpeakerLabelTag>;
-  /// @brief NamedType for all speaker labels of an AudioBlockFormat
+  /// @brief type for all speaker labels of an AudioBlockFormat
   using SpeakerLabels = std::vector<SpeakerLabel>;
+  /// @brief Tag for SpeakerLabels
+  struct SpeakerLabelsTag {};
   ADD_TRAIT(SpeakerLabels, SpeakerLabelsTag);
 
   /// @brief NamedType for speaker position in an AudioBlockFormat
   using SpeakerPosition =
       boost::variant<SphericalSpeakerPosition, CartesianSpeakerPosition>;
   struct SpeakerPositionTag {};
-  ADD_TRAIT(SpeakerPosition, SpeakerPostionTag);
+  ADD_TRAIT(SpeakerPosition, SpeakerPositionTag);
 
   namespace detail {
     using AudioBlockFormatDirectSpeakersBase =
