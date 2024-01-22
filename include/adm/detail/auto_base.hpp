@@ -157,64 +157,83 @@ namespace adm {
       }
     };
 
-    /// Base class for one type within a variant.
+    /// base class which has methods for each type in a variant parameter.
     ///
-    /// VariantParam should be a parameter type like
-    /// OptionalParameter<boost::variant<...>>, and T should be one of the
-    /// types of the variant.
-    template <typename VariantParam, typename T>
-    class VariantTypeParameter : public virtual VariantParam {
-      using Variant = typename VariantParam::ParameterType;
-      using Tag = typename detail::ParameterTraits<T>::tag;
-      using VariantTag = typename detail::ParameterTraits<Variant>::tag;
-
-     public:
-      using VariantParam::get;
-      ADM_BASE_EXPORT T get(Tag) const {
-        return boost::get<T>(get(VariantTag{}));
-      }
-
-      using VariantParam::set;
-      ADM_BASE_EXPORT void set(T value) {
-        return VariantParam::set(std::move(value));
-      }
-
-      using VariantParam::has;
-      ADM_BASE_EXPORT bool has(Tag) const {
-        return has(VariantTag{}) && get(VariantTag()).type() == typeid(T);
-      }
-
-      using VariantParam::isDefault;
-      ADM_BASE_EXPORT bool isDefault(Tag) const {
-        return isDefault(VariantTag()) && get(VariantTag()).type() == typeid(T);
-      }
-
-      using VariantParam::unset;
-      ADM_BASE_EXPORT void unset(Tag) {
-        if (has(Tag{})) unset(VariantTag{});
-      }
-    };
-
-    template <typename VariantParam, typename VariantParameter>
-    struct VariantParameterHelper;
-
-    template <typename VariantParam, typename... Ts>
-    struct VariantParameterHelper<VariantParam, boost::variant<Ts...>> {
-      using type = HasParameters<VariantTypeParameter<VariantParam, Ts>...>;
-    };
-
-    /// Wrapper which has methods for each type in a variant parameter.
-    ///
-    /// This should be used in HasParameters, with VariantParam being a
+    /// This should be used in HasParameters, with Parameter being a
     /// parameter like OptionalParameter<V>, where V is a boost::variant.
     ///
     /// When using this with OptionalParameter<V>, the following classes should
     /// be explicitly instantiated:
-    /// - OptionalParameter<V> (not VariantParameter<...>)
+    /// - OptionalParameter<V>
     /// - One VariantTypeParameter<OptionalParameter<V>, T> for each T in V.
-    template <typename VariantParam>
-    using VariantParameter = typename VariantParameterHelper<
-        VariantParam, typename VariantParam::ParameterType>::type;
+    /// - VariantParameter<OptionalParameter<V>>
+    template <typename Parameter,
+              typename Variant = typename Parameter::ParameterType>
+    class VariantParameter;
+
+    /// Base class for one type within a variant.
+    ///
+    /// Parameter should be a parameter type like
+    /// OptionalParameter<boost::variant<...>>, and T should be one of the
+    /// types of the variant.
+    ///
+    /// this uses CRTP with VariantParameter to access the Variant type
+    template <typename Parameter, typename T>
+    class VariantTypeParameter {
+      using Base = VariantParameter<Parameter>;
+      using Tag = typename detail::ParameterTraits<T>::tag;
+
+      Base& base() { return static_cast<Base&>(*this); }
+
+      const Base& base() const { return static_cast<const Base&>(*this); }
+
+     public:
+      ADM_BASE_EXPORT T get(Tag) const {
+        return boost::get<T>(base().get(typename Base::VariantTag{}));
+      }
+
+      ADM_BASE_EXPORT void set(T value) {
+        return base().set(typename Base::Variant{std::move(value)});
+      }
+
+      ADM_BASE_EXPORT bool has(Tag) const {
+        return base().has(typename Base::VariantTag{}) &&
+               base().get(typename Base::VariantTag{}).type() == typeid(T);
+      }
+
+      ADM_BASE_EXPORT bool isDefault(Tag) const {
+        return base().isDefault(typename Base::VariantTag{}) &&
+               base().get(typename Base::VariantTag{}).type() == typeid(T);
+      }
+
+      ADM_BASE_EXPORT void unset(Tag) {
+        if (has(Tag{})) base().unset(typename Base::VariantTag{});
+      }
+    };
+
+    // implementation of VariantParameter; see above
+    template <typename Parameter, typename... Options>
+    class VariantParameter<Parameter, boost::variant<Options...>>
+        : public Parameter, public VariantTypeParameter<Parameter, Options>... {
+     public:
+      using Variant = boost::variant<Options...>;
+      using VariantTag = typename detail::ParameterTraits<Variant>::tag;
+
+      using Parameter::get;
+      using VariantTypeParameter<Parameter, Options>::get...;
+
+      using Parameter::set;
+      using VariantTypeParameter<Parameter, Options>::set...;
+
+      using Parameter::has;
+      using VariantTypeParameter<Parameter, Options>::has...;
+
+      using Parameter::isDefault;
+      using VariantTypeParameter<Parameter, Options>::isDefault...;
+
+      using Parameter::unset;
+      using VariantTypeParameter<Parameter, Options>::unset...;
+    };
 
     /// Helper containing templated wrapper methods like `has<Param>()` around
     /// overloaded `has(ParamTag)` type methods defined in T.
