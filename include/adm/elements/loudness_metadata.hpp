@@ -54,6 +54,7 @@ namespace adm {
   struct LoudnessMetadataTag {};
 
   using LoudnessMetadatas = std::vector<LoudnessMetadata>;
+  struct LoudnessMetadatasTag {};
   ADD_TRAIT(LoudnessMetadatas, LoudnessMetadatasTag);
 
   class LoudnessMetadata {
