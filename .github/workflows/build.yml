@@ -116,6 +116,10 @@ jobs:
         run: 'echo "${{ runner.workspace }}/b/ninja/src" >> $GITHUB_PATH'
         shell: bash
 
+      - name: Show library sizes
+        run: 'ls -l "${{ runner.workspace }}/b/ninja/src"'
+        shell: bash
+
       - name: 'Run tests'
         run: ctest . --output-on-failure
         working-directory: '${{ runner.workspace }}/b/ninja'
