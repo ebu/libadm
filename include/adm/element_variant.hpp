@@ -1,5 +1,6 @@
 #pragma once
 
+#include "adm/detail/holds_alternative.hpp"
 #include "adm/elements.hpp"
 #include <boost/variant.hpp>
 #include <memory>
@@ -26,13 +27,13 @@ namespace adm {
   template <typename VariantType, typename Variant>
   struct IsVariantType {
     bool operator()(const Variant& v) const {
-      return v.type() == typeid(VariantType);
+      return detail::holds_alternative<VariantType>(v);
     }
   };
 
   template <typename VariantType, typename Variant>
   bool isVariantType(const Variant& v) {
-    return v.type() == typeid(VariantType);
+    return detail::holds_alternative<VariantType>(v);
   }
 
   template <typename Element>

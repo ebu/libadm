@@ -110,13 +110,7 @@ namespace adm {
     }
   }
   void AudioContent::set(ContentKind kind) {
-    if (kind.which() == 0) {
-      set(boost::get<NonDialogueContentKind>(kind));
-    } else if (kind.which() == 1) {
-      set(boost::get<DialogueContentKind>(kind));
-    } else if (kind.which() == 2) {
-      set(boost::get<MixedContentKind>(kind));
-    }
+    boost::apply_visitor([this](auto k) { set(k); }, kind);
   }
   void AudioContent::set(NonDialogueContentKind kind) {
     unset<DialogueId>();

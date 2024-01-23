@@ -130,11 +130,8 @@ namespace adm {
     }
   }
   void AudioBlockFormatObjects::set(Position position) {
-    if (position.which() == 0) {
-      set(boost::get<SphericalPosition>(position));
-    } else if (position.which() == 1) {
-      set(boost::get<CartesianPosition>(position));
-    }
+    boost::apply_visitor([this](auto p) { set(std::move(p)); },
+                         std::move(position));
   }
   void AudioBlockFormatObjects::set(SphericalPosition position) {
     sphericalPosition_ = position;
