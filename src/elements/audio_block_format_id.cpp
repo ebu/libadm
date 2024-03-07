@@ -102,15 +102,26 @@ namespace adm {
     os << formatId(*this);
   }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioBlockFormatId> {
+      static constexpr const char* name{"audioBlockFormatID"};
+      static constexpr const char* prefix{"AB_"};
+      static constexpr const char* format{"AB_yyyyxxxx_zzzzzzzz"};
+      constexpr static std::size_t const underscore_position{11};
+    };
+
+  }  // namespace detail
+
   AudioBlockFormatId parseAudioBlockFormatId(const std::string& id) {
     // AB_yyyyxxxx_zzzzzzzz
-    detail::IDParser parser("AudioBlockFormatId", id);
-    parser.check_size(20);
-    parser.check_prefix("AB_", 3);
-    auto type = parser.parse_hex(3, 4);
-    auto value = parser.parse_hex(7, 4);
-    parser.check_underscore(11);
-    auto counter = parser.parse_hex(12, 8);
+    detail::IDParser parser{id};
+    parser.check_size<AudioBlockFormatId>();
+    parser.check_prefix<AudioBlockFormatId>();
+    auto type = parser.parse_hex<AudioBlockFormatId>(3, 4);
+    auto value = parser.parse_hex<AudioBlockFormatId>(7, 4);
+    parser.check_underscore<AudioBlockFormatId>();
+    auto counter = parser.parse_hex<AudioBlockFormatId>(12, 8);
     return AudioBlockFormatId(TypeDescriptor(type), AudioBlockFormatIdValue(value),
         AudioBlockFormatIdCounter(counter));
   }

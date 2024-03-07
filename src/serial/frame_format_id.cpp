@@ -45,16 +45,25 @@ namespace adm {
             " is 14 characters long so should be in the format FF_xxxxxxxx_zz, "
             "but character 11 is not \'_\'");
       }
-      parser.check_prefix("FF_", 3);
+      parser.check_prefix<FrameFormatId>();
     }
   }  // namespace
 
+  namespace detail {
+    template <>
+    struct IdTraits<FrameFormatId> {
+      static constexpr char const* name{"frameFormatID"};
+      static constexpr char const* prefix{"FF_"};
+    };
+  }  // namespace detail
+
   FrameFormatId parseFrameFormatId(const std::string& id) {
-    detail::IDParser parser("FrameFormatId", id);
+    detail::IDParser parser{id};
     validate_frame_format_id(parser, id);
-    FrameIndex index{parser.parse_hex(3, 8)};
+    FrameIndex index{parser.parse_hex<FrameFormatId>(3, 8)};
     if (id.size() == 14) {
-      return FrameFormatId(index, ChunkIndex{parser.parse_hex(12, 2)});
+      return FrameFormatId(index,
+                           ChunkIndex{parser.parse_hex<FrameFormatId>(12, 2)});
     } else {
       return FrameFormatId(index);
     }

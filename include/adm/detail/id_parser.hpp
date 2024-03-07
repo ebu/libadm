@@ -1,70 +1,101 @@
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <sstream>
 
 namespace adm {
   namespace detail {
-    /// object used to help with ID parsing
-    ///
-    /// construct one with the tyep name (for errors) and the ID string to
-    /// parse, then call the methods to check and parse different aspects of
-    /// the ID
+    inline bool id_starts_with(std::string const &id, const char *prefix,
+                               std::size_t prefix_length) {
+      return prefix_length <= id.size() &&
+             std::equal(prefix, prefix + prefix_length, id.begin(),
+                        id.begin() + prefix_length);
+    }
+
+    class IdParseException : public std::runtime_error {
+     public:
+      IdParseException(std::size_t index)
+          : std::runtime_error("Id parser error - bad hex digit"),
+            index{index} {}
+      std::size_t index;
+    };
+
+    template <typename T>
+    struct IdTraits;
+
+    constexpr std::size_t strlen_constexpr(char const *start) {
+      const char *end = start;
+      while (*end != '\0') ++end;
+      return end - start;
+    }
+
+    struct IdSection {};
+
     class IDParser {
      public:
-      /// construct given the type name for errors, and the ID string to parse
-      ///
-      /// this stores type_ and id_ but owns neither -- they must be kept alive
-      /// externally
-      IDParser(const char *type_, const std::string &id_)
-          : type(type_), id(id_) {}
+      /// construct given non-owning reference to the ID string to parse
+      explicit IDParser(std::string const &id) : id{id} {}
 
       /// check the length
-      void check_size(size_t size) {
-        if (id.size() != size) {
+      template <typename IdT>
+      void check_size() {
+        using TraitsT = IdTraits<IdT>;
+        constexpr auto length{detail::strlen_constexpr(TraitsT::format)};
+        if (id.size() != length) {
           std::ostringstream errorString;
-          errorString << "invalid " << type << " (wrong length, should be "
-                      << std::to_string(size) << " characters): " << id;
+          errorString << "invalid " << TraitsT::name
+                      << " (wrong length, should be " << length
+                      << " characters): " << id;
           throw std::runtime_error(errorString.str());
         }
-      }
-
-      void check_prefix(const char *prefix, size_t size) const {
-        assert(prefix && prefix[size] == 0);
-        check_prefix(std::string(prefix));
       }
 
       /// check that the start of the ID matches the given prefix
-      void check_prefix(std::string const &prefix) const {
-        auto prefix_error = [this](std::string const &prefix) {
+      template <typename IdT>
+      void check_prefix() const {
+        using TraitsT = IdTraits<IdT>;
+        constexpr auto prefix_length{strlen_constexpr(TraitsT::prefix)};
+        if (!id_starts_with(id, TraitsT::prefix, prefix_length)) {
           std::ostringstream errorString;
-          errorString << "invalid " << type << " (incorrect prefix, should be '"
-                      << prefix << "'): " << id;
+          errorString << "invalid " << TraitsT::name
+                      << " (incorrect prefix, should be '" << TraitsT::prefix
+                      << "'): " << id;
           throw std::runtime_error(errorString.str());
-        };
-
-        if (prefix.size() > id.size()) {
-          prefix_error(prefix);
         }
-        for (size_t i = 0; i < prefix.size(); i++)
-          if (id[i] != prefix.at(i)) {
-            prefix_error(prefix);
-          }
       }
 
-      /// check that there's an inderscore at the given position
-      void check_underscore(size_t pos) {
-        assert(pos < id.size());
-        if (id[pos] != '_') {
+      /// check that there's an underscore at the given position
+      template <typename IdT>
+      void check_underscore() {
+        using TraitsT = IdTraits<IdT>;
+        auto underscore_pos = TraitsT::underscore_position;
+        assert(underscore_pos < id.size());
+        if (id[underscore_pos] != '_') {
           std::ostringstream errorString;
-          errorString << "invalid " << type << " (expected underscore at char "
-                      << pos << "): " << id;
+          errorString << "invalid " << TraitsT::name
+                      << " (expected underscore at char " << underscore_pos
+                      << "): " << id;
           throw std::runtime_error(errorString.str());
         }
+      }
+
+      template <typename IdT>
+      unsigned parse_hex(size_t start, size_t len) {
+        try {
+          return parse_hex_impl(start, len);
+        } catch (IdParseException const &e) {
+          using TraitsT = IdTraits<IdT>;
+          std::ostringstream errorString;
+          errorString << "invalid " << TraitsT::name
+                      << " (expected hex char at char" << e.index
+                      << "): " << id;
+          throw std::runtime_error(errorString.str());
+        };
       }
 
       /// parse a hex value case-insensitively starting at start for len chars
-      unsigned parse_hex(size_t start, size_t len) {
+      unsigned parse_hex_impl(size_t start, size_t len) {
         assert(start + len <= id.size());
 
         // parse manually -- all of the built-in methods would require copying
@@ -81,10 +112,7 @@ namespace adm {
           else if ('A' <= c && c <= 'F')
             c_value = c - ('A' - 10);
           else {
-            std::ostringstream errorString;
-            errorString << "invalid " << type << " (expected hex char at char"
-                        << i << "): " << id;
-            throw std::runtime_error(errorString.str());
+            throw IdParseException(i);
           }
           acc = (acc << 4) | c_value;
         }
@@ -93,8 +121,7 @@ namespace adm {
       }
 
      private:
-      const char *type;
-      const std::string &id;
+      std::string const &id;
     };
 
     /// write a hex value into an existing string
@@ -114,5 +141,6 @@ namespace adm {
         throw std::runtime_error(errorString.str());
       }
     }
+
   }  // namespace detail
 }  // namespace adm

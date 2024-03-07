@@ -102,15 +102,25 @@ namespace adm {
     os << formatId(*this);
   }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioTrackFormatId> {
+      static constexpr char const* const name{"audioTrackFormatID"};
+      static constexpr char const* const prefix{"AT_"};
+      static constexpr char const* const format{"AT_yyyyxxxx_zz"};
+      constexpr static std::size_t const underscore_position{11};
+    };
+  }  // namespace detail
+
   AudioTrackFormatId parseAudioTrackFormatId(const std::string& id) {
     // AT_yyyyxxxx_zz
-    detail::IDParser parser("AudioTrackFormatId", id);
-    parser.check_prefix("AT_", 3);
-    parser.check_size(14);
-    auto type = parser.parse_hex(3, 4);
-    auto value = parser.parse_hex(7, 4);
-    parser.check_underscore(11);
-    auto counter = parser.parse_hex(12, 2);
+    detail::IDParser parser{id};
+    parser.check_prefix<AudioTrackFormatId>();
+    parser.check_size<AudioTrackFormatId>();
+    auto type = parser.parse_hex<AudioTrackFormatId>(3, 4);
+    auto value = parser.parse_hex<AudioTrackFormatId>(7, 4);
+    parser.check_underscore<AudioTrackFormatId>();
+    auto counter = parser.parse_hex<AudioTrackFormatId>(12, 2);
     return AudioTrackFormatId(TypeDescriptor(type), AudioTrackFormatIdValue(value),
         AudioTrackFormatIdCounter(counter));
   }

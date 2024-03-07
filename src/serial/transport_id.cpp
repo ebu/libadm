@@ -49,12 +49,21 @@ namespace adm {
   // ---- Common ---- //
   void TransportId::print(std::ostream& os) const { os << formatId(*this); }
 
+  namespace detail {
+    template <>
+    struct IdTraits<TransportId> {
+      static constexpr char const* name{"transportID"};
+      static constexpr char const* prefix{"TP_"};
+      static constexpr char const* format{"TP_xxxx"};
+    };
+  }  // namespace detail
+
   TransportId parseTransportId(const std::string& id) {
     // TP_xxxx
-    detail::IDParser parser("TransportId", id);
-    parser.check_size(7);
-    parser.check_prefix("TP_", 3);
-    auto value = parser.parse_hex(3, 4);
+    detail::IDParser parser{id};
+    parser.check_size<TransportId>();
+    parser.check_prefix<TransportId>();
+    auto value = parser.parse_hex<TransportId>(3, 4);
     return TransportId(TransportIdValue(value));
   }
 

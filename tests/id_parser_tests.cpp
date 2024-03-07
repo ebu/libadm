@@ -3,14 +3,27 @@
 
 using namespace adm::detail;
 
-void parseExample(const std::string &id) {
+namespace adm {
+  struct ExampleId {};
+  namespace detail {
+    template <>
+    struct IdTraits<ExampleId> {
+      static constexpr char const* name{"ExampleId"};
+      static constexpr char const* prefix{"AI_"};
+      static constexpr char const* format{"AI_xxxx_yyyy"};
+      static std::size_t const underscore_position{7};
+    };
+  }  // namespace detail
+}  // namespace adm
+
+void parseExample(const std::string& id) {
   // AI_xxxx_yyyy
-  IDParser parser("Example", id);
-  parser.check_size(12);
-  parser.check_prefix("AI_", 3);
-  auto type = parser.parse_hex(3, 4);
-  parser.check_underscore(7);
-  auto value = parser.parse_hex(8, 4);
+  IDParser parser{id};
+  parser.check_size<adm::ExampleId>();
+  parser.check_prefix<adm::ExampleId>();
+  auto type = parser.parse_hex<adm::ExampleId>(3, 4);
+  parser.check_underscore<adm::ExampleId>();
+  auto value = parser.parse_hex<adm::ExampleId>(8, 4);
 
   REQUIRE(type == 0x12ab);
   REQUIRE(value == 0x89ef);

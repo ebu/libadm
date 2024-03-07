@@ -78,13 +78,22 @@ namespace adm {
     os << formatId(*this);
   }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioPackFormatId> {
+      static constexpr char const* name{"audioPackFormatID"};
+      static constexpr char const* prefix{"AP_"};
+      static constexpr char const* format{"AP_yyyyxxxx"};
+    };
+  }  // namespace detail
+
   AudioPackFormatId parseAudioPackFormatId(const std::string& id) {
     // AP_yyyyxxxx
-    detail::IDParser parser("AudioPackFormatId", id);
-    parser.check_prefix("AP_", 3);
-    parser.check_size(11);
-    auto type = parser.parse_hex(3, 4);
-    auto value = parser.parse_hex(7, 4);
+    detail::IDParser parser{id};
+    parser.check_prefix<AudioPackFormatId>();
+    parser.check_size<AudioPackFormatId>();
+    auto type = parser.parse_hex<AudioPackFormatId>(3, 4);
+    auto value = parser.parse_hex<AudioPackFormatId>(7, 4);
     return AudioPackFormatId(TypeDescriptor(type),
                              AudioPackFormatIdValue(value));
   }

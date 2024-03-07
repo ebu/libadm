@@ -57,12 +57,21 @@ namespace adm {
     os << formatId(*this);
   }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioProgrammeId> {
+      static constexpr char const* name{"audioProgrammeID"};
+      static constexpr char const* prefix{"APR_"};
+      static constexpr char const* format{"APR_xxxx"};
+    };
+  }  // namespace detail
+
   AudioProgrammeId parseAudioProgrammeId(const std::string& id) {
     // APR_xxxx
-    detail::IDParser parser("AudioProgrammeId", id);
-    parser.check_size(8);
-    parser.check_prefix("APR_", 4);
-    auto value = parser.parse_hex(4, 4);
+    detail::IDParser parser{id};
+    parser.check_prefix<AudioProgrammeId>();
+    parser.check_size<AudioProgrammeId>();
+    auto value = parser.parse_hex<AudioProgrammeId>(4, 4);
     return AudioProgrammeId(AudioProgrammeIdValue(value));
   }
 

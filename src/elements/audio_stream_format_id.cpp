@@ -81,13 +81,22 @@ namespace adm {
     os << formatId(*this);
   }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioStreamFormatId> {
+      static constexpr char const* name{"audioStreamFormatID"};
+      static constexpr char const* prefix{"AS_"};
+      static constexpr char const* format{"AS_yyyyxxxx"};
+    };
+  }  // namespace detail
+
   AudioStreamFormatId parseAudioStreamFormatId(const std::string& id) {
     // AS_yyyyxxxx
-    detail::IDParser parser("AudioStreamFormatId", id);
-    parser.check_size(11);
-    parser.check_prefix("AS_", 3);
-    auto type = parser.parse_hex(3, 4);
-    auto value = parser.parse_hex(7, 4);
+    detail::IDParser parser{id};
+    parser.check_prefix<AudioStreamFormatId>();
+    parser.check_size<AudioStreamFormatId>();
+    auto type = parser.parse_hex<AudioStreamFormatId>(3, 4);
+    auto value = parser.parse_hex<AudioStreamFormatId>(7, 4);
     return AudioStreamFormatId(TypeDescriptor(type),
                                AudioStreamFormatIdValue(value));
   }

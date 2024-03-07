@@ -57,12 +57,21 @@ namespace adm {
   // ---- Common ---- //
   void AudioTrackUidId::print(std::ostream& os) const { os << formatId(*this); }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioTrackUidId> {
+      static constexpr char const* name{"audioTrackUidID"};
+      static constexpr char const* prefix{"ATU_"};
+      static constexpr char const* format{"ATU_xxxxxxxx"};
+    };
+  }  // namespace detail
+
   AudioTrackUidId parseAudioTrackUidId(const std::string& id) {
     // ATU_xxxxxxxx
-    detail::IDParser parser("AudioChannelFormatId", id);
-    parser.check_prefix("ATU_", 4);
-    parser.check_size(12);
-    auto value = parser.parse_hex(4, 8);
+    detail::IDParser parser{id};
+    parser.check_prefix<AudioTrackUidId>();
+    parser.check_size<AudioTrackUidId>();
+    auto value = parser.parse_hex<AudioTrackUidId>(4, 8);
     return AudioTrackUidId(AudioTrackUidIdValue(value));
   }
 

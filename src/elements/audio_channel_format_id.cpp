@@ -4,7 +4,6 @@
 #include "adm/detail/optional_comparison.hpp"
 
 namespace adm {
-
   // ---- Defaults ---- //
   const TypeDescriptor AudioChannelFormatId::channelTypeDefault_ =
       TypeDefinition::UNDEFINED;
@@ -84,13 +83,22 @@ namespace adm {
     os << formatId(*this);
   }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioChannelFormatId> {
+      static constexpr char const* name{"audioChannelFormatID"};
+      static constexpr char const* prefix{"AC_"};
+      static constexpr char const* format{"AC_yyyyxxxx"};
+    };
+  }  // namespace detail
+
   AudioChannelFormatId parseAudioChannelFormatId(const std::string& id) {
     // AC_yyyyxxxx
-    detail::IDParser parser("AudioChannelFormatId", id);
-    parser.check_prefix("AC_", 3);
-    parser.check_size(11);
-    auto type = parser.parse_hex(3, 4);
-    auto value = parser.parse_hex(7, 4);
+    detail::IDParser parser{id};
+    parser.check_prefix<AudioChannelFormatId>();
+    parser.check_size<AudioChannelFormatId>();
+    auto type = parser.parse_hex<AudioChannelFormatId>(3, 4);
+    auto value = parser.parse_hex<AudioChannelFormatId>(7, 4);
     return AudioChannelFormatId(TypeDescriptor(type),
                                 AudioChannelFormatIdValue(value));
   }
