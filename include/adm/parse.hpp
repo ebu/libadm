@@ -56,7 +56,7 @@ namespace adm {
    * node into an adm::Document, using a SADM FrameHeader to check for consistency.
    * Primarily intended for parsing sadm frames.
    *
-   * Convenience wrapper for files using `parseXml(std::istream&)`
+   * Convenience wrapper for files using `parseXml(std::istream&, FrameHeader const&)`
    * @param filename XML file to read and parse
    * @param options Options to influence the XML parser behaviour
    */
