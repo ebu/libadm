@@ -24,9 +24,8 @@ namespace adm {
   };
 
   namespace detail {
-    template <typename T>
-    void validateStringList(std::string const& type, std::string const& value,
-                            T&& list) {
+    inline void validateStringList(std::string const& value, const char* type,
+                                   std::initializer_list<char const*> list) {
       for (auto const& element : list) {
         if (element == value) return;
       }
@@ -97,61 +96,52 @@ namespace adm {
 
     struct ScreenEdgeValidator {
       static void validate(const std::string& value) {
-        validateStringList(
-            "ScreenEdge", value,
-            std::array<std::string, 4>{"left", "right", "top", "bottom"});
+        validateStringList(value, "ScreenEdge",
+                           {"left", "right", "top", "bottom"});
       }
     };
 
     struct HorizontalEdgeValidator {
       static void validate(const std::string& value) {
-        validateStringList("HorizontalEdge", value,
-                           std::array<std::string, 2>{"left", "right"});
+        validateStringList(value, "HorizontalEdge", {"left", "right"});
       }
     };
 
     struct VerticalEdgeValidator {
       static void validate(const std::string& value) {
-        validateStringList("VerticalEdge", value,
-                           std::array<std::string, 2>{"top", "bottom"});
+        validateStringList(value, "VerticalEdge", {"top", "bottom"});
       }
     };
 
     struct FrequencyTypeValidator {
       static void validate(const std::string& value) {
-        validateStringList("FrequencyType", value,
-                           std::array<std::string, 2>{"lowPass", "highPass"});
+        validateStringList(value, "FrequencyType", {"lowPass", "highPass"});
       }
     };
 
     struct CoordinateValueValidator {
       static void validate(const std::string& value) {
-        validateStringList(
-            "CoordinateValue", value,
-            std::array<std::string, 6>{"azimuth", "elevation", "distance", "X",
-                                       "Y", "Z"});
+        validateStringList(value, "CoordinateValue",
+                           {"azimuth", "elevation", "distance", "X", "Y", "Z"});
       }
     };
 
     struct SphericalCoordinateValueValidator {
       static void validate(const std::string& value) {
-        validateStringList(
-            "SphericalCoordinateValue", value,
-            std::array<std::string, 3>{"azimuth", "elevation", "distance"});
+        validateStringList(value, "SphericalCoordinateValue",
+                           {"azimuth", "elevation", "distance"});
       }
     };
 
     struct CartesianCoordinateValueValidator {
       static void validate(const std::string& value) {
-        validateStringList("CartesianCoordinateValue", value,
-                           std::array<std::string, 3>{"X", "Y", "Z"});
+        validateStringList(value, "CartesianCoordinateValue", {"X", "Y", "Z"});
       }
     };
 
     struct BoundValueValidator {
       static void validate(const std::string& value) {
-        validateStringList("Bound", value,
-                           std::array<std::string, 2>{"min", "max"});
+        validateStringList(value, "Bound", {"min", "max"});
       }
     };
 
