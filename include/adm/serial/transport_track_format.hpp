@@ -9,6 +9,7 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/export.h"
 #include "adm/detail/auto_base.hpp"
+#include "adm/detail/optional_comparison.hpp"
 
 namespace adm {
 
@@ -102,12 +103,8 @@ namespace adm {
 
   inline bool operator==(TransportTrackFormat const& lhs,
                          TransportTrackFormat const& rhs) {
-    auto result = lhs.get<TransportId>() == rhs.get<TransportId>();
-    result = result && lhs.get<TransportName>() == rhs.get<TransportName>();
-    result = result && lhs.get<NumTracks>() == rhs.get<NumTracks>();
-    result = result && lhs.get<NumIds>() == rhs.get<NumIds>();
-    result = result && lhs.get<AudioTracks>() == rhs.get<AudioTracks>();
-    return result;
+    return detail::optionalsEqual<TransportId, TransportName, NumTracks, NumIds,
+                                  AudioTracks>(lhs, rhs);
   }
 
   // ---- Implementation ---- //

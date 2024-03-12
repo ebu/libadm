@@ -1,17 +1,13 @@
 #include "adm/serial/frame_format_id.hpp"
 #include <sstream>
 #include "adm/detail/id_parser.hpp"
+#include "adm/detail/optional_comparison.hpp"
 
 namespace adm {
 
   // ---- Operators ---- //
   bool FrameFormatId::operator==(const FrameFormatId& other) const {
-    bool equal{get<FrameIndex>() == other.get<FrameIndex>()};
-    equal = equal && (has<ChunkIndex>() == other.has<ChunkIndex>());
-    if (equal && has<ChunkIndex>()) {
-      equal = (get<ChunkIndex>() == other.get<ChunkIndex>());
-    }
-    return equal;
+    return detail::optionalsEqual<FrameIndex, ChunkIndex>(*this, other);
   }
 
   bool FrameFormatId::operator!=(const FrameFormatId& other) const {
@@ -19,7 +15,7 @@ namespace adm {
   }
 
   bool FrameFormatId::operator<(const FrameFormatId& other) const {
-    return formatId(*this) < formatId(other);
+    return detail::optionalsLess<FrameIndex, ChunkIndex>(*this, other);
   }
 
   // ---- Common ---- //

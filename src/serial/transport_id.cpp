@@ -1,6 +1,7 @@
 #include "adm/serial/transport_id.hpp"
 #include <sstream>
 #include "adm/detail/id_parser.hpp"
+#include "adm/detail/optional_comparison.hpp"
 
 namespace adm {
 
@@ -34,7 +35,7 @@ namespace adm {
 
   // ---- Operators ---- //
   bool TransportId::operator==(const TransportId& other) const {
-    return get<TransportIdValue>() == other.get<TransportIdValue>();
+    return detail::optionalsEqual<TransportIdValue>(*this, other);
   }
 
   bool TransportId::operator!=(const TransportId& other) const {
@@ -42,7 +43,7 @@ namespace adm {
   }
 
   bool TransportId::operator<(const TransportId& other) const {
-    return formatId(*this) < formatId(other);
+    return detail::optionalsLess<TransportIdValue>(*this, other);
   }
 
   // ---- Common ---- //
