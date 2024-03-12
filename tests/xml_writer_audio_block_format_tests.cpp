@@ -228,47 +228,6 @@ TEST_CASE("write specified Binaural block sadm") {
   CHECK_THAT(ss.str(), EqualsXmlFile("write_specified_binaural_block_sadm"));
 }
 
-namespace {
-  //clang-format off
-  constexpr const char* LOCAL_XML = R"(<?xml version="1.0" encoding="utf-8"?>
-<frame version="ITU-R_BS.2125-1">
-	<frameHeader>
-		<frameFormat frameFormatID="FF_00000001" start="00:00:00.00000" duration="00:00:01.00000" type="full" timeReference="local"/>
-	</frameHeader>
-	<audioFormatExtended>
-		<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="Objects Format" typeLabel="0003" typeDefinition="Objects">
-			<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" lstart="00:00:01.00000" lduration="00:00:02.00000">
-				<position coordinate="X">0.000000</position>
-				<position coordinate="Y">1.000000</position>
-				<cartesian>1</cartesian>
-			</audioBlockFormat>
-		</audioChannelFormat>
-	</audioFormatExtended>
-</frame>
-
-)";
-
-  constexpr const char* TOTAL_XML = R"(<?xml version="1.0" encoding="utf-8"?>
-<frame version="ITU-R_BS.2125-1">
-	<frameHeader>
-		<frameFormat frameFormatID="FF_00000001" start="00:00:00.00000" duration="00:00:01.00000" type="full" timeReference="total"/>
-	</frameHeader>
-	<audioFormatExtended>
-		<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="Objects Format" typeLabel="0003" typeDefinition="Objects">
-			<audioBlockFormat audioBlockFormatID="AB_00031001_00000001" rtime="00:00:01.00000" duration="00:00:02.00000">
-				<position coordinate="X">0.000000</position>
-				<position coordinate="Y">1.000000</position>
-				<cartesian>1</cartesian>
-			</audioBlockFormat>
-		</audioChannelFormat>
-	</audioFormatExtended>
-</frame>
-
-)";
-
-  //clang-format on
-}  // namespace
-
 TEST_CASE("Time reference writing") {
   using namespace std::chrono_literals;
   Rtime start{1s};
@@ -286,7 +245,7 @@ TEST_CASE("Time reference writing") {
     document->add(channelFormat);
     std::stringstream ss;
     writeXml(ss, document, FrameHeader{format});
-    REQUIRE(ss.str() == TOTAL_XML);
+    CHECK_THAT(ss.str(), EqualsXmlFile("write_total_time_reference"));
   }
   SECTION("Objects, local time") {
     format.set(TimeReference::LOCAL);
@@ -296,6 +255,6 @@ TEST_CASE("Time reference writing") {
     document->add(channelFormat);
     std::stringstream ss;
     writeXml(ss, document, FrameHeader{format});
-    REQUIRE(ss.str() == LOCAL_XML);
+    CHECK_THAT(ss.str(), EqualsXmlFile("write_local_time_reference"));
   }
 }
