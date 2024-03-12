@@ -66,7 +66,6 @@ namespace adm {
 
   std::string formatId(FrameFormatId id) {
     std::string s{};
-    s.reserve(14);
     if (id.has<ChunkIndex>()) {
       s = "FF_zzzzzzzz_zz";
       detail::formatHex(s, 3, 8, id.get<FrameIndex>().get());
