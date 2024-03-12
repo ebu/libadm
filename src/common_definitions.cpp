@@ -1,10 +1,7 @@
 #include "adm/common_definitions.hpp"
 #include "resources.hpp"
 #include "adm/private/document_parser.hpp"
-#include "adm/serial/frame_header_parser.hpp"
 #include "adm/utilities/copy.hpp"
-#include <iostream>
-#include <iomanip>
 
 namespace adm {
 
