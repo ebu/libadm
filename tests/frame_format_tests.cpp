@@ -27,22 +27,22 @@ TEST_CASE("Invalid format id parsing") {
 }
 
 TEST_CASE("Short format id parsing") {
-  CHECK(parseFrameFormatId("FF_00000001").get<FrameIndex>() == 1);
-  CHECK(parseFrameFormatId("FF_000000FF").get<FrameIndex>() == 255);
-  CHECK(parseFrameFormatId("FF_000000ff").get<FrameIndex>() == 255);
+  CHECK(parseFrameFormatId("FF_00000001").get<FrameIndex>() == 1u);
+  CHECK(parseFrameFormatId("FF_000000FF").get<FrameIndex>() == 255u);
+  CHECK(parseFrameFormatId("FF_000000ff").get<FrameIndex>() == 255u);
   CHECK(parseFrameFormatId("FF_FFFFFFFF").get<FrameIndex>() == 0xFFFFFFFF);
   CHECK(!parseFrameFormatId("FF_00000001").has<ChunkIndex>());
 }
 
 TEST_CASE("Long format id parsing") {
-  CHECK(parseFrameFormatId("FF_00000001_01").get<FrameIndex>() == 1);
-  CHECK(parseFrameFormatId("FF_000000FF_92").get<FrameIndex>() == 255);
+  CHECK(parseFrameFormatId("FF_00000001_01").get<FrameIndex>() == 1u);
+  CHECK(parseFrameFormatId("FF_000000FF_92").get<FrameIndex>() == 255u);
   CHECK(parseFrameFormatId("FF_FFFFFFFF_FF").get<FrameIndex>() == 0xFFFFFFFF);
   REQUIRE(parseFrameFormatId("FF_00000001_01").has<ChunkIndex>());
-  CHECK(parseFrameFormatId("FF_00000001_01").get<ChunkIndex>() == 1);
-  CHECK(parseFrameFormatId("FF_00000001_02").get<ChunkIndex>() == 2);
-  CHECK(parseFrameFormatId("FF_00000001_FF").get<ChunkIndex>() == 255);
-  CHECK(parseFrameFormatId("FF_FFFFFFFF_03").get<ChunkIndex>() == 3);
+  CHECK(parseFrameFormatId("FF_00000001_01").get<ChunkIndex>() == 1u);
+  CHECK(parseFrameFormatId("FF_00000001_02").get<ChunkIndex>() == 2u);
+  CHECK(parseFrameFormatId("FF_00000001_FF").get<ChunkIndex>() == 255u);
+  CHECK(parseFrameFormatId("FF_FFFFFFFF_03").get<ChunkIndex>() == 3u);
 }
 
 TEST_CASE("id formatting") {
@@ -132,7 +132,7 @@ TEST_CASE("NumMetadataChunks correctly parsed from attribute") {
   auto format = header.get<FrameFormat>();
   REQUIRE(format.has<NumMetadataChunks>());
   auto numChunks = format.get<NumMetadataChunks>();
-  REQUIRE(numChunks == 3);
+  REQUIRE(numChunks == 3u);
 }
 
 TEST_CASE("CountToSameChunk correctly written as attribute") {
@@ -151,7 +151,7 @@ TEST_CASE("CountToSameChunk correctly parsed from attribute") {
   auto format = header.get<FrameFormat>();
   REQUIRE(format.has<CountToSameChunk>());
   auto numChunks = format.get<CountToSameChunk>();
-  REQUIRE(numChunks == 3);
+  REQUIRE(numChunks == 3u);
 }
 
 //clang-format off
@@ -361,11 +361,11 @@ TEST_CASE("Read all FrameFormat parameters") {
   auto header = parseFrameHeader(ss);
   auto format = header.get<FrameFormat>();
   REQUIRE(format.get<FrameType>() == FrameType::DIVIDED);
-  REQUIRE(format.get<CountToSameChunk>() == 3);
-  REQUIRE(format.get<NumMetadataChunks>() == 2);
+  REQUIRE(format.get<CountToSameChunk>() == 3u);
+  REQUIRE(format.get<NumMetadataChunks>() == 2u);
   REQUIRE(format.get<TimeReference>() == TimeReference::TOTAL);
   REQUIRE(format.get<FlowId>() == FLOW_ID);
-  REQUIRE(format.get<CountToFull>() == 2);
+  REQUIRE(format.get<CountToFull>() == 2u);
   REQUIRE(format.has<ChangedIds>());
   auto changedIds = format.get<ChangedIds>();
 
