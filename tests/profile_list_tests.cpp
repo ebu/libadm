@@ -62,7 +62,6 @@ TEST_CASE("sadm xml/profilelist") {
   CHECK(profiles.at(1).get<ProfileLevel>() == "level2");
 
   std::stringstream xml;
-  using namespace std::chrono_literals;
   auto document = Document::create();
   writeXml(xml, document, header);
   CHECK_THAT(xml.str(), EqualsXmlFile("profile_list_frame_header"));
