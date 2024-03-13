@@ -8,9 +8,9 @@ namespace adm {
   namespace xml {
 
     namespace detail {
-      template <typename T, typename F>
+      template <typename F>
       auto wrapWithTimeRef(F fn, TimeReference timeReference) {
-        return [fn, timeReference](XmlNode &node, T const &element) {
+        return [fn, timeReference](XmlNode &node, auto const &element) {
           fn(node, element, timeReference);
         };
       }
@@ -320,15 +320,15 @@ namespace adm {
 
       auto channelType = channelFormat->get<TypeDescriptor>();
       if (channelType == TypeDefinition::DIRECT_SPEAKERS) {
-        node.addElements<AudioBlockFormatDirectSpeakers>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef<AudioBlockFormatDirectSpeakers>(formatBlockFormatDirectSpeakers, timeReference));
+        node.addElements<AudioBlockFormatDirectSpeakers>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatDirectSpeakers, timeReference));
       } else if (channelType == TypeDefinition::MATRIX) {
-        node.addElements<AudioBlockFormatMatrix>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef<AudioBlockFormatMatrix>(formatBlockFormatMatrix, timeReference));
+        node.addElements<AudioBlockFormatMatrix>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatMatrix, timeReference));
       } else if (channelType == TypeDefinition::OBJECTS) {
-        node.addElements<AudioBlockFormatObjects>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef<AudioBlockFormatObjects>(formatBlockFormatObjects, timeReference));
+        node.addElements<AudioBlockFormatObjects>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatObjects, timeReference));
       } else if (channelType == TypeDefinition::HOA) {
-        node.addElements<AudioBlockFormatHoa>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef<AudioBlockFormatHoa>(formatBlockFormatHoa, timeReference));
+        node.addElements<AudioBlockFormatHoa>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatHoa, timeReference));
       } else if (channelType == TypeDefinition::BINAURAL) {
-        node.addElements<AudioBlockFormatBinaural>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef<AudioBlockFormatBinaural>(formatBlockFormatBinaural, timeReference));
+        node.addElements<AudioBlockFormatBinaural>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatBinaural, timeReference));
       }
       // clang-format on
     }
