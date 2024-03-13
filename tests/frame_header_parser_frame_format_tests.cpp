@@ -22,5 +22,5 @@ namespace {
 
 TEST_CASE("Test minimal frame header parsing") {
   std::stringstream header_xml{MINIMAL_HEADER};
-  auto header = adm::parseFrameHeader(header_xml);
+  CHECK_NOTHROW(adm::parseFrameHeader(header_xml));
 }
