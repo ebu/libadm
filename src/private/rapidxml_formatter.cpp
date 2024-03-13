@@ -51,7 +51,9 @@ namespace adm {
       std::string toString(FrameType frameType) {
         return formatValue(frameType);
       }
-      std::string toString(Status status) { return formatValue(status); }
+      std::string toString(ChangedIdStatus status) {
+        return formatValue(status);
+      }
       std::string toString(TimeReference timeReference) {
         return formatValue(timeReference);
       }
@@ -716,7 +718,7 @@ namespace adm {
           refNode.setValue(
               formatId(ref.template get<
                        typename detail::ChangedIdTraits<T>::id_type>()));
-          refNode.template addAttribute<Status>(&ref, "status");
+          refNode.template addAttribute<ChangedIdStatus>(&ref, "status");
         }
       }
     }  // namespace

@@ -52,7 +52,7 @@ namespace adm {
     return os;
   }
 
-  std::ostream& operator<<(std::ostream& os, Status value) {
+  std::ostream& operator<<(std::ostream& os, ChangedIdStatus value) {
     os << formatValue(value);
     return os;
   }

@@ -177,9 +177,10 @@ TEST_CASE("ChangedIDs correctly written - BS2125-1 A2.2, 2nd example") {
   FrameHeader header(FrameFormat{
       FrameFormatId{FrameIndex{4}}, Start{3s}, Duration{1s}, FrameType::FULL,
       ChangedIds{ChangedAudioChannelFormatIds{
-          {parseAudioChannelFormatId("AC_00031001"), Status::CHANGED},
-          {parseAudioChannelFormatId("AC_00031002"), Status::EXPIRED},
-          {parseAudioChannelFormatId("AC_00031003"), Status::EXTENDED}}}});
+          {parseAudioChannelFormatId("AC_00031001"), ChangedIdStatus::CHANGED},
+          {parseAudioChannelFormatId("AC_00031002"), ChangedIdStatus::EXPIRED},
+          {parseAudioChannelFormatId("AC_00031003"),
+           ChangedIdStatus::EXTENDED}}}});
   std::stringstream ss("changedids.xml");
   writeXml(ss, adm::Document::create(), header);
   REQUIRE(ss.str() == CHANGED_IDS_A2_2);
@@ -195,13 +196,16 @@ TEST_CASE("ChangedIDs correctly parsed - BS2125-1 A2.2, 2nd example") {
   REQUIRE(channelFormatRefs.size() == 3);
   REQUIRE(formatId(channelFormatRefs[0].get<AudioChannelFormatId>()) ==
           "AC_00031001");
-  REQUIRE(channelFormatRefs[0].get<Status>() == Status::CHANGED);
+  REQUIRE(channelFormatRefs[0].get<ChangedIdStatus>() ==
+          ChangedIdStatus::CHANGED);
   REQUIRE(formatId(channelFormatRefs[1].get<AudioChannelFormatId>()) ==
           "AC_00031002");
-  REQUIRE(channelFormatRefs[1].get<Status>() == Status::EXPIRED);
+  REQUIRE(channelFormatRefs[1].get<ChangedIdStatus>() ==
+          ChangedIdStatus::EXPIRED);
   REQUIRE(formatId(channelFormatRefs[2].get<AudioChannelFormatId>()) ==
           "AC_00031003");
-  REQUIRE(channelFormatRefs[2].get<Status>() == Status::EXTENDED);
+  REQUIRE(channelFormatRefs[2].get<ChangedIdStatus>() ==
+          ChangedIdStatus::EXTENDED);
 }
 
 //clang-format off
@@ -224,11 +228,12 @@ static constexpr const char* TIME_REF_TOTAL_XML =
 TEST_CASE(
     "Local time timeReference correctly written - BS2125-1 A2.5, example 3") {
   using namespace std::chrono_literals;
-  FrameHeader header{FrameFormat{
-      FrameFormatId{FrameIndex{3}}, Start{1s}, Duration{500ms}, FrameType::FULL,
-      TimeReference::LOCAL,
-      ChangedIds{ChangedAudioChannelFormatIds{
-          {parseAudioChannelFormatId("AC_00031001"), Status::CHANGED}}}}};
+  FrameHeader header{FrameFormat{FrameFormatId{FrameIndex{3}}, Start{1s},
+                                 Duration{500ms}, FrameType::FULL,
+                                 TimeReference::LOCAL,
+                                 ChangedIds{ChangedAudioChannelFormatIds{
+                                     {parseAudioChannelFormatId("AC_00031001"),
+                                      ChangedIdStatus::CHANGED}}}}};
   auto document = Document::create();
   std::stringstream ss;
   writeXml(ss, document, header);
@@ -335,21 +340,23 @@ TEST_CASE("Write all FrameFormat parameters") {
   format.set(CountToFull{2});
   ChangedIds ids;
   ids.add(ChangedId<AudioChannelFormat>{
-      parseAudioChannelFormatId("AC_00011001"), Status::NEW});
+      parseAudioChannelFormatId("AC_00011001"), ChangedIdStatus::NEW});
   ids.add(ChangedId<AudioPackFormat>{parseAudioPackFormatId("AP_00011001"),
-                                     Status::NEW});
+                                     ChangedIdStatus::NEW});
   ids.add(ChangedId<AudioTrackUid>{parseAudioTrackUidId("ATU_00000001"),
-                                   Status::CHANGED});
+                                   ChangedIdStatus::CHANGED});
   ids.add(ChangedId<AudioTrackFormat>{parseAudioTrackFormatId("AT_00011010_01"),
-                                      Status::CHANGED});
+                                      ChangedIdStatus::CHANGED});
   ids.add(ChangedId<AudioStreamFormat>{parseAudioStreamFormatId("AS_00011010"),
-                                       Status::EXPIRED});
-  ids.add(ChangedId<AudioObject>{parseAudioObjectId("AO_1001"), Status::NEW});
-  ids.add(ChangedId<AudioObject>{parseAudioObjectId("AO_1002"), Status::NEW});
-  ids.add(
-      ChangedId<AudioContent>{parseAudioContentId("ACO_0011"), Status::NEW});
+                                       ChangedIdStatus::EXPIRED});
+  ids.add(ChangedId<AudioObject>{parseAudioObjectId("AO_1001"),
+                                 ChangedIdStatus::NEW});
+  ids.add(ChangedId<AudioObject>{parseAudioObjectId("AO_1002"),
+                                 ChangedIdStatus::NEW});
+  ids.add(ChangedId<AudioContent>{parseAudioContentId("ACO_0011"),
+                                  ChangedIdStatus::NEW});
   ids.add(ChangedId<AudioProgramme>{parseAudioProgrammeId("APR_0011"),
-                                    Status::NEW});
+                                    ChangedIdStatus::NEW});
   format.set(std::move(ids));
   std::stringstream ss;
   writeXml(ss, Document::create(), FrameHeader{format});
@@ -374,55 +381,55 @@ TEST_CASE("Read all FrameFormat parameters") {
     REQUIRE(acfs.size() == 1);
     REQUIRE(acfs[0].get<AudioChannelFormatId>() ==
             parseAudioChannelFormatId("AC_00011001"));
-    REQUIRE(acfs[0].get<Status>() == Status::NEW);
+    REQUIRE(acfs[0].get<ChangedIdStatus>() == ChangedIdStatus::NEW);
   }
 
   SECTION("AudioPackFormat references") {
     auto apfs = changedIds.get<ChangedAudioPackFormatIds>();
     REQUIRE(apfs.size() == 1);
     REQUIRE(formatId(apfs[0].get<AudioPackFormatId>()) == "AP_00011001");
-    REQUIRE(apfs[0].get<Status>() == Status::NEW);
+    REQUIRE(apfs[0].get<ChangedIdStatus>() == ChangedIdStatus::NEW);
   }
 
   SECTION("AudioTrackUid references") {
     auto atus = changedIds.get<ChangedAudioTrackUidIds>();
     REQUIRE(atus.size() == 1);
     REQUIRE(formatId(atus[0].get<AudioTrackUidId>()) == "ATU_00000001");
-    REQUIRE(atus[0].get<Status>() == Status::CHANGED);
+    REQUIRE(atus[0].get<ChangedIdStatus>() == ChangedIdStatus::CHANGED);
   }
 
   SECTION("AudioTrackFormat references") {
     auto atfs = changedIds.get<ChangedAudioTrackFormatIds>();
     REQUIRE(atfs.size() == 1);
     REQUIRE(formatId(atfs[0].get<AudioTrackFormatId>()) == "AT_00011010_01");
-    REQUIRE(atfs[0].get<Status>() == Status::CHANGED);
+    REQUIRE(atfs[0].get<ChangedIdStatus>() == ChangedIdStatus::CHANGED);
   }
 
   SECTION("AudioStreamFormat references") {
     auto asfs = changedIds.get<ChangedAudioStreamFormatIds>();
     REQUIRE(asfs.size() == 1);
     REQUIRE(formatId(asfs[0].get<AudioStreamFormatId>()) == "AS_00011010");
-    REQUIRE(asfs[0].get<Status>() == Status::EXPIRED);
+    REQUIRE(asfs[0].get<ChangedIdStatus>() == ChangedIdStatus::EXPIRED);
   }
   SECTION("AudioObject references") {
     auto aos = changedIds.get<ChangedAudioObjectIds>();
     REQUIRE(aos.size() == 2);
     REQUIRE(formatId(aos[0].get<AudioObjectId>()) == "AO_1001");
     REQUIRE(formatId(aos[1].get<AudioObjectId>()) == "AO_1002");
-    REQUIRE(aos[0].get<Status>() == Status::NEW);
-    REQUIRE(aos[1].get<Status>() == Status::NEW);
+    REQUIRE(aos[0].get<ChangedIdStatus>() == ChangedIdStatus::NEW);
+    REQUIRE(aos[1].get<ChangedIdStatus>() == ChangedIdStatus::NEW);
   }
   SECTION("AudioContent references") {
     auto acos = changedIds.get<ChangedAudioContentIds>();
     REQUIRE(acos.size() == 1);
     REQUIRE(formatId(acos[0].get<AudioContentId>()) == "ACO_0011");
-    REQUIRE(acos[0].get<Status>() == Status::NEW);
+    REQUIRE(acos[0].get<ChangedIdStatus>() == ChangedIdStatus::NEW);
   }
   SECTION("AudioProgramme references") {
     auto aprs = changedIds.get<ChangedAudioProgrammeIds>();
     REQUIRE(aprs.size() == 1);
     REQUIRE(formatId(aprs[0].get<AudioProgrammeId>()) == "APR_0011");
-    REQUIRE(aprs[0].get<Status>() == Status::NEW);
+    REQUIRE(aprs[0].get<ChangedIdStatus>() == ChangedIdStatus::NEW);
   }
 }
 
@@ -430,13 +437,13 @@ TEST_CASE("Add ChangedIds using elements directly") {
   auto doc = Document::create();
   auto holder = addSimpleObjectTo(doc, "test");
   ChangedIds ids;
-  ids.add(holder.audioObject, Status::NEW);
+  ids.add(holder.audioObject, ChangedIdStatus::NEW);
   CHECK_THROWS(
       ids.add(AudioObject::create(AudioObjectName{"non_document_object"}),
-              Status::NEW));
+              ChangedIdStatus::NEW));
   auto objectRefs = ids.get<ChangedAudioObjectIds>();
   REQUIRE(objectRefs.size() == 1);
   REQUIRE(objectRefs.front().get<AudioObjectId>() ==
           holder.audioObject->get<AudioObjectId>());
-  REQUIRE(objectRefs.front().get<Status>() == Status::NEW);
+  REQUIRE(objectRefs.front().get<ChangedIdStatus>() == ChangedIdStatus::NEW);
 }

@@ -113,7 +113,7 @@ namespace adm {
       std::string toString(const FrameFormatId &id);
       std::string toString(const TransportId &id);
       std::string toString(FrameType frameType);
-      std::string toString(Status status);
+      std::string toString(ChangedIdStatus status);
       std::string toString(TimeReference timeReference);
 
       template <typename T, typename std::enable_if<

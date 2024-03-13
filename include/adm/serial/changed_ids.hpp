@@ -4,25 +4,25 @@
 #include <adm/elements.hpp>
 
 namespace adm {
-  enum class Status { NEW, CHANGED, EXTENDED, EXPIRED };
+  enum class ChangedIdStatus { NEW, CHANGED, EXTENDED, EXPIRED };
 
   /// Tag for status
-  struct StatusTag {};
+  struct ChangedIdStatusTag {};
   namespace detail {
     template <>
-    struct ParameterTraits<Status> {
-      using tag = StatusTag;
+    struct ParameterTraits<ChangedIdStatus> {
+      using tag = ChangedIdStatusTag;
     };
   }  // namespace detail
 
-  ADM_EXPORT std::string formatValue(Status status);
+  ADM_EXPORT std::string formatValue(ChangedIdStatus status);
 
   // useful for templated access
 
   namespace detail {
     template <typename T>
     using ChangedIdBase = HasParameters<RequiredParameter<typename T::id_type>,
-                                        RequiredParameter<Status>>;
+                                        RequiredParameter<ChangedIdStatus>>;
   }
 
   /**
@@ -33,7 +33,7 @@ namespace adm {
    * +---------------------------+--------------------------------------+---------------------------+
    * | ADM Parameter             | Parameter Type                       | Pattern Type              |
    * +===========================+======================================+===========================+
-   * | status                    | :type:`Status`                       | :class:`RequiredParameter`|
+   * | status                    | :type:`ChangedIdStatus`              | :class:`RequiredParameter`|
    * +---------------------------+--------------------------------------+---------------------------+
    * | ADM element ID type for T | :type:`T::id_type`                   | :class:`RequiredParameter`|
    * +---------------------------+--------------------------------------+---------------------------+
@@ -43,7 +43,7 @@ namespace adm {
   class ChangedId : private detail::ChangedIdBase<T>,
                     private detail::AddWrapperMethods<ChangedId<T>> {
    public:
-    ADM_EXPORT ChangedId(typename T::id_type id, Status status) {
+    ADM_EXPORT ChangedId(typename T::id_type id, ChangedIdStatus status) {
       if (id == typename T::id_type{}) {
         /* Not using shared pointers to elements as header is outside document.
         * This means we need to check IDs have been assigned
@@ -69,12 +69,14 @@ namespace adm {
                                       ChangedId<T> const& rhs) {
       using id_t = typename T::id_type;
       return lhs.template get<id_t>() == rhs.template get<id_t>() &&
-             lhs.template get<Status>() == rhs.template get<Status>();
+             lhs.template get<ChangedIdStatus>() ==
+                 rhs.template get<ChangedIdStatus>();
     }
   };
 
   template <typename T>
-  ChangedId<T> createChangedId(std::shared_ptr<T> element, Status status) {
+  ChangedId<T> createChangedId(std::shared_ptr<T> element,
+                               ChangedIdStatus status) {
     return ChangedId<T>{element->template get<typename T::id_type>(), status};
   }
 
@@ -154,7 +156,7 @@ namespace adm {
     explicit ChangedIds(Parameters&&... parameters);
 
     template <typename ElementT>
-    void add(std::shared_ptr<ElementT> const& element, Status status) {
+    void add(std::shared_ptr<ElementT> const& element, ChangedIdStatus status) {
       add(createChangedId(element, status));
     }
 
