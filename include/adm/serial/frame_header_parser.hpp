@@ -32,8 +32,8 @@ namespace adm {
 
     class FrameHeaderParser {
      public:
-      FrameHeaderParser(const std::string& filename,
-                        ParserOptions options = ParserOptions::none);
+      explicit FrameHeaderParser(const std::string& filename,
+                                 ParserOptions options = ParserOptions::none);
 
       explicit FrameHeaderParser(std::istream& stream,
                                  ParserOptions options = ParserOptions::none);
