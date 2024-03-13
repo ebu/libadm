@@ -11,13 +11,12 @@ namespace adm {
   namespace xml {
 
     namespace {
-      /// Check if a option/flag is set
       /**
-     * Checks if the option @a flag is set within @a options.
-     *
-     * This is equivalent to an bitwise AND followed by a conversion to bool,
-     * but should improve readability.
-     */
+       * Checks if the option @a flag is set within @a options.
+       *
+       * This is equivalent to an bitwise AND followed by a conversion to bool,
+       * but should improve readability.
+       */
       inline bool isSet(WriterOptions options, WriterOptions flag) {
         return static_cast<bool>(options & flag);
       }
