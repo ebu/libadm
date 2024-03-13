@@ -1,5 +1,4 @@
-#ifndef LIBADM_CHANGED_IDS_HPP
-#define LIBADM_CHANGED_IDS_HPP
+#pragma once
 #include <adm/detail/auto_base.hpp>
 #include <adm/elements.hpp>
 
@@ -181,5 +180,3 @@ namespace adm {
     detail::setNamedOptionHelper(this, std::forward<Parameters>(parameters)...);
   }
 }  // namespace adm
-
-#endif  //LIBADM_CHANGED_IDS_HPP
