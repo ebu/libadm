@@ -29,16 +29,7 @@ namespace adm {
   enum class FrameType { HEADER, FULL, DIVIDED, INTERMEDIATE, ALL };
   /// @brief string conversion function for FrameTypeValue
   ADM_EXPORT std::string formatValue(FrameType value);
-
-  /// @brief Tag for NamedType ::FrameType
-  struct FrameTypeTag {};
-
-  namespace detail {
-    template <>
-    struct ParameterTraits<FrameType> {
-      using tag = FrameTypeTag;
-    };
-  }  // namespace detail
+  ADD_TRAIT(FrameType, FrameTypeTag)
 
   /// @brief Tag for NamedType ::CountToFull
   struct CountToFullTag {};
