@@ -222,7 +222,6 @@ namespace adm {
         }
       }
 
-      //      ChangedIds parse
     }  // namespace
 
     FrameHeader FrameHeaderParser::parseFrameHeader(NodePtr node) {
