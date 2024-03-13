@@ -22,17 +22,6 @@ namespace adm {
                                          ParserOptions options)
         : file{std::move(file)}, options{std::move(options)} {}
 
-    /// Check if a option/flag is set
-    /**
-     * Checks if the option @a flag is set within @a options.
-     *
-     * This is equivalent to an bitwise AND followed by a conversion to bool,
-     * but should improve readability.
-     */
-    /*inline bool isSet(ParserOptions options, ParserOptions flag) {
-      return static_cast<bool>(options & flag);
-    }*/
-
     FrameHeader FrameHeaderParser::parse() {
       rapidxml::xml_document<> document;
       document.parse<0>(file.data());
