@@ -53,11 +53,7 @@ namespace adm {
    public:
     typedef FrameFormatIdTag tag;
 
-    using detail::FrameFormatIdBase::get;
-    using detail::FrameFormatIdBase::has;
-    using detail::FrameFormatIdBase::isDefault;
     using detail::FrameFormatIdBase::set;
-    using detail::FrameFormatIdBase::unset;
     using detail::AddWrapperMethods<FrameFormatId>::get;
     using detail::AddWrapperMethods<FrameFormatId>::has;
     using detail::AddWrapperMethods<FrameFormatId>::isDefault;
@@ -88,6 +84,12 @@ namespace adm {
     void print(std::ostream& os) const;
 
     friend class detail::AddWrapperMethods<FrameFormatId>;
+
+   private:
+    using detail::FrameFormatIdBase::get;
+    using detail::FrameFormatIdBase::has;
+    using detail::FrameFormatIdBase::isDefault;
+    using detail::FrameFormatIdBase::unset;
   };
 
   // ---- Free functions ---- //

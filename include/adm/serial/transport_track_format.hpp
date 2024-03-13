@@ -87,18 +87,20 @@ namespace adm {
     using detail::AddWrapperMethods<TransportTrackFormat>::unset;
     using detail::AddWrapperMethods<TransportTrackFormat>::isDefault;
     using detail::TransportTrackFormatBase::add;
-    using detail::TransportTrackFormatBase::get;
-    using detail::TransportTrackFormatBase::has;
-    using detail::TransportTrackFormatBase::isDefault;
     using detail::TransportTrackFormatBase::remove;
     using detail::TransportTrackFormatBase::set;
-    using detail::TransportTrackFormatBase::unset;
 
     /**
      * @brief Print overview to ostream
      */
     void print(std::ostream& os) const;
     friend class detail::AddWrapperMethods<TransportTrackFormat>;
+
+   private:
+    using detail::TransportTrackFormatBase::get;
+    using detail::TransportTrackFormatBase::has;
+    using detail::TransportTrackFormatBase::isDefault;
+    using detail::TransportTrackFormatBase::unset;
   };
 
   inline bool operator==(TransportTrackFormat const& lhs,

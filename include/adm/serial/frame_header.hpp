@@ -55,12 +55,8 @@ namespace adm {
     ADM_EXPORT void set(FrameFormat frameFormat);
 
     using detail::FrameHeaderBase::add;
-    using detail::FrameHeaderBase::get;
-    using detail::FrameHeaderBase::has;
-    using detail::FrameHeaderBase::isDefault;
     using detail::FrameHeaderBase::remove;
     using detail::FrameHeaderBase::set;
-    using detail::FrameHeaderBase::unset;
     using detail::AddWrapperMethods<FrameHeader>::has;
     using detail::AddWrapperMethods<FrameHeader>::get;
     using detail::AddWrapperMethods<FrameHeader>::isDefault;
@@ -73,6 +69,11 @@ namespace adm {
     }
     ADM_EXPORT inline bool has(FrameFormat::tag) const { return true; }
     ADM_EXPORT inline bool is_default(FrameFormat::tag) const { return false; }
+
+    using detail::FrameHeaderBase::get;
+    using detail::FrameHeaderBase::has;
+    using detail::FrameHeaderBase::isDefault;
+    using detail::FrameHeaderBase::unset;
 
     FrameFormat frameFormat_;
   };

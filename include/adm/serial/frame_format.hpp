@@ -153,11 +153,7 @@ namespace adm {
     template <typename Parameter>
     bool isDefault() const;
 
-    using detail::FrameFormatBase::get;
-    using detail::FrameFormatBase::has;
-    using detail::FrameFormatBase::isDefault;
     using detail::FrameFormatBase::set;
-    using detail::FrameFormatBase::unset;
 
     /// @brief FrameFormatId setter
     ADM_EXPORT void set(FrameFormatId id);
@@ -187,6 +183,11 @@ namespace adm {
     bool isDefault(Tag) const {
       return false;
     }
+
+    using detail::FrameFormatBase::get;
+    using detail::FrameFormatBase::has;
+    using detail::FrameFormatBase::isDefault;
+    using detail::FrameFormatBase::unset;
 
     FrameFormatId id_;
   };
