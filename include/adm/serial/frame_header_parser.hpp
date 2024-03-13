@@ -17,8 +17,6 @@
 #include "adm/serial/transport_id.hpp"
 #include "adm/serial/audio_track.hpp"
 
-#include <iostream>
-
 namespace adm {
   /**
    * @brief XML parsing implementation
