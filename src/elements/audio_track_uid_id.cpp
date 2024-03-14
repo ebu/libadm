@@ -61,24 +61,24 @@ namespace adm {
     template <>
     struct IdTraits<AudioTrackUidId> {
       static constexpr char const* name{"audioTrackUidID"};
-      static constexpr char const* prefix{"ATU_"};
       static constexpr char const* format{"ATU_xxxxxxxx"};
+      static constexpr std::size_t sections{1};
+    };
+    template <>
+    struct IdSection<AudioTrackUidId, 0> {
+      using type = AudioTrackUidIdValue;
+      static constexpr char identifier{'x'};
     };
   }  // namespace detail
 
   AudioTrackUidId parseAudioTrackUidId(const std::string& id) {
-    // ATU_xxxxxxxx
-    detail::IDParser parser{id};
-    parser.check_prefix<AudioTrackUidId>();
-    parser.check_size<AudioTrackUidId>();
-    auto value = parser.parse_hex<AudioTrackUidId>(4, 8);
-    return AudioTrackUidId(AudioTrackUidIdValue(value));
+    detail::IDParser<AudioTrackUidId> parser{id};
+    parser.validate();
+    return parser.parse();
   }
 
   std::string formatId(const AudioTrackUidId& id) {
-    std::string s("ATU_xxxxxxxx");
-    detail::formatHex(s, 4, 8, id.get<AudioTrackUidIdValue>().get());
-    return s;
+    return detail::formatId(id);
   }
 
 }  // namespace adm

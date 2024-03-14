@@ -53,24 +53,22 @@ namespace adm {
     template <>
     struct IdTraits<TransportId> {
       static constexpr char const* name{"transportID"};
-      static constexpr char const* prefix{"TP_"};
       static constexpr char const* format{"TP_xxxx"};
+      static constexpr std::size_t sections{1};
+    };
+    template <>
+    struct IdSection<TransportId, 0> {
+      using type = TransportIdValue;
+      static constexpr char identifier{'x'};
     };
   }  // namespace detail
 
   TransportId parseTransportId(const std::string& id) {
-    // TP_xxxx
-    detail::IDParser parser{id};
-    parser.check_size<TransportId>();
-    parser.check_prefix<TransportId>();
-    auto value = parser.parse_hex<TransportId>(3, 4);
-    return TransportId(TransportIdValue(value));
+    detail::IDParser<TransportId> parser{id};
+    parser.validate();
+    return parser.parse();
   }
 
-  std::string formatId(TransportId id) {
-    std::string s("TP_xxxx");
-    detail::formatHex(s, 3, 4, id.get<TransportIdValue>().get());
-    return s;
-  }
+  std::string formatId(TransportId id) { return detail::formatId(id); }
 
 }  // namespace adm

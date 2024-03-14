@@ -84,25 +84,28 @@ namespace adm {
       static constexpr char const* name{"audioPackFormatID"};
       static constexpr char const* prefix{"AP_"};
       static constexpr char const* format{"AP_yyyyxxxx"};
+      static constexpr std::size_t sections{2u};
+    };
+    template <>
+    struct IdSection<AudioPackFormatId, 0> {
+      using type = TypeDescriptor;
+      static constexpr char identifier{'y'};
+    };
+    template <>
+    struct IdSection<AudioPackFormatId, 1> {
+      using type = AudioPackFormatIdValue;
+      static constexpr char identifier{'x'};
     };
   }  // namespace detail
 
   AudioPackFormatId parseAudioPackFormatId(const std::string& id) {
-    // AP_yyyyxxxx
-    detail::IDParser parser{id};
-    parser.check_prefix<AudioPackFormatId>();
-    parser.check_size<AudioPackFormatId>();
-    auto type = parser.parse_hex<AudioPackFormatId>(3, 4);
-    auto value = parser.parse_hex<AudioPackFormatId>(7, 4);
-    return AudioPackFormatId(TypeDescriptor(type),
-                             AudioPackFormatIdValue(value));
+    detail::IDParser<AudioPackFormatId> parser{id};
+    parser.validate();
+    return parser.parse();
   }
 
   std::string formatId(const AudioPackFormatId& id) {
-    std::string s("AP_yyyyxxxx");
-    detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
-    detail::formatHex(s, 7, 4, id.get<AudioPackFormatIdValue>().get());
-    return s;
+    return detail::formatId(id);
   }
 
 }  // namespace adm

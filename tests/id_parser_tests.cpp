@@ -4,29 +4,37 @@
 using namespace adm::detail;
 
 namespace adm {
-  struct ExampleId {};
+  struct ExampleId {
+    unsigned int type;
+    unsigned int value;
+  };
   namespace detail {
     template <>
     struct IdTraits<ExampleId> {
       static constexpr char const* name{"ExampleId"};
-      static constexpr char const* prefix{"AI_"};
       static constexpr char const* format{"AI_xxxx_yyyy"};
-      static std::size_t const underscore_position{7};
+      static constexpr std::size_t sections = 2;
+    };
+    template <>
+    struct IdSection<ExampleId, 0> {
+      using type = unsigned int;
+      static constexpr char identifier{'x'};
+    };
+    template <>
+    struct IdSection<ExampleId, 1> {
+      using type = unsigned int;
+      static constexpr char identifier{'y'};
     };
   }  // namespace detail
 }  // namespace adm
 
 void parseExample(const std::string& id) {
-  // AI_xxxx_yyyy
-  IDParser parser{id};
-  parser.check_size<adm::ExampleId>();
-  parser.check_prefix<adm::ExampleId>();
-  auto type = parser.parse_hex<adm::ExampleId>(3, 4);
-  parser.check_underscore<adm::ExampleId>();
-  auto value = parser.parse_hex<adm::ExampleId>(8, 4);
+  IDParser<adm::ExampleId> parser{id};
+  parser.validate();
+  auto exampleId = parser.parse();
 
-  REQUIRE(type == 0x12ab);
-  REQUIRE(value == 0x89ef);
+  REQUIRE(exampleId.type == 0x12ab);
+  REQUIRE(exampleId.value == 0x89ef);
 }
 
 TEST_CASE("id_parse") {

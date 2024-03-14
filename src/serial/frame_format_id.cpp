@@ -26,60 +26,76 @@ namespace adm {
       return id.size() == 11 || id.size() == 14;
     }
 
-    void validate_frame_format_id(detail::IDParser const& parser,
-                                  const std::string& id) {
-      // According to BS.2125-1 A 1.5.1 / Table 19
-      // FF_xxxxxxxx for non-divided frames
-      // FF_xxxxxxxx_zz for dividec frames
-      if (!is_valid_frame_format_id_size(id)) {
-        throw std::runtime_error(
-            std::string("frameFormatID \"").append(id) +
-            "\" is not the correct length, it should be 11 chars long in the "
-            "format "
-            "FF_xxxxxxxx or 14 chars long in the format FF_xxxxxxxx_zz");
-      }
-      if (id.size() == 14 && id.at(11) != '_') {
-        throw std::runtime_error(
-            std::string("frameFormatID \"").append(id) +
-            "\""
-            " is 14 characters long so should be in the format FF_xxxxxxxx_zz, "
-            "but character 11 is not \'_\'");
-      }
-      parser.check_prefix<FrameFormatId>();
-    }
+    struct ShortFrameFormatId {};
+    struct LongFrameFormatId {};
   }  // namespace
 
   namespace detail {
     template <>
-    struct IdTraits<FrameFormatId> {
-      static constexpr char const* name{"frameFormatID"};
-      static constexpr char const* prefix{"FF_"};
+    struct IdTypeFor<ShortFrameFormatId> {
+      using type = FrameFormatId;
+    };
+    template <>
+    struct IdTypeFor<LongFrameFormatId> {
+      using type = FrameFormatId;
+    };
+    template <>
+    struct IdTraits<ShortFrameFormatId> {
+      static constexpr char const* name{"frameFormatID (short format)"};
+      static constexpr char const* format{"FF_xxxxxxxx"};
+      static constexpr std::size_t sections{1u};
+    };
+    template <>
+    struct IdSection<ShortFrameFormatId, 0> {
+      using type = FrameIndex;
+      static constexpr char identifier{'x'};
+    };
+    template <>
+    struct IdTraits<LongFrameFormatId> {
+      static constexpr char const* name{"frameFormatID (long format)"};
+      static constexpr char const* format{"FF_xxxxxxxx_zz"};
+      static constexpr std::size_t sections{2u};
+    };
+    template <>
+    struct IdSection<LongFrameFormatId, 0> {
+      using type = FrameIndex;
+      static constexpr char identifier{'x'};
+    };
+    template <>
+    struct IdSection<LongFrameFormatId, 1> {
+      using type = ChunkIndex;
+      static constexpr char identifier{'z'};
     };
   }  // namespace detail
 
   FrameFormatId parseFrameFormatId(const std::string& id) {
-    detail::IDParser parser{id};
-    validate_frame_format_id(parser, id);
-    FrameIndex index{parser.parse_hex<FrameFormatId>(3, 8)};
+    // Slightly less helpful error message as we do this before prefix check,
+    // but otherwise we don't know which format to validate against
+    if (!is_valid_frame_format_id_size(id)) {
+      throw std::runtime_error(
+          std::string("frameFormatID \"").append(id) +
+          "\" is not the correct length, it should be 11 chars long in the "
+          "format "
+          "FF_xxxxxxxx or 14 chars long in the format FF_xxxxxxxx_zz");
+    }
     if (id.size() == 14) {
-      return FrameFormatId(index,
-                           ChunkIndex{parser.parse_hex<FrameFormatId>(12, 2)});
+      detail::IDParser<LongFrameFormatId> parser{id};
+      parser.validate();
+      return parser.parse();
     } else {
-      return FrameFormatId(index);
+      detail::IDParser<ShortFrameFormatId> parser{id};
+      parser.validate();
+      return parser.parse();
     }
   }
 
   std::string formatId(FrameFormatId id) {
     std::string s{};
     if (id.has<ChunkIndex>()) {
-      s = "FF_zzzzzzzz_zz";
-      detail::formatHex(s, 3, 8, id.get<FrameIndex>().get());
-      detail::formatHex(s, 12, 2, id.get<ChunkIndex>().get());
+      return detail::formatId<LongFrameFormatId>(id);
     } else {
-      s = "FF_zzzzzzzz";
-      detail::formatHex(s, 3, 8, id.get<FrameIndex>().get());
+      return detail::formatId<ShortFrameFormatId>(id);
     }
-    return s;
   }
 
 }  // namespace adm
