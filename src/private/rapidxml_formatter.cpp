@@ -1,10 +1,31 @@
 #include "adm/private/rapidxml_formatter.hpp"
 #include "adm/private/rapidxml_wrapper.hpp"
+#include "adm/serial/frame_format_id.hpp"
+#include <adm/serial/changed_ids.hpp>
+#include "adm/private/changed_id_traits.hpp"
 
 namespace adm {
   namespace xml {
 
     namespace detail {
+      template <typename F>
+      auto wrapWithTimeRef(F fn, TimeReference timeReference) {
+        return [fn, timeReference](XmlNode &node, auto const &element) {
+          fn(node, element, timeReference);
+        };
+      }
+
+      template <typename T>
+      void addBlockTimeParameters(T const &block, XmlNode &node,
+                                  TimeReference timeReference) {
+        if (timeReference == TimeReference::TOTAL) {
+          node.addOptionalAttribute<Rtime>(&block, "rtime");
+          node.addOptionalAttribute<Duration>(&block, "duration");
+        } else {
+          node.addOptionalAttribute<Rtime>(&block, "lstart");
+          node.addOptionalAttribute<Duration>(&block, "lduration");
+        }
+      }
 
       std::string toString(const std::string &string) { return string; }
       std::string toString(const Time &time) { return formatTimecode(time); }
@@ -25,6 +46,17 @@ namespace adm {
         return formatId(id);
       }
       std::string toString(const AudioTrackUidId &id) { return formatId(id); }
+      std::string toString(const FrameFormatId &id) { return formatId(id); }
+      std::string toString(const TransportId &id) { return formatId(id); }
+      std::string toString(FrameType frameType) {
+        return formatValue(frameType);
+      }
+      std::string toString(ChangedIdStatus status) {
+        return formatValue(status);
+      }
+      std::string toString(TimeReference timeReference) {
+        return formatValue(timeReference);
+      }
 
       struct MultiElementAttributeFormatter {
         MultiElementAttributeFormatter(const std::string &a,
@@ -279,8 +311,8 @@ namespace adm {
     }
 
     void formatAudioChannelFormat(
-        XmlNode &node,
-        std::shared_ptr<const AudioChannelFormat> channelFormat) {
+        XmlNode &node, std::shared_ptr<const AudioChannelFormat> channelFormat,
+        TimeReference timeReference) {
       // clang-format off
       node.addAttribute<AudioChannelFormatId>(channelFormat, "audioChannelFormatID");
       node.addOptionalAttribute<AudioChannelFormatName>(channelFormat, "audioChannelFormatName");
@@ -290,25 +322,26 @@ namespace adm {
 
       auto channelType = channelFormat->get<TypeDescriptor>();
       if (channelType == TypeDefinition::DIRECT_SPEAKERS) {
-        node.addElements<AudioBlockFormatDirectSpeakers>(channelFormat, "audioBlockFormat", &formatBlockFormatDirectSpeakers);
+        node.addElements<AudioBlockFormatDirectSpeakers>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatDirectSpeakers, timeReference));
       } else if (channelType == TypeDefinition::MATRIX) {
-        node.addElements<AudioBlockFormatMatrix>(channelFormat, "audioBlockFormat", &formatBlockFormatMatrix);
+        node.addElements<AudioBlockFormatMatrix>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatMatrix, timeReference));
       } else if (channelType == TypeDefinition::OBJECTS) {
-        node.addElements<AudioBlockFormatObjects>(channelFormat, "audioBlockFormat", &formatBlockFormatObjects);
+        node.addElements<AudioBlockFormatObjects>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatObjects, timeReference));
       } else if (channelType == TypeDefinition::HOA) {
-        node.addElements<AudioBlockFormatHoa>(channelFormat, "audioBlockFormat", &formatBlockFormatHoa);
+        node.addElements<AudioBlockFormatHoa>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatHoa, timeReference));
       } else if (channelType == TypeDefinition::BINAURAL) {
-        node.addElements<AudioBlockFormatBinaural>(channelFormat, "audioBlockFormat", &formatBlockFormatBinaural);
+        node.addElements<AudioBlockFormatBinaural>(channelFormat, "audioBlockFormat", detail::wrapWithTimeRef(formatBlockFormatBinaural, timeReference));
       }
       // clang-format on
     }
 
     void formatBlockFormatDirectSpeakers(
-        XmlNode &node, const AudioBlockFormatDirectSpeakers &audioBlock) {
+        XmlNode &node, const AudioBlockFormatDirectSpeakers &audioBlock,
+        TimeReference timeReference) {
       // clang-format off
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
-      node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
-      node.addOptionalAttribute<Duration>(&audioBlock, "duration");
+      detail::addBlockTimeParameters(audioBlock, node, timeReference);
+      node.addOptionalAttribute<InitializeBlock>(&audioBlock, "initializeBlock");
       node.addMultiElement<SpeakerLabels>(&audioBlock, "speakerLabel", &formatSpeakerLabels);
       if(audioBlock.has<SphericalSpeakerPosition>()) {
         node.addMultiElement<SphericalSpeakerPosition>(&audioBlock, "position", &formatSphericalSpeakerPosition);
@@ -478,21 +511,23 @@ namespace adm {
     }
 
     void formatBlockFormatMatrix(XmlNode &node,
-                                 const AudioBlockFormatMatrix &audioBlock) {
+                                 const AudioBlockFormatMatrix &audioBlock,
+                                 TimeReference timeReference) {
       // clang-format off
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
-      node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
-      node.addOptionalAttribute<Duration>(&audioBlock, "duration");
+      detail::addBlockTimeParameters(audioBlock, node, timeReference);
+      node.addOptionalAttribute<InitializeBlock>(&audioBlock, "initializeBlock");
       // TODO: add missing matrix attributes and elements
       // clang-format on
     }
 
     void formatBlockFormatObjects(XmlNode &node,
-                                  const AudioBlockFormatObjects &audioBlock) {
+                                  const AudioBlockFormatObjects &audioBlock,
+                                  TimeReference timeReference) {
       // clang-format off
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
-      node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
-      node.addOptionalAttribute<Duration>(&audioBlock, "duration");
+      detail::addBlockTimeParameters(audioBlock, node, timeReference);
+      node.addOptionalAttribute<InitializeBlock>(&audioBlock, "initializeBlock");
       node.addMultiElement<Position>(&audioBlock, "position", &formatPosition);
       node.addOptionalElement<Width>(&audioBlock, "width");
       node.addOptionalElement<Height>(&audioBlock, "height");
@@ -598,11 +633,12 @@ namespace adm {
     }
 
     void formatBlockFormatHoa(XmlNode &node,
-                              const AudioBlockFormatHoa &audioBlock) {
+                              const AudioBlockFormatHoa &audioBlock,
+                              TimeReference timeReference) {
       // clang-format off
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
-      node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
-      node.addOptionalAttribute<Duration>(&audioBlock, "duration");
+      detail::addBlockTimeParameters(audioBlock, node, timeReference);
+      node.addOptionalAttribute<InitializeBlock>(&audioBlock, "initializeBlock");
       node.addElement<Order>(&audioBlock, "order");
       node.addElement<Degree>(&audioBlock, "degree");
       node.addOptionalElement<NfcRefDist>(&audioBlock, "nfcRefDist");
@@ -617,11 +653,12 @@ namespace adm {
     }
 
     void formatBlockFormatBinaural(XmlNode &node,
-                                   const AudioBlockFormatBinaural &audioBlock) {
+                                   const AudioBlockFormatBinaural &audioBlock,
+                                   TimeReference timeReference) {
       // clang-format off
       node.addAttribute<AudioBlockFormatId>(&audioBlock, "audioBlockFormatID");
-      node.addOptionalAttribute<Rtime>(&audioBlock, "rtime");
-      node.addOptionalAttribute<Duration>(&audioBlock, "duration");
+      detail::addBlockTimeParameters(audioBlock, node, timeReference);
+      node.addOptionalAttribute<InitializeBlock>(&audioBlock, "initializeBlock");
       // clang-format on
       node.addOptionalElement<Gain>(&audioBlock, "gain", &formatGain);
       node.addOptionalElement<Importance>(&audioBlock, "importance");
@@ -672,5 +709,85 @@ namespace adm {
           trackUid, "audioPackFormatIDRef");
     }
 
+    namespace {
+      template <typename T>
+      void formatIdRef(XmlNode &parent, const ChangedIds &ids) {
+        for (auto const &ref : ids.get<T>()) {
+          auto refNode =
+              parent.addNode(detail::ChangedIdTraits<T>::elementName);
+          refNode.setValue(
+              formatId(ref.template get<
+                       typename detail::ChangedIdTraits<T>::id_type>()));
+          refNode.template addAttribute<ChangedIdStatus>(&ref, "status");
+        }
+      }
+    }  // namespace
+
+    void formatChangedIds(XmlNode &node, const ChangedIds &changedIds) {
+      formatIdRef<ChangedAudioChannelFormatIds>(node, changedIds);
+      formatIdRef<ChangedAudioPackFormatIds>(node, changedIds);
+      formatIdRef<ChangedAudioTrackUidIds>(node, changedIds);
+      formatIdRef<ChangedAudioTrackFormatIds>(node, changedIds);
+      formatIdRef<ChangedAudioStreamFormatIds>(node, changedIds);
+      formatIdRef<ChangedAudioObjectIds>(node, changedIds);
+      formatIdRef<ChangedAudioContentIds>(node, changedIds);
+      formatIdRef<ChangedAudioProgrammeIds>(node, changedIds);
+    }
+
+    void formatFrameFormat(XmlNode &node, const FrameFormat &format) {
+      node.addAttribute<FrameFormatId>(&format, "frameFormatID");
+      node.addAttribute<Start>(&format, "start");
+      node.addAttribute<Duration>(&format, "duration");
+      node.addAttribute<FrameType>(&format, "type");
+      node.addOptionalAttribute<TimeReference>(&format, "timeReference");
+      node.addOptionalAttribute<FlowId>(&format, "flowID");
+      node.addOptionalAttribute<CountToFull>(&format, "countToFull");
+      node.addOptionalAttribute<NumMetadataChunks>(&format,
+                                                   "numMetadataChunks");
+      node.addOptionalAttribute<CountToSameChunk>(&format, "countToSameChunk");
+      node.addOptionalElement<ChangedIds>(&format, "changedIDs",
+                                          &formatChangedIds);
+    }
+
+    void formatTransportTrackFormat(XmlNode &node,
+                                    const TransportTrackFormat &format) {
+      node.addAttribute<TransportId>(&format, "transportID");
+      node.addOptionalAttribute<TransportName>(&format, "transportName");
+      node.addOptionalAttribute<NumTracks>(&format, "numTracks");
+      node.addOptionalAttribute<NumIds>(&format, "numIDs");
+      for (const auto &audioTrack : format.get<AudioTracks>()) {
+        auto trackNode = node.addNode("audioTrack");
+        trackNode.addAttribute<TrackId>(&audioTrack, "trackID");
+        trackNode.addOptionalAttribute<FormatDescriptor>(
+            &audioTrack, "formatLabel", &formatFormatLabel);
+        trackNode.addOptionalAttribute<FormatDescriptor>(
+            &audioTrack, "formatDefinition", &formatFormatDefinition);
+        for (const auto &uidId : audioTrack.get<AudioTrackUidRefs>()) {
+          trackNode.addElement("audioTrackUIDRef", formatId(uidId));
+        }
+      }
+    }
+
+    void formatFrameHeader(XmlNode &node, const FrameHeader &header) {
+      node.addElement<FrameFormat>(header.get<FrameFormat>(), "frameFormat",
+                                   &formatFrameFormat);
+      node.addOptionalElement<ProfileList>(&header, "profileList",
+                                           &formatProfileList);
+      for (const auto &transportTrack : header.get<TransportTrackFormats>()) {
+        node.addElement(transportTrack, "transportTrackFormat",
+                        &formatTransportTrackFormat);
+      }
+    }
+
+    void formatProfileList(XmlNode &node, const ProfileList &profileList) {
+      node.addVectorElements<Profiles>(&profileList, "profile", &formatProfile);
+    }
+
+    void formatProfile(XmlNode &node, const Profile &profile) {
+      node.setValue(profile.get<ProfileValue>());
+      node.addAttribute<ProfileName>(&profile, "profileName");
+      node.addAttribute<ProfileVersion>(&profile, "profileVersion");
+      node.addAttribute<ProfileLevel>(&profile, "profileLevel");
+    }
   }  // namespace xml
 }  // namespace adm

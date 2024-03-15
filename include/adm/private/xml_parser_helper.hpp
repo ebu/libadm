@@ -64,7 +64,7 @@ namespace adm {
        * @returns NodePtr to first element or a nullptr if no element could
        * not be found.
        */
-      NodePtr findElement(NodePtr node, const char* name) {
+      inline NodePtr findElement(NodePtr node, const char* name) {
         return node->first_node(name);
       }
 
@@ -74,7 +74,7 @@ namespace adm {
        * @returns a vector of NodePtr or an empty vector if no element could
        * not be found.
        */
-      std::vector<NodePtr> findElements(NodePtr node, const char* name) {
+      inline std::vector<NodePtr> findElements(NodePtr node, const char* name) {
         std::vector<NodePtr> elements;
 
         size_t nameLen = std::strlen(name);
@@ -313,6 +313,11 @@ namespace adm {
       }
     }
 
+    template <typename NT>
+    NT parseValue(NodePtr node) {
+      return parseValue<NT>(node, detail::parseDefault<NT>);
+    }
+
     template <typename NT, typename Target, typename Callable>
     void setValue(NodePtr node, Target& target, Callable parser) {
       detail::invokeSet(target, parseValue<NT>(node, parser));
@@ -337,7 +342,7 @@ namespace adm {
       }
     }
 
-    FormatDescriptor checkFormat(
+    inline FormatDescriptor checkFormat(
         boost::optional<FormatDescriptor> formatLabel,
         boost::optional<FormatDescriptor> formatDefinition) {
       if (formatLabel != boost::none && formatDefinition != boost::none) {

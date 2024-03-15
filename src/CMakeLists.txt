@@ -48,6 +48,7 @@ add_library(adm
   elements/position.cpp
   elements/position_offset.cpp
   elements/position_interaction_range.cpp
+  elements/profile_list.cpp
   elements/screen_edge_lock.cpp
   elements/speaker_position.cpp
   elements/type_descriptor.cpp
@@ -62,10 +63,18 @@ add_library(adm
   private/rapidxml_wrapper.cpp
   private/rapidxml_formatter.cpp
   private/xml_writer.cpp
-  private/xml_parser.cpp
+  private/document_parser.cpp
   detail/id_assigner.cpp
   parse.cpp
   write.cpp
+  serial/audio_track.cpp
+  serial/changed_ids.cpp
+  serial/frame_format.cpp
+  serial/frame_format_id.cpp
+  serial/frame_header.cpp
+  serial/transport_track_format.cpp
+  serial/transport_id.cpp
+  serial/frame_header_parser.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/resources.hpp
   ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp
 )
@@ -96,6 +105,9 @@ if(ADM_HIDE_INTERNAL_SYMBOLS AND BUILD_SHARED_LIBS)
     C_VISIBILITY_PRESET hidden
     VISIBILITY_INLINES_HIDDEN TRUE)
 endif()
+
+# Use /bigobj when compiling on windows
+target_compile_options(adm PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/bigobj>)
 
 ############################################################
 # enable C++14 support

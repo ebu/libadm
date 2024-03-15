@@ -54,19 +54,28 @@ namespace adm {
   // ---- Common ---- //
   void AudioContentId::print(std::ostream& os) const { os << formatId(*this); }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioContentId> {
+      static constexpr char const* name{"audioContentID"};
+      static constexpr char const* format{"ACO_xxxx"};
+      static constexpr std::size_t sections{1};
+    };
+    template <>
+    struct IdSection<AudioContentId, 0> {
+      using type = AudioContentIdValue;
+      static constexpr char identifier{'x'};
+    };
+  }  // namespace detail
+
   AudioContentId parseAudioContentId(const std::string& id) {
-    // ACO_xxxx
-    detail::IDParser parser("AudioContentId", id);
-    parser.check_size(8);
-    parser.check_prefix("ACO_", 4);
-    auto value = parser.parse_hex(4, 4);
-    return AudioContentId(AudioContentIdValue(value));
+    detail::IDParser<AudioContentId> parser{id};
+    parser.validate();
+    return parser.parse();
   }
 
   std::string formatId(const AudioContentId& id) {
-    std::string s("ACO_xxxx");
-    detail::formatHex(s, 4, 4, id.get<AudioContentIdValue>().get());
-    return s;
+    return detail::formatId(id);
   }
 
 }  // namespace adm

@@ -162,7 +162,7 @@ namespace adm_test {
   }
 
   template <typename ParamT, typename ElementT, typename VectorT>
-  void check_vector_param(std::shared_ptr<ElementT> element,
+  void check_vector_param(ElementT element,
                           detail::CanBeSetTo<VectorT> modifiedVal) {
     detail::check_vector_impl<ParamT>(detail::get_from_shared(element),
                                       modifiedVal.get());

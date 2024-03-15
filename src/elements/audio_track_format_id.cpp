@@ -102,25 +102,38 @@ namespace adm {
     os << formatId(*this);
   }
 
+  namespace detail {
+    template <>
+    struct IdTraits<AudioTrackFormatId> {
+      static constexpr char const* const name{"audioTrackFormatID"};
+      static constexpr char const* const format{"AT_yyyyxxxx_zz"};
+      static constexpr std::size_t sections{3};
+    };
+    template <>
+    struct IdSection<AudioTrackFormatId, 0> {
+      using type = TypeDescriptor;
+      static constexpr char identifier{'y'};
+    };
+    template <>
+    struct IdSection<AudioTrackFormatId, 1> {
+      using type = AudioTrackFormatIdValue;
+      static constexpr char identifier{'x'};
+    };
+    template <>
+    struct IdSection<AudioTrackFormatId, 2> {
+      using type = AudioTrackFormatIdCounter;
+      static constexpr char identifier{'z'};
+    };
+  }  // namespace detail
+
   AudioTrackFormatId parseAudioTrackFormatId(const std::string& id) {
-    // AT_yyyyxxxx_zz
-    detail::IDParser parser("AudioTrackFormatId", id);
-    parser.check_size(14);
-    parser.check_prefix("AT_", 3);
-    auto type = parser.parse_hex(3, 4);
-    auto value = parser.parse_hex(7, 4);
-    parser.check_underscore(11);
-    auto counter = parser.parse_hex(12, 2);
-    return AudioTrackFormatId(TypeDescriptor(type), AudioTrackFormatIdValue(value),
-        AudioTrackFormatIdCounter(counter));
+    detail::IDParser<AudioTrackFormatId> parser{id};
+    parser.validate();
+    return parser.parse();
   }
 
   std::string formatId(const AudioTrackFormatId& id) {
-    std::string s("AT_yyyyxxxx_zz");
-    detail::formatHex(s, 3, 4, id.get<TypeDescriptor>().get());
-    detail::formatHex(s, 7, 4, id.get<AudioTrackFormatIdValue>().get());
-    detail::formatHex(s, 12, 2, id.get<AudioTrackFormatIdCounter>().get());
-    return s;
+    return detail::formatId(id);
   }
 
 }  // namespace adm

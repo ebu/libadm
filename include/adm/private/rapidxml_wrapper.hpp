@@ -25,6 +25,7 @@ namespace adm {
 
       XmlNode addDeclaration();
       XmlNode addItuStructure();
+      XmlNode addCoreMetadataAudioFormatExtended(XmlNode &parent) const;
       XmlNode addEbuStructure();
 
       void setDiscardDefaults(bool value) { discardDefaultValues_ = value; }

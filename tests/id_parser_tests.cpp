@@ -3,17 +3,38 @@
 
 using namespace adm::detail;
 
-void parseExample(const std::string &id) {
-  // AI_xxxx_yyyy
-  IDParser parser("Example", id);
-  parser.check_size(12);
-  parser.check_prefix("AI_", 3);
-  auto type = parser.parse_hex(3, 4);
-  parser.check_underscore(7);
-  auto value = parser.parse_hex(8, 4);
+namespace adm {
+  struct ExampleId {
+    unsigned int type;
+    unsigned int value;
+  };
+  namespace detail {
+    template <>
+    struct IdTraits<ExampleId> {
+      static constexpr char const* name{"ExampleId"};
+      static constexpr char const* format{"AI_xxxx_yyyy"};
+      static constexpr std::size_t sections = 2;
+    };
+    template <>
+    struct IdSection<ExampleId, 0> {
+      using type = unsigned int;
+      static constexpr char identifier{'x'};
+    };
+    template <>
+    struct IdSection<ExampleId, 1> {
+      using type = unsigned int;
+      static constexpr char identifier{'y'};
+    };
+  }  // namespace detail
+}  // namespace adm
 
-  REQUIRE(type == 0x12ab);
-  REQUIRE(value == 0x89ef);
+void parseExample(const std::string& id) {
+  IDParser<adm::ExampleId> parser{id};
+  parser.validate();
+  auto exampleId = parser.parse();
+
+  REQUIRE(exampleId.type == 0x12ab);
+  REQUIRE(exampleId.value == 0x89ef);
 }
 
 TEST_CASE("id_parse") {
