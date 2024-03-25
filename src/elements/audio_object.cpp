@@ -355,7 +355,4 @@ namespace adm {
     audioObjectCopy->disconnectReferences();
     return audioObjectCopy;
   }
-
-  AudioObject::AudioObject(AudioObjectName name) : name_(std::move(name)) {}
-
 }  // namespace adm

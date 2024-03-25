@@ -278,7 +278,8 @@ namespace adm {
    private:
     friend class AudioObjectAttorney;
 
-    ADM_EXPORT explicit AudioObject(AudioObjectName name);
+    template <typename... Params>
+    ADM_EXPORT explicit AudioObject(Params... parameters);
     ADM_EXPORT AudioObject(const AudioObject &) = default;
     ADM_EXPORT AudioObject(AudioObject &&) = default;
 
@@ -373,14 +374,17 @@ namespace adm {
   };
 
   // ---- Implementation ---- //
+  template <typename... Params>
+  AudioObject::AudioObject(Params... parameters)
+      : detail::AudioObjectBase(parameters...) {
+    init(*this, parameters...);
+  }
 
   template <typename... Parameters>
   std::shared_ptr<AudioObject> AudioObject::create(
       AudioObjectName name, Parameters... optionalNamedArgs) {
-    std::shared_ptr<AudioObject> object(new AudioObject(std::move(name)));
-    detail::setNamedOptionHelper(object, std::move(optionalNamedArgs)...);
-
-    return object;
+    return std::shared_ptr<AudioObject>(
+        new AudioObject{std::move(name), std::move(optionalNamedArgs)...});
   }
 
   template <typename Parameter>
