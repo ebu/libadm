@@ -48,6 +48,8 @@ namespace adm {
       using Tag = typename detail::ParameterTraits<T>::tag;
 
      public:
+      RequiredParameter() = default;
+      explicit RequiredParameter(T value) : value_{std::move(value)} {}
       using ParameterType = T;
       static constexpr Flags flags = Flags::HAS_GET_SET_HAS;
 
@@ -67,6 +69,8 @@ namespace adm {
       using Tag = typename detail::ParameterTraits<T>::tag;
 
      public:
+      OptionalParameter() = default;
+      explicit OptionalParameter(T value) : value_{std::move(value)} {}
       using ParameterType = T;
       static constexpr Flags flags =
           Flags::HAS_GET_SET_HAS | Flags::HAS_ISDEFAULT_UNSET;
@@ -89,6 +93,8 @@ namespace adm {
       using Tag = typename detail::ParameterTraits<T>::tag;
 
      public:
+      DefaultParameter() = default;
+      explicit DefaultParameter(T value) : value_{std::move(value)} {}
       using ParameterType = T;
       static constexpr Flags flags =
           Flags::HAS_GET_SET_HAS | Flags::HAS_ISDEFAULT_UNSET;
@@ -121,6 +127,8 @@ namespace adm {
       using Value = typename T::value_type;
 
      public:
+      VectorParameter() = default;
+      explicit VectorParameter(T value) : value_{std::move(value)} {}
       using ParameterType = T;
       static constexpr Flags flags = Flags::HAS_GET_SET_HAS |
                                      Flags::HAS_ISDEFAULT_UNSET |
