@@ -1,3 +1,4 @@
+#include "adm/detail/holds_alternative.hpp"
 #include "adm/elements/position.hpp"
 
 namespace adm {
@@ -123,19 +124,11 @@ namespace adm {
   // ---- FREE FUNCTIONS ---- //
 
   bool isSpherical(const Position& position) {
-    if (position.which() == 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return detail::holds_alternative<SphericalPosition>(position);
   }
 
   bool isCartesian(const Position& position) {
-    if (position.which() == 1) {
-      return true;
-    } else {
-      return false;
-    }
+    return detail::holds_alternative<CartesianPosition>(position);
   }
 
 }  // namespace adm
