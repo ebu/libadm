@@ -26,6 +26,21 @@ namespace adm {
   using Vectors = std::vector<Vector>;
   ADD_TRAIT(Vectors, VectorsTag);
 
+  struct VariantATag {};
+  struct VariantA {
+    using tag = VariantATag;
+    int x;
+  };
+  struct VariantBTag {};
+  struct VariantB {
+    using tag = VariantBTag;
+    int x;
+  };
+
+  struct VariantTag {};
+  using Variant = boost::variant<VariantA, VariantB>;
+  ADD_TRAIT(Variant, VariantTag);
+
   namespace detail {
     template <>
     Default getDefault<Default>() {
@@ -36,10 +51,14 @@ namespace adm {
     template class OptionalParameter<Optional>;
     template class DefaultParameter<Default>;
     template class VectorParameter<Vectors>;
+    template class OptionalParameter<Variant>;
+    template class VariantTypeParameter<OptionalParameter<Variant>, VariantA>;
+    template class VariantTypeParameter<OptionalParameter<Variant>, VariantB>;
 
     using Base =
         HasParameters<RequiredParameter<Required>, OptionalParameter<Optional>,
-                      DefaultParameter<Default>, VectorParameter<Vectors>>;
+                      DefaultParameter<Default>, VectorParameter<Vectors>,
+                      VariantParameter<OptionalParameter<Variant>>>;
   };  // namespace detail
 
   // standard wrapper around Base providing templated methods. not really
@@ -165,4 +184,30 @@ TEST_CASE("vector") {
   REQUIRE(!e.has<Vectors>());
   REQUIRE(e.get<Vectors>() == Vectors{});
   REQUIRE(!e.isDefault<Vectors>());
+}
+
+TEST_CASE("variant") {
+  TestElement e;
+  REQUIRE(!e.has<Variant>());
+  REQUIRE(!e.isDefault<Variant>());
+
+  // set from the variant type
+  e.set(Variant{VariantA{1}});
+  REQUIRE(boost::get<VariantA>(e.get<Variant>()).x == 1);
+  REQUIRE(e.has<VariantA>());
+  REQUIRE(!e.has<VariantB>());
+  REQUIRE(e.get<VariantA>().x == 1);
+
+  e.set(Variant{VariantB{2}});
+  REQUIRE(boost::get<VariantB>(e.get<Variant>()).x == 2);
+  REQUIRE(!e.has<VariantA>());
+  REQUIRE(e.has<VariantB>());
+  REQUIRE(e.get<VariantB>().x == 2);
+
+  // set from the contained types
+  e.set(VariantA{3});
+  REQUIRE(e.get<VariantA>().x == 3);
+
+  e.set(VariantB{4});
+  REQUIRE(e.get<VariantB>().x == 4);
 }
