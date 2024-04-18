@@ -174,4 +174,18 @@ namespace adm {
   using CartesianCoordinateValue =
       detail::NamedType<std::string, CartesianCoordinateValueTag,
                         detail::CartesianCoordinateValueValidator>;
+
+  namespace detail {
+    template <>
+    inline SphericalCoordinateValue
+    getNamedTypeDefault<SphericalCoordinateValue>() {
+      return SphericalCoordinateValue{"azimuth"};
+    }
+
+    template <>
+    inline CartesianCoordinateValue
+    getNamedTypeDefault<CartesianCoordinateValue>() {
+      return CartesianCoordinateValue{"X"};
+    }
+  }  // namespace detail
 }  // namespace adm

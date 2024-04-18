@@ -35,6 +35,24 @@ namespace adm {
       detail::NamedType<std::string, GainInteractionBoundValueTag,
                         detail::BoundValueValidator>;
 
+  namespace detail {
+    template <>
+    inline GainInteractionMin getNamedTypeDefault<GainInteractionMin>() {
+      return GainInteractionMin{Gain::fromLinear(1.0)};
+    }
+
+    template <>
+    inline GainInteractionMax getNamedTypeDefault<GainInteractionMax>() {
+      return GainInteractionMax{Gain::fromLinear(1.0)};
+    }
+
+    template <>
+    inline GainInteractionBoundValue
+    getNamedTypeDefault<GainInteractionBoundValue>() {
+      return GainInteractionBoundValue{"min"};
+    }
+  }  // namespace detail
+
   /// @brief Tag for GainInteractionRange class
   struct GainInteractionRangeTag {};
   /**
