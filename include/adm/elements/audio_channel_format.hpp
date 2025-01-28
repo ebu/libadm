@@ -376,6 +376,12 @@ namespace adm {
     }
   }
 
+  namespace detail {
+    inline bool isValidCounterIncrement(AudioBlockFormatIdCounter const previous, AudioBlockFormatIdCounter const current) {
+      return previous == 0u || current == previous.get() + 1u;
+    }
+  }
+
   template <typename BlockFormat>
   void AudioChannelFormat::assignId(BlockFormat &blockFormat,
                                     BlockFormat *previousBlock) {
@@ -408,13 +414,12 @@ namespace adm {
         throw std::runtime_error("Invalid ID - incorrect value");
 
       if (previousBlock) {
-        int thisCounterValue =
-            thisId.template get<AudioBlockFormatIdCounter>().get();
-        auto prevId = previousBlock->template get<AudioBlockFormatId>();
-        int expectedCounterValue =
-            prevId.template get<AudioBlockFormatIdCounter>().get() + 1;
-        if (thisCounterValue != expectedCounterValue)
+        auto currentCounter = thisId.template get<AudioBlockFormatIdCounter>();
+        auto previousCounter = previousBlock->template get<AudioBlockFormatId>()
+                                   .template get<AudioBlockFormatIdCounter>();
+        if (!detail::isValidCounterIncrement(previousCounter, currentCounter)) {
           throw std::runtime_error("Invalid ID - unexpected counter");
+        }
       }
     }
   }
