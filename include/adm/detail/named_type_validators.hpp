@@ -51,8 +51,8 @@ namespace adm {
       static void validate(const T& value) {
         if (value > maxValue || value < minValue) {
           std::stringstream msg;
-          msg << "'" << value << "'"
-              << " is not in range [" << minValue << "," << maxValue << "]";
+          msg << "'" << value << "'" << " is not in range [" << minValue << ","
+              << maxValue << "]";
           throw OutOfRangeError(msg.str());
         }
       }

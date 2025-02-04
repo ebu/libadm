@@ -259,8 +259,8 @@ namespace adm {
     /// @brief Add reference to a complementary AudioObject
     ADM_EXPORT bool addComplementary(std::shared_ptr<AudioObject> object);
     /// @brief Get references to complementary AudioObjects
-    ADM_EXPORT const std::vector<std::shared_ptr<AudioObject>>
-        &getComplementaryObjects() const;
+    ADM_EXPORT const std::vector<std::shared_ptr<AudioObject>> &
+    getComplementaryObjects() const;
     /// @brief Remove reference to a complementary AudioObject
     ADM_EXPORT void removeComplementary(
         const std::shared_ptr<AudioObject> &object);
