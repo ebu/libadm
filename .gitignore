@@ -2,6 +2,8 @@ build*
 *.swp
 .DS_Store
 .vscode
+.idea
 docs/.build
 docs/venv
 *.user
+cmake-build-*
