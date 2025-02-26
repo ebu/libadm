@@ -221,6 +221,7 @@ namespace adm {
 
   ///@brief Type to hold a SphericalPosition or CartesianPosition
   typedef boost::variant<SphericalPosition, CartesianPosition> Position;
+  struct PositionTag {};
   ADD_TRAIT(Position, PositionTag);
 
   // ---- Free functions ---- //
