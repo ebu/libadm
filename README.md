@@ -66,7 +66,7 @@ project(libadm_example VERSION 1.0.0 LANGUAGES CXX)
 
 find_package(adm REQUIRED)
 
-add_executable(examples example.cpp)
+add_executable(example example.cpp)
 target_link_libraries(example PRIVATE adm)
 ```
 
