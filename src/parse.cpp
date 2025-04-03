@@ -37,6 +37,15 @@ namespace adm {
     return parser.parse();
   }
 
+  std::shared_ptr<Document> parseFrame(std::istream& stream,
+                                     const FrameHeader& header,
+                                     xml::ParserOptions options,
+                                     std::shared_ptr<Document> commonDefinitions) {
+    xml::DocumentParser parser(stream, options, commonDefinitions);
+    parser.setHeader(header);
+    return parser.parse();
+  }
+
   FrameHeader parseFrameHeader(std::istream& stream,
                                xml::ParserOptions options) {
     xml::FrameHeaderParser parser(stream, options);
