@@ -196,5 +196,5 @@ namespace adm {
   }
 
   AudioProgramme::AudioProgramme(AudioProgrammeName name)
-      : name_(std::move(name)){};
+      : name_(std::move(name)) {}
 }  // namespace adm
