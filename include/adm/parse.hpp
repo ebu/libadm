@@ -100,10 +100,8 @@ namespace adm {
    * @param commonDefinitions Common Defintions document
    */
   ADM_EXPORT std::shared_ptr<Document> parseFrame(
-        std::istream& stream,
-        const FrameHeader& header,
-        xml::ParserOptions options,
-        std::shared_ptr<Document> commonDefinitions);
+      std::istream& stream, const FrameHeader& header,
+      xml::ParserOptions options, std::shared_ptr<Document> commonDefinitions);
 
   /**
    * @brief Parse an XML representation of a serial ADM frame and return

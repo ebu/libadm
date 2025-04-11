@@ -12,32 +12,22 @@ using namespace adm;
 using namespace adm_test;
 
 TEST_CASE("Tag parameters") {
-  TTag tag{
-    TTagValue("value")
-  };
+  TTag tag{TTagValue("value")};
 
-  check_optional_param<TTagClass>(tag,
-                                  canBeSetTo(TTagClass{"class2"}));
-  check_required_param<TTagValue>(tag, 
-                                  hasDefaultOf(TTagValue{"value"}),
+  check_optional_param<TTagClass>(tag, canBeSetTo(TTagClass{"class2"}));
+  check_required_param<TTagValue>(tag, hasDefaultOf(TTagValue{"value"}),
                                   canBeSetTo(TTagValue{"value2"}));
 }
 
 TEST_CASE("TagGroup parameters") {
   TagGroup tagGroup;
-  TTag tag{
-    TTagClass("class"),
-    TTagValue("value")
-  };
+  TTag tag{TTagClass("class"), TTagValue("value")};
 
   check_vector_param<TTags>(tagGroup, canBeSetTo(TTags{tag}));
 }
 
 TEST_CASE("TagList parameters") {
-  TTag tag{
-    TTagClass("class"),
-    TTagValue("value")
-  };
+  TTag tag{TTagClass("class"), TTagValue("value")};
 
   TagGroup tagGroup;
   tagGroup.add(tag);

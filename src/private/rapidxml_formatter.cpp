@@ -796,9 +796,12 @@ namespace adm {
 
     void formatTagGroup(XmlNode &node, const TagGroup &tagGroup) {
       node.addVectorElements<TTags>(&tagGroup, "tag", &formatTag);
-      node.addReferences<AudioProgramme, AudioProgrammeId>(&tagGroup, "audioProgrammeIDRef");
-      node.addReferences<AudioContent, AudioContentId>(&tagGroup, "audioContentIDRef");
-      node.addReferences<AudioObject, AudioObjectId>(&tagGroup, "audioObjectIDRef");
+      node.addReferences<AudioProgramme, AudioProgrammeId>(
+          &tagGroup, "audioProgrammeIDRef");
+      node.addReferences<AudioContent, AudioContentId>(&tagGroup,
+                                                       "audioContentIDRef");
+      node.addReferences<AudioObject, AudioObjectId>(&tagGroup,
+                                                     "audioObjectIDRef");
     }
 
     void formatTag(XmlNode &node, const TTag &tag) {

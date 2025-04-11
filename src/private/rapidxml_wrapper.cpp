@@ -51,7 +51,7 @@ namespace adm {
     // ---- XML NODE WRAPPER ---- //
 
     XmlNode::XmlNode(NodePtr node, bool discardDefaults)
-        : node_(node), discardDefaultValues_(discardDefaults){};
+        : node_(node), discardDefaultValues_(discardDefaults) {};
 
     void XmlNode::setValue(const std::string &value) {
       auto valueString = node_->document()->allocate_string(value.c_str());

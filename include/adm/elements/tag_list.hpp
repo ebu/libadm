@@ -17,8 +17,10 @@ namespace adm {
   struct TTagTag {};
 
   namespace detail {
-    extern template class ADM_EXPORT_TEMPLATE_METHODS RequiredParameter<TTagValue>;
-    extern template class ADM_EXPORT_TEMPLATE_METHODS OptionalParameter<TTagClass>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        RequiredParameter<TTagValue>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<TTagClass>;
 
     using TTagBase = HasParameters<RequiredParameter<TTagValue>,
                                    OptionalParameter<TTagClass>>;
@@ -36,9 +38,9 @@ namespace adm {
 
     ADM_EXPORT explicit TTag(std::string str)
         : TTag(TTagValue(std::move(str))) {}
-    ADM_EXPORT explicit TTag(const char* s);
+    ADM_EXPORT explicit TTag(const char *s);
 
-    ADM_EXPORT void print(std::ostream& os) const;
+    ADM_EXPORT void print(std::ostream &os) const;
 
     using detail::TTagBase::set;
     using detail::TTagBase::unset;
@@ -63,9 +65,7 @@ namespace adm {
     return detail::optionalsEqual<TTagValue, TTagClass>(a, b);
   }
 
-  inline bool operator!=(const TTag &a, const TTag &b) {
-    return !(a==b);
-  }
+  inline bool operator!=(const TTag &a, const TTag &b) { return !(a == b); }
 
   struct TagGroupTag {};
 
@@ -76,7 +76,7 @@ namespace adm {
   }  // namespace detail
 
   class TagGroup : private detail::TagGroupBase,
-                  private detail::AddWrapperMethods<TagGroup> {
+                   private detail::AddWrapperMethods<TagGroup> {
    public:
     using tag = TagGroupTag;
 
@@ -147,7 +147,8 @@ namespace adm {
     ADM_EXPORT ElementRange<AudioObject> getReferences(
         detail::ParameterTraits<AudioObject>::tag);
 
-    ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioProgramme>::tag);
+    ADM_EXPORT void clearReferences(
+        detail::ParameterTraits<AudioProgramme>::tag);
     ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioContent>::tag);
     ADM_EXPORT void clearReferences(detail::ParameterTraits<AudioObject>::tag);
 
@@ -220,7 +221,8 @@ namespace adm {
   ADD_TRAIT(TagGroups, TagGroupsTag);
 
   namespace detail {
-    extern template class ADM_EXPORT_TEMPLATE_METHODS VectorParameter<TagGroups>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        VectorParameter<TagGroups>;
 
     using TagListBase = HasParameters<VectorParameter<TagGroups>>;
   }  // namespace detail

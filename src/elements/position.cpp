@@ -6,7 +6,7 @@ namespace adm {
 
   // ---- Constructor ---- //
   SphericalPosition::SphericalPosition(Azimuth azimuth, Elevation elevation)
-      : azimuth_(azimuth), elevation_(elevation){};
+      : azimuth_(azimuth), elevation_(elevation) {};
 
   // ---- Defaults ---- //
   const Distance SphericalPosition::distanceDefault_ = Distance(1.f);
@@ -68,7 +68,7 @@ namespace adm {
   // ---- CARTESIAN POSITION ---- //
 
   // ---- Constructor ---- //
-  CartesianPosition::CartesianPosition(X x, Y y) : x_(x), y_(y){};
+  CartesianPosition::CartesianPosition(X x, Y y) : x_(x), y_(y) {};
 
   // ---- Defaults ---- //
   const Z CartesianPosition::zDefault_ = Z(0.f);
