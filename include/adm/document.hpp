@@ -140,7 +140,6 @@ namespace adm {
     template <typename Element>
     std::shared_ptr<Element> getElement();
 
-
     /** @name Lookup ADM elements by its Id
      *
      * Lookup the first ADM element with the given Id.

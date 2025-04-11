@@ -12,7 +12,8 @@ namespace adm {
 
   // ---- References ---- //
   bool TagGroup::addReference(std::shared_ptr<AudioProgramme> programme) {
-    auto it = std::find(audioProgrammes_.begin(), audioProgrammes_.end(), programme);
+    auto it =
+        std::find(audioProgrammes_.begin(), audioProgrammes_.end(), programme);
     if (it == audioProgrammes_.end()) {
       audioProgrammes_.push_back(std::move(programme));
       return true;
@@ -42,7 +43,8 @@ namespace adm {
   }
 
   void TagGroup::removeReference(std::shared_ptr<AudioProgramme> programme) {
-    auto it = std::find(audioProgrammes_.begin(), audioProgrammes_.end(), programme);
+    auto it =
+        std::find(audioProgrammes_.begin(), audioProgrammes_.end(), programme);
     if (it != audioProgrammes_.end()) {
       audioProgrammes_.erase(it);
     }
@@ -68,18 +70,15 @@ namespace adm {
     clearReferences<AudioObject>();
   }
 
-  void TagGroup::clearReferences(
-      detail::ParameterTraits<AudioProgramme>::tag) {
+  void TagGroup::clearReferences(detail::ParameterTraits<AudioProgramme>::tag) {
     audioProgrammes_.clear();
   }
 
-  void TagGroup::clearReferences(
-      detail::ParameterTraits<AudioContent>::tag) {
+  void TagGroup::clearReferences(detail::ParameterTraits<AudioContent>::tag) {
     audioContents_.clear();
   }
 
-  void TagGroup::clearReferences(
-      detail::ParameterTraits<AudioObject>::tag) {
+  void TagGroup::clearReferences(detail::ParameterTraits<AudioObject>::tag) {
     audioObjects_.clear();
   }
 

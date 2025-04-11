@@ -118,7 +118,8 @@ namespace adm {
           std::string nodeName(node->name(), node->name_size());
           if (nodeName == "profileList") {
             // Can't use the local add function as that contains an ID setting
-            document_->add(std::make_shared<ProfileList>(parseProfileList(node)));
+            document_->add(
+                std::make_shared<ProfileList>(parseProfileList(node)));
           } else if (nodeName == "tagList") {
             // Can't use the local add function as that contains an ID setting
             document_->add(std::make_shared<TagList>(parseTagList(node)));
@@ -564,9 +565,15 @@ namespace adm {
       auto tagGroup = std::make_shared<TagGroup>();
       tagGroup->setTempId(rand() % 1000);
       addOptionalElements<TTag>(node, "tag", tagGroup, &parseTTag);
-      addOptionalReferences<AudioProgrammeId>(node, "audioProgrammeIDRef", tagGroup, tagGroupProgrammeRefs_, &parseAudioProgrammeId);
-      addOptionalReferences<AudioContentId>(node, "audioContentIDRef", tagGroup, tagGroupContentRefs_, &parseAudioContentId);
-      addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", tagGroup, tagGroupObjectRefs_, &parseAudioObjectId);
+      addOptionalReferences<AudioProgrammeId>(node, "audioProgrammeIDRef",
+                                              tagGroup, tagGroupProgrammeRefs_,
+                                              &parseAudioProgrammeId);
+      addOptionalReferences<AudioContentId>(node, "audioContentIDRef", tagGroup,
+                                            tagGroupContentRefs_,
+                                            &parseAudioContentId);
+      addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", tagGroup,
+                                           tagGroupObjectRefs_,
+                                           &parseAudioObjectId);
 
       resolveReferences(tagGroupProgrammeRefs_);
       resolveReferences(tagGroupContentRefs_);
