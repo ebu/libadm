@@ -80,6 +80,10 @@ namespace adm {
     ADM_EXPORT bool add(std::shared_ptr<AudioTrackFormat> trackFormat);
     /// @brief Add an AudioTrackUid
     ADM_EXPORT bool add(std::shared_ptr<AudioTrackUid> trackUid);
+    /// @brief Add a profileList
+    ADM_EXPORT bool add(std::shared_ptr<ProfileList> profileList);
+    /// @brief Add a tagList
+    ADM_EXPORT bool add(std::shared_ptr<TagList> tagList);
     ///@}
 
     /** @name Remove ADM elements
@@ -104,6 +108,10 @@ namespace adm {
     ADM_EXPORT bool remove(std::shared_ptr<AudioTrackFormat> trackFormat);
     /// @brief Remove an AudioTrackUid
     ADM_EXPORT bool remove(std::shared_ptr<AudioTrackUid> trackUid);
+    /// @brief Remove a profileList
+    ADM_EXPORT bool remove(std::shared_ptr<ProfileList> profileList);
+    /// @brief Remove a tagList
+    ADM_EXPORT bool remove(std::shared_ptr<TagList> tagList);
     ///@}
 
     /**
@@ -125,6 +133,12 @@ namespace adm {
      */
     template <typename Element>
     ElementRange<Element> getElements();
+
+    template <typename Element>
+    std::shared_ptr<const Element> getElement() const;
+
+    template <typename Element>
+    std::shared_ptr<Element> getElement();
 
     /** @name Lookup ADM elements by its Id
      *
@@ -257,6 +271,10 @@ namespace adm {
         detail::ParameterTraits<AudioTrackFormat>::tag) const;
     ADM_EXPORT ElementRange<const AudioTrackUid> getElements(
         detail::ParameterTraits<AudioTrackUid>::tag) const;
+    ADM_EXPORT std::shared_ptr<const ProfileList> getElement(
+        detail::ParameterTraits<ProfileList>::tag) const;
+    ADM_EXPORT std::shared_ptr<const TagList> getElement(
+        detail::ParameterTraits<TagList>::tag) const;
     ADM_EXPORT ElementRange<AudioProgramme> getElements(
         detail::ParameterTraits<AudioProgramme>::tag);
     ADM_EXPORT ElementRange<AudioContent> getElements(
@@ -273,6 +291,10 @@ namespace adm {
         detail::ParameterTraits<AudioTrackFormat>::tag);
     ADM_EXPORT ElementRange<AudioTrackUid> getElements(
         detail::ParameterTraits<AudioTrackUid>::tag);
+    ADM_EXPORT std::shared_ptr<ProfileList> getElement(
+        detail::ParameterTraits<ProfileList>::tag);
+    ADM_EXPORT std::shared_ptr<TagList> getElement(
+        detail::ParameterTraits<TagList>::tag);
 
     /// check the parent of an element
     ///
@@ -300,6 +322,8 @@ namespace adm {
     std::vector<std::shared_ptr<AudioStreamFormat>> audioStreamFormats_;
     std::vector<std::shared_ptr<AudioTrackFormat>> audioTrackFormats_;
     std::vector<std::shared_ptr<AudioTrackUid>> audioTrackUids_;
+    std::shared_ptr<ProfileList> profileList_;
+    std::shared_ptr<TagList> tagList_;
     detail::IdAssigner idAssigner_;
   };
 
@@ -315,6 +339,18 @@ namespace adm {
   ElementRange<Element> Document::getElements() {
     typedef typename detail::ParameterTraits<Element>::tag Tag;
     return getElements(Tag());
+  }
+
+  template <typename Element>
+  std::shared_ptr<const Element> Document::getElement() const {
+    typedef typename detail::ParameterTraits<Element>::tag Tag;
+    return getElement(Tag());
+  }
+
+  template <typename Element>
+  std::shared_ptr<Element> Document::getElement() {
+    typedef typename detail::ParameterTraits<Element>::tag Tag;
+    return getElement(Tag());
   }
 
 }  // namespace adm

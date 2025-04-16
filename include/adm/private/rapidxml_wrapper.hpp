@@ -102,6 +102,10 @@ namespace adm {
       void addBaseElements(const Source &src, const std::string &name,
                            Callable formatter);
 
+      template <typename ElementType, typename Source, typename Callable>
+      void addBaseElement(const Source &src, const std::string &name,
+                          Callable formatter);
+
       template <typename ElementType, typename AdmIdType, typename Source>
       void addReference(const Source &src, const std::string &name);
 
@@ -259,6 +263,16 @@ namespace adm {
         if (!isCommonDefinitionsId(id)) {
           addElement(element, name, formatter);
         }
+      }
+    }
+
+    template <typename ElementType, typename Source, typename Callable>
+    void XmlNode::addBaseElement(const Source &src, const std::string &name,
+                                 Callable formatter) {
+      auto admElement = src->template getElement<ElementType>();
+      if (admElement) {
+        auto node = addNode(name);
+        formatter(node, *admElement);
       }
     }
 
