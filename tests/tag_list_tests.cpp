@@ -5,6 +5,7 @@
 #include "adm/write.hpp"
 #include "helper/file_comparator.hpp"
 #include "adm/elements/tag_list.hpp"
+#include "adm/utilities/object_creation.hpp"
 
 #include <iostream>
 
@@ -28,7 +29,6 @@ TEST_CASE("TagGroup parameters") {
 
 TEST_CASE("TagList parameters") {
   TTag tag{TTagClass("class"), TTagValue("value")};
-
   TagGroup tagGroup;
   tagGroup.add(tag);
   TagList tagList;
@@ -51,4 +51,23 @@ TEST_CASE("adm xml/taglist") {
   std::stringstream xml;
   writeXml(xml, doc);
   CHECK_THAT(xml.str(), EqualsXmlFile("tag_list"));
+}
+
+TEST_CASE("document copy updates tagList references") {
+  auto doc = Document::create();
+  auto holder = addSimpleObjectTo(doc, "Test");
+  TTag tag{TTagClass("class"), TTagValue("value")};
+  TagGroup tagGroup;
+  tagGroup.add(tag);
+  tagGroup.addReference(holder.audioObject);
+  auto tagList = std::make_shared<TagList>();
+  tagList->add(tagGroup);
+  doc->add(tagList);
+
+  auto doc_copy = doc->deepCopy();
+  auto copied_object = doc_copy->getElements<AudioObject>().front();
+  auto copied_tag_group = doc->getElement<TagList>()->get<TagGroups>().front();
+  auto tagged_object_ref =
+      copied_tag_group.getReferences<AudioObject>().front();
+  REQUIRE(copied_object == tagged_object_ref);
 }
