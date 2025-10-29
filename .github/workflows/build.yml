@@ -38,7 +38,7 @@ jobs:
           submodules: recursive
 
       - name: Get CMake and ninja
-        uses: lukka/get-cmake@v3.20.1
+        uses: lukka/get-cmake@latest
 
       - name: Restore artifacts, or run vcpkg, build and cache artifacts
         uses: lukka/run-vcpkg@v7
@@ -82,7 +82,7 @@ jobs:
           message("::set-output name=timestamp::${current_date}")
 
       - name: ccache cache files
-        uses: actions/cache@v1.1.0
+        uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.ccache
           key: ${{ env.CCACHE_KEY }}-${{ steps.ccache_cache_timestamp.outputs.timestamp }}

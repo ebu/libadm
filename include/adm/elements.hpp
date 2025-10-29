@@ -27,6 +27,7 @@
 #include "adm/elements/audio_stream_format.hpp"
 #include "adm/elements/audio_track_uid.hpp"
 #include "adm/elements/profile_list.hpp"
+#include "adm/elements/tag_list.hpp"
 
 #include "adm/elements/audio_block_format_direct_speakers.hpp"
 #include "adm/elements/audio_block_format_matrix.hpp"

@@ -1,4 +1,5 @@
 #!/bin/bash
+clang-format --version
 DIRS="examples include src tests"
 
 IGNORE="

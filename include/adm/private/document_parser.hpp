@@ -70,6 +70,7 @@ namespace adm {
         NodePtr node, boost::optional<TimeReference> timeReference);
     Profile parseProfile(NodePtr node);
     ProfileList parseProfileList(NodePtr node);
+    TTag parseTTag(NodePtr node);
 
     NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr root);
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
@@ -105,6 +106,8 @@ namespace adm {
       std::shared_ptr<AudioPackFormat> parseAudioPackFormat(NodePtr node);
       std::shared_ptr<AudioTrackUid> parseAudioTrackUid(NodePtr node);
       std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(NodePtr node);
+      std::shared_ptr<TagGroup> parseTagGroup(NodePtr node);
+      TagList parseTagList(NodePtr node);
 
       rapidxml::file<> xmlFile_;
       ParserOptions options_;
@@ -127,6 +130,9 @@ namespace adm {
       std::map<std::shared_ptr<AudioStreamFormat>, AudioChannelFormatId> streamFormatChannelFormatRef_;
       std::map<std::shared_ptr<AudioStreamFormat>, AudioPackFormatId> streamFormatPackFormatRef_;
       std::map<std::shared_ptr<AudioStreamFormat>, std::vector<AudioTrackFormatId>> streamFormatTrackFormatRefs_;
+      std::map<std::shared_ptr<TagGroup>, std::vector<AudioProgrammeId>> tagGroupProgrammeRefs_;
+      std::map<std::shared_ptr<TagGroup>, std::vector<AudioContentId>> tagGroupContentRefs_;
+      std::map<std::shared_ptr<TagGroup>, std::vector<AudioObjectId>> tagGroupObjectRefs_;
       // clang-format on
 
       /// used to keep track of element IDs ourselves to avoid having it

@@ -101,7 +101,7 @@ namespace adm {
   class ParameterEqualTo {
    public:
     explicit ParameterEqualTo(const Element& element)
-        : parameter_(element.template get<Parameter>()){};
+        : parameter_(element.template get<Parameter>()) {}
 
     inline bool operator()(const Element& other) const {
       return parameter_ == other.template get<Parameter>();

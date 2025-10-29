@@ -55,6 +55,9 @@ namespace adm {
         XmlNode &node, const std::shared_ptr<const AudioTrackUid> trackUid);
     void formatProfileList(XmlNode &node, const ProfileList &profileList);
     void formatProfile(XmlNode &node, const Profile &profile);
+    void formatTagList(XmlNode &node, const TagList &tagList);
+    void formatTagGroup(XmlNode &node, const TagGroup &tagGroup);
+    void formatTag(XmlNode &node, const TTag &tag);
 
     void formatBlockFormatDirectSpeakers(
         XmlNode &node, const AudioBlockFormatDirectSpeakers &audioBlock,

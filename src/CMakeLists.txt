@@ -54,6 +54,7 @@ add_library(adm
   elements/type_descriptor.cpp
   elements/format_descriptor.cpp
   elements/headphone_virtualise.cpp
+  elements/tag_list.cpp
   utilities/block_duration_assignment.cpp
   utilities/copy.cpp
   utilities/id_assignment.cpp

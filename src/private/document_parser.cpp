@@ -3,6 +3,7 @@
 #include "adm/private/xml_parser_helper.hpp"
 #include "adm/detail/named_type_validators.hpp"
 #include "adm/errors.hpp"
+
 namespace adm {
   namespace xml {
 
@@ -111,6 +112,19 @@ namespace adm {
         resolveReference(streamFormatPackFormatRef_);
         resolveReferences(streamFormatTrackFormatRefs_);
 
+        // add other ADM elements to ADM document
+        for (NodePtr node = root->first_node(); node;
+             node = node->next_sibling()) {
+          std::string nodeName(node->name(), node->name_size());
+          if (nodeName == "profileList") {
+            // Can't use the local add function as that contains an ID setting
+            document_->add(
+                std::make_shared<ProfileList>(parseProfileList(node)));
+          } else if (nodeName == "tagList") {
+            // Can't use the local add function as that contains an ID setting
+            document_->add(std::make_shared<TagList>(parseTagList(node)));
+          }
+        }
       } else {
         throw error::XmlParsingError("audioFormatExtended node not found");
       }
@@ -538,6 +552,43 @@ namespace adm {
       ProfileList profileList;
       addOptionalElements<Profile>(node, "profile", profileList, &parseProfile);
       return profileList;
+    }
+
+    TTag parseTTag(NodePtr node) {
+      TTag ttag;
+      setValue<TTagValue>(node, ttag);
+      setOptionalAttribute<TTagClass>(node, "class", ttag);
+      return ttag;
+    }
+
+    std::shared_ptr<TagGroup> DocumentParser::parseTagGroup(NodePtr node) {
+      auto tagGroup = std::make_shared<TagGroup>();
+      tagGroup->setTempId(rand() % 1000);
+      addOptionalElements<TTag>(node, "tag", tagGroup, &parseTTag);
+      addOptionalReferences<AudioProgrammeId>(node, "audioProgrammeIDRef",
+                                              tagGroup, tagGroupProgrammeRefs_,
+                                              &parseAudioProgrammeId);
+      addOptionalReferences<AudioContentId>(node, "audioContentIDRef", tagGroup,
+                                            tagGroupContentRefs_,
+                                            &parseAudioContentId);
+      addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", tagGroup,
+                                           tagGroupObjectRefs_,
+                                           &parseAudioObjectId);
+
+      resolveReferences(tagGroupProgrammeRefs_);
+      resolveReferences(tagGroupContentRefs_);
+      resolveReferences(tagGroupObjectRefs_);
+
+      return tagGroup;
+    }
+
+    TagList DocumentParser::parseTagList(NodePtr node) {
+      TagList tagList;
+      auto elements = detail::findElements(node, "tagGroup");
+      for (auto& element : elements) {
+        detail::invokeAdd(tagList, TagGroup(*parseTagGroup(element)));
+      }
+      return tagList;
     }
 
     namespace {

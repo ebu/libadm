@@ -89,6 +89,21 @@ namespace adm {
       xml::ParserOptions options = xml::ParserOptions::none);
 
   /**
+   * @brief Parse an xml frame containing an audioFormatExtended
+   * node into an adm::Document, using a SADM FrameHeader to check for consistency.
+   * Primarily intended for parsing sadm frames.
+   *
+   * Parse adm data from an `std::istream`.
+   * @param stream input stream to parse XML data
+   * @param header S-ADM Frame header
+   * @param options Options to influence the XML parser behaviour
+   * @param commonDefinitions Common Defintions document
+   */
+  ADM_EXPORT std::shared_ptr<Document> parseFrame(
+      std::istream& stream, const FrameHeader& header,
+      xml::ParserOptions options, std::shared_ptr<Document> commonDefinitions);
+
+  /**
    * @brief Parse an XML representation of a serial ADM frame and return
    * the frameHeader element as an adm::FrameHeader object
    *

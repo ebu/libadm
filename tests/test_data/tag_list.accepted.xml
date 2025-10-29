@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema="EBU_CORE_20140201.xsd" xml:lang="en">
+	<coreMetadata>
+		<format>
+			<audioFormatExtended>
+				<tagList>
+					<tagGroup>
+						<tag class="class1">value1</tag>
+						<audioProgrammeIDRef>APR_1001</audioProgrammeIDRef>
+						<audioContentIDRef>ACO_1001</audioContentIDRef>
+						<audioObjectIDRef>AO_1001</audioObjectIDRef>
+					</tagGroup>
+				</tagList>
+				<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="Programme1">
+					<audioContentIDRef>ACO_1001</audioContentIDRef>
+				</audioProgramme>
+				<audioContent audioContentID="ACO_1001" audioContentName="Content1">
+					<audioObjectIDRef>AO_1001</audioObjectIDRef>
+				</audioContent>
+				<audioObject audioObjectID="AO_1001" audioObjectName="Object1">
+					<audioPackFormatIDRef>AP_00010001</audioPackFormatIDRef>
+					<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+				</audioObject>
+				<audioTrackUID UID="ATU_00000001">
+					<audioTrackFormatIDRef>AT_00010003_01</audioTrackFormatIDRef>
+					<audioPackFormatIDRef>AP_00010001</audioPackFormatIDRef>
+				</audioTrackUID>
+			</audioFormatExtended>
+		</format>
+	</coreMetadata>
+</ebuCoreMain>
+
