@@ -75,6 +75,7 @@ add_library(adm
   serial/transport_track_format.cpp
   serial/transport_id.cpp
   serial/frame_header_parser.cpp
+  segmenter.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/resources.hpp
   ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp
 )

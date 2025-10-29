@@ -99,3 +99,5 @@ add_adm_test("xml_writer_audio_content_tests")
 add_adm_test("xml_writer_objects_creation_tests")
 add_adm_test("xml_writer_label_tests")
 add_adm_test("xml_writer_tests")
+add_adm_test("segmenter_tests")
+

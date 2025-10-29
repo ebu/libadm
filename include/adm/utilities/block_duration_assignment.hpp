@@ -52,4 +52,18 @@ namespace adm {
   ADM_EXPORT void updateBlockFormatDurations(
       std::shared_ptr<Document> document);
 
+  /**
+   * @brief Calculate the duration of a programme
+   *
+   * It either uses the start and end time of the audioProgramme or
+   * the given file length.
+   *
+   * @param programme audioProgramme to check
+   * @param fileLength The length of the BW64 audio file
+   * @sa durationOfProgramme(const AudioProgramme* programme,
+   * boost::optional<Time> fileLength)
+   */
+  ADM_EXPORT Time durationOfProgramme(const AudioProgramme* programme,
+                                      boost::optional<Time> fileLength);
+
 }  // namespace adm

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_00000008" start="00:00:07.00000" duration="00:00:01.00000" type="full" timeReference="local"/>
+		<transportTrackFormat transportID="TP_0001">
+			<audioTrack trackID="1">
+				<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+			</audioTrack>
+			<audioTrack trackID="2">
+				<audioTrackUIDRef>ATU_00000002</audioTrackUIDRef>
+			</audioTrack>
+		</transportTrackFormat>
+	</frameHeader>
+	<audioFormatExtended>
+		<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="Main" start="00:00:00.00000" end="00:00:10.00000">
+			<audioContentIDRef>ACO_1001</audioContentIDRef>
+			<audioContentIDRef>ACO_1002</audioContentIDRef>
+		</audioProgramme>
+		<audioContent audioContentID="ACO_1001" audioContentName="Dialogue">
+			<audioObjectIDRef>AO_1001</audioObjectIDRef>
+		</audioContent>
+		<audioContent audioContentID="ACO_1002" audioContentName="Effects">
+			<audioObjectIDRef>AO_1002</audioObjectIDRef>
+		</audioContent>
+		<audioObject audioObjectID="AO_1001" audioObjectName="DiaObj">
+			<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+			<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+		</audioObject>
+		<audioObject audioObjectID="AO_1002" audioObjectName="EffObj" start="00:00:05.20000" duration="00:00:03.30000">
+			<audioPackFormatIDRef>AP_00031002</audioPackFormatIDRef>
+			<audioTrackUIDRef>ATU_00000002</audioTrackUIDRef>
+		</audioObject>
+		<audioPackFormat audioPackFormatID="AP_00031001" audioPackFormatName="DiaPack" typeLabel="0003" typeDefinition="Objects">
+			<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
+		</audioPackFormat>
+		<audioPackFormat audioPackFormatID="AP_00031002" audioPackFormatName="EffPack" typeLabel="0003" typeDefinition="Objects">
+			<audioChannelFormatIDRef>AC_00031002</audioChannelFormatIDRef>
+		</audioPackFormat>
+		<audioChannelFormat audioChannelFormatID="AC_00031001" audioChannelFormatName="DiaChan" typeLabel="0003" typeDefinition="Objects">
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000000" lstart="00:00:00.-20000" initializeBlock="1">
+				<position coordinate="azimuth">35.000000</position>
+				<position coordinate="elevation">0.000000</position>
+			</audioBlockFormat>
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000012" lstart="00:00:00.-20000" lduration="00:00:00.40000">
+				<position coordinate="azimuth">35.000000</position>
+				<position coordinate="elevation">0.000000</position>
+			</audioBlockFormat>
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000013" lstart="00:00:00.20000" lduration="00:00:00.40000">
+				<position coordinate="azimuth">40.000000</position>
+				<position coordinate="elevation">0.000000</position>
+			</audioBlockFormat>
+			<audioBlockFormat audioBlockFormatID="AB_00031001_00000014" lstart="00:00:00.60000" lduration="00:00:00.40000">
+				<position coordinate="azimuth">45.000000</position>
+				<position coordinate="elevation">0.000000</position>
+			</audioBlockFormat>
+		</audioChannelFormat>
+		<audioChannelFormat audioChannelFormatID="AC_00031002" audioChannelFormatName="EffChan" typeLabel="0003" typeDefinition="Objects">
+			<audioBlockFormat audioBlockFormatID="AB_00031002_00000001">
+				<position coordinate="azimuth">-30.000000</position>
+				<position coordinate="elevation">0.000000</position>
+			</audioBlockFormat>
+		</audioChannelFormat>
+		<audioTrackUID UID="ATU_00000001" sampleRate="48000" bitDepth="24">
+			<audioChannelFormatIDRef>AC_00031001</audioChannelFormatIDRef>
+			<audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+		</audioTrackUID>
+		<audioTrackUID UID="ATU_00000002" sampleRate="48000" bitDepth="24">
+			<audioChannelFormatIDRef>AC_00031002</audioChannelFormatIDRef>
+			<audioPackFormatIDRef>AP_00031002</audioPackFormatIDRef>
+		</audioTrackUID>
+	</audioFormatExtended>
+</frame>
+

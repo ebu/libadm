@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<frame version="ITU-R_BS.2125-1">
+	<frameHeader>
+		<frameFormat frameFormatID="FF_0000000a" start="00:00:09.00000" duration="00:00:01.00000" type="full" timeReference="local"/>
+		<transportTrackFormat transportID="TP_0001">
+			<audioTrack trackID="1">
+				<audioTrackUIDRef>ATU_00000001</audioTrackUIDRef>
+			</audioTrack>
+		</transportTrackFormat>
+	</frameHeader>
+	<audioFormatExtended>
+		<audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="Main" start="00:00:00.00000" end="00:00:10.00000">
+			<audioContentIDRef>ACO_1001</audioContentIDRef>
+			<audioContentIDRef>ACO_1002</audioContentIDRef>
+		</audioProgramme>
+		<audioContent audioContentID="ACO_1001" audioContentName="Dialogue"/>
+		<audioContent audioContentID="ACO_1002" audioContentName="Effects"/>
+	</audioFormatExtended>
+</frame>
+
