@@ -49,13 +49,13 @@ namespace adm {
   }
 
   Time parseTimecode(const std::string& timecode) {
-    const static std::regex commonFormat("(\\d{2}):(\\d{2}):(\\d{2}).(\\d+)");
+    const static std::regex commonFormat(R"((-?)(\d{2}):(\d{2}):(\d{2}).(\d+))");
     const static std::regex fractionalFormat(
-        "(\\d{2}):(\\d{2}):(\\d{2}).(\\d+)S(\\d+)");
+        R"((-?)(\d{2}):(\d{2}):(\d{2}).(\d+)S(\d+))");
 
     std::smatch timecodeMatch;
     if (std::regex_match(timecode, timecodeMatch, commonFormat)) {
-      const std::string& ns_str = timecodeMatch[4];
+      const std::string& ns_str = timecodeMatch[5];
 
       // parse number of nanoseconds as if it always had 9 digits
       int64_t ns = 0;
@@ -64,18 +64,22 @@ namespace adm {
         if (i < ns_str.size()) ns += place_value * (ns_str[i] - '0');
         place_value *= 10;
       }
+      auto isPositive = timecodeMatch[1].str().empty();
 
-      return std::chrono::hours(stoi(timecodeMatch[1])) +
-             std::chrono::minutes(stoi(timecodeMatch[2])) +
-             std::chrono::seconds(stoi(timecodeMatch[3])) +
-             std::chrono::nanoseconds(ns);
+      return (isPositive ? 1 : -1) *
+          (std::chrono::hours(stoi(timecodeMatch[2])) +
+             std::chrono::minutes(stoi(timecodeMatch[3])) +
+             std::chrono::seconds(stoi(timecodeMatch[4])) +
+             std::chrono::nanoseconds(ns));
     } else if (std::regex_match(timecode, timecodeMatch, fractionalFormat)) {
-      int64_t seconds = 3600 * stoi(timecodeMatch[1]) +
-                        60 * stoi(timecodeMatch[2]) +
-                        1 * stoi(timecodeMatch[3]);
+      auto isPositive = timecodeMatch[1].str().empty();
+      int64_t seconds =
+                        3600 * stoi(timecodeMatch[2]) +
+                        60 * stoi(timecodeMatch[3]) +
+                        1 * stoi(timecodeMatch[4]);
 
-      int64_t numerator = stoi(timecodeMatch[4]);
-      int64_t denominator = stoi(timecodeMatch[5]);
+      int64_t numerator = stoi(timecodeMatch[5]);
+      int64_t denominator = stoi(timecodeMatch[6]);
 
       if (denominator == 0) {
         std::stringstream errorString;
@@ -84,7 +88,7 @@ namespace adm {
         throw std::runtime_error(errorString.str());
       }
 
-      return FractionalTime{seconds * denominator + numerator, denominator};
+      return FractionalTime{(isPositive ? 1 : -1) * (seconds * denominator + numerator), denominator};
     } else {
       std::stringstream errorString;
       errorString << "invalid timecode: " << timecode;
@@ -95,18 +99,23 @@ namespace adm {
   struct FormatTimeVisitor : public boost::static_visitor<std::string> {
     std::string operator()(const std::chrono::nanoseconds& time) const {
       std::stringstream ss;
+      auto formatTime = time;
+      if (formatTime.count() < 0) {
+        formatTime = -formatTime;
+        ss << '-';
+      }
       ss << std::setw(2) << std::setfill('0')
-         << std::chrono::duration_cast<std::chrono::hours>(time).count();
+         << std::chrono::duration_cast<std::chrono::hours>(formatTime).count();
       ss << ":";
       ss << std::setw(2) << std::setfill('0')
-         << std::chrono::duration_cast<std::chrono::minutes>(time).count() % 60;
+         << std::chrono::duration_cast<std::chrono::minutes>(formatTime).count() % 60;
       ss << ":";
       ss << std::setw(2) << std::setfill('0')
-         << std::chrono::duration_cast<std::chrono::seconds>(time).count() % 60;
+         << std::chrono::duration_cast<std::chrono::seconds>(formatTime).count() % 60;
       ss << ".";
 
       {
-        auto ns = time.count() % 1000000000;
+        auto ns = formatTime.count() % 1000000000;
         // drop trailing zero digits, while keeping at least 5 to satisfy BS.2076-2
         int precision = 9;
         while (ns % 10 == 0 && precision > 5) {
@@ -120,18 +129,24 @@ namespace adm {
     }
 
     std::string operator()(const FractionalTime& time) const {
-      int64_t whole_seconds = time.numerator() / time.denominator();
+      auto absNum = abs(time.numerator());
+      auto absDenom = abs(time.denominator());
+      int64_t whole_seconds = absNum / absDenom;
       int64_t frac_numerator =
-          time.numerator() - whole_seconds * time.denominator();
+          absNum - whole_seconds * absDenom;
 
       std::stringstream ss;
+      double floating = static_cast<double>(time.numerator()) / time.denominator();
+      if (std::signbit(floating)) {
+        ss << "-";
+      }
       ss << std::setw(2) << std::setfill('0') << whole_seconds / 3600;
       ss << ":";
       ss << std::setw(2) << std::setfill('0') << (whole_seconds / 60) % 60;
       ss << ":";
       ss << std::setw(2) << std::setfill('0') << whole_seconds % 60;
       ss << ".";
-      ss << frac_numerator << "S" << time.denominator();
+      ss << frac_numerator << "S" << absDenom;
       return ss.str();
     }
   };

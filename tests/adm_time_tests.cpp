@@ -114,3 +114,56 @@ TEST_CASE("rational conversion") {
 
   REQUIRE(asTime(RationalTime{1, 2}) == FractionalTime{1, 2});
 }
+
+TEST_CASE("Parsed negative zero time == zero time") {
+  auto time = parseTimecode("-00:00:00.00000");
+  REQUIRE(time == Time{});
+}
+
+TEST_CASE("Negative nanosecond times parsed correctly") {
+  {
+    auto time = parseTimecode("-00:00:01.00000");
+    REQUIRE(time == Time{std::chrono::seconds{-1}});
+  }
+  {
+    auto time = parseTimecode("-00:10:00.00000");
+    REQUIRE(time == Time{std::chrono::minutes{-10}});
+  }
+}
+
+TEST_CASE("Format negative ns timecode") {
+  {
+    auto code = formatTimecode(Time{std::chrono::seconds{-1}});
+    REQUIRE(code == "-00:00:01.00000");
+  }
+  {
+    auto code = formatTimecode(Time{std::chrono::nanoseconds{-1}});
+    REQUIRE(code == "-00:00:00.000000001");
+  }
+  {
+    auto code = formatTimecode(Time{std::chrono::minutes{-1}});
+    REQUIRE(code == "-00:01:00.00000");
+  }
+  {
+    auto code = formatTimecode(Time{std::chrono::hours{-1}});
+    REQUIRE(code == "-01:00:00.00000");
+  }
+}
+
+TEST_CASE("Parse negative fractional time") {
+    REQUIRE(parseTimecode("-01:00:00.0S1") == Time(FractionalTime{-3600, 1}));
+    REQUIRE(parseTimecode("-00:01:00.0S1") == Time(FractionalTime{-60, 1}));
+    REQUIRE(parseTimecode("-00:00:01.0S1") == Time(FractionalTime{-1, 1}));
+    REQUIRE(parseTimecode("-00:00:00.1S10") == Time(FractionalTime{-1, 10}));
+
+    // test leading zeros
+    REQUIRE(parseTimecode("-00:00:00.01S010") == Time(FractionalTime{-1, 10}));
+}
+
+TEST_CASE("Format negative fractional time") {
+  REQUIRE("-01:00:00.0S1" == formatTimecode(FractionalTime{-3600, 1}));
+  REQUIRE("-00:01:00.0S1" == formatTimecode(FractionalTime{-60, 1}));
+  REQUIRE("-00:00:01.0S1" == formatTimecode(FractionalTime{-1, 1}));
+  REQUIRE("-00:00:00.1S10" == formatTimecode(FractionalTime{-1, 10}));
+}
+
