@@ -1,5 +1,6 @@
 #include "adm/elements/time.hpp"
 #include <boost/integer/common_factor.hpp>
+#include <cmath>
 #include <iomanip>
 #include <regex>
 #include <sstream>
