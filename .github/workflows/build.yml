@@ -107,6 +107,7 @@ jobs:
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
             -DBUILD_SHARED_LIBS=${{ matrix.shared }}
+            -DADM_DISABLE_MSVC_EXCEPTION_DLL_BOUNDARY_WARNINGS=ON
 
       - name: 'print ccache stats'
         run: ccache -s

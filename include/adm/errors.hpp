@@ -6,6 +6,10 @@
 #include <adm/elements/audio_track_format_id.hpp>
 #include "adm/export.h"
 
+#ifdef ADM_DISABLE_MSVC_EXCEPTION_DLL_BOUNDARY_WARNINGS
+#pragma warning(disable : 4275 4251)
+#endif
+
 namespace adm {
   namespace error {
 
@@ -102,3 +106,7 @@ namespace adm {
 
   }  // namespace error
 }  // namespace adm
+
+#ifdef ADM_DISABLE_MSVC_EXCEPTION_DLL_BOUNDARY_WARNINGS
+#pragma warning(default : 4275 4251)
+#endif

@@ -93,6 +93,10 @@ target_include_directories(adm
 target_link_libraries(adm PUBLIC Boost::boost)
 target_link_libraries(adm PRIVATE $<BUILD_INTERFACE:rapidxml>)
 
+if(ADM_DISABLE_MSVC_EXCEPTION_DLL_BOUNDARY_WARNINGS)
+target_compile_options(adm PUBLIC $<$<CXX_COMPILER_ID:MSVC>:/DADM_DISABLE_MSVC_EXCEPTION_DLL_BOUNDARY_WARNINGS=1>)
+endif()
+
 if (UNIX)
   target_link_libraries(adm PUBLIC dl)
 endif()
