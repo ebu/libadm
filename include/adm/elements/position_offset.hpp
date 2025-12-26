@@ -14,15 +14,6 @@
 namespace adm {
 
   namespace detail {
-    using SphericalPositionOffsetBase =
-        HasParameters<OptionalParameter<AzimuthOffset>,
-                      OptionalParameter<ElevationOffset>,
-                      OptionalParameter<DistanceOffset>>;
-
-    using CartesianPositionOffsetBase =
-        HasParameters<OptionalParameter<XOffset>, OptionalParameter<YOffset>,
-                      OptionalParameter<ZOffset>>;
-
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<AzimuthOffset>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS
@@ -36,6 +27,15 @@ namespace adm {
         OptionalParameter<YOffset>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<ZOffset>;
+
+    using SphericalPositionOffsetBase =
+        HasParameters<OptionalParameter<AzimuthOffset>,
+                      OptionalParameter<ElevationOffset>,
+                      OptionalParameter<DistanceOffset>>;
+
+    using CartesianPositionOffsetBase =
+        HasParameters<OptionalParameter<XOffset>, OptionalParameter<YOffset>,
+                      OptionalParameter<ZOffset>>;
 
   }  // namespace detail
 
@@ -140,6 +140,7 @@ namespace adm {
   /// @brief Type to hold a SphericalPositionOffset or CartesianPositionOffset
   typedef boost::variant<SphericalPositionOffset, CartesianPositionOffset>
       PositionOffset;
+  struct PositionOffsetTag {};
   ADD_TRAIT(PositionOffset, PositionOffsetTag);
 
   // ---- Free functions ---- //
