@@ -1,5 +1,6 @@
 #pragma once
 #include "adm/detail/auto_base_detail.hpp"
+#include "adm/detail/holds_alternative.hpp"
 #include "adm/detail/type_traits.hpp"
 #include "adm/export.h"
 #include "boost/optional.hpp"
@@ -296,12 +297,13 @@ namespace adm {
 
       using VariantParam::has;
       ADM_BASE_EXPORT bool has(Tag) const {
-        return has(VariantTag{}) && get(VariantTag()).type() == typeid(T);
+        return has(VariantTag{}) && holds_alternative<T>(get(VariantTag()));
       }
 
       using VariantParam::isDefault;
       ADM_BASE_EXPORT bool isDefault(Tag) const {
-        return isDefault(VariantTag()) && get(VariantTag()).type() == typeid(T);
+        return isDefault(VariantTag()) &&
+               holds_alternative<T>(get(VariantTag()));
       }
 
       using VariantParam::unset;

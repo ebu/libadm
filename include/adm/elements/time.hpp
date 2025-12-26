@@ -7,6 +7,7 @@
 #include <boost/variant.hpp>
 #include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_type.hpp"
+#include "adm/detail/holds_alternative.hpp"
 #include "adm/export.h"
 
 namespace adm {
@@ -60,9 +61,11 @@ namespace adm {
     ADM_EXPORT FractionalTime asFractional() const;
 
     bool isNanoseconds() const {
-      return time.type() == typeid(std::chrono::nanoseconds);
+      return detail::holds_alternative<std::chrono::nanoseconds>(time);
     }
-    bool isFractional() const { return time.type() == typeid(FractionalTime); };
+    bool isFractional() const {
+      return detail::holds_alternative<FractionalTime>(time);
+    }
 
     using Variant = boost::variant<std::chrono::nanoseconds, FractionalTime>;
     const Variant& asVariant() const { return time; }

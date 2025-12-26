@@ -1,4 +1,5 @@
 #include "adm/elements/position_offset.hpp"
+#include "adm/detail/holds_alternative.hpp"
 #include "adm/detail/print_helper.hpp"
 
 namespace adm {
@@ -30,11 +31,11 @@ namespace adm {
   }
 
   bool isSpherical(const PositionOffset& offset) {
-    return offset.type() == typeid(SphericalPositionOffset);
+    return detail::holds_alternative<SphericalPositionOffset>(offset);
   }
 
   bool isCartesian(const PositionOffset& offset) {
-    return offset.type() == typeid(CartesianPositionOffset);
+    return detail::holds_alternative<CartesianPositionOffset>(offset);
   }
 
 }  // namespace adm
