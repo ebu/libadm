@@ -47,6 +47,7 @@ namespace adm {
   /// FractionalTime
   class Time {
    public:
+    Time() : time(std::chrono::nanoseconds::zero()) {}
     // non-explicit, as this should act like a variant
     template <typename Rep, typename Period>
     // NOLINTNEXTLINE(google-explicit-constructor)

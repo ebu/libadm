@@ -9,6 +9,15 @@ namespace adm {
   /// @brief Implementation details
   namespace detail {
 
+    /// Get the default value for some NamedType; specialise this to add custom
+    /// defaults. Note that this is mainly used to make NamedType values
+    /// default-constructable when the validator doesn't accept the default
+    /// value of the underlying type.
+    template <typename NT>
+    NT getNamedTypeDefault() {
+      return NT{typename NT::value_type{}};
+    }
+
     /**
      * @brief Named type class
      *
@@ -22,15 +31,38 @@ namespace adm {
       typedef T value_type;
       typedef Tag tag;
 
-      NamedType() : value_() { Validator::validate(get()); }
+      NamedType() : NamedType(getNamedTypeDefault<NamedType>()) {}
+
+      NamedType(const NamedType&) = default;
+      NamedType(NamedType&&) = default;
+      NamedType& operator=(const NamedType&) = default;
+      NamedType& operator=(NamedType&&) = default;
+
       explicit NamedType(T const& value) : value_(value) {
         Validator::validate(get());
       }
       explicit NamedType(T&& value) : value_(std::move(value)) {
         Validator::validate(get());
       }
-      T& get() { return value_; }
-      T const& get() const { return value_; }
+
+      NamedType& operator=(const T& value) {
+        Validator::validate(value);
+        value_ = value;
+        return *this;
+      }
+      NamedType& operator=(T&& value) {
+        Validator::validate(value);
+        value_ = std::move(value);
+        return *this;
+      }
+
+      T const& get() const& { return value_; }
+
+      T get() && {
+        T tmp = std::move(value_);
+        *this = getNamedTypeDefault<NamedType>();
+        return tmp;
+      }
 
       bool operator==(const NamedType<T, Tag, Validator>& other) const {
         return this->get() == other.get();
@@ -86,7 +118,10 @@ namespace adm {
       }
 
       NamedType<T, Tag, Validator>& operator++() {
-        ++value_;
+        T tmp = value_;
+        tmp++;
+        Validator::validate(tmp);
+        value_ = std::move(tmp);
         return *this;
       }
 
@@ -97,7 +132,10 @@ namespace adm {
       }
 
       NamedType<T, Tag, Validator>& operator--() {
-        --value_;
+        T tmp = value_;
+        tmp--;
+        Validator::validate(tmp);
+        value_ = std::move(tmp);
         return *this;
       }
 
@@ -107,9 +145,7 @@ namespace adm {
         return tmp;
       }
 
-      T* operator->() { return &value_; }
       T const* operator->() const { return &value_; }
-      T& operator*() { return value_; }
       T const& operator*() const { return value_; }
 
      private:

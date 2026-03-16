@@ -91,6 +91,21 @@ namespace adm {
   using CoordinateInteractionValue =
       detail::NamedType<std::string, CoordinateInteractionValueTag,
                         detail::CoordinateValueValidator>;
+
+  namespace detail {
+    template <>
+    inline PositionInteractionBoundValue
+    getNamedTypeDefault<PositionInteractionBoundValue>() {
+      return PositionInteractionBoundValue{"min"};
+    }
+
+    template <>
+    inline CoordinateInteractionValue
+    getNamedTypeDefault<CoordinateInteractionValue>() {
+      return CoordinateInteractionValue{"azimuth"};
+    }
+  }  // namespace detail
+
   /// @brief Tag for PositionInteractionRange class
   struct PositionInteractionRangeTag {};
   /**

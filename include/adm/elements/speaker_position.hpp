@@ -21,6 +21,13 @@ namespace adm {
   using BoundValue = detail::NamedType<std::string, BoundValueTag,
                                        detail::BoundValueValidator>;
 
+  namespace detail {
+    template <>
+    inline BoundValue getNamedTypeDefault<BoundValue>() {
+      return BoundValue{"min"};
+    }
+  }  // namespace detail
+
   /// @brief Tag for CartesianSpeakerPosition class
   struct CartesianSpeakerPositionTag {};
   /**
