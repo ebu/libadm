@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioChannelFormat audioChannelFormatID="AC_00011001" audioChannelFormatName="FrontLeft" typeLabel="0001" typeDefinition="DirectSpeakers">
+          <audioBlockFormat audioBlockFormatID="AB_00011001_00000001">
+            <position coordinate="X">0.0</position>
+            <position coordinate="Y">0.0</position>
+            <position coordinate="Z">0.5</position>
+            <cartesian>0</cartesian>
+          </audioBlockFormat>
+        </audioChannelFormat>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

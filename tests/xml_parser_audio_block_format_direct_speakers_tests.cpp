@@ -27,6 +27,8 @@ TEST_CASE("xml_parser/audio_block_format_direct_speakers") {
           30.0f);
   REQUIRE(firstBlockFormat.get<SphericalSpeakerPosition>().get<Elevation>() ==
           0.0f);
+  REQUIRE(firstBlockFormat.get<Cartesian>() == false);
+  REQUIRE(firstBlockFormat.isDefault<Cartesian>() == true);
   REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>().get<Bypass>() == false);
   REQUIRE(firstBlockFormat.get<HeadphoneVirtualise>()
               .get<DirectToReverberantRatio>() == Approx(60));
@@ -84,7 +86,56 @@ TEST_CASE("xml_parser/audio_block_format_direct_speakers_cartesian") {
     REQUIRE(speakerPosition.has<ScreenEdgeLock>());
     auto edgeLock = speakerPosition.get<ScreenEdgeLock>();
     REQUIRE(edgeLock.get<HorizontalEdge>().get() == "left");
+    REQUIRE(firstBlockFormat.get<Cartesian>() == true);
+    REQUIRE(firstBlockFormat.isDefault<Cartesian>() == false);
   }
+}
+
+TEST_CASE(
+    "xml_parser/"
+    "audio_block_format_direct_speakers_spherical_cartesian_mismatch") {
+  using namespace adm;
+  auto document = parseXml(
+      "xml_parser/audio_block_format_direct_speakers_spherical_cartesian_"
+      "mismatch.xml");
+  auto channelFormat =
+      document->lookup(parseAudioChannelFormatId("AC_00011001"));
+  REQUIRE(channelFormat);
+
+  auto firstBlockFormat =
+      *(channelFormat->getElements<AudioBlockFormatDirectSpeakers>().begin());
+  REQUIRE(firstBlockFormat.has<SphericalSpeakerPosition>() == true);
+  REQUIRE(firstBlockFormat.has<CartesianSpeakerPosition>() == false);
+  auto speakerPosition = firstBlockFormat.get<SphericalSpeakerPosition>();
+  REQUIRE(speakerPosition.get<Azimuth>() == Approx(30.0f));
+  REQUIRE(speakerPosition.get<Elevation>() == Approx(0.0f));
+  REQUIRE(speakerPosition.get<Distance>() == Approx(1.0f));
+  REQUIRE(firstBlockFormat.get<Cartesian>() == false);
+  REQUIRE(firstBlockFormat.isDefault<Cartesian>() == false);
+}
+
+TEST_CASE(
+    "xml_parser/"
+    "audio_block_format_direct_speakers_cartesian_spherical_mismatch") {
+  using namespace adm;
+  auto document = parseXml(
+      "xml_parser/audio_block_format_direct_speakers_cartesian_spherical_"
+      "mismatch.xml");
+  auto channelFormat =
+      document->lookup(parseAudioChannelFormatId("AC_00011001"));
+  REQUIRE(channelFormat);
+
+  auto firstBlockFormat =
+      *(channelFormat->getElements<AudioBlockFormatDirectSpeakers>().begin());
+  REQUIRE(firstBlockFormat.has<CartesianSpeakerPosition>() == true);
+  REQUIRE(firstBlockFormat.has<SphericalSpeakerPosition>() == false);
+  auto speakerPosition = firstBlockFormat.get<CartesianSpeakerPosition>();
+  REQUIRE(speakerPosition.get<X>() == Approx(0.0f));
+  REQUIRE(speakerPosition.get<Y>() == Approx(0.0f));
+  REQUIRE(speakerPosition.has<Z>());
+  REQUIRE(speakerPosition.get<Z>() == Approx(0.5f));
+  REQUIRE(firstBlockFormat.get<Cartesian>() == true);
+  REQUIRE(firstBlockFormat.isDefault<Cartesian>() == false);
 }
 
 TEST_CASE("xml_parser/audio_block_format_direct_speakers_cartesian_bad_bound") {

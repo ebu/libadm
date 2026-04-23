@@ -10,11 +10,14 @@ TEST_CASE("DirectSpeakers block format common subelements") {
   REQUIRE(blockFormat.has<Rtime>() == true);
   REQUIRE(blockFormat.has<Duration>() == false);
   REQUIRE(blockFormat.has<SpeakerLabels>() == false);
+  REQUIRE(blockFormat.has<Cartesian>() == true);
 
   REQUIRE(blockFormat.isDefault<Rtime>() == true);
+  REQUIRE(blockFormat.isDefault<Cartesian>() == true);
 
   auto defaultRtime = std::chrono::seconds{0};
   REQUIRE(blockFormat.get<Rtime>().get() == defaultRtime);
+  REQUIRE(blockFormat.get<Cartesian>() == false);
 
   auto rTime = std::chrono::seconds{1};
   auto duration = std::chrono::seconds{10};
@@ -60,6 +63,8 @@ TEST_CASE("DirectSpeakers block format with Spherical coordinates") {
             defaultPosition.get<Azimuth>());
     REQUIRE(blockFormat.get<SphericalSpeakerPosition>().get<Elevation>() ==
             defaultPosition.get<Elevation>());
+    REQUIRE(blockFormat.get<Cartesian>() == false);
+    REQUIRE(blockFormat.isDefault<Cartesian>() == true);
 
     auto speakerPosition =
         SphericalSpeakerPosition(Azimuth(30), Elevation(10), Distance(0.5));
@@ -70,6 +75,8 @@ TEST_CASE("DirectSpeakers block format with Spherical coordinates") {
             Approx(10));
     REQUIRE(blockFormat.get<SphericalSpeakerPosition>().get<Distance>() ==
             Approx(0.5));
+    REQUIRE(blockFormat.get<Cartesian>() == false);
+    REQUIRE(blockFormat.isDefault<Cartesian>() == true);
   }
 }
 
@@ -85,4 +92,65 @@ TEST_CASE("DirectSpeakers block format with Cartesian coordinates") {
   REQUIRE(retrievedPosition.get<X>() == speakerPosition.get<X>());
   REQUIRE(retrievedPosition.get<Y>() == speakerPosition.get<Y>());
   REQUIRE(retrievedPosition.get<Z>() == speakerPosition.get<Z>());
+  REQUIRE(blockFormat.get<Cartesian>() == true);
+  REQUIRE(blockFormat.isDefault<Cartesian>() == false);
+}
+
+TEST_CASE("DirectSpeakers block format cartesian interactions") {
+  using namespace adm;
+
+  SECTION("spherical speaker position does not set cartesian when unset") {
+    auto blockFormat = AudioBlockFormatDirectSpeakers{};
+    blockFormat.set(SphericalSpeakerPosition{Azimuth{30.0f}, Elevation{5.0f}});
+
+    REQUIRE(blockFormat.has<SphericalSpeakerPosition>() == true);
+    REQUIRE(blockFormat.has<CartesianSpeakerPosition>() == false);
+    REQUIRE(blockFormat.get<Cartesian>() == false);
+    REQUIRE(blockFormat.isDefault<Cartesian>() == true);
+  }
+
+  SECTION(
+      "unsetting cartesian with cartesian position sets default spherical") {
+    auto blockFormat = AudioBlockFormatDirectSpeakers{};
+    blockFormat.set(CartesianSpeakerPosition{X{0.8f}, Y{-0.3f}, Z{0.2f}});
+
+    REQUIRE(blockFormat.has<CartesianSpeakerPosition>() == true);
+    REQUIRE(blockFormat.get<Cartesian>() == true);
+
+    blockFormat.unset<Cartesian>();
+
+    REQUIRE(blockFormat.has<SphericalSpeakerPosition>() == true);
+    REQUIRE(blockFormat.has<CartesianSpeakerPosition>() == false);
+    REQUIRE(blockFormat.get<SphericalSpeakerPosition>().get<Azimuth>() ==
+            Approx(0.0f));
+    REQUIRE(blockFormat.get<SphericalSpeakerPosition>().get<Elevation>() ==
+            Approx(0.0f));
+    REQUIRE(blockFormat.get<SphericalSpeakerPosition>().has<Distance>() ==
+            false);
+    REQUIRE(blockFormat.get<Cartesian>() == false);
+    REQUIRE(blockFormat.isDefault<Cartesian>() == true);
+  }
+
+  SECTION(
+      "setting cartesian true with spherical position sets default cartesian") {
+    auto blockFormat = AudioBlockFormatDirectSpeakers{};
+    blockFormat.set(SphericalSpeakerPosition{Azimuth{10.0f}, Elevation{15.0f},
+                                             Distance{1.0f}});
+
+    REQUIRE(blockFormat.has<SphericalSpeakerPosition>() == true);
+    REQUIRE(blockFormat.get<SphericalSpeakerPosition>().get<Azimuth>() ==
+            Approx(10.0f));
+
+    blockFormat.set(Cartesian{true});
+
+    REQUIRE(blockFormat.has<CartesianSpeakerPosition>() == true);
+    REQUIRE(blockFormat.has<SphericalSpeakerPosition>() == false);
+    REQUIRE(blockFormat.get<CartesianSpeakerPosition>().get<X>() ==
+            Approx(0.0f));
+    REQUIRE(blockFormat.get<CartesianSpeakerPosition>().get<Y>() ==
+            Approx(0.0f));
+    REQUIRE(blockFormat.get<CartesianSpeakerPosition>().has<Z>() == false);
+    REQUIRE(blockFormat.get<Cartesian>() == true);
+    REQUIRE(blockFormat.isDefault<Cartesian>() == false);
+  }
 }

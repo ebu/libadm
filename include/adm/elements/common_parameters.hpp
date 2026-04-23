@@ -1,6 +1,7 @@
 #pragma once
 #include "adm/detail/auto_base.hpp"
 #include "adm/elements/audio_block_format_id.hpp"
+#include "adm/elements/cartesian.hpp"
 #include "adm/elements/gain.hpp"
 #include "adm/elements/headphone_virtualise.hpp"
 #include "adm/elements/head_locked.hpp"
