@@ -349,6 +349,7 @@ namespace adm {
       if(audioBlock.has<CartesianSpeakerPosition>()) {
         node.addMultiElement<CartesianSpeakerPosition>(&audioBlock, "position", &formatCartesianSpeakerPosition);
       }
+      node.addOptionalElement<Cartesian>(&audioBlock, "cartesian");
 
       node.addOptionalElement<HeadLocked>(&audioBlock, "headLocked");
       node.addOptionalElement<HeadphoneVirtualise>(&audioBlock, "headphoneVirtualise", &formatHeadphoneVirtualise);

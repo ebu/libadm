@@ -1,0 +1,15 @@
+{
+  "name": "libadm",
+  "version": "0.14.0",
+  "homepage": "https://github.com/ebu/libadm",
+  "license": "Apache-2.0",
+  "dependencies": [
+    "boost-variant",
+    "boost-optional",
+    "boost-format",
+    "boost-functional",
+    "boost-range",
+    "boost-iterator",
+    "boost-rational"
+  ]
+}

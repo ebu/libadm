@@ -599,6 +599,7 @@ namespace adm {
       setOptionalAttribute<AudioBlockFormatId>(node, "audioBlockFormatID", audioBlockFormat, &parseAudioBlockFormatId);
       addTimeParametersToBlock(node, audioBlockFormat, timeReference);
       setOptionalAttribute<InitializeBlock>(node, "initializeBlock", audioBlockFormat);
+      setOptionalElement<Cartesian>(node, "cartesian", audioBlockFormat);
       setMultiElement<SpeakerPosition>(node, "position", audioBlockFormat, &parseSpeakerPosition);
       addOptionalElements<SpeakerLabel>(node, "speakerLabel", audioBlockFormat, &parseSpeakerLabel);
       setOptionalElement<HeadLocked>(node, "headLocked", audioBlockFormat);

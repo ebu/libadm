@@ -68,6 +68,8 @@ namespace adm {
    * +---------------------+------------------------------------+----------------------------+
    * | initializeBlock     | :type:`InitializeBlock`            | :class:`OptionalParameter` |
    * +---------------------+------------------------------------+----------------------------+
+  * | cartesian           | :type:`Cartesian`                  | custom, see below          |
+  * +---------------------+------------------------------------+----------------------------+
    * | position            | - :type:`SpeakerPosition`          | :class:`VariantParameter`  |
    * |                     | - :type:`SphericalSpeakerPosition` |                            |
    * |                     | - :type:`CartesianSpeakerPosition` | :class:`RequiredParameter` |
@@ -83,6 +85,11 @@ namespace adm {
    * | speakerLabel        | :type:`SpeakerLabels`              | :class:`VectorParameter`   |
    * +---------------------+------------------------------------+----------------------------+
    * \endrst
+  *
+  * ``cartesian`` and ``position`` attributes are linked; see
+  * :func:`void set(Cartesian)`, :func:`void set(SpeakerPosition)`,
+  * :func:`void set(CartesianSpeakerPosition)` and
+  * :func:`void set(SphericalSpeakerPosition)`.
    *
    * @warning not all methods are implemented for speakerLabel
    */
@@ -138,6 +145,8 @@ namespace adm {
     ADM_EXPORT void set(Rtime rtime);
     /// @brief Duration setter
     ADM_EXPORT void set(Duration duration);
+    /// @brief Cartesian setter
+    ADM_EXPORT void set(Cartesian cartesian);
     /// @brief CartesianSpeakerPosition setter
     ADM_EXPORT void set(CartesianSpeakerPosition speakerPosition);
     /// @brief SphericalSpeakerPosition setter
@@ -174,6 +183,7 @@ namespace adm {
     ADM_EXPORT Duration get(detail::ParameterTraits<Duration>::tag) const;
     ADM_EXPORT SpeakerLabels
         get(detail::ParameterTraits<SpeakerLabels>::tag) const;
+    ADM_EXPORT Cartesian get(detail::ParameterTraits<Cartesian>::tag) const;
     ADM_EXPORT CartesianSpeakerPosition
         get(detail::ParameterTraits<CartesianSpeakerPosition>::tag) const;
     ADM_EXPORT SphericalSpeakerPosition
@@ -183,6 +193,7 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<Rtime>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<Duration>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<SpeakerLabels>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<Cartesian>::tag) const;
     ADM_EXPORT bool has(
         detail::ParameterTraits<CartesianSpeakerPosition>::tag) const;
     ADM_EXPORT bool has(
@@ -192,15 +203,18 @@ namespace adm {
     bool isDefault(Tag) const {
       return false;
     }
+    ADM_EXPORT bool isDefault(detail::ParameterTraits<Cartesian>::tag) const;
 
     ADM_EXPORT void unset(detail::ParameterTraits<Rtime>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<Duration>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<SpeakerLabels>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<Cartesian>::tag);
 
     AudioBlockFormatId id_;
     boost::optional<Rtime> rtime_;
     boost::optional<Duration> duration_;
     SpeakerLabels speakerLabels_;
+    boost::optional<Cartesian> cartesian_;
     SpeakerPosition speakerPosition_;
   };
 
