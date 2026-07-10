@@ -3,6 +3,7 @@
 #include "adm/private/xml_parser_helper.hpp"
 #include "adm/detail/named_type_validators.hpp"
 #include "adm/errors.hpp"
+
 namespace adm {
   namespace xml {
 
@@ -111,6 +112,18 @@ namespace adm {
         resolveReference(streamFormatPackFormatRef_);
         resolveReferences(streamFormatTrackFormatRefs_);
 
+        // add other ADM elements to ADM document
+        for (NodePtr node = root->first_node(); node;
+             node = node->next_sibling()) {
+          std::string nodeName(node->name(), node->name_size());
+          if (nodeName == "profileList") {
+            // Can't use the local add function as that contains an ID setting
+            document_->set(parseProfileList(node));
+          } else if (nodeName == "tagList") {
+            // Can't use the local add function as that contains an ID setting
+            document_->set(parseTagList(node));
+          }
+        }
       } else {
         throw error::XmlParsingError("audioFormatExtended node not found");
       }
@@ -538,6 +551,121 @@ namespace adm {
       ProfileList profileList;
       addOptionalElements<Profile>(node, "profile", profileList, &parseProfile);
       return profileList;
+    }
+
+    Tag parseTTag(NodePtr node) {
+      Tag ttag;
+      setValue<TagValue>(node, ttag);
+      setOptionalAttribute<TagClass>(node, "class", ttag);
+      return ttag;
+    }
+
+    struct TagGroupBuilder {
+      TagGroupBuilder(std::vector<NodePtr> programmeNodes,
+                      std::vector<NodePtr> contentNodes,
+                      std::vector<NodePtr> objectNodes) {
+        for (auto n : programmeNodes) {
+          programmeIds.push_back(parseAudioProgrammeId(n->value()));
+        }
+        for (auto n : contentNodes) {
+          contentIds.push_back(parseAudioContentId(n->value()));
+        }
+        for (auto n : objectNodes) {
+          objectIds.push_back(parseAudioObjectId(n->value()));
+        }
+      }
+
+      bool valid_ids() const {
+        return !(programmeIds.empty() && contentIds.empty() &&
+                 objectIds.empty());
+      }
+
+      void resolveReferences(adm::detail::IDMap& map) {
+        for (auto const& id : programmeIds) {
+          if (auto element = map.lookup(id)) {
+            programmes.push_back(element);
+          }
+        }
+        for (auto const& id : contentIds) {
+          if (auto element = map.lookup(id)) {
+            contents.push_back(element);
+          }
+        }
+        for (auto const& id : objectIds) {
+          if (auto element = map.lookup(id)) {
+            objects.push_back(element);
+          }
+        }
+      }
+
+      bool valid_references() {
+        return !(programmes.empty() && contents.empty() && objects.empty());
+      }
+
+      template <typename T>
+      void add_all(std::vector<std::shared_ptr<T>> const& refs,
+                   TagGroup& group) {
+        for (auto const& r : refs) {
+          group.addReference(r);
+        }
+      }
+
+      template <typename T>
+      std::shared_ptr<TagGroup> create_with(
+          std::vector<std::shared_ptr<T>>& refs) {
+        auto last = refs.back();
+        auto group = std::make_shared<TagGroup>(last);
+        refs.pop_back();
+        add_all(refs, *group);
+        refs.clear();
+        return group;
+      }
+
+      std::shared_ptr<TagGroup> build(adm::detail::IDMap& id_map) {
+        std::shared_ptr<TagGroup> group;
+        if (!valid_ids()) return group;
+        resolveReferences(id_map);
+        if (!valid_references()) return group;
+        if (!programmes.empty()) {
+          group = create_with(programmes);
+        } else if (!contents.empty()) {
+          group = create_with(contents);
+        } else if (!objects.empty()) {
+          group = create_with(objects);
+        }
+        add_all(programmes, *group);
+        add_all(contents, *group);
+        add_all(objects, *group);
+        return group;
+      }
+
+      std::vector<AudioProgrammeId> programmeIds;
+      std::vector<AudioContentId> contentIds;
+      std::vector<AudioObjectId> objectIds;
+      std::vector<std::shared_ptr<AudioProgramme>> programmes;
+      std::vector<std::shared_ptr<AudioContent>> contents;
+      std::vector<std::shared_ptr<AudioObject>> objects;
+    };
+
+    std::shared_ptr<TagGroup> DocumentParser::parseTagGroup(NodePtr node) {
+      TagGroupBuilder builder(detail::findElements(node, "audioProgrammeIDRef"),
+                              detail::findElements(node, "audioContentIDRef"),
+                              detail::findElements(node, "audioObjectIDRef"));
+      auto tagGroup = builder.build(idMap_);
+      if (!tagGroup) {
+        throw std::runtime_error("Error parsing tag group");
+      }
+      addOptionalElements<Tag>(node, "tag", tagGroup, &parseTTag);
+      return tagGroup;
+    }
+
+    TagList DocumentParser::parseTagList(NodePtr node) {
+      TagList tagList;
+      auto elements = detail::findElements(node, "tagGroup");
+      for (auto& element : elements) {
+        detail::invokeAdd(tagList, TagGroup(*parseTagGroup(element)));
+      }
+      return tagList;
     }
 
     namespace {

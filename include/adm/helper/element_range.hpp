@@ -197,6 +197,18 @@ namespace adm {
                      [](std::weak_ptr<Element> w) { return w.lock(); });
       return result;
     }
+    template <typename Element>
+    bool elementRangeEqual(ElementRange<Element const> a,
+                           ElementRange<Element const> b) {
+      if (a.size() != b.size()) {
+        return false;
+      }
+      bool equal = true;
+      for (std::size_t i = 0; i != a.size() && equal; ++i) {
+        equal = a[i] == b[i];
+      }
+      return equal;
+    }
 
   }  // namespace detail
 

@@ -12,6 +12,8 @@
 namespace adm {
   namespace detail {
     template class OptionalParameter<Version>;
+    template class OptionalParameter<TagList>;
+    template class OptionalParameter<ProfileList>;
   }  // namespace detail
 
   Document::Document() { idAssigner_.document(this); }
@@ -256,6 +258,40 @@ namespace adm {
     return false;
   }
 
+  namespace {
+    template <typename Element>
+    bool tagGroupRefsBelongToOtherDoc(
+        Document const& doc,
+        std::vector<std::shared_ptr<Element>> const& refs) {
+      for (auto const& ref : refs) {
+        auto parent = ref->getParent().lock();
+        if (parent && parent.get() != &doc) return true;
+      }
+      return false;
+    }
+  }  // namespace
+
+  bool Document::set(TagList tagList) {
+    // Validate every TagGroup reference against this document up-front so a
+    // failure leaves the document unmodified.
+    for (auto const& group : tagList.get<TagGroups>()) {
+      if (tagGroupRefsBelongToOtherDoc(*this, group.audioProgrammes_) ||
+          tagGroupRefsBelongToOtherDoc(*this, group.audioContents_) ||
+          tagGroupRefsBelongToOtherDoc(*this, group.audioObjects_)) {
+        return false;
+      }
+    }
+    // Adopt any unparented references into this document. Elements already
+    // belonging to this document are short-circuited by checkParent() inside
+    // add().
+    for (auto const& group : tagList.get<TagGroups>()) {
+      for (auto const& p : group.audioProgrammes_) add(p);
+      for (auto const& c : group.audioContents_) add(c);
+      for (auto const& o : group.audioObjects_) add(o);
+    }
+    detail::DocumentBase::set(std::move(tagList));
+    return true;
+  }
   bool Document::remove(std::shared_ptr<AudioPackFormat> packFormat) {
     auto it = std::find(audioPackFormats_.begin(), audioPackFormats_.end(),
                         packFormat);

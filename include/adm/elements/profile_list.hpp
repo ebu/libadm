@@ -85,12 +85,12 @@ namespace adm {
     using ProfileListBase = HasParameters<VectorParameter<Profiles>>;
   }  // namespace detail
 
-  struct ProfileceListTag {};
+  struct ProfileListTag {};
 
   class ProfileList : private detail::ProfileListBase,
                       private detail::AddWrapperMethods<ProfileList> {
    public:
-    using tag = ProfileceListTag;
+    using tag = ProfileListTag;
 
     template <typename... Parameters>
     explicit ProfileList(Parameters... namedArgs) {

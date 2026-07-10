@@ -790,5 +790,25 @@ namespace adm {
       node.addAttribute<ProfileVersion>(&profile, "profileVersion");
       node.addAttribute<ProfileLevel>(&profile, "profileLevel");
     }
+
+    void formatTagList(XmlNode &node, const TagList &tagList) {
+      node.addVectorElements<TagGroups>(&tagList, "tagGroup", &formatTagGroup);
+    }
+
+    void formatTagGroup(XmlNode &node, const TagGroup &tagGroup) {
+      node.addVectorElements<Tags>(&tagGroup, "tag", &formatTag);
+      node.addReferences<AudioProgramme, AudioProgrammeId>(
+          &tagGroup, "audioProgrammeIDRef");
+      node.addReferences<AudioContent, AudioContentId>(&tagGroup,
+                                                       "audioContentIDRef");
+      node.addReferences<AudioObject, AudioObjectId>(&tagGroup,
+                                                     "audioObjectIDRef");
+    }
+
+    void formatTag(XmlNode &node, const Tag &tag) {
+      node.setValue(tag.get<TagValue>());
+      node.addOptionalAttribute<TagClass>(&tag, "class");
+    }
+
   }  // namespace xml
 }  // namespace adm

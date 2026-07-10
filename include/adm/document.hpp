@@ -20,19 +20,29 @@ namespace adm {
   namespace detail {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<Version>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<TagList>;
+    extern template class ADM_EXPORT_TEMPLATE_METHODS
+        OptionalParameter<ProfileList>;
 
-    using DocumentBase = HasParameters<OptionalParameter<Version>>;
+    using DocumentBase =
+        HasParameters<OptionalParameter<Version>, OptionalParameter<TagList>,
+                      OptionalParameter<ProfileList>>;
   }  // namespace detail
 
   /**
    * @brief Class representation of a whole ADM document
    *
    * \rst
-   * +---------------+-----------------+----------------------------+
-   * | ADM Parameter | Parameter Type  | Pattern Type               |
-   * +===============+=================+============================+
-   * | version       | :type:`Version` | :class:`OptionalParameter` |
-   * +---------------+-----------------+----------------------------+
+   * +---------------+---------------------+----------------------------+
+   * | ADM Parameter | Parameter Type      | Pattern Type               |
+   * +===============+=====================+============================+
+   * | version       | :type:`Version`     | :class:`OptionalParameter` |
+   * +---------------+---------------------+----------------------------+
+   * | tagList       | :type:`TagList`     | :class:`OptionalParameter` |
+   * +---------------+---------------------+----------------------------+
+   * | profileList   | :type:`ProfileList` | :class:`OptionalParameter` |
+   * +---------------+---------------------+----------------------------+
    * \endrst
    *
    * Note that:
@@ -236,6 +246,23 @@ namespace adm {
     using detail::AddWrapperMethods<Document>::isDefault;
     using detail::AddWrapperMethods<Document>::unset;
 
+    /**
+     * @brief Set the document's tagList.
+     *
+     * Each TagGroup's audioProgramme/audioContent/audioObject references are
+     * validated against the document:
+     *   * if a referenced element already belongs to a *different* document,
+     *     the document is left unmodified and `false` is returned;
+     *   * if a referenced element is not yet attached to any document, it is
+     *     added to this document (mirroring the auto-add behaviour of
+     *     `Document::add(...)` for nested references);
+     *   * elements already belonging to this document are left untouched.
+     *
+     * @return `true` on success, `false` if any reference belongs to another
+     * document.
+     */
+    ADM_EXPORT bool set(TagList tagList);
+
    private:
     ADM_EXPORT Document();
     ADM_EXPORT Document(const Document &) = default;
@@ -316,5 +343,4 @@ namespace adm {
     typedef typename detail::ParameterTraits<Element>::tag Tag;
     return getElements(Tag());
   }
-
 }  // namespace adm

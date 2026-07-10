@@ -381,7 +381,7 @@ namespace adm {
       return previous == 0u || current == previous.get() + 1u;
     }
   }
-
+  
   template <typename BlockFormat>
   void AudioChannelFormat::assignId(BlockFormat &blockFormat,
                                     BlockFormat *previousBlock) {
