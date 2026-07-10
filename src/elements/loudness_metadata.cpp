@@ -45,6 +45,10 @@ namespace adm {
       detail::ParameterTraits<DialogueLoudness>::tag) const {
     return dialogueLoudness_.get();
   }
+  LoudnessRenderer LoudnessMetadata::get(
+      detail::ParameterTraits<LoudnessRenderer>::tag) const {
+    return renderer_.get();
+  }
 
   // ---- Has ---- //
   bool LoudnessMetadata::has(
@@ -80,6 +84,10 @@ namespace adm {
       detail::ParameterTraits<DialogueLoudness>::tag) const {
     return dialogueLoudness_ != boost::none;
   }
+  bool LoudnessMetadata::has(
+      detail::ParameterTraits<LoudnessRenderer>::tag) const {
+    return renderer_ != boost::none;
+  }
 
   // ---- Setter ---- //
   void LoudnessMetadata::set(LoudnessMethod loudnessMethod) {
@@ -108,6 +116,9 @@ namespace adm {
   }
   void LoudnessMetadata::set(DialogueLoudness dialogueLoudness) {
     dialogueLoudness_ = dialogueLoudness;
+  }
+  void LoudnessMetadata::set(LoudnessRenderer renderer) {
+    renderer_ = std::move(renderer);
   }
 
   // ---- Unsetter ---- //
@@ -139,6 +150,9 @@ namespace adm {
   }
   void LoudnessMetadata::unset(detail::ParameterTraits<DialogueLoudness>::tag) {
     dialogueLoudness_ = boost::none;
+  }
+  void LoudnessMetadata::unset(detail::ParameterTraits<LoudnessRenderer>::tag) {
+    renderer_ = boost::none;
   }
 
   void LoudnessMetadata::print(std::ostream& os) const {

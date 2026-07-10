@@ -93,6 +93,20 @@ namespace adm {
       // clang-format on
     }
 
+    void formatLoudnessRenderer(XmlNode &node,
+                                const LoudnessRenderer &renderer) {
+      node.addOptionalAttribute<RendererUri>(&renderer, "uri");
+      node.addOptionalAttribute<RendererName>(&renderer, "name");
+      node.addOptionalAttribute<RendererVersion>(&renderer, "version");
+      node.addOptionalAttribute<CoordinateMode>(&renderer, "coordinateMode");
+      for (auto const &packId : renderer.get<RendererPackFormatIdRefs>()) {
+        node.addElement("audioPackFormatIDRef", formatId(packId));
+      }
+      for (auto const &objectId : renderer.get<RendererObjectIdRefs>()) {
+        node.addElement("audioObjectIDRef", formatId(objectId));
+      }
+    }
+
     void formatLoudnessMetadata(XmlNode &node,
                                 const LoudnessMetadata loudnessMetadata) {
       node.addOptionalAttribute<LoudnessMethod>(&loudnessMetadata,
@@ -110,6 +124,8 @@ namespace adm {
       node.addOptionalElement<MaxShortTerm>(&loudnessMetadata, "maxShortTerm");
       node.addOptionalElement<DialogueLoudness>(&loudnessMetadata,
                                                 "dialogueLoudness");
+      node.addOptionalElement<LoudnessRenderer>(&loudnessMetadata, "renderer",
+                                                &formatLoudnessRenderer);
     }
 
     void formatAudioContent(XmlNode &node,

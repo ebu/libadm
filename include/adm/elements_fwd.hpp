@@ -47,5 +47,6 @@ namespace adm {
   class AudioTrackUidId;
 
   class LoudnessMetadata;
+  class LoudnessRenderer;
   class AudioProgrammeReferenceScreen;
 }  // namespace adm

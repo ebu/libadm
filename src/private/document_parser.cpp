@@ -1072,6 +1072,26 @@ namespace adm {
       return jumpPosition;
     }
 
+    LoudnessRenderer parseLoudnessRenderer(NodePtr node) {
+      LoudnessRenderer renderer;
+      setOptionalAttribute<RendererUri>(node, "uri", renderer);
+      setOptionalAttribute<RendererName>(node, "name", renderer);
+      setOptionalAttribute<RendererVersion>(node, "version", renderer);
+      setOptionalAttribute<CoordinateMode>(node, "coordinateMode", renderer);
+      RendererPackFormatIdRefs packRefs;
+      for (auto& packNode :
+           detail::findElements(node, "audioPackFormatIDRef")) {
+        packRefs.push_back(parseAudioPackFormatId(packNode->value()));
+      }
+      if (!packRefs.empty()) renderer.set(std::move(packRefs));
+      RendererObjectIdRefs objectRefs;
+      for (auto& objectNode : detail::findElements(node, "audioObjectIDRef")) {
+        objectRefs.push_back(parseAudioObjectId(objectNode->value()));
+      }
+      if (!objectRefs.empty()) renderer.set(std::move(objectRefs));
+      return renderer;
+    }
+
     LoudnessMetadata parseLoudnessMetadata(NodePtr node) {
       LoudnessMetadata loudnessMetadata;
       setOptionalAttribute<LoudnessMethod>(node, "loudnessMethod",
@@ -1089,6 +1109,8 @@ namespace adm {
       setOptionalElement<MaxShortTerm>(node, "maxShortTerm", loudnessMetadata);
       setOptionalElement<DialogueLoudness>(node, "dialogueLoudness",
                                            loudnessMetadata);
+      setOptionalElement<LoudnessRenderer>(node, "renderer", loudnessMetadata,
+                                           &parseLoudnessRenderer);
       return loudnessMetadata;
     }
 

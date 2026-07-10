@@ -3,6 +3,7 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/auto_base.hpp"
 #include "adm/detail/optional_comparison.hpp"
+#include "adm/elements/loudness_renderer.hpp"
 #include "adm/export.h"
 #include <boost/optional.hpp>
 #include <string>
@@ -115,6 +116,8 @@ namespace adm {
     ADM_EXPORT void set(MaxShortTerm maxShortTerm);
     /// @brief DialogueLoudness setter
     ADM_EXPORT void set(DialogueLoudness dialogueLoudness);
+    /// @brief LoudnessRenderer setter
+    ADM_EXPORT void set(LoudnessRenderer renderer);
 
     /**
      * @brief ADM parameter unset template
@@ -149,6 +152,8 @@ namespace adm {
         get(detail::ParameterTraits<MaxShortTerm>::tag) const;
     ADM_EXPORT DialogueLoudness
         get(detail::ParameterTraits<DialogueLoudness>::tag) const;
+    ADM_EXPORT LoudnessRenderer
+        get(detail::ParameterTraits<LoudnessRenderer>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<LoudnessMethod>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<LoudnessRecType>::tag) const;
@@ -160,6 +165,7 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<MaxMomentary>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<MaxShortTerm>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<DialogueLoudness>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<LoudnessRenderer>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -175,6 +181,7 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<MaxMomentary>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<MaxShortTerm>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<DialogueLoudness>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<LoudnessRenderer>::tag);
 
     boost::optional<LoudnessMethod> loudnessMethod_;
     boost::optional<LoudnessRecType> loudnessRecType_;
@@ -185,6 +192,7 @@ namespace adm {
     boost::optional<MaxMomentary> maxMomentary_;
     boost::optional<MaxShortTerm> maxShortTerm_;
     boost::optional<DialogueLoudness> dialogueLoudness_;
+    boost::optional<LoudnessRenderer> renderer_;
   };
 
   // ---- Implementation ---- //

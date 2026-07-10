@@ -44,6 +44,7 @@ add_library(adm
   elements/jump_position.cpp
   elements/label.cpp
   elements/loudness_metadata.cpp
+  elements/loudness_renderer.cpp
   elements/object_divergence.cpp
   elements/position.cpp
   elements/position_offset.cpp
