@@ -4,6 +4,8 @@
 #include "adm/detail/named_type_validators.hpp"
 #include "adm/errors.hpp"
 
+#include <algorithm>
+
 namespace adm {
   namespace xml {
 
@@ -111,6 +113,9 @@ namespace adm {
         resolveReference(streamFormatChannelFormatRef_);
         resolveReference(streamFormatPackFormatRef_);
         resolveReferences(streamFormatTrackFormatRefs_);
+        resolveProgrammeAuthoringRendererReferences();
+        resolveProgrammeLoudnessRendererReferences();
+        resolveContentLoudnessRendererReferences();
 
         // add other ADM elements to ADM document
         for (NodePtr node = root->first_node(); node;
@@ -235,10 +240,46 @@ namespace adm {
 
       setOptionalMultiElement<LoudnessMetadatas>(node, "loudnessMetadata", audioProgramme, &parseLoudnessMetadatas);
       setOptionalElement<AudioProgrammeReferenceScreen>(node, "audioProgrammeReferenceScreen", audioProgramme, &parseAudioProgrammeReferenceScreen);
+      setOptionalElement<AuthoringInformation>(node, "authoringInformation", audioProgramme, &parseAuthoringInformation);
 
       addOptionalReferences<AudioContentId>(node, "audioContentIDRef", audioProgramme, programmeContentRefs_, &parseAudioContentId);
 
       addOptionalElements<Label>(node, "audioProgrammeLabel", audioProgramme, &parseLabel);
+
+      if (auto authoringNode = detail::findElement(node, "authoringInformation")) {
+        std::vector<std::vector<AudioPackFormatId>> rendererPackFormatIds;
+        for (auto& rendererNode : detail::findElements(authoringNode, "renderer")) {
+          std::vector<AudioPackFormatId> packFormatIds;
+          for (auto& packNode : detail::findElements(rendererNode, "audioPackFormatIDRef")) {
+            packFormatIds.push_back(parseAudioPackFormatId(packNode->value()));
+          }
+          rendererPackFormatIds.push_back(std::move(packFormatIds));
+        }
+        if (!rendererPackFormatIds.empty()) {
+          programmeAuthoringRendererPackFormatRefs_[audioProgramme] =
+              std::move(rendererPackFormatIds);
+        }
+      }
+
+      auto loudnessMetadataNodes = detail::findElements(node, "loudnessMetadata");
+      if (!loudnessMetadataNodes.empty()) {
+        std::vector<RendererNestedIds> loudnessRendererRefs;
+        loudnessRendererRefs.reserve(loudnessMetadataNodes.size());
+        for (auto& loudnessNode : loudnessMetadataNodes) {
+          RendererNestedIds refs;
+          if (auto rendererNode = detail::findElement(loudnessNode, "renderer")) {
+            for (auto& packNode : detail::findElements(rendererNode, "audioPackFormatIDRef")) {
+              refs.packFormatIds.push_back(parseAudioPackFormatId(packNode->value()));
+            }
+            for (auto& objectNode : detail::findElements(rendererNode, "audioObjectIDRef")) {
+              refs.objectIds.push_back(parseAudioObjectId(objectNode->value()));
+            }
+          }
+          loudnessRendererRefs.push_back(std::move(refs));
+        }
+        programmeLoudnessRendererRefs_[audioProgramme] =
+            std::move(loudnessRendererRefs);
+      }
       // clang-format on
       return audioProgramme;
     }
@@ -261,6 +302,26 @@ namespace adm {
       addOptionalReferences<AudioObjectId>(node, "audioObjectIDRef", audioContent, contentObjectRefs_, &parseAudioObjectId);
 
       addOptionalElements<Label>(node, "audioContentLabel", audioContent, &parseLabel);
+
+      auto loudnessMetadataNodes = detail::findElements(node, "loudnessMetadata");
+      if (!loudnessMetadataNodes.empty()) {
+        std::vector<RendererNestedIds> loudnessRendererRefs;
+        loudnessRendererRefs.reserve(loudnessMetadataNodes.size());
+        for (auto& loudnessNode : loudnessMetadataNodes) {
+          RendererNestedIds refs;
+          if (auto rendererNode = detail::findElement(loudnessNode, "renderer")) {
+            for (auto& packNode : detail::findElements(rendererNode, "audioPackFormatIDRef")) {
+              refs.packFormatIds.push_back(parseAudioPackFormatId(packNode->value()));
+            }
+            for (auto& objectNode : detail::findElements(rendererNode, "audioObjectIDRef")) {
+              refs.objectIds.push_back(parseAudioObjectId(objectNode->value()));
+            }
+          }
+          loudnessRendererRefs.push_back(std::move(refs));
+        }
+        contentLoudnessRendererRefs_[audioContent] =
+            std::move(loudnessRendererRefs);
+      }
       // clang-format on
       return audioContent;
     }
@@ -410,6 +471,158 @@ namespace adm {
           else
             throw error::XmlParsingUnresolvedReference(formatId(id));
         }
+      }
+    }
+
+    void DocumentParser::resolveProgrammeAuthoringRendererReferences() {
+      for (auto const& entry : programmeAuthoringRendererPackFormatRefs_) {
+        auto const& programme = entry.first;
+        auto const& rendererPackIds = entry.second;
+        if (!programme->has<AuthoringInformation>()) {
+          continue;
+        }
+
+        auto info = programme->get<AuthoringInformation>();
+        if (!info.has<Renderers>()) {
+          continue;
+        }
+
+        auto renderers = info.get<Renderers>();
+        auto count = std::min(renderers.size(), rendererPackIds.size());
+        for (size_t i = 0; i < count; ++i) {
+          auto& renderer = renderers.at(i);
+          auto const& ids = rendererPackIds.at(i);
+          if (ids.empty()) {
+            continue;
+          }
+
+          RendererPackFormatIdRefs refs;
+          refs.reserve(ids.size());
+          for (auto const& id : ids) {
+            if (auto element = idMap_.lookup(id)) {
+              refs.push_back(element);
+            } else {
+              throw error::XmlParsingUnresolvedReference(formatId(id));
+            }
+          }
+          if (!refs.empty()) {
+            renderer.set(std::move(refs));
+          }
+        }
+        info.set(std::move(renderers));
+        programme->set(std::move(info));
+      }
+    }
+
+    void DocumentParser::resolveProgrammeLoudnessRendererReferences() {
+      for (auto const& entry : programmeLoudnessRendererRefs_) {
+        auto const& programme = entry.first;
+        auto const& rendererIds = entry.second;
+        if (!programme->has<LoudnessMetadatas>()) {
+          continue;
+        }
+
+        auto loudnessMetadatas = programme->get<LoudnessMetadatas>();
+        auto count = std::min(loudnessMetadatas.size(), rendererIds.size());
+        for (size_t i = 0; i < count; ++i) {
+          auto& loudnessMetadata = loudnessMetadatas.at(i);
+          if (!loudnessMetadata.has<LoudnessRenderer>()) {
+            continue;
+          }
+
+          auto renderer = loudnessMetadata.get<LoudnessRenderer>();
+          auto const& ids = rendererIds.at(i);
+
+          if (!ids.packFormatIds.empty()) {
+            RendererPackFormatIdRefs packRefs;
+            packRefs.reserve(ids.packFormatIds.size());
+            for (auto const& id : ids.packFormatIds) {
+              if (auto element = idMap_.lookup(id)) {
+                packRefs.push_back(element);
+              } else {
+                throw error::XmlParsingUnresolvedReference(formatId(id));
+              }
+            }
+            if (!packRefs.empty()) {
+              renderer.set(std::move(packRefs));
+            }
+          }
+
+          if (!ids.objectIds.empty()) {
+            RendererObjectIdRefs objectRefs;
+            objectRefs.reserve(ids.objectIds.size());
+            for (auto const& id : ids.objectIds) {
+              if (auto element = idMap_.lookup(id)) {
+                objectRefs.push_back(element);
+              } else {
+                throw error::XmlParsingUnresolvedReference(formatId(id));
+              }
+            }
+            if (!objectRefs.empty()) {
+              renderer.set(std::move(objectRefs));
+            }
+          }
+
+          loudnessMetadata.set(std::move(renderer));
+        }
+
+        programme->set(std::move(loudnessMetadatas));
+      }
+    }
+
+    void DocumentParser::resolveContentLoudnessRendererReferences() {
+      for (auto const& entry : contentLoudnessRendererRefs_) {
+        auto const& content = entry.first;
+        auto const& rendererIds = entry.second;
+        if (!content->has<LoudnessMetadatas>()) {
+          continue;
+        }
+
+        auto loudnessMetadatas = content->get<LoudnessMetadatas>();
+        auto count = std::min(loudnessMetadatas.size(), rendererIds.size());
+        for (size_t i = 0; i < count; ++i) {
+          auto& loudnessMetadata = loudnessMetadatas.at(i);
+          if (!loudnessMetadata.has<LoudnessRenderer>()) {
+            continue;
+          }
+
+          auto renderer = loudnessMetadata.get<LoudnessRenderer>();
+          auto const& ids = rendererIds.at(i);
+
+          if (!ids.packFormatIds.empty()) {
+            RendererPackFormatIdRefs packRefs;
+            packRefs.reserve(ids.packFormatIds.size());
+            for (auto const& id : ids.packFormatIds) {
+              if (auto element = idMap_.lookup(id)) {
+                packRefs.push_back(element);
+              } else {
+                throw error::XmlParsingUnresolvedReference(formatId(id));
+              }
+            }
+            if (!packRefs.empty()) {
+              renderer.set(std::move(packRefs));
+            }
+          }
+
+          if (!ids.objectIds.empty()) {
+            RendererObjectIdRefs objectRefs;
+            objectRefs.reserve(ids.objectIds.size());
+            for (auto const& id : ids.objectIds) {
+              if (auto element = idMap_.lookup(id)) {
+                objectRefs.push_back(element);
+              } else {
+                throw error::XmlParsingUnresolvedReference(formatId(id));
+              }
+            }
+            if (!objectRefs.empty()) {
+              renderer.set(std::move(objectRefs));
+            }
+          }
+
+          loudnessMetadata.set(std::move(renderer));
+        }
+
+        content->set(std::move(loudnessMetadatas));
       }
     }
 
@@ -1072,23 +1285,17 @@ namespace adm {
       return jumpPosition;
     }
 
-    LoudnessRenderer parseLoudnessRenderer(NodePtr node) {
-      LoudnessRenderer renderer;
-      setOptionalAttribute<RendererUri>(node, "uri", renderer);
+    template <typename T>
+    void setRendererCommonParameters(NodePtr node, T& renderer) {
       setOptionalAttribute<RendererName>(node, "name", renderer);
       setOptionalAttribute<RendererVersion>(node, "version", renderer);
       setOptionalAttribute<CoordinateMode>(node, "coordinateMode", renderer);
-      RendererPackFormatIdRefs packRefs;
-      for (auto& packNode :
-           detail::findElements(node, "audioPackFormatIDRef")) {
-        packRefs.push_back(parseAudioPackFormatId(packNode->value()));
-      }
-      if (!packRefs.empty()) renderer.set(std::move(packRefs));
-      RendererObjectIdRefs objectRefs;
-      for (auto& objectNode : detail::findElements(node, "audioObjectIDRef")) {
-        objectRefs.push_back(parseAudioObjectId(objectNode->value()));
-      }
-      if (!objectRefs.empty()) renderer.set(std::move(objectRefs));
+    }
+
+    LoudnessRenderer parseLoudnessRenderer(NodePtr node) {
+      LoudnessRenderer renderer;
+      setRendererCommonParameters(node, renderer);
+      setOptionalAttribute<RendererUri>(node, "uri", renderer);
       return renderer;
     }
 
@@ -1146,8 +1353,38 @@ namespace adm {
     }
 
     AudioProgrammeReferenceScreen parseAudioProgrammeReferenceScreen(
-        NodePtr /* node */) {
-      return AudioProgrammeReferenceScreen();
+        NodePtr node) {
+      AudioProgrammeReferenceScreen screen;
+      setOptionalAttribute<CoordinateMode>(node, "coordinateMode", screen);
+      return screen;
+    }
+
+    Renderer parseRenderer(NodePtr node) {
+      auto uri = parseAttribute<RendererUri>(node, "uri");
+      Renderer renderer{uri};
+      setRendererCommonParameters(node, renderer);
+      return renderer;
+    }
+
+    ReferenceLayout parseReferenceLayout(NodePtr node) {
+      auto packNode = detail::findElement(node, "audioPackFormatIDRef");
+      if (!packNode) {
+        throw error::XmlParsingError(
+            "referenceLayout requires an audioPackFormatIDRef child",
+            getDocumentLine(node));
+      }
+      return ReferenceLayout(parseAudioPackFormatId(packNode->value()));
+    }
+
+    AuthoringInformation parseAuthoringInformation(NodePtr node) {
+      AuthoringInformation info;
+      for (auto& layoutNode : detail::findElements(node, "referenceLayout")) {
+        info.add(parseReferenceLayout(layoutNode));
+      }
+      for (auto& rendererNode : detail::findElements(node, "renderer")) {
+        info.add(parseRenderer(rendererNode));
+      }
+      return info;
     }
 
     AudioBlockFormatHoa parseAudioBlockFormatHoa(

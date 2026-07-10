@@ -78,6 +78,44 @@ namespace adm {
 
     }  // namespace detail
 
+    void formatAudioProgrammeReferenceScreen(
+        XmlNode &node, const AudioProgrammeReferenceScreen &screen) {
+      node.addOptionalAttribute<CoordinateMode>(&screen, "coordinateMode");
+    }
+
+    template <typename T>
+    void formatRendererCommon(XmlNode &node, const T &renderer) {
+      node.addOptionalAttribute<RendererUri>(&renderer, "uri");
+      node.addOptionalAttribute<RendererName>(&renderer, "name");
+      node.addOptionalAttribute<RendererVersion>(&renderer, "version");
+      node.addOptionalAttribute<CoordinateMode>(&renderer, "coordinateMode");
+      for (auto const &packRef :
+           renderer.template get<RendererPackFormatIdRefs>()) {
+        node.addElement("audioPackFormatIDRef",
+                        formatId(packRef->template get<AudioPackFormatId>()));
+      }
+    }
+
+    void formatRenderer(XmlNode &node, const Renderer &renderer) {
+      formatRendererCommon(node, renderer);
+    }
+
+    void formatReferenceLayout(XmlNode &node, const ReferenceLayout &layout) {
+      node.addElement("audioPackFormatIDRef", formatId(layout.get()));
+    }
+
+    void formatAuthoringInformation(XmlNode &node,
+                                    const AuthoringInformation &info) {
+      for (auto const &layout : info.get<ReferenceLayouts>()) {
+        auto layoutNode = node.addNode("referenceLayout");
+        formatReferenceLayout(layoutNode, layout);
+      }
+      for (auto const &renderer : info.get<Renderers>()) {
+        auto rendererNode = node.addNode("renderer");
+        formatRenderer(rendererNode, renderer);
+      }
+    }
+
     void formatAudioProgramme(
         XmlNode &node, const std::shared_ptr<const AudioProgramme> programme) {
       // clang-format off
@@ -89,21 +127,18 @@ namespace adm {
       node.addOptionalAttribute<MaxDuckingDepth>(programme, "maxDuckingDepth");
       node.addReferences<AudioContent, AudioContentId>(programme, "audioContentIDRef");
       node.addVectorElements<LoudnessMetadatas>(programme, "loudnessMetadata", &formatLoudnessMetadata);
+      node.addOptionalElement<AuthoringInformation>(programme, "authoringInformation", &formatAuthoringInformation);
+      node.addOptionalElement<AudioProgrammeReferenceScreen>(programme, "audioProgrammeReferenceScreen", &formatAudioProgrammeReferenceScreen);
       node.addVectorElements<Labels>(programme, "audioProgrammeLabel", &formatLabel);
       // clang-format on
     }
 
     void formatLoudnessRenderer(XmlNode &node,
                                 const LoudnessRenderer &renderer) {
-      node.addOptionalAttribute<RendererUri>(&renderer, "uri");
-      node.addOptionalAttribute<RendererName>(&renderer, "name");
-      node.addOptionalAttribute<RendererVersion>(&renderer, "version");
-      node.addOptionalAttribute<CoordinateMode>(&renderer, "coordinateMode");
-      for (auto const &packId : renderer.get<RendererPackFormatIdRefs>()) {
-        node.addElement("audioPackFormatIDRef", formatId(packId));
-      }
-      for (auto const &objectId : renderer.get<RendererObjectIdRefs>()) {
-        node.addElement("audioObjectIDRef", formatId(objectId));
+      formatRendererCommon(node, renderer);
+      for (auto const &objectRef : renderer.get<RendererObjectIdRefs>()) {
+        node.addElement("audioObjectIDRef",
+                        formatId(objectRef->get<AudioObjectId>()));
       }
     }
 

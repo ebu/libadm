@@ -13,6 +13,8 @@
             </renderer>
           </loudnessMetadata>
         </audioProgramme>
+        <audioObject audioObjectID="AO_1001" audioObjectName="Object 1"/>
+        <audioObject audioObjectID="AO_1002" audioObjectName="Object 2"/>
       </audioFormatExtended>
     </format>
   </coreMetadata>

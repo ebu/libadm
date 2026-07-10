@@ -1,4 +1,5 @@
 #include "adm/elements/loudness_metadata.hpp"
+#include "adm/elements/authoring_information.hpp"
 
 #include <iomanip>
 
@@ -119,6 +120,9 @@ namespace adm {
   }
   void LoudnessMetadata::set(LoudnessRenderer renderer) {
     renderer_ = std::move(renderer);
+  }
+  void LoudnessMetadata::set(Renderer renderer) {
+    renderer_ = renderer.toLoudnessRenderer();
   }
 
   // ---- Unsetter ---- //

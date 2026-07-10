@@ -45,6 +45,10 @@ namespace adm {
       detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag) const {
     return refScreen_.get();
   }
+  AuthoringInformation AudioProgramme::get(
+      detail::ParameterTraits<AuthoringInformation>::tag) const {
+    return authoringInformation_.get();
+  }
 
   // ---- Has ---- //
   bool AudioProgramme::has(
@@ -72,6 +76,10 @@ namespace adm {
   bool AudioProgramme::has(
       detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag) const {
     return refScreen_ != boost::none;
+  }
+  bool AudioProgramme::has(
+      detail::ParameterTraits<AuthoringInformation>::tag) const {
+    return authoringInformation_ != boost::none;
   }
 
   // ---- isDefault ---- //
@@ -101,6 +109,9 @@ namespace adm {
   void AudioProgramme::set(AudioProgrammeReferenceScreen refScreen) {
     refScreen_ = refScreen;
   }
+  void AudioProgramme::set(AuthoringInformation authoringInformation) {
+    authoringInformation_ = std::move(authoringInformation);
+  }
 
   // ---- Unsetter ---- //
   void AudioProgramme::unset(
@@ -119,6 +130,10 @@ namespace adm {
   void AudioProgramme::unset(
       detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag) {
     refScreen_ = boost::none;
+  }
+  void AudioProgramme::unset(
+      detail::ParameterTraits<AuthoringInformation>::tag) {
+    authoringInformation_ = boost::none;
   }
 
   // ---- References ---- //

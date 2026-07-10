@@ -49,6 +49,7 @@
 
 #include "adm/elements/time.hpp"
 #include "adm/elements/audio_programme_ref_screen.hpp"
+#include "adm/elements/authoring_information.hpp"
 #include "adm/elements/cartesian.hpp"
 #include "adm/elements/channel_lock.hpp"
 #include "adm/elements/dialogue.hpp"

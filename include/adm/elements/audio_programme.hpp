@@ -9,6 +9,7 @@
 #include "adm/elements/audio_content.hpp"
 #include "adm/elements/audio_programme_id.hpp"
 #include "adm/elements/audio_programme_ref_screen.hpp"
+#include "adm/elements/authoring_information.hpp"
 #include "adm/elements/loudness_metadata.hpp"
 #include "adm/elements_fwd.hpp"
 #include "adm/helper/element_range.hpp"
@@ -158,6 +159,8 @@ namespace adm {
     ADM_EXPORT void set(MaxDuckingDepth depth);
     /// @brief AudioProgrammeReferenceScreen setter
     ADM_EXPORT void set(AudioProgrammeReferenceScreen refScreen);
+    /// @brief AuthoringInformation setter
+    ADM_EXPORT void set(AuthoringInformation authoringInformation);
 
     /**
      * @brief ADM parameter unset template
@@ -237,6 +240,8 @@ namespace adm {
         get(detail::ParameterTraits<MaxDuckingDepth>::tag) const;
     ADM_EXPORT AudioProgrammeReferenceScreen
         get(detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag) const;
+    ADM_EXPORT AuthoringInformation
+        get(detail::ParameterTraits<AuthoringInformation>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<AudioProgrammeId>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<AudioProgrammeName>::tag) const;
@@ -247,6 +252,8 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<MaxDuckingDepth>::tag) const;
     ADM_EXPORT bool has(
         detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag) const;
+    ADM_EXPORT bool has(
+        detail::ParameterTraits<AuthoringInformation>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -261,6 +268,7 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<MaxDuckingDepth>::tag);
     ADM_EXPORT void unset(
         detail::ParameterTraits<AudioProgrammeReferenceScreen>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<AuthoringInformation>::tag);
 
     ADM_EXPORT ElementRange<const AudioContent> getReferences(
         detail::ParameterTraits<AudioContent>::tag) const;
@@ -283,6 +291,7 @@ namespace adm {
     std::vector<std::shared_ptr<AudioContent>> audioContents_;
     boost::optional<MaxDuckingDepth> maxDuckingDepth_;
     boost::optional<AudioProgrammeReferenceScreen> refScreen_;
+    boost::optional<AuthoringInformation> authoringInformation_;
   };
   ///@}
 

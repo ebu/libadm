@@ -12,6 +12,8 @@
 
 namespace adm {
 
+  class Renderer;
+
   /// @brief Tag for NamedType ::LoudnessMethod
   struct loudnessMethodTag {};
   /// @brief NamedType for loudnessMethod parameter
@@ -118,6 +120,8 @@ namespace adm {
     ADM_EXPORT void set(DialogueLoudness dialogueLoudness);
     /// @brief LoudnessRenderer setter
     ADM_EXPORT void set(LoudnessRenderer renderer);
+    /// @brief Renderer setter (converted to LoudnessRenderer)
+    ADM_EXPORT void set(Renderer renderer);
 
     /**
      * @brief ADM parameter unset template

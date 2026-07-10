@@ -3,6 +3,119 @@
 
 namespace adm {
 
+  namespace {
+    RendererPackFormatIdRefs remapPackFormatRefs(
+        RendererPackFormatIdRefs const& refs, ElementMapping const& mapping) {
+      RendererPackFormatIdRefs remapped;
+      remapped.reserve(refs.size());
+      for (auto const& ref : refs) {
+        auto it = mapping.audioPackFormat.find(ref);
+        if (it != mapping.audioPackFormat.end()) {
+          remapped.push_back(it->second);
+        } else {
+          remapped.push_back(ref);
+        }
+      }
+      return remapped;
+    }
+
+    RendererObjectIdRefs remapObjectRefs(RendererObjectIdRefs const& refs,
+                                         ElementMapping const& mapping) {
+      RendererObjectIdRefs remapped;
+      remapped.reserve(refs.size());
+      for (auto const& ref : refs) {
+        auto it = mapping.audioObject.find(ref);
+        if (it != mapping.audioObject.end()) {
+          remapped.push_back(it->second);
+        } else {
+          remapped.push_back(ref);
+        }
+      }
+      return remapped;
+    }
+
+    void remapAuthoringRendererReferences(
+        std::shared_ptr<AudioProgramme> const& programme,
+        ElementMapping const& mapping) {
+      if (!programme->has<AuthoringInformation>()) {
+        return;
+      }
+
+      auto info = programme->get<AuthoringInformation>();
+      if (!info.has<Renderers>()) {
+        return;
+      }
+
+      auto renderers = info.get<Renderers>();
+      bool changed = false;
+      for (auto& renderer : renderers) {
+        if (!renderer.has<RendererPackFormatIdRefs>()) {
+          continue;
+        }
+
+        auto remapped = remapPackFormatRefs(
+            renderer.get<RendererPackFormatIdRefs>(), mapping);
+        if (remapped.empty()) {
+          renderer.unset<RendererPackFormatIdRefs>();
+        } else {
+          renderer.set(std::move(remapped));
+        }
+        changed = true;
+      }
+
+      if (changed) {
+        info.set(std::move(renderers));
+        programme->set(std::move(info));
+      }
+    }
+
+    template <typename Owner>
+    void remapLoudnessRendererReferences(std::shared_ptr<Owner> const& owner,
+                                         ElementMapping const& mapping) {
+      if (!owner->template has<LoudnessMetadatas>()) {
+        return;
+      }
+
+      auto loudnessMetadatas = owner->template get<LoudnessMetadatas>();
+      bool changed = false;
+      for (auto& loudnessMetadata : loudnessMetadatas) {
+        if (!loudnessMetadata.template has<LoudnessRenderer>()) {
+          continue;
+        }
+
+        auto renderer = loudnessMetadata.template get<LoudnessRenderer>();
+
+        if (renderer.template has<RendererPackFormatIdRefs>()) {
+          auto remapped = remapPackFormatRefs(
+              renderer.template get<RendererPackFormatIdRefs>(), mapping);
+          if (remapped.empty()) {
+            renderer.template unset<RendererPackFormatIdRefs>();
+          } else {
+            renderer.set(std::move(remapped));
+          }
+          changed = true;
+        }
+
+        if (renderer.template has<RendererObjectIdRefs>()) {
+          auto remapped = remapObjectRefs(
+              renderer.template get<RendererObjectIdRefs>(), mapping);
+          if (remapped.empty()) {
+            renderer.template unset<RendererObjectIdRefs>();
+          } else {
+            renderer.set(std::move(remapped));
+          }
+          changed = true;
+        }
+
+        loudnessMetadata.set(std::move(renderer));
+      }
+
+      if (changed) {
+        owner->set(std::move(loudnessMetadatas));
+      }
+    }
+  }  // namespace
+
   std::vector<ElementVariant> copyAllElements(
       std::shared_ptr<const Document> document, ElementMapping& mapping) {
     std::vector<ElementVariant> copiedElements;
@@ -78,6 +191,18 @@ namespace adm {
       resolveReference(element, mapping.audioTrackUid,
                        mapping.audioChannelFormat);
     }
+
+    for (const auto& element : document->getElements<AudioProgramme>()) {
+      auto copiedProgramme = mapping.audioProgramme.at(element);
+      remapAuthoringRendererReferences(copiedProgramme, mapping);
+      remapLoudnessRendererReferences(copiedProgramme, mapping);
+    }
+
+    for (const auto& element : document->getElements<AudioContent>()) {
+      auto copiedContent = mapping.audioContent.at(element);
+      remapLoudnessRendererReferences(copiedContent, mapping);
+    }
+
     return copiedElements;
   }
 

@@ -10,6 +10,8 @@
 
 namespace adm {
 
+  class Renderer;
+
   /// @brief Tag for LoudnessRenderer class
   struct LoudnessRendererTag {};
 
@@ -55,6 +57,13 @@ namespace adm {
     using detail::AddWrapperMethods<LoudnessRenderer>::has;
     using detail::AddWrapperMethods<LoudnessRenderer>::isDefault;
     using detail::AddWrapperMethods<LoudnessRenderer>::unset;
+
+    /// @brief Create a LoudnessRenderer from an authoring Renderer.
+    ADM_EXPORT static LoudnessRenderer fromRenderer(Renderer const& renderer);
+
+    /// @brief Convert to Renderer, using provided uri and explicitly dropping audioObjectIDRef values.
+    /// uri is required as it is optional in a Loudness renderer but required in authoring renderer
+    ADM_EXPORT Renderer toRendererDroppingObjectRefs(RendererUri uri) const;
 
     ADM_EXPORT void print(std::ostream& os) const;
 

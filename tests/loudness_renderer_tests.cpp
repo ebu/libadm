@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 #include "adm/elements/loudness_renderer.hpp"
-#include "adm/elements/audio_pack_format_id.hpp"
-#include "adm/elements/audio_object_id.hpp"
+#include "adm/elements/audio_pack_format.hpp"
+#include "adm/elements/audio_object.hpp"
 
 using namespace adm;
 
@@ -41,9 +41,12 @@ TEST_CASE("loudness_renderer/set_unset") {
 
 TEST_CASE("loudness_renderer/id_refs") {
   LoudnessRenderer renderer;
-  RendererPackFormatIdRefs packs{parseAudioPackFormatId("AP_00010002")};
-  RendererObjectIdRefs objects{parseAudioObjectId("AO_1001"),
-                               parseAudioObjectId("AO_1002")};
+  auto pack = AudioPackFormat::create(AudioPackFormatName("pack"),
+                                      TypeDefinition::OBJECTS);
+  auto objectA = AudioObject::create(AudioObjectName("objectA"));
+  auto objectB = AudioObject::create(AudioObjectName("objectB"));
+  RendererPackFormatIdRefs packs{pack};
+  RendererObjectIdRefs objects{objectA, objectB};
   renderer.set(packs);
   renderer.set(objects);
 
