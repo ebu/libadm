@@ -10,6 +10,40 @@
 #include <algorithm>
 
 namespace adm {
+  namespace {
+    template <typename ContainerT, typename Predicate>
+    bool pruneIf(ContainerT& container, Predicate predicate) {
+      auto end = std::remove_if(container.begin(), container.end(), predicate);
+      if (end == container.end()) {
+        return false;
+      }
+      container.erase(end, container.end());
+      return true;
+    }
+
+    template <typename Element>
+    void pruneTagGroupsReferencing(
+        Document& document,
+        std::shared_ptr<Element> const& removedElement) {
+      if (!document.has<TagList>()) return;
+      auto list = document.get<TagList>();
+      auto groups = list.get<TagGroups>();
+      auto pruned = pruneIf(groups, [&](TagGroup const& group) {
+        auto refs = group.template getReferences<Element>();
+        return std::find(refs.begin(), refs.end(), removedElement) !=
+               refs.end();
+      });
+      if (!pruned) return;
+      if (groups.empty()) {
+        document.unset<TagList>();
+        return;
+      }
+      TagList newList;
+      for (auto& group : groups) newList.add(group);
+      document.set(newList);
+    }
+  }  // namespace
+
   namespace detail {
     template class OptionalParameter<Version>;
     template class OptionalParameter<TagList>;
@@ -33,8 +67,8 @@ namespace adm {
     copy->audioTrackFormats_.reserve(audioTrackFormats_.size());
     copy->audioTrackUids_.reserve(audioTrackUids_.size());
 
-    auto elements = copyAllElements(shared_from_this());
-    if (has<Version>()) copy->set(get<Version>());
+    ElementMapping mapping;
+    auto elements = copyAllElements(shared_from_this(), mapping);
     for (auto& e : elements) {
       if (auto v = boost::get<std::shared_ptr<AudioProgramme>>(&e)) {
         AudioProgrammeAttorney::setParent(*v, copy);
@@ -62,6 +96,7 @@ namespace adm {
         copy->audioTrackUids_.push_back(*v);
       }
     }
+    copyAuxiliary(shared_from_this(), copy, mapping);
     return copy;
   }
 
@@ -224,6 +259,7 @@ namespace adm {
     if (it != audioProgrammes_.end()) {
       audioProgrammes_.erase(it);
       AudioProgrammeAttorney::setParent(programme, {});
+      pruneTagGroupsReferencing(*this, programme);
       return true;
     }
     return false;
@@ -237,6 +273,7 @@ namespace adm {
       for (auto& audioProgramme : audioProgrammes_) {
         audioProgramme->removeReference(content);
       }
+      pruneTagGroupsReferencing(*this, content);
       return true;
     }
     return false;
@@ -253,6 +290,7 @@ namespace adm {
       for (auto& audioContent : audioContents_) {
         audioContent->removeReference(object);
       }
+      pruneTagGroupsReferencing(*this, object);
       return true;
     }
     return false;
@@ -292,6 +330,7 @@ namespace adm {
     detail::DocumentBase::set(std::move(tagList));
     return true;
   }
+
   bool Document::remove(std::shared_ptr<AudioPackFormat> packFormat) {
     auto it = std::find(audioPackFormats_.begin(), audioPackFormats_.end(),
                         packFormat);

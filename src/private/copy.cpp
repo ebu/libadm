@@ -3,22 +3,8 @@
 
 namespace adm {
 
-  struct ElementMapping {
-    // clang-format off
-    std::unordered_map<std::shared_ptr<const AudioProgramme>, std::shared_ptr<AudioProgramme>> audioProgramme;
-    std::unordered_map<std::shared_ptr<const AudioContent>, std::shared_ptr<AudioContent>> audioContent;
-    std::unordered_map<std::shared_ptr<const AudioObject>, std::shared_ptr<AudioObject>> audioObject;
-    std::unordered_map<std::shared_ptr<const AudioPackFormat>, std::shared_ptr<AudioPackFormat>> audioPackFormat;
-    std::unordered_map<std::shared_ptr<const AudioChannelFormat>, std::shared_ptr<AudioChannelFormat>> audioChannelFormat;
-    std::unordered_map<std::shared_ptr<const AudioStreamFormat>, std::shared_ptr<AudioStreamFormat>> audioStreamFormat;
-    std::unordered_map<std::shared_ptr<const AudioTrackFormat>, std::shared_ptr<AudioTrackFormat>> audioTrackFormat;
-    std::unordered_map<std::shared_ptr<const AudioTrackUid>, std::shared_ptr<AudioTrackUid>> audioTrackUid;
-    // clang-format on
-  };
-
   std::vector<ElementVariant> copyAllElements(
-      std::shared_ptr<const Document> document) {
-    ElementMapping mapping;
+      std::shared_ptr<const Document> document, ElementMapping& mapping) {
     std::vector<ElementVariant> copiedElements;
     // copy
     for (const auto& element : document->getElements<AudioProgramme>()) {
@@ -93,6 +79,49 @@ namespace adm {
                        mapping.audioChannelFormat);
     }
     return copiedElements;
+  }
+
+  std::vector<ElementVariant> copyAllElements(
+      std::shared_ptr<const Document> document) {
+    ElementMapping mapping;
+    return copyAllElements(std::move(document), mapping);
+  }
+
+  void copyAuxiliary(std::shared_ptr<const Document> src,
+                     std::shared_ptr<Document> dest,
+                     ElementMapping const& mapping) {
+    if (src->has<Version>()) dest->set(src->get<Version>());
+    if (src->has<ProfileList>()) dest->set(src->get<ProfileList>());
+    if (!src->has<TagList>()) return;
+
+    auto srcTagList = src->get<TagList>();
+    TagList newTagList;
+    for (auto const& srcGroup : srcTagList.get<TagGroups>()) {
+      // Translate each ref through the mapping. The source document is
+      // assumed valid: Document::set(TagList) and Document::remove() keep
+      // every TagGroup ref attached to the document, so it is guaranteed
+      // to be in the mapping (mirrors the assumption used by
+      // resolveReferences for ordinary cross-references). TagGroup has no
+      // default ctor, so the first translated ref seeds the new group.
+      std::unique_ptr<TagGroup> newGroup;
+      auto translate = [&](auto const& srcRefs, auto const& mappingMap) {
+        for (auto const& r : srcRefs) {
+          auto const& mapped = mappingMap.at(r);
+          if (!newGroup)
+            newGroup.reset(new TagGroup(mapped));
+          else
+            newGroup->addReference(mapped);
+        }
+      };
+      translate(srcGroup.getReferences<AudioObject>(), mapping.audioObject);
+      translate(srcGroup.getReferences<AudioContent>(), mapping.audioContent);
+      translate(srcGroup.getReferences<AudioProgramme>(),
+                mapping.audioProgramme);
+      if (!newGroup) continue;  // not possible for a valid source document
+      for (auto const& tag : srcGroup.get<Tags>()) newGroup->add(tag);
+      newTagList.add(*newGroup);
+    }
+    dest->set(std::move(newTagList));
   }
 
 }  // namespace adm

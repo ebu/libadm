@@ -10,8 +10,10 @@ namespace adm {
 
   void deepCopyTo(std::shared_ptr<const Document> src,
                   std::shared_ptr<Document> dest) {
-    auto copiedElements = copyAllElements(src);
+    ElementMapping mapping;
+    auto copiedElements = copyAllElements(src, mapping);
     addElements(copiedElements, dest);
+    copyAuxiliary(src, dest, mapping);
   }
 
 }  // namespace adm

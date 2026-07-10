@@ -9,8 +9,47 @@
 
 namespace adm {
 
+  /**
+   * @brief Per-element-kind shared_ptr mapping from a source Document's
+   * elements to their copies. Populated by `copyAllElements` and consumed
+   * by reference-resolution helpers such as `resolveReferences` and
+   * `copyAuxiliary`.
+   */
+  struct ElementMapping {
+    // clang-format off
+    std::unordered_map<std::shared_ptr<const AudioProgramme>, std::shared_ptr<AudioProgramme>> audioProgramme;
+    std::unordered_map<std::shared_ptr<const AudioContent>, std::shared_ptr<AudioContent>> audioContent;
+    std::unordered_map<std::shared_ptr<const AudioObject>, std::shared_ptr<AudioObject>> audioObject;
+    std::unordered_map<std::shared_ptr<const AudioPackFormat>, std::shared_ptr<AudioPackFormat>> audioPackFormat;
+    std::unordered_map<std::shared_ptr<const AudioChannelFormat>, std::shared_ptr<AudioChannelFormat>> audioChannelFormat;
+    std::unordered_map<std::shared_ptr<const AudioStreamFormat>, std::shared_ptr<AudioStreamFormat>> audioStreamFormat;
+    std::unordered_map<std::shared_ptr<const AudioTrackFormat>, std::shared_ptr<AudioTrackFormat>> audioTrackFormat;
+    std::unordered_map<std::shared_ptr<const AudioTrackUid>, std::shared_ptr<AudioTrackUid>> audioTrackUid;
+    // clang-format on
+  };
+
   std::vector<ElementVariant> copyAllElements(
       std::shared_ptr<const Document> document);
+
+  /**
+   * @brief Like `copyAllElements`, but also reports the source-to-copy
+   * mapping for every element kind, so callers can translate references
+   * stored in document-level parameters (e.g. tagList).
+   */
+  std::vector<ElementVariant> copyAllElements(
+      std::shared_ptr<const Document> document, ElementMapping& mapping);
+
+  /**
+   * @brief Copy document-level auxiliary parameters (ProfileList, TagList)
+   * from `src` to `dest`, translating any element references in the
+   * TagList through `mapping`.
+   *
+   * Must be called *after* the copied elements have been added to `dest`,
+   * so that `Document::set(TagList)` can adopt them via paternity checks.
+   */
+  void copyAuxiliary(std::shared_ptr<const Document> src,
+                     std::shared_ptr<Document> dest,
+                     ElementMapping const& mapping);
 
   template <typename C>
   class AddTo : public boost::static_visitor<> {

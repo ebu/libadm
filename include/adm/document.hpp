@@ -96,6 +96,12 @@ namespace adm {
      *
      * References from and to the ADM element will automatically be removed
      * too.
+     *
+     * Additional side effects:
+     * - removing an AudioProgramme, AudioContent, or AudioObject prunes
+     *   TagGroup entries in tagList that reference the removed element
+     * - If the TagList becomes empty due to pruning, the list itself is
+     *   removed as it is only valid when it contains 1 or more TagGroups
      */
     ///@{
     /// @brief Remove an AudioProgramme
