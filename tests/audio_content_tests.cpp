@@ -40,10 +40,15 @@ TEST_CASE("audio_content parameters") {
     SECTION("NonDialog") {
       check_optional_param<NonDialogueContentKind>(
           audioContent, canBeSetTo(NonDialogueContent::EFFECT));
+      check_optional_param<NonDialogueContentKind>(
+          audioContent, canBeSetTo(NonDialogueContent::MUSIC_AND_EFFECTS));
     }
     SECTION("Mixed") {
       check_optional_param<MixedContentKind>(
           audioContent, canBeSetTo(MixedContent::HEARING_IMPAIRED));
+      check_optional_param<MixedContentKind>(
+          audioContent,
+          canBeSetTo(MixedContent::COMPLETE_MAIN_HEARING_IMPAIRED_AD));
     }
   }
   SECTION("LoudnessMetadatas") {
