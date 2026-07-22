@@ -26,8 +26,8 @@ TEST_CASE("authoring_information/add_reference_layout") {
 
 TEST_CASE("authoring_information/add_renderer") {
   AuthoringInformation info;
-  Renderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer"),
-                    CoordinateMode("polar")};
+  AuthoringRenderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer"),
+                             CoordinateMode("polar")};
   auto packA = AudioPackFormat::create(AudioPackFormatName("packA"),
                                        TypeDefinition::OBJECTS);
   auto packB = AudioPackFormat::create(AudioPackFormatName("packB"),

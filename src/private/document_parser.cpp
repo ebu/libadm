@@ -1403,9 +1403,9 @@ namespace adm {
       return screen;
     }
 
-    Renderer parseRenderer(NodePtr node) {
+    AuthoringRenderer parseAuthoringRenderer(NodePtr node) {
       auto uri = parseAttribute<RendererUri>(node, "uri");
-      Renderer renderer{uri};
+      AuthoringRenderer renderer{uri};
       setRendererCommonParameters(node, renderer);
       return renderer;
     }
@@ -1414,7 +1414,7 @@ namespace adm {
       AuthoringInformation info;
       Renderers renderers;
       for (auto& rendererNode : detail::findElements(node, "renderer")) {
-        renderers.push_back(parseRenderer(rendererNode));
+        renderers.push_back(parseAuthoringRenderer(rendererNode));
       }
       if (!renderers.empty()) {
         info.set(std::move(renderers));

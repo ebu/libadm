@@ -96,7 +96,8 @@ namespace adm {
       }
     }
 
-    void formatRenderer(XmlNode &node, const Renderer &renderer) {
+    void formatAuthoringRenderer(XmlNode &node,
+                                 const AuthoringRenderer &renderer) {
       formatRendererCommon(node, renderer);
     }
 
@@ -113,7 +114,7 @@ namespace adm {
       }
       for (auto const &renderer : info.get<Renderers>()) {
         auto rendererNode = node.addNode("renderer");
-        formatRenderer(rendererNode, renderer);
+        formatAuthoringRenderer(rendererNode, renderer);
       }
     }
 

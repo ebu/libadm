@@ -9,9 +9,10 @@
 using namespace adm;
 
 TEST_CASE("renderer_interop/renderer_to_loudness_renderer") {
-  Renderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer"),
-                    RendererName("Rec. ITU-R BS.2127"),
-                    RendererVersion("1.0.0"), CoordinateMode("cartesian")};
+  AuthoringRenderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer"),
+                             RendererName("Rec. ITU-R BS.2127"),
+                             RendererVersion("1.0.0"),
+                             CoordinateMode("cartesian")};
   auto packA = AudioPackFormat::create(AudioPackFormatName("packA"),
                                        TypeDefinition::OBJECTS);
   auto packB = AudioPackFormat::create(AudioPackFormatName("packB"),
@@ -63,8 +64,8 @@ TEST_CASE(
 
 TEST_CASE("renderer_interop/loudness_metadata_accepts_renderer") {
   LoudnessMetadata loudnessMetadata;
-  Renderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer"),
-                    CoordinateMode("polar")};
+  AuthoringRenderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer"),
+                             CoordinateMode("polar")};
   auto pack = AudioPackFormat::create(AudioPackFormatName("pack"),
                                       TypeDefinition::OBJECTS);
   RendererPackFormatIdRefs packs{pack};

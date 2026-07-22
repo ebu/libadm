@@ -12,7 +12,7 @@
 
 namespace adm {
 
-  class Renderer;
+  class AuthoringRenderer;
 
   /// @brief Tag for NamedType ::LoudnessMethod
   struct loudnessMethodTag {};
@@ -121,7 +121,7 @@ namespace adm {
     /// @brief LoudnessRenderer setter
     ADM_EXPORT void set(LoudnessRenderer renderer);
     /// @brief Renderer setter (converted to LoudnessRenderer)
-    ADM_EXPORT void set(Renderer renderer);
+    ADM_EXPORT void set(AuthoringRenderer renderer);
 
     /**
      * @brief ADM parameter unset template

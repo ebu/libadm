@@ -121,7 +121,7 @@ namespace adm {
   void LoudnessMetadata::set(LoudnessRenderer renderer) {
     renderer_ = std::move(renderer);
   }
-  void LoudnessMetadata::set(Renderer renderer) {
+  void LoudnessMetadata::set(AuthoringRenderer renderer) {
     renderer_ = renderer.toLoudnessRenderer();
   }
 

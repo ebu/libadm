@@ -67,13 +67,14 @@ namespace adm {
    * @brief Class representation of the renderer sub-element of an
    * authoringInformation element (BS.2076-3 Tables A1-52 / A1-53).
    */
-  class Renderer : private detail::RendererBase,
-                   private detail::AddWrapperMethods<Renderer> {
+  class AuthoringRenderer
+      : private detail::RendererBase,
+        private detail::AddWrapperMethods<AuthoringRenderer> {
    public:
     using tag = RendererTag;
 
     template <typename... Parameters>
-    explicit Renderer(RendererUri uri, Parameters... namedArgs) {
+    explicit AuthoringRenderer(RendererUri uri, Parameters... namedArgs) {
       this->set(std::move(uri));
       detail::setNamedOptionHelper(this, std::move(namedArgs)...);
     }
@@ -81,10 +82,10 @@ namespace adm {
     using detail::RendererBase::add;
     using detail::RendererBase::remove;
     using detail::RendererBase::set;
-    using detail::AddWrapperMethods<Renderer>::get;
-    using detail::AddWrapperMethods<Renderer>::has;
-    using detail::AddWrapperMethods<Renderer>::isDefault;
-    using detail::AddWrapperMethods<Renderer>::unset;
+    using detail::AddWrapperMethods<AuthoringRenderer>::get;
+    using detail::AddWrapperMethods<AuthoringRenderer>::has;
+    using detail::AddWrapperMethods<AuthoringRenderer>::isDefault;
+    using detail::AddWrapperMethods<AuthoringRenderer>::unset;
 
     /// @brief Convert to LoudnessRenderer preserving all shared parameters.
     ADM_EXPORT LoudnessRenderer toLoudnessRenderer() const;
@@ -97,12 +98,13 @@ namespace adm {
     using detail::RendererBase::isDefault;
     using detail::RendererBase::unset;
 
-    friend class detail::AddWrapperMethods<Renderer>;
+    friend class detail::AddWrapperMethods<AuthoringRenderer>;
   };
 
-  ADD_TRAIT(Renderer, RendererTag);
+  ADD_TRAIT(AuthoringRenderer, RendererTag);
 
-  inline bool operator==(const Renderer &a, const Renderer &b) {
+  inline bool operator==(const AuthoringRenderer &a,
+                         const AuthoringRenderer &b) {
     if (!detail::optionalsEqual<RendererUri, RendererName, RendererVersion,
                                 CoordinateMode>(a, b)) {
       return false;
@@ -120,12 +122,13 @@ namespace adm {
     return a.get<RendererPackFormatIdRefs>() ==
            b.get<RendererPackFormatIdRefs>();
   }
-  inline bool operator!=(const Renderer &a, const Renderer &b) {
+  inline bool operator!=(const AuthoringRenderer &a,
+                         const AuthoringRenderer &b) {
     return !(a == b);
   }
 
   /// @brief Vector of Renderer
-  using Renderers = std::vector<Renderer>;
+  using Renderers = std::vector<AuthoringRenderer>;
   ADD_TRAIT(Renderers, RenderersTag);
 
   /// @brief Tag for AuthoringInformation class

@@ -380,7 +380,8 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   auto objectId = object->get<AudioObjectId>();
 
   AuthoringInformation info;
-  Renderer authoringRenderer{RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
+  AuthoringRenderer authoringRenderer{
+      RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
   authoringRenderer.set(RendererPackFormatIdRefs{packA, packB});
   info.add(authoringRenderer);
   info.add(ReferenceLayout{packA});
@@ -743,7 +744,7 @@ TEST_CASE("remove_elements") {
 
     // authoringInformation.renderer + referenceLayout
     AuthoringInformation info;
-    Renderer authoringRenderer{
+    AuthoringRenderer authoringRenderer{
         RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
     authoringRenderer.set(RendererPackFormatIdRefs{packFormat});
     info.add(authoringRenderer);
@@ -804,7 +805,7 @@ TEST_CASE("remove_elements") {
     auto content = AudioContent::create(AudioContentName("Content"));
 
     AuthoringInformation info;
-    Renderer authoringRenderer{
+    AuthoringRenderer authoringRenderer{
         RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
     authoringRenderer.set(
         RendererPackFormatIdRefs{removedPackFormat, keptPackFormat});

@@ -149,7 +149,7 @@ namespace adm {
         bool renderersChanged = false;
         for (auto& renderer : renderers) {
           renderersChanged |=
-              pruneRendererRefs<Renderer, RendererPackFormatIdRefs>(
+              pruneRendererRefs<AuthoringRenderer, RendererPackFormatIdRefs>(
                   renderer,
                   removedPackFormat);
         }

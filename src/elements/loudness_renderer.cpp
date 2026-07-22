@@ -3,7 +3,8 @@
 
 namespace adm {
 
-  LoudnessRenderer LoudnessRenderer::fromRenderer(Renderer const& renderer) {
+  LoudnessRenderer LoudnessRenderer::fromRenderer(
+      AuthoringRenderer const& renderer) {
     LoudnessRenderer loudnessRenderer;
     if (renderer.has<RendererUri>()) {
       loudnessRenderer.set(renderer.get<RendererUri>());
@@ -23,9 +24,9 @@ namespace adm {
     return loudnessRenderer;
   }
 
-  Renderer LoudnessRenderer::toRendererDroppingObjectRefs(
+  AuthoringRenderer LoudnessRenderer::toRendererDroppingObjectRefs(
       RendererUri uri) const {
-    Renderer renderer{std::move(uri)};
+    AuthoringRenderer renderer{std::move(uri)};
     if (has<RendererUri>()) {
       renderer.set(get<RendererUri>());
     }

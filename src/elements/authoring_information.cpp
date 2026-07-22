@@ -3,11 +3,11 @@
 
 namespace adm {
 
-  LoudnessRenderer Renderer::toLoudnessRenderer() const {
+  LoudnessRenderer AuthoringRenderer::toLoudnessRenderer() const {
     return LoudnessRenderer::fromRenderer(*this);
   }
 
-  void Renderer::print(std::ostream& os) const {
+  void AuthoringRenderer::print(std::ostream& os) const {
     os << "(";
     bool first = true;
     auto sep = [&]() {

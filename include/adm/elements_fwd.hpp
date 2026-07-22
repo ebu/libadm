@@ -48,7 +48,7 @@ namespace adm {
 
   class LoudnessMetadata;
   class LoudnessRenderer;
-  class Renderer;
+  class AuthoringRenderer;
   class AuthoringInformation;
   class AudioProgrammeReferenceScreen;
 }  // namespace adm
