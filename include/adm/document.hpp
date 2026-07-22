@@ -102,6 +102,9 @@ namespace adm {
      *   TagGroup entries in tagList that reference the removed element
      * - If the TagList becomes empty due to pruning, the list itself is
      *   removed as it is only valid when it contains 1 or more TagGroups
+     * - removing an AudioPackFormat or AudioObject also removes matching
+     *   renderer/referenceLayout ID references in nested
+     *   authoringInformation/loudnessMetadata structures.
      */
     ///@{
     /// @brief Remove an AudioProgramme

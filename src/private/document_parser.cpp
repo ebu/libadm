@@ -247,6 +247,21 @@ namespace adm {
       addOptionalElements<Label>(node, "audioProgrammeLabel", audioProgramme, &parseLabel);
 
       if (auto authoringNode = detail::findElement(node, "authoringInformation")) {
+        std::vector<AudioPackFormatId> referenceLayoutIds;
+        for (auto& layoutNode : detail::findElements(authoringNode, "referenceLayout")) {
+          auto packNode = detail::findElement(layoutNode, "audioPackFormatIDRef");
+          if (!packNode) {
+            throw error::XmlParsingError(
+                "referenceLayout requires an audioPackFormatIDRef child",
+                getDocumentLine(layoutNode));
+          }
+          referenceLayoutIds.push_back(parseAudioPackFormatId(packNode->value()));
+        }
+        if (!referenceLayoutIds.empty()) {
+          programmeAuthoringReferenceLayoutPackFormatRefs_[audioProgramme] =
+              std::move(referenceLayoutIds);
+        }
+
         std::vector<std::vector<AudioPackFormatId>> rendererPackFormatIds;
         for (auto& rendererNode : detail::findElements(authoringNode, "renderer")) {
           std::vector<AudioPackFormatId> packFormatIds;
@@ -475,42 +490,71 @@ namespace adm {
     }
 
     void DocumentParser::resolveProgrammeAuthoringRendererReferences() {
-      for (auto const& entry : programmeAuthoringRendererPackFormatRefs_) {
-        auto const& programme = entry.first;
-        auto const& rendererPackIds = entry.second;
+      for (auto const& programme : document_->getElements<AudioProgramme>()) {
         if (!programme->has<AuthoringInformation>()) {
           continue;
         }
 
         auto info = programme->get<AuthoringInformation>();
-        if (!info.has<Renderers>()) {
-          continue;
-        }
+        bool changed = false;
 
-        auto renderers = info.get<Renderers>();
-        auto count = std::min(renderers.size(), rendererPackIds.size());
-        for (size_t i = 0; i < count; ++i) {
-          auto& renderer = renderers.at(i);
-          auto const& ids = rendererPackIds.at(i);
-          if (ids.empty()) {
-            continue;
-          }
-
-          RendererPackFormatIdRefs refs;
-          refs.reserve(ids.size());
-          for (auto const& id : ids) {
+        auto layoutIt =
+            programmeAuthoringReferenceLayoutPackFormatRefs_.find(programme);
+        if (layoutIt !=
+            programmeAuthoringReferenceLayoutPackFormatRefs_.end()) {
+          auto const& referenceLayoutIds = layoutIt->second;
+          ReferenceLayouts referenceLayouts;
+          referenceLayouts.reserve(referenceLayoutIds.size());
+          for (auto const& id : referenceLayoutIds) {
             if (auto element = idMap_.lookup(id)) {
-              refs.push_back(element);
+              referenceLayouts.push_back(ReferenceLayout{element});
             } else {
               throw error::XmlParsingUnresolvedReference(formatId(id));
             }
           }
-          if (!refs.empty()) {
-            renderer.set(std::move(refs));
+          if (!referenceLayouts.empty()) {
+            info.set(std::move(referenceLayouts));
           }
+          changed = true;
         }
-        info.set(std::move(renderers));
-        programme->set(std::move(info));
+
+        auto rendererIt =
+            programmeAuthoringRendererPackFormatRefs_.find(programme);
+        if (rendererIt != programmeAuthoringRendererPackFormatRefs_.end() &&
+            info.has<Renderers>()) {
+          auto const& rendererPackIds = rendererIt->second;
+          auto renderers = info.get<Renderers>();
+          auto count = std::min(renderers.size(), rendererPackIds.size());
+          for (size_t i = 0; i < count; ++i) {
+            auto& renderer = renderers.at(i);
+            auto const& ids = rendererPackIds.at(i);
+            if (ids.empty()) {
+              continue;
+            }
+
+            RendererPackFormatIdRefs refs;
+            refs.reserve(ids.size());
+            for (auto const& id : ids) {
+              if (auto element = idMap_.lookup(id)) {
+                refs.push_back(element);
+              } else {
+                throw error::XmlParsingUnresolvedReference(formatId(id));
+              }
+            }
+            if (!refs.empty()) {
+              renderer.set(std::move(refs));
+            }
+          }
+          info.unset<Renderers>();
+          for (auto& renderer : renderers) {
+            info.add(std::move(renderer));
+          }
+          changed = true;
+        }
+
+        if (changed) {
+          programme->set(std::move(info));
+        }
       }
     }
 
@@ -1366,23 +1410,14 @@ namespace adm {
       return renderer;
     }
 
-    ReferenceLayout parseReferenceLayout(NodePtr node) {
-      auto packNode = detail::findElement(node, "audioPackFormatIDRef");
-      if (!packNode) {
-        throw error::XmlParsingError(
-            "referenceLayout requires an audioPackFormatIDRef child",
-            getDocumentLine(node));
-      }
-      return ReferenceLayout(parseAudioPackFormatId(packNode->value()));
-    }
-
     AuthoringInformation parseAuthoringInformation(NodePtr node) {
       AuthoringInformation info;
-      for (auto& layoutNode : detail::findElements(node, "referenceLayout")) {
-        info.add(parseReferenceLayout(layoutNode));
-      }
+      Renderers renderers;
       for (auto& rendererNode : detail::findElements(node, "renderer")) {
-        info.add(parseRenderer(rendererNode));
+        renderers.push_back(parseRenderer(rendererNode));
+      }
+      if (!renderers.empty()) {
+        info.set(std::move(renderers));
       }
       return info;
     }

@@ -356,6 +356,156 @@ TEST_CASE("copy_document_all_adm_elements") {
           copy->getElements<AudioChannelFormat>()[0]);
 }
 
+TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
+  using namespace adm;
+
+  auto admDocument = Document::create();
+
+  auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+  auto content = AudioContent::create(AudioContentName("Content"));
+  auto object = AudioObject::create(AudioObjectName("Object"));
+  auto packA = AudioPackFormat::create(AudioPackFormatName("PackA"),
+                                       TypeDefinition::OBJECTS);
+  auto packB = AudioPackFormat::create(AudioPackFormatName("PackB"),
+                                       TypeDefinition::OBJECTS);
+
+  object->addReference(packA);
+  object->addReference(packB);
+  content->addReference(object);
+  programme->addReference(content);
+  admDocument->add(programme);
+
+  auto packAId = packA->get<AudioPackFormatId>();
+  auto packBId = packB->get<AudioPackFormatId>();
+  auto objectId = object->get<AudioObjectId>();
+
+  AuthoringInformation info;
+  Renderer authoringRenderer{RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
+  authoringRenderer.set(RendererPackFormatIdRefs{packA, packB});
+  info.add(authoringRenderer);
+  info.add(ReferenceLayout{packA});
+  info.add(ReferenceLayout{packB});
+  programme->set(info);
+
+  LoudnessRenderer programmeRenderer;
+  programmeRenderer.set(RendererPackFormatIdRefs{packA, packB});
+  programmeRenderer.set(RendererObjectIdRefs{object});
+  LoudnessMetadata programmeLm;
+  programmeLm.set(programmeRenderer);
+  programme->set(LoudnessMetadatas{programmeLm});
+
+  LoudnessRenderer contentRenderer;
+  contentRenderer.set(RendererPackFormatIdRefs{packA, packB});
+  contentRenderer.set(RendererObjectIdRefs{object});
+  LoudnessMetadata contentLm;
+  contentLm.set(contentRenderer);
+  content->set(LoudnessMetadatas{contentLm});
+
+  auto copy = admDocument->deepCopy();
+
+  auto copiedProgramme = copy->getElements<AudioProgramme>().front();
+  auto copiedContent = copy->getElements<AudioContent>().front();
+
+  auto copiedInfo = copiedProgramme->get<AuthoringInformation>();
+  REQUIRE(copiedInfo.has<Renderers>());
+  auto copiedRenderers = copiedInfo.get<Renderers>();
+  REQUIRE(copiedRenderers.size() == 1);
+  REQUIRE(copiedRenderers.at(0).has<RendererPackFormatIdRefs>());
+  auto copiedAuthoringRefs =
+      copiedRenderers.at(0).get<RendererPackFormatIdRefs>();
+  REQUIRE(copiedAuthoringRefs.size() == 2);
+  bool sawPackAInAuthoring = false;
+  bool sawPackBInAuthoring = false;
+  for (auto const& ref : copiedAuthoringRefs) {
+    REQUIRE(ref->getParent().lock() == copy);
+    REQUIRE(ref != packA);
+    REQUIRE(ref != packB);
+    if (ref->get<AudioPackFormatId>() == packAId) sawPackAInAuthoring = true;
+    if (ref->get<AudioPackFormatId>() == packBId) sawPackBInAuthoring = true;
+  }
+  REQUIRE(sawPackAInAuthoring);
+  REQUIRE(sawPackBInAuthoring);
+
+  REQUIRE(copiedInfo.has<ReferenceLayouts>());
+  auto copiedLayouts = copiedInfo.get<ReferenceLayouts>();
+  REQUIRE(copiedLayouts.size() == 2);
+  bool sawPackAInLayouts = false;
+  bool sawPackBInLayouts = false;
+  for (auto const& layout : copiedLayouts) {
+    auto const& pack = layout.get();
+    REQUIRE(pack->getParent().lock() == copy);
+    REQUIRE(pack != packA);
+    REQUIRE(pack != packB);
+    if (pack->get<AudioPackFormatId>() == packAId) sawPackAInLayouts = true;
+    if (pack->get<AudioPackFormatId>() == packBId) sawPackBInLayouts = true;
+  }
+  REQUIRE(sawPackAInLayouts);
+  REQUIRE(sawPackBInLayouts);
+
+  auto copiedProgrammeLms = copiedProgramme->get<LoudnessMetadatas>();
+  REQUIRE(copiedProgrammeLms.size() == 1);
+  auto copiedProgrammeRenderer =
+      copiedProgrammeLms.at(0).get<LoudnessRenderer>();
+  REQUIRE(copiedProgrammeRenderer.has<RendererPackFormatIdRefs>());
+  REQUIRE(copiedProgrammeRenderer.has<RendererObjectIdRefs>());
+
+  auto copiedProgrammePackRefs =
+      copiedProgrammeRenderer.get<RendererPackFormatIdRefs>();
+  REQUIRE(copiedProgrammePackRefs.size() == 2);
+  bool sawPackAInProgrammeRenderer = false;
+  bool sawPackBInProgrammeRenderer = false;
+  for (auto const& ref : copiedProgrammePackRefs) {
+    REQUIRE(ref->getParent().lock() == copy);
+    REQUIRE(ref != packA);
+    REQUIRE(ref != packB);
+    if (ref->get<AudioPackFormatId>() == packAId)
+      sawPackAInProgrammeRenderer = true;
+    if (ref->get<AudioPackFormatId>() == packBId)
+      sawPackBInProgrammeRenderer = true;
+  }
+  REQUIRE(sawPackAInProgrammeRenderer);
+  REQUIRE(sawPackBInProgrammeRenderer);
+
+  auto copiedProgrammeObjectRefs =
+      copiedProgrammeRenderer.get<RendererObjectIdRefs>();
+  REQUIRE(copiedProgrammeObjectRefs.size() == 1);
+  auto copiedProgrammeObject = copiedProgrammeObjectRefs.front();
+  REQUIRE(copiedProgrammeObject->getParent().lock() == copy);
+  REQUIRE(copiedProgrammeObject != object);
+  REQUIRE(copiedProgrammeObject->get<AudioObjectId>() == objectId);
+
+  auto copiedContentLms = copiedContent->get<LoudnessMetadatas>();
+  REQUIRE(copiedContentLms.size() == 1);
+  auto copiedContentRenderer = copiedContentLms.at(0).get<LoudnessRenderer>();
+  REQUIRE(copiedContentRenderer.has<RendererPackFormatIdRefs>());
+  REQUIRE(copiedContentRenderer.has<RendererObjectIdRefs>());
+
+  auto copiedContentPackRefs =
+      copiedContentRenderer.get<RendererPackFormatIdRefs>();
+  REQUIRE(copiedContentPackRefs.size() == 2);
+  bool sawPackAInContentRenderer = false;
+  bool sawPackBInContentRenderer = false;
+  for (auto const& ref : copiedContentPackRefs) {
+    REQUIRE(ref->getParent().lock() == copy);
+    REQUIRE(ref != packA);
+    REQUIRE(ref != packB);
+    if (ref->get<AudioPackFormatId>() == packAId)
+      sawPackAInContentRenderer = true;
+    if (ref->get<AudioPackFormatId>() == packBId)
+      sawPackBInContentRenderer = true;
+  }
+  REQUIRE(sawPackAInContentRenderer);
+  REQUIRE(sawPackBInContentRenderer);
+
+  auto copiedContentObjectRefs =
+      copiedContentRenderer.get<RendererObjectIdRefs>();
+  REQUIRE(copiedContentObjectRefs.size() == 1);
+  auto copiedContentObject = copiedContentObjectRefs.front();
+  REQUIRE(copiedContentObject->getParent().lock() == copy);
+  REQUIRE(copiedContentObject != object);
+  REQUIRE(copiedContentObject->get<AudioObjectId>() == objectId);
+}
+
 template <typename T>
 std::vector<T> asVector(std::initializer_list<T> l) {
   return std::vector<T>{l};
@@ -581,6 +731,140 @@ TEST_CASE("remove_elements") {
     REQUIRE(streamFormat->getReference<AudioPackFormat>() == nullptr);
   }
 
+  SECTION("AudioPackFormat – prunes authoring and loudness renderer IDs") {
+    auto admDocument = Document::create();
+
+    auto packFormat = AudioPackFormat::create(
+        AudioPackFormatName("My PackFormat"), TypeDefinition::OBJECTS);
+    admDocument->add(packFormat);
+
+    auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+    auto content = AudioContent::create(AudioContentName("Content"));
+
+    // authoringInformation.renderer + referenceLayout
+    AuthoringInformation info;
+    Renderer authoringRenderer{
+        RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
+    authoringRenderer.set(RendererPackFormatIdRefs{packFormat});
+    info.add(authoringRenderer);
+    info.add(ReferenceLayout{packFormat});
+    programme->set(info);
+
+    // loudnessMetadata.renderer on programme
+    LoudnessRenderer programmeRenderer;
+    programmeRenderer.set(RendererPackFormatIdRefs{packFormat});
+    LoudnessMetadata programmeLm;
+    programmeLm.set(programmeRenderer);
+    programme->set(LoudnessMetadatas{programmeLm});
+
+    // loudnessMetadata.renderer on content
+    LoudnessRenderer contentRenderer;
+    contentRenderer.set(RendererPackFormatIdRefs{packFormat});
+    LoudnessMetadata contentLm;
+    contentLm.set(contentRenderer);
+    content->set(LoudnessMetadatas{contentLm});
+
+    admDocument->add(programme);
+    admDocument->add(content);
+
+    REQUIRE(admDocument->remove(packFormat));
+
+    auto updatedInfo = programme->get<AuthoringInformation>();
+    REQUIRE(updatedInfo.has<Renderers>());
+    auto renderers = updatedInfo.get<Renderers>();
+    REQUIRE(renderers.size() == 1);
+    REQUIRE(renderers.at(0).has<RendererPackFormatIdRefs>() == false);
+    REQUIRE(updatedInfo.has<ReferenceLayouts>() == false);
+
+    auto programmeLms = programme->get<LoudnessMetadatas>();
+    REQUIRE(programmeLms.size() == 1);
+    REQUIRE(programmeLms.at(0).has<LoudnessRenderer>());
+    auto updatedProgrammeRenderer = programmeLms.at(0).get<LoudnessRenderer>();
+    REQUIRE(updatedProgrammeRenderer.has<RendererPackFormatIdRefs>() == false);
+
+    auto contentLms = content->get<LoudnessMetadatas>();
+    REQUIRE(contentLms.size() == 1);
+    REQUIRE(contentLms.at(0).has<LoudnessRenderer>());
+    auto updatedContentRenderer = contentLms.at(0).get<LoudnessRenderer>();
+    REQUIRE(updatedContentRenderer.has<RendererPackFormatIdRefs>() == false);
+  }
+
+  SECTION(
+      "AudioPackFormat – prunes matching renderer IDs and preserves others") {
+    auto admDocument = Document::create();
+
+    auto removedPackFormat = AudioPackFormat::create(
+        AudioPackFormatName("Removed PackFormat"), TypeDefinition::OBJECTS);
+    auto keptPackFormat = AudioPackFormat::create(
+        AudioPackFormatName("Kept PackFormat"), TypeDefinition::OBJECTS);
+    admDocument->add(removedPackFormat);
+    admDocument->add(keptPackFormat);
+
+    auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+    auto content = AudioContent::create(AudioContentName("Content"));
+
+    AuthoringInformation info;
+    Renderer authoringRenderer{
+        RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
+    authoringRenderer.set(
+        RendererPackFormatIdRefs{removedPackFormat, keptPackFormat});
+    info.add(authoringRenderer);
+    info.add(ReferenceLayout{removedPackFormat});
+    info.add(ReferenceLayout{keptPackFormat});
+    programme->set(info);
+
+    LoudnessRenderer programmeRenderer;
+    programmeRenderer.set(
+        RendererPackFormatIdRefs{removedPackFormat, keptPackFormat});
+    LoudnessMetadata programmeLm;
+    programmeLm.set(programmeRenderer);
+    programme->set(LoudnessMetadatas{programmeLm});
+
+    LoudnessRenderer contentRenderer;
+    contentRenderer.set(
+        RendererPackFormatIdRefs{removedPackFormat, keptPackFormat});
+    LoudnessMetadata contentLm;
+    contentLm.set(contentRenderer);
+    content->set(LoudnessMetadatas{contentLm});
+
+    admDocument->add(programme);
+    admDocument->add(content);
+
+    REQUIRE(admDocument->remove(removedPackFormat));
+
+    auto updatedInfo = programme->get<AuthoringInformation>();
+    REQUIRE(updatedInfo.has<Renderers>());
+    auto renderers = updatedInfo.get<Renderers>();
+    REQUIRE(renderers.size() == 1);
+    REQUIRE(renderers.at(0).has<RendererPackFormatIdRefs>());
+    auto authoringRefs = renderers.at(0).get<RendererPackFormatIdRefs>();
+    REQUIRE(authoringRefs.size() == 1);
+    REQUIRE(authoringRefs.at(0) == keptPackFormat);
+
+    REQUIRE(updatedInfo.has<ReferenceLayouts>());
+    auto layouts = updatedInfo.get<ReferenceLayouts>();
+    REQUIRE(layouts.size() == 1);
+    auto remainingLayout = layouts.at(0).get();
+    REQUIRE(remainingLayout == keptPackFormat);
+
+    auto programmeLms = programme->get<LoudnessMetadatas>();
+    REQUIRE(programmeLms.size() == 1);
+    auto updatedProgrammeRenderer = programmeLms.at(0).get<LoudnessRenderer>();
+    REQUIRE(updatedProgrammeRenderer.has<RendererPackFormatIdRefs>());
+    auto programmeRefs =
+        updatedProgrammeRenderer.get<RendererPackFormatIdRefs>();
+    REQUIRE(programmeRefs.size() == 1);
+    REQUIRE(programmeRefs.at(0) == keptPackFormat);
+
+    auto contentLms = content->get<LoudnessMetadatas>();
+    REQUIRE(contentLms.size() == 1);
+    auto updatedContentRenderer = contentLms.at(0).get<LoudnessRenderer>();
+    REQUIRE(updatedContentRenderer.has<RendererPackFormatIdRefs>());
+    auto contentRefs = updatedContentRenderer.get<RendererPackFormatIdRefs>();
+    REQUIRE(contentRefs.size() == 1);
+    REQUIRE(contentRefs.at(0) == keptPackFormat);
+  }
+
   SECTION("AudioChannelFormat – reference removal") {
     auto admDocument = Document::create();
     auto packFormat = AudioPackFormat::create(
@@ -630,6 +914,90 @@ TEST_CASE("remove_elements") {
     REQUIRE(streamFormat->getAudioTrackFormatReferences().size() == 0);
     REQUIRE(trackUid->getReference<AudioTrackFormat>() == nullptr);
   }
+
+  SECTION("AudioObject – prunes loudness renderer object IDs") {
+    auto admDocument = Document::create();
+
+    auto object = AudioObject::create(AudioObjectName("Object"));
+    admDocument->add(object);
+
+    auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+    auto content = AudioContent::create(AudioContentName("Content"));
+
+    LoudnessRenderer programmeRenderer;
+    programmeRenderer.set(RendererObjectIdRefs{object});
+    LoudnessMetadata programmeLm;
+    programmeLm.set(programmeRenderer);
+    programme->set(LoudnessMetadatas{programmeLm});
+
+    LoudnessRenderer contentRenderer;
+    contentRenderer.set(RendererObjectIdRefs{object});
+    LoudnessMetadata contentLm;
+    contentLm.set(contentRenderer);
+    content->set(LoudnessMetadatas{contentLm});
+
+    admDocument->add(programme);
+    admDocument->add(content);
+
+    REQUIRE(admDocument->remove(object));
+
+    auto programmeLms = programme->get<LoudnessMetadatas>();
+    REQUIRE(programmeLms.size() == 1);
+    auto updatedProgrammeRenderer = programmeLms.at(0).get<LoudnessRenderer>();
+    REQUIRE(updatedProgrammeRenderer.has<RendererObjectIdRefs>() == false);
+
+    auto contentLms = content->get<LoudnessMetadatas>();
+    REQUIRE(contentLms.size() == 1);
+    auto updatedContentRenderer = contentLms.at(0).get<LoudnessRenderer>();
+    REQUIRE(updatedContentRenderer.has<RendererObjectIdRefs>() == false);
+  }
+
+  SECTION(
+      "AudioObject – prunes matching renderer object IDs and preserves "
+      "others") {
+    auto admDocument = Document::create();
+
+    auto removedObject = AudioObject::create(AudioObjectName("Removed Object"));
+    auto keptObject = AudioObject::create(AudioObjectName("Kept Object"));
+    admDocument->add(removedObject);
+    admDocument->add(keptObject);
+
+    auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+    auto content = AudioContent::create(AudioContentName("Content"));
+
+    LoudnessRenderer programmeRenderer;
+    programmeRenderer.set(RendererObjectIdRefs{removedObject, keptObject});
+    LoudnessMetadata programmeLm;
+    programmeLm.set(programmeRenderer);
+    programme->set(LoudnessMetadatas{programmeLm});
+
+    LoudnessRenderer contentRenderer;
+    contentRenderer.set(RendererObjectIdRefs{removedObject, keptObject});
+    LoudnessMetadata contentLm;
+    contentLm.set(contentRenderer);
+    content->set(LoudnessMetadatas{contentLm});
+
+    admDocument->add(programme);
+    admDocument->add(content);
+
+    REQUIRE(admDocument->remove(removedObject));
+
+    auto programmeLms = programme->get<LoudnessMetadatas>();
+    REQUIRE(programmeLms.size() == 1);
+    auto updatedProgrammeRenderer = programmeLms.at(0).get<LoudnessRenderer>();
+    REQUIRE(updatedProgrammeRenderer.has<RendererObjectIdRefs>());
+    auto programmeRefs = updatedProgrammeRenderer.get<RendererObjectIdRefs>();
+    REQUIRE(programmeRefs.size() == 1);
+    REQUIRE(programmeRefs.at(0) == keptObject);
+
+    auto contentLms = content->get<LoudnessMetadatas>();
+    REQUIRE(contentLms.size() == 1);
+    auto updatedContentRenderer = contentLms.at(0).get<LoudnessRenderer>();
+    REQUIRE(updatedContentRenderer.has<RendererObjectIdRefs>());
+    auto contentRefs = updatedContentRenderer.get<RendererObjectIdRefs>();
+    REQUIRE(contentRefs.size() == 1);
+    REQUIRE(contentRefs.at(0) == keptObject);
+  }
 }
 
 // Tests deepcopy using a modified version of the kitchen sink test material from https://qc.ebu.io/testmaterial
@@ -641,4 +1009,25 @@ TEST_CASE("Copy the kitchen sink") {
   std::stringstream xmlCopy;
   writeXml(xmlCopy, documentCopy);
   REQUIRE(xml.str() == xmlCopy.str());
+}
+
+TEST_CASE("recursion_depth_guard") {
+  // Adversarial input: a chain of 5000 audioPackFormats, each referencing
+  // the next. Document::add() recurses through getReferences(), which
+  // would overflow the stack without an explicit depth limit.
+  using namespace adm;
+  auto document = Document::create();
+  std::vector<std::shared_ptr<AudioPackFormat>> packs;
+  packs.reserve(5000);
+  for (int i = 0; i < 5000; ++i) {
+    packs.push_back(AudioPackFormat::create(AudioPackFormatName("p"),
+                                            TypeDefinition::OBJECTS));
+  }
+  for (size_t i = 0; i + 1 < packs.size(); ++i) {
+    packs[i]->addReference(packs[i + 1]);
+  }
+  // Adding the head element should now throw (depth-limit) rather than
+  // crash; the limit is well below 5000.
+  REQUIRE_THROWS_WITH(document->add(packs.front()),
+                      Catch::Contains("recursion depth exceeded"));
 }

@@ -8,7 +8,6 @@
 #include "adm/detail/named_option_helper.hpp"
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/optional_comparison.hpp"
-#include "adm/elements/audio_pack_format_id.hpp"
 #include "adm/elements/renderer_common_types.hpp"
 #include "adm/export.h"
 
@@ -18,10 +17,34 @@ namespace adm {
 
   /// @brief Tag for ::ReferenceLayout named-type
   struct ReferenceLayoutTag {};
-  /// @brief NamedType wrapping the audioPackFormatIDRef of a referenceLayout
-  /// sub-element of authoringInformation (BS.2076-3 Table A1-51).
-  using ReferenceLayout =
-      detail::NamedType<AudioPackFormatId, ReferenceLayoutTag>;
+  /**
+   * @brief Reference to audioPackFormat used by a referenceLayout
+   * sub-element of authoringInformation (BS.2076-3 Table A1-51).
+   */
+  class ReferenceLayout {
+   public:
+    using tag = ReferenceLayoutTag;
+
+    ReferenceLayout() = default;
+    explicit ReferenceLayout(std::shared_ptr<AudioPackFormat> packFormat)
+        : packFormat_(std::move(packFormat)) {}
+
+    std::shared_ptr<AudioPackFormat> const &get() const { return packFormat_; }
+
+   private:
+    std::shared_ptr<AudioPackFormat> packFormat_;
+  };
+
+  ADD_TRAIT(ReferenceLayout, ReferenceLayoutTag);
+
+  inline bool operator==(ReferenceLayout const &lhs,
+                         ReferenceLayout const &rhs) {
+    return lhs.get() == rhs.get();
+  }
+  inline bool operator!=(ReferenceLayout const &lhs,
+                         ReferenceLayout const &rhs) {
+    return !(lhs == rhs);
+  }
 
   /// @brief Vector of ReferenceLayout
   using ReferenceLayouts = std::vector<ReferenceLayout>;

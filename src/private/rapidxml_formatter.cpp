@@ -101,7 +101,8 @@ namespace adm {
     }
 
     void formatReferenceLayout(XmlNode &node, const ReferenceLayout &layout) {
-      node.addElement("audioPackFormatIDRef", formatId(layout.get()));
+      node.addElement("audioPackFormatIDRef",
+                      formatId(layout.get()->get<AudioPackFormatId>()));
     }
 
     void formatAuthoringInformation(XmlNode &node,

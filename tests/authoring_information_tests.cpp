@@ -12,9 +12,16 @@ TEST_CASE("authoring_information/empty") {
 
 TEST_CASE("authoring_information/add_reference_layout") {
   AuthoringInformation info;
-  info.add(ReferenceLayout{parseAudioPackFormatId("AP_00010003")});
-  info.add(ReferenceLayout{parseAudioPackFormatId("AP_00010017")});
-  REQUIRE(info.get<ReferenceLayouts>().size() == 2);
+  auto packA = AudioPackFormat::create(AudioPackFormatName("packA"),
+                                       TypeDefinition::OBJECTS);
+  auto packB = AudioPackFormat::create(AudioPackFormatName("packB"),
+                                       TypeDefinition::OBJECTS);
+  info.add(ReferenceLayout{packA});
+  info.add(ReferenceLayout{packB});
+  auto layouts = info.get<ReferenceLayouts>();
+  REQUIRE(layouts.size() == 2);
+  REQUIRE(layouts.at(0).get() == packA);
+  REQUIRE(layouts.at(1).get() == packB);
 }
 
 TEST_CASE("authoring_information/add_renderer") {

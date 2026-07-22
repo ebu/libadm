@@ -46,7 +46,6 @@ namespace adm {
     AudioProgrammeReferenceScreen parseAudioProgrammeReferenceScreen(
         NodePtr node);
     Renderer parseRenderer(NodePtr node);
-    ReferenceLayout parseReferenceLayout(NodePtr node);
     AuthoringInformation parseAuthoringInformation(NodePtr node);
     Label parseLabel(NodePtr node);
     AudioBlockFormatObjects parseAudioBlockFormatObjects(
@@ -186,6 +185,8 @@ namespace adm {
         std::vector<AudioObjectId> objectIds;
       };
 
+      std::map<std::shared_ptr<AudioProgramme>, std::vector<AudioPackFormatId>>
+          programmeAuthoringReferenceLayoutPackFormatRefs_;
       std::map<std::shared_ptr<AudioProgramme>,
                std::vector<std::vector<AudioPackFormatId>>>
           programmeAuthoringRendererPackFormatRefs_;

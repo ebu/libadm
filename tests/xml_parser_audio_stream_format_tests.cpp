@@ -23,3 +23,18 @@ TEST_CASE("xml_parser/audio_stream_format_duplicate_id") {
       adm::parseXml("xml_parser/audio_stream_format_duplicate_id.xml"),
       adm::error::XmlParsingDuplicateId);
 }
+
+TEST_CASE("xml_parser/audio_stream_format_forward_track_format_references") {
+  using namespace adm;
+  auto document =
+      parseXml("xml_parser/audio_stream_format_forward_track_refs.xml");
+  auto streamFormat = document->lookup(parseAudioStreamFormatId("AS_00031001"));
+
+  auto trackA = document->lookup(parseAudioTrackFormatId("AT_00031001_01"));
+  auto trackB = document->lookup(parseAudioTrackFormatId("AT_00031002_01"));
+
+  auto trackRefs = streamFormat->getAudioTrackFormatReferences();
+  REQUIRE(trackRefs.size() == 2);
+  REQUIRE(trackRefs[0].lock() == trackA);
+  REQUIRE(trackRefs[1].lock() == trackB);
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioStreamFormat audioStreamFormatID="AS_00031001" audioStreamFormatName="MyStreamFormat" formatLabel="0001" formatDefinition="PCM">
+          <audioTrackFormatIDRef>AT_00031001_01</audioTrackFormatIDRef>
+          <audioTrackFormatIDRef>AT_00031002_01</audioTrackFormatIDRef>
+        </audioStreamFormat>
+
+        <audioTrackFormat audioTrackFormatID="AT_00031001_01" audioTrackFormatName="Track A" formatLabel="0001" formatDefinition="PCM"/>
+        <audioTrackFormat audioTrackFormatID="AT_00031002_01" audioTrackFormatName="Track B" formatLabel="0001" formatDefinition="PCM"/>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

@@ -34,7 +34,7 @@ namespace adm {
       return remapped;
     }
 
-    void remapAuthoringRendererReferences(
+    void remapAuthoringInformationReferences(
         std::shared_ptr<AudioProgramme> const& programme,
         ElementMapping const& mapping) {
       if (!programme->has<AuthoringInformation>()) {
@@ -42,31 +42,52 @@ namespace adm {
       }
 
       auto info = programme->get<AuthoringInformation>();
-      if (!info.has<Renderers>()) {
-        return;
-      }
-
-      auto renderers = info.get<Renderers>();
       bool changed = false;
-      for (auto& renderer : renderers) {
-        if (!renderer.has<RendererPackFormatIdRefs>()) {
-          continue;
+      if (info.has<ReferenceLayouts>()) {
+        auto layouts = info.get<ReferenceLayouts>();
+        ReferenceLayouts remappedLayouts;
+        remappedLayouts.reserve(layouts.size());
+        for (auto const& refLayout : layouts) {
+          auto const& ref = refLayout.get();
+          auto it = mapping.audioPackFormat.find(ref);
+          if (it != mapping.audioPackFormat.end()) {
+            remappedLayouts.push_back(ReferenceLayout{it->second});
+          } else {
+            remappedLayouts.push_back(ReferenceLayout{ref});
+          }
         }
 
-        auto remapped = remapPackFormatRefs(
-            renderer.get<RendererPackFormatIdRefs>(), mapping);
-        if (remapped.empty()) {
-          renderer.unset<RendererPackFormatIdRefs>();
+        if (remappedLayouts.empty()) {
+          info.unset<ReferenceLayouts>();
         } else {
-          renderer.set(std::move(remapped));
+          info.set(std::move(remappedLayouts));
         }
         changed = true;
       }
 
-      if (changed) {
-        info.set(std::move(renderers));
-        programme->set(std::move(info));
+      if (info.has<Renderers>()) {
+        auto renderers = info.get<Renderers>();
+        for (auto& renderer : renderers) {
+          if (!renderer.has<RendererPackFormatIdRefs>()) {
+            continue;
+          }
+
+          auto remapped = remapPackFormatRefs(
+              renderer.get<RendererPackFormatIdRefs>(), mapping);
+          if (remapped.empty()) {
+            renderer.unset<RendererPackFormatIdRefs>();
+          } else {
+            renderer.set(std::move(remapped));
+          }
+          changed = true;
+        }
+
+        if (changed) {
+          info.set(std::move(renderers));
+        }
       }
+
+      if (changed) programme->set(std::move(info));
     }
 
     template <typename Owner>
@@ -194,7 +215,7 @@ namespace adm {
 
     for (const auto& element : document->getElements<AudioProgramme>()) {
       auto copiedProgramme = mapping.audioProgramme.at(element);
-      remapAuthoringRendererReferences(copiedProgramme, mapping);
+      remapAuthoringInformationReferences(copiedProgramme, mapping);
       remapLoudnessRendererReferences(copiedProgramme, mapping);
     }
 
