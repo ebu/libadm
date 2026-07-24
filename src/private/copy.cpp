@@ -19,6 +19,15 @@ namespace adm {
       return remapped;
     }
 
+    RendererPackFormatIdRef remapPackFormatRef(
+        RendererPackFormatIdRef const& ref, ElementMapping const& mapping) {
+      auto it = mapping.audioPackFormat.find(ref);
+      if (it != mapping.audioPackFormat.end()) {
+        return it->second;
+      }
+      return ref;
+    }
+
     RendererObjectIdRefs remapObjectRefs(RendererObjectIdRefs const& refs,
                                          ElementMapping const& mapping) {
       RendererObjectIdRefs remapped;
@@ -106,14 +115,9 @@ namespace adm {
 
         auto renderer = loudnessMetadata.template get<LoudnessRenderer>();
 
-        if (renderer.template has<RendererPackFormatIdRefs>()) {
-          auto remapped = remapPackFormatRefs(
-              renderer.template get<RendererPackFormatIdRefs>(), mapping);
-          if (remapped.empty()) {
-            renderer.template unset<RendererPackFormatIdRefs>();
-          } else {
-            renderer.set(std::move(remapped));
-          }
+        if (renderer.template has<RendererPackFormatIdRef>()) {
+          renderer.set(remapPackFormatRef(
+              renderer.template get<RendererPackFormatIdRef>(), mapping));
           changed = true;
         }
 

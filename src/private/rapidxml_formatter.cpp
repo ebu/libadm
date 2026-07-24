@@ -89,16 +89,15 @@ namespace adm {
       node.addOptionalAttribute<RendererName>(&renderer, "name");
       node.addOptionalAttribute<RendererVersion>(&renderer, "version");
       node.addOptionalAttribute<CoordinateMode>(&renderer, "coordinateMode");
-      for (auto const &packRef :
-           renderer.template get<RendererPackFormatIdRefs>()) {
-        node.addElement("audioPackFormatIDRef",
-                        formatId(packRef->template get<AudioPackFormatId>()));
-      }
     }
 
     void formatAuthoringRenderer(XmlNode &node,
                                  const AuthoringRenderer &renderer) {
       formatRendererCommon(node, renderer);
+      for (auto const &packRef : renderer.get<RendererPackFormatIdRefs>()) {
+        node.addElement("audioPackFormatIDRef",
+                        formatId(packRef->template get<AudioPackFormatId>()));
+      }
     }
 
     void formatReferenceLayout(XmlNode &node, const ReferenceLayout &layout) {
@@ -138,6 +137,11 @@ namespace adm {
     void formatLoudnessRenderer(XmlNode &node,
                                 const LoudnessRenderer &renderer) {
       formatRendererCommon(node, renderer);
+      if (renderer.has<RendererPackFormatIdRef>()) {
+        auto const &packRef = renderer.get<RendererPackFormatIdRef>();
+        node.addElement("audioPackFormatIDRef",
+                        formatId(packRef->get<AudioPackFormatId>()));
+      }
       for (auto const &objectRef : renderer.get<RendererObjectIdRefs>()) {
         node.addElement("audioObjectIDRef",
                         formatId(objectRef->get<AudioObjectId>()));

@@ -28,7 +28,8 @@ TEST_CASE("renderer_interop/renderer_to_loudness_renderer") {
           std::string{"Rec. ITU-R BS.2127"});
   REQUIRE(loudnessRenderer.get<RendererVersion>() == std::string{"1.0.0"});
   REQUIRE(loudnessRenderer.get<CoordinateMode>() == std::string{"cartesian"});
-  REQUIRE(loudnessRenderer.get<RendererPackFormatIdRefs>().size() == 2);
+  REQUIRE(loudnessRenderer.has<RendererPackFormatIdRef>());
+  REQUIRE(loudnessRenderer.get<RendererPackFormatIdRef>() == packA);
   REQUIRE(loudnessRenderer.get<RendererObjectIdRefs>().empty());
 }
 
@@ -42,9 +43,9 @@ TEST_CASE(
                                       TypeDefinition::OBJECTS);
   auto objectA = AudioObject::create(AudioObjectName("objectA"));
   auto objectB = AudioObject::create(AudioObjectName("objectB"));
-  RendererPackFormatIdRefs packs{pack};
+  RendererPackFormatIdRef packRef{pack};
   RendererObjectIdRefs objects{objectA, objectB};
-  loudnessRenderer.set(packs);
+  loudnessRenderer.set(packRef);
   loudnessRenderer.set(objects);
 
   auto renderer = loudnessRenderer.toRendererDroppingObjectRefs(
@@ -59,7 +60,8 @@ TEST_CASE(
 
   auto roundTrip = renderer.toLoudnessRenderer();
   REQUIRE(roundTrip.get<RendererObjectIdRefs>().empty());
-  REQUIRE(roundTrip.get<RendererPackFormatIdRefs>().size() == 1);
+  REQUIRE(roundTrip.has<RendererPackFormatIdRef>());
+  REQUIRE(roundTrip.get<RendererPackFormatIdRef>() == pack);
 }
 
 TEST_CASE("renderer_interop/loudness_metadata_accepts_renderer") {
@@ -78,6 +80,7 @@ TEST_CASE("renderer_interop/loudness_metadata_accepts_renderer") {
   REQUIRE(loudnessRenderer.get<RendererUri>() ==
           std::string{"urn:itu:bs:2127:0:itu_adm_renderer"});
   REQUIRE(loudnessRenderer.get<CoordinateMode>() == std::string{"polar"});
-  REQUIRE(loudnessRenderer.get<RendererPackFormatIdRefs>().size() == 1);
+  REQUIRE(loudnessRenderer.has<RendererPackFormatIdRef>());
+  REQUIRE(loudnessRenderer.get<RendererPackFormatIdRef>() == pack);
   REQUIRE(loudnessRenderer.get<RendererObjectIdRefs>().empty());
 }

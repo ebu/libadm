@@ -25,14 +25,14 @@ namespace adm {
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         OptionalParameter<CoordinateMode>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS
-        VectorParameter<RendererPackFormatIdRefs>;
+        OptionalParameter<RendererPackFormatIdRef>;
     extern template class ADM_EXPORT_TEMPLATE_METHODS
         VectorParameter<RendererObjectIdRefs>;
 
     using LoudnessRendererBase = HasParameters<
         OptionalParameter<RendererUri>, OptionalParameter<RendererName>,
         OptionalParameter<RendererVersion>, OptionalParameter<CoordinateMode>,
-        VectorParameter<RendererPackFormatIdRefs>,
+        OptionalParameter<RendererPackFormatIdRef>,
         VectorParameter<RendererObjectIdRefs>>;
   }  // namespace detail
 

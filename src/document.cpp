@@ -103,7 +103,7 @@ namespace adm {
     }
 
     template <typename T>
-    bool pruneLoudnessMetadataIdRefs(
+    bool pruneLoudnessMetadataObjectRefs(
       LoudnessMetadatas& data,
       std::shared_ptr<T> removedElement) {
       bool changed = false;
@@ -121,18 +121,54 @@ namespace adm {
         changed = true;
       }
       return changed;
+    }
 
+    bool pruneLoudnessMetadataPackFormatRefs(
+      LoudnessMetadatas& data,
+      std::shared_ptr<AudioPackFormat> const& removedPackFormat) {
+      bool changed = false;
+      auto const removedId = removedPackFormat->get<AudioPackFormatId>();
+      for (auto& loudnessMetadata : data) {
+        if (!loudnessMetadata.has<LoudnessRenderer>()) {
+          continue;
+        }
+        auto renderer = loudnessMetadata.get<LoudnessRenderer>();
+        if (!renderer.has<RendererPackFormatIdRef>()) {
+          continue;
+        }
+        auto const& ref = renderer.get<RendererPackFormatIdRef>();
+        if (ref == removedPackFormat || ref->get<AudioPackFormatId>() == removedId) {
+          renderer.unset<RendererPackFormatIdRef>();
+          loudnessMetadata.set(std::move(renderer));
+          changed = true;
+        }
+      }
+      return changed;
+    }
+
+    template<typename Element>
+    void pruneElementLoudnessPackRefs(
+      std::shared_ptr<Element> const& element,
+      std::shared_ptr<AudioPackFormat> const& removedElement) {
+      if (!element->template has<LoudnessMetadatas>()) {
+        return;
+      }
+      auto loudnessMetadatas = element->template get<LoudnessMetadatas>();
+      if (!pruneLoudnessMetadataPackFormatRefs(loudnessMetadatas, removedElement)) {
+        return;
+      }
+      element->set(std::move(loudnessMetadatas));
     }
 
     template<typename Element, typename RemovedElement>
-    void pruneElementLoudnessIdRefs(
+    void pruneElementLoudnessObjectRefs(
       std::shared_ptr<Element> const& element,
       std::shared_ptr<RemovedElement> const& removedElement) {
       if (!element->template has<LoudnessMetadatas>()) {
         return;
       }
       auto loudnessMetadatas = element->template get<LoudnessMetadatas>();
-      if (!pruneLoudnessMetadataIdRefs(loudnessMetadatas, removedElement)) {
+      if (!pruneLoudnessMetadataObjectRefs(loudnessMetadatas, removedElement)) {
         return;
       }
       element->set(std::move(loudnessMetadatas));
@@ -199,11 +235,11 @@ namespace adm {
             programme->set(std::move(info));
           }
         }
-        pruneElementLoudnessIdRefs(programme, removedPackFormat);
+        pruneElementLoudnessPackRefs(programme, removedPackFormat);
       }
 
       for (auto const& content : document.getElements<AudioContent>()) {
-        pruneElementLoudnessIdRefs(content, removedPackFormat);
+        pruneElementLoudnessPackRefs(content, removedPackFormat);
       }
     }
 
@@ -211,11 +247,11 @@ namespace adm {
         Document& document,
         std::shared_ptr<AudioObject> const& removedObject) {
       for (auto const& programme : document.getElements<AudioProgramme>()) {
-        pruneElementLoudnessIdRefs(programme, removedObject);
+        pruneElementLoudnessObjectRefs(programme, removedObject);
       }
 
       for (auto const& content : document.getElements<AudioContent>()) {
-        pruneElementLoudnessIdRefs(content, removedObject);
+        pruneElementLoudnessObjectRefs(content, removedObject);
       }
     }
   }  // namespace

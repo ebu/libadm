@@ -389,14 +389,14 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   programme->set(info);
 
   LoudnessRenderer programmeRenderer;
-  programmeRenderer.set(RendererPackFormatIdRefs{packA, packB});
+  programmeRenderer.set(RendererPackFormatIdRef{packA});
   programmeRenderer.set(RendererObjectIdRefs{object});
   LoudnessMetadata programmeLm;
   programmeLm.set(programmeRenderer);
   programme->set(LoudnessMetadatas{programmeLm});
 
   LoudnessRenderer contentRenderer;
-  contentRenderer.set(RendererPackFormatIdRefs{packA, packB});
+  contentRenderer.set(RendererPackFormatIdRef{packA});
   contentRenderer.set(RendererObjectIdRefs{object});
   LoudnessMetadata contentLm;
   contentLm.set(contentRenderer);
@@ -447,25 +447,15 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   REQUIRE(copiedProgrammeLms.size() == 1);
   auto copiedProgrammeRenderer =
       copiedProgrammeLms.at(0).get<LoudnessRenderer>();
-  REQUIRE(copiedProgrammeRenderer.has<RendererPackFormatIdRefs>());
+  REQUIRE(copiedProgrammeRenderer.has<RendererPackFormatIdRef>());
   REQUIRE(copiedProgrammeRenderer.has<RendererObjectIdRefs>());
 
-  auto copiedProgrammePackRefs =
-      copiedProgrammeRenderer.get<RendererPackFormatIdRefs>();
-  REQUIRE(copiedProgrammePackRefs.size() == 2);
-  bool sawPackAInProgrammeRenderer = false;
-  bool sawPackBInProgrammeRenderer = false;
-  for (auto const& ref : copiedProgrammePackRefs) {
-    REQUIRE(ref->getParent().lock() == copy);
-    REQUIRE(ref != packA);
-    REQUIRE(ref != packB);
-    if (ref->get<AudioPackFormatId>() == packAId)
-      sawPackAInProgrammeRenderer = true;
-    if (ref->get<AudioPackFormatId>() == packBId)
-      sawPackBInProgrammeRenderer = true;
-  }
-  REQUIRE(sawPackAInProgrammeRenderer);
-  REQUIRE(sawPackBInProgrammeRenderer);
+  auto copiedProgrammePackRef =
+      copiedProgrammeRenderer.get<RendererPackFormatIdRef>();
+  REQUIRE(copiedProgrammePackRef->getParent().lock() == copy);
+  REQUIRE(copiedProgrammePackRef != packA);
+  REQUIRE(copiedProgrammePackRef != packB);
+  REQUIRE(copiedProgrammePackRef->get<AudioPackFormatId>() == packAId);
 
   auto copiedProgrammeObjectRefs =
       copiedProgrammeRenderer.get<RendererObjectIdRefs>();
@@ -478,25 +468,15 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   auto copiedContentLms = copiedContent->get<LoudnessMetadatas>();
   REQUIRE(copiedContentLms.size() == 1);
   auto copiedContentRenderer = copiedContentLms.at(0).get<LoudnessRenderer>();
-  REQUIRE(copiedContentRenderer.has<RendererPackFormatIdRefs>());
+  REQUIRE(copiedContentRenderer.has<RendererPackFormatIdRef>());
   REQUIRE(copiedContentRenderer.has<RendererObjectIdRefs>());
 
-  auto copiedContentPackRefs =
-      copiedContentRenderer.get<RendererPackFormatIdRefs>();
-  REQUIRE(copiedContentPackRefs.size() == 2);
-  bool sawPackAInContentRenderer = false;
-  bool sawPackBInContentRenderer = false;
-  for (auto const& ref : copiedContentPackRefs) {
-    REQUIRE(ref->getParent().lock() == copy);
-    REQUIRE(ref != packA);
-    REQUIRE(ref != packB);
-    if (ref->get<AudioPackFormatId>() == packAId)
-      sawPackAInContentRenderer = true;
-    if (ref->get<AudioPackFormatId>() == packBId)
-      sawPackBInContentRenderer = true;
-  }
-  REQUIRE(sawPackAInContentRenderer);
-  REQUIRE(sawPackBInContentRenderer);
+  auto copiedContentPackRef =
+      copiedContentRenderer.get<RendererPackFormatIdRef>();
+  REQUIRE(copiedContentPackRef->getParent().lock() == copy);
+  REQUIRE(copiedContentPackRef != packA);
+  REQUIRE(copiedContentPackRef != packB);
+  REQUIRE(copiedContentPackRef->get<AudioPackFormatId>() == packAId);
 
   auto copiedContentObjectRefs =
       copiedContentRenderer.get<RendererObjectIdRefs>();
@@ -753,14 +733,14 @@ TEST_CASE("remove_elements") {
 
     // loudnessMetadata.renderer on programme
     LoudnessRenderer programmeRenderer;
-    programmeRenderer.set(RendererPackFormatIdRefs{packFormat});
+    programmeRenderer.set(RendererPackFormatIdRef{packFormat});
     LoudnessMetadata programmeLm;
     programmeLm.set(programmeRenderer);
     programme->set(LoudnessMetadatas{programmeLm});
 
     // loudnessMetadata.renderer on content
     LoudnessRenderer contentRenderer;
-    contentRenderer.set(RendererPackFormatIdRefs{packFormat});
+    contentRenderer.set(RendererPackFormatIdRef{packFormat});
     LoudnessMetadata contentLm;
     contentLm.set(contentRenderer);
     content->set(LoudnessMetadatas{contentLm});
@@ -781,13 +761,13 @@ TEST_CASE("remove_elements") {
     REQUIRE(programmeLms.size() == 1);
     REQUIRE(programmeLms.at(0).has<LoudnessRenderer>());
     auto updatedProgrammeRenderer = programmeLms.at(0).get<LoudnessRenderer>();
-    REQUIRE(updatedProgrammeRenderer.has<RendererPackFormatIdRefs>() == false);
+    REQUIRE(updatedProgrammeRenderer.has<RendererPackFormatIdRef>() == false);
 
     auto contentLms = content->get<LoudnessMetadatas>();
     REQUIRE(contentLms.size() == 1);
     REQUIRE(contentLms.at(0).has<LoudnessRenderer>());
     auto updatedContentRenderer = contentLms.at(0).get<LoudnessRenderer>();
-    REQUIRE(updatedContentRenderer.has<RendererPackFormatIdRefs>() == false);
+    REQUIRE(updatedContentRenderer.has<RendererPackFormatIdRef>() == false);
   }
 
   SECTION(
@@ -815,15 +795,13 @@ TEST_CASE("remove_elements") {
     programme->set(info);
 
     LoudnessRenderer programmeRenderer;
-    programmeRenderer.set(
-        RendererPackFormatIdRefs{removedPackFormat, keptPackFormat});
+    programmeRenderer.set(RendererPackFormatIdRef{removedPackFormat});
     LoudnessMetadata programmeLm;
     programmeLm.set(programmeRenderer);
     programme->set(LoudnessMetadatas{programmeLm});
 
     LoudnessRenderer contentRenderer;
-    contentRenderer.set(
-        RendererPackFormatIdRefs{removedPackFormat, keptPackFormat});
+    contentRenderer.set(RendererPackFormatIdRef{removedPackFormat});
     LoudnessMetadata contentLm;
     contentLm.set(contentRenderer);
     content->set(LoudnessMetadatas{contentLm});
@@ -851,19 +829,12 @@ TEST_CASE("remove_elements") {
     auto programmeLms = programme->get<LoudnessMetadatas>();
     REQUIRE(programmeLms.size() == 1);
     auto updatedProgrammeRenderer = programmeLms.at(0).get<LoudnessRenderer>();
-    REQUIRE(updatedProgrammeRenderer.has<RendererPackFormatIdRefs>());
-    auto programmeRefs =
-        updatedProgrammeRenderer.get<RendererPackFormatIdRefs>();
-    REQUIRE(programmeRefs.size() == 1);
-    REQUIRE(programmeRefs.at(0) == keptPackFormat);
+    REQUIRE(updatedProgrammeRenderer.has<RendererPackFormatIdRef>() == false);
 
     auto contentLms = content->get<LoudnessMetadatas>();
     REQUIRE(contentLms.size() == 1);
     auto updatedContentRenderer = contentLms.at(0).get<LoudnessRenderer>();
-    REQUIRE(updatedContentRenderer.has<RendererPackFormatIdRefs>());
-    auto contentRefs = updatedContentRenderer.get<RendererPackFormatIdRefs>();
-    REQUIRE(contentRefs.size() == 1);
-    REQUIRE(contentRefs.at(0) == keptPackFormat);
+    REQUIRE(updatedContentRenderer.has<RendererPackFormatIdRef>() == false);
   }
 
   SECTION("AudioChannelFormat – reference removal") {

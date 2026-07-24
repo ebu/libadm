@@ -283,8 +283,15 @@ namespace adm {
         for (auto& loudnessNode : loudnessMetadataNodes) {
           RendererNestedIds refs;
           if (auto rendererNode = detail::findElement(loudnessNode, "renderer")) {
-            for (auto& packNode : detail::findElements(rendererNode, "audioPackFormatIDRef")) {
-              refs.packFormatIds.push_back(parseAudioPackFormatId(packNode->value()));
+            auto packNodes = detail::findElements(rendererNode, "audioPackFormatIDRef");
+            if (packNodes.size() > 1) {
+              throw error::XmlParsingError(
+                  "loudnessMetadata/renderer allows at most one audioPackFormatIDRef",
+                  getDocumentLine(rendererNode));
+            }
+            for (auto& packNode : packNodes) {
+              refs.packFormatIds.push_back(
+                  parseAudioPackFormatId(packNode->value()));
             }
             for (auto& objectNode : detail::findElements(rendererNode, "audioObjectIDRef")) {
               refs.objectIds.push_back(parseAudioObjectId(objectNode->value()));
@@ -325,8 +332,15 @@ namespace adm {
         for (auto& loudnessNode : loudnessMetadataNodes) {
           RendererNestedIds refs;
           if (auto rendererNode = detail::findElement(loudnessNode, "renderer")) {
-            for (auto& packNode : detail::findElements(rendererNode, "audioPackFormatIDRef")) {
-              refs.packFormatIds.push_back(parseAudioPackFormatId(packNode->value()));
+            auto packNodes = detail::findElements(rendererNode, "audioPackFormatIDRef");
+            if (packNodes.size() > 1) {
+              throw error::XmlParsingError(
+                  "loudnessMetadata/renderer allows at most one audioPackFormatIDRef",
+                  getDocumentLine(rendererNode));
+            }
+            for (auto& packNode : packNodes) {
+              refs.packFormatIds.push_back(
+                  parseAudioPackFormatId(packNode->value()));
             }
             for (auto& objectNode : detail::findElements(rendererNode, "audioObjectIDRef")) {
               refs.objectIds.push_back(parseAudioObjectId(objectNode->value()));
@@ -578,17 +592,11 @@ namespace adm {
           auto const& ids = rendererIds.at(i);
 
           if (!ids.packFormatIds.empty()) {
-            RendererPackFormatIdRefs packRefs;
-            packRefs.reserve(ids.packFormatIds.size());
-            for (auto const& id : ids.packFormatIds) {
-              if (auto element = idMap_.lookup(id)) {
-                packRefs.push_back(element);
-              } else {
-                throw error::XmlParsingUnresolvedReference(formatId(id));
-              }
-            }
-            if (!packRefs.empty()) {
-              renderer.set(std::move(packRefs));
+            auto const& id = ids.packFormatIds.front();
+            if (auto element = idMap_.lookup(id)) {
+              renderer.set(element);
+            } else {
+              throw error::XmlParsingUnresolvedReference(formatId(id));
             }
           }
 
@@ -634,17 +642,11 @@ namespace adm {
           auto const& ids = rendererIds.at(i);
 
           if (!ids.packFormatIds.empty()) {
-            RendererPackFormatIdRefs packRefs;
-            packRefs.reserve(ids.packFormatIds.size());
-            for (auto const& id : ids.packFormatIds) {
-              if (auto element = idMap_.lookup(id)) {
-                packRefs.push_back(element);
-              } else {
-                throw error::XmlParsingUnresolvedReference(formatId(id));
-              }
-            }
-            if (!packRefs.empty()) {
-              renderer.set(std::move(packRefs));
+            auto const& id = ids.packFormatIds.front();
+            if (auto element = idMap_.lookup(id)) {
+              renderer.set(element);
+            } else {
+              throw error::XmlParsingUnresolvedReference(formatId(id));
             }
           }
 

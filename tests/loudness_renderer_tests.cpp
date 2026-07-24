@@ -11,7 +11,7 @@ TEST_CASE("loudness_renderer/empty") {
   REQUIRE(renderer.has<RendererName>() == false);
   REQUIRE(renderer.has<RendererVersion>() == false);
   REQUIRE(renderer.has<CoordinateMode>() == false);
-  REQUIRE(renderer.get<RendererPackFormatIdRefs>().empty());
+  REQUIRE(renderer.has<RendererPackFormatIdRef>() == false);
   REQUIRE(renderer.get<RendererObjectIdRefs>().empty());
 }
 
@@ -45,12 +45,13 @@ TEST_CASE("loudness_renderer/id_refs") {
                                       TypeDefinition::OBJECTS);
   auto objectA = AudioObject::create(AudioObjectName("objectA"));
   auto objectB = AudioObject::create(AudioObjectName("objectB"));
-  RendererPackFormatIdRefs packs{pack};
+  RendererPackFormatIdRef packRef{pack};
   RendererObjectIdRefs objects{objectA, objectB};
-  renderer.set(packs);
+  renderer.set(packRef);
   renderer.set(objects);
 
-  REQUIRE(renderer.get<RendererPackFormatIdRefs>().size() == 1);
+  REQUIRE(renderer.has<RendererPackFormatIdRef>());
+  REQUIRE(renderer.get<RendererPackFormatIdRef>() == pack);
   REQUIRE(renderer.get<RendererObjectIdRefs>().size() == 2);
 }
 

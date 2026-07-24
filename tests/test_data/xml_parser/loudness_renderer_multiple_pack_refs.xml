@@ -7,21 +7,12 @@
           <loudnessMetadata loudnessMethod="ITU-R BS.1770">
             <renderer uri="urn:itu:bs:2127:0:itu_adm_renderer" name="Forward Renderer" version="1.0.0" coordinateMode="polar">
               <audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+              <audioPackFormatIDRef>AP_00031002</audioPackFormatIDRef>
               <audioObjectIDRef>AO_1001</audioObjectIDRef>
               <audioObjectIDRef>AO_1002</audioObjectIDRef>
             </renderer>
           </loudnessMetadata>
         </audioProgramme>
-
-        <audioContent audioContentID="ACO_1001" audioContentName="MyContent">
-          <loudnessMetadata loudnessMethod="ITU-R BS.1770">
-            <renderer uri="urn:itu:bs:2127:0:itu_adm_renderer" name="Forward Renderer" version="1.0.0" coordinateMode="polar">
-              <audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
-              <audioObjectIDRef>AO_1001</audioObjectIDRef>
-              <audioObjectIDRef>AO_1002</audioObjectIDRef>
-            </renderer>
-          </loudnessMetadata>
-        </audioContent>
 
         <audioObject audioObjectID="AO_1001" audioObjectName="Object A"/>
         <audioObject audioObjectID="AO_1002" audioObjectName="Object B"/>

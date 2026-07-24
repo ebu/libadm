@@ -19,7 +19,10 @@ namespace adm {
       loudnessRenderer.set(renderer.get<CoordinateMode>());
     }
     if (renderer.has<RendererPackFormatIdRefs>()) {
-      loudnessRenderer.set(renderer.get<RendererPackFormatIdRefs>());
+      auto refs = renderer.get<RendererPackFormatIdRefs>();
+      if (!refs.empty()) {
+        loudnessRenderer.set(refs.front());
+      }
     }
     return loudnessRenderer;
   }
@@ -39,8 +42,8 @@ namespace adm {
     if (has<CoordinateMode>()) {
       renderer.set(get<CoordinateMode>());
     }
-    if (has<RendererPackFormatIdRefs>()) {
-      renderer.set(get<RendererPackFormatIdRefs>());
+    if (has<RendererPackFormatIdRef>()) {
+      renderer.set(RendererPackFormatIdRefs{get<RendererPackFormatIdRef>()});
     }
     return renderer;
   }
@@ -76,7 +79,7 @@ namespace adm {
     template class OptionalParameter<RendererName>;
     template class OptionalParameter<RendererVersion>;
     template class OptionalParameter<CoordinateMode>;
-    template class VectorParameter<RendererPackFormatIdRefs>;
+    template class OptionalParameter<RendererPackFormatIdRef>;
     template class VectorParameter<RendererObjectIdRefs>;
   }  // namespace detail
 

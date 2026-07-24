@@ -6,6 +6,7 @@
 #include "adm/elements/loudness_metadata.hpp"
 #include "adm/elements/loudness_renderer.hpp"
 #include "adm/parse.hpp"
+#include "adm/errors.hpp"
 #include "adm/write.hpp"
 #include "helper/file_comparator.hpp"
 
@@ -26,7 +27,9 @@ TEST_CASE("xml/loudness_renderer") {
   REQUIRE(renderer.get<RendererName>() == std::string{"Rec. ITU-R BS.2127"});
   REQUIRE(renderer.get<RendererVersion>() == std::string{"1.0.0"});
   REQUIRE(renderer.get<CoordinateMode>() == std::string{"polar"});
-  REQUIRE(renderer.get<RendererPackFormatIdRefs>().size() == 1);
+  REQUIRE(renderer.has<RendererPackFormatIdRef>());
+  REQUIRE(renderer.get<RendererPackFormatIdRef>()->get<AudioPackFormatId>() ==
+          parseAudioPackFormatId("AP_00010002"));
   REQUIRE(renderer.get<RendererObjectIdRefs>().size() == 2);
 
   std::stringstream xml;
@@ -38,16 +41,12 @@ TEST_CASE("xml/loudness_renderer_forward_refs") {
   auto document = parseXml("xml_parser/loudness_renderer_forward_refs.xml");
 
   auto packA = document->lookup(parseAudioPackFormatId("AP_00031001"));
-  auto packB = document->lookup(parseAudioPackFormatId("AP_00031002"));
   auto objectA = document->lookup(parseAudioObjectId("AO_1001"));
   auto objectB = document->lookup(parseAudioObjectId("AO_1002"));
 
   auto verifyRendererRefs = [&](LoudnessRenderer const& renderer) {
-    REQUIRE(renderer.has<RendererPackFormatIdRefs>());
-    auto packRefs = renderer.get<RendererPackFormatIdRefs>();
-    REQUIRE(packRefs.size() == 2);
-    REQUIRE(packRefs.at(0) == packA);
-    REQUIRE(packRefs.at(1) == packB);
+    REQUIRE(renderer.has<RendererPackFormatIdRef>());
+    REQUIRE(renderer.get<RendererPackFormatIdRef>() == packA);
 
     REQUIRE(renderer.has<RendererObjectIdRefs>());
     auto objectRefs = renderer.get<RendererObjectIdRefs>();
@@ -69,4 +68,10 @@ TEST_CASE("xml/loudness_renderer_forward_refs") {
   REQUIRE(contentLms.size() == 1);
   REQUIRE(contentLms.at(0).has<LoudnessRenderer>());
   verifyRendererRefs(contentLms.at(0).get<LoudnessRenderer>());
+}
+
+TEST_CASE("xml/loudness_renderer_rejects_multiple_pack_refs") {
+  REQUIRE_THROWS_AS(
+      parseXml("xml_parser/loudness_renderer_multiple_pack_refs.xml"),
+      error::XmlParsingError);
 }

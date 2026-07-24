@@ -33,6 +33,10 @@ namespace adm {
       std::vector<std::shared_ptr<AudioPackFormat>>;
   ADD_TRAIT(RendererPackFormatIdRefs, RendererPackFormatIdRefsTag);
 
+  /// @brief Single audioPackFormat reference used by a loudness renderer
+  using RendererPackFormatIdRef = std::shared_ptr<AudioPackFormat>;
+  ADD_TRAIT(RendererPackFormatIdRef, RendererPackFormatIdRefTag);
+
   /// @brief Vector of audioObject references used by a renderer
   using RendererObjectIdRefs = std::vector<std::shared_ptr<AudioObject>>;
   ADD_TRAIT(RendererObjectIdRefs, RendererObjectIdRefsTag);
