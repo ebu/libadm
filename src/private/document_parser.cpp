@@ -249,13 +249,15 @@ namespace adm {
       if (auto authoringNode = detail::findElement(node, "authoringInformation")) {
         std::vector<AudioPackFormatId> referenceLayoutIds;
         for (auto& layoutNode : detail::findElements(authoringNode, "referenceLayout")) {
-          auto packNode = detail::findElement(layoutNode, "audioPackFormatIDRef");
-          if (!packNode) {
+          auto packNodes =
+              detail::findElements(layoutNode, "audioPackFormatIDRef");
+          if (packNodes.size() != 1) {
             throw error::XmlParsingError(
-                "referenceLayout requires an audioPackFormatIDRef child",
+                "referenceLayout requires exactly one audioPackFormatIDRef child",
                 getDocumentLine(layoutNode));
           }
-          referenceLayoutIds.push_back(parseAudioPackFormatId(packNode->value()));
+          referenceLayoutIds.push_back(
+              parseAudioPackFormatId(packNodes.front()->value()));
         }
         if (!referenceLayoutIds.empty()) {
           programmeAuthoringReferenceLayoutPackFormatRefs_[audioProgramme] =
@@ -265,7 +267,14 @@ namespace adm {
         std::vector<std::vector<AudioPackFormatId>> rendererPackFormatIds;
         for (auto& rendererNode : detail::findElements(authoringNode, "renderer")) {
           std::vector<AudioPackFormatId> packFormatIds;
-          for (auto& packNode : detail::findElements(rendererNode, "audioPackFormatIDRef")) {
+          auto packNodes =
+              detail::findElements(rendererNode, "audioPackFormatIDRef");
+          if (packNodes.empty()) {
+            throw error::XmlParsingError(
+                "authoringInformation/renderer requires one or more audioPackFormatIDRef children",
+                getDocumentLine(rendererNode));
+          }
+          for (auto& packNode : packNodes) {
             packFormatIds.push_back(parseAudioPackFormatId(packNode->value()));
           }
           rendererPackFormatIds.push_back(std::move(packFormatIds));

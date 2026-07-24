@@ -6,6 +6,7 @@
 #include "adm/elements/authoring_information.hpp"
 #include "adm/elements/coordinate_mode.hpp"
 #include "adm/parse.hpp"
+#include "adm/errors.hpp"
 #include "adm/write.hpp"
 #include "helper/file_comparator.hpp"
 
@@ -112,4 +113,18 @@ TEST_CASE("xml/authoring_information_identical_renderers") {
   REQUIRE(packRefs.size() == 1);
   REQUIRE(packRefs.at(0) ==
           document->lookup(parseAudioPackFormatId("AP_00010001")));
+}
+
+TEST_CASE("xml/authoring_information_renderer_requires_pack_refs") {
+  REQUIRE_THROWS_AS(
+      parseXml(
+          "xml_parser/authoring_information_renderer_missing_pack_ref.xml"),
+      error::XmlParsingError);
+}
+
+TEST_CASE("xml/reference_layout_rejects_multiple_pack_refs") {
+  REQUIRE_THROWS_AS(
+      parseXml("xml_parser/"
+               "authoring_information_reference_layout_multiple_pack_refs.xml"),
+      error::XmlParsingError);
 }
