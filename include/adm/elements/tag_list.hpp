@@ -266,14 +266,8 @@ namespace adm {
   struct TagListTag {};
 
   class TagList : private detail::TagListBase,
-                  private detail::AddWrapperMethods<TagList>,
-                  public std::enable_shared_from_this<TagList> {
+                  private detail::AddWrapperMethods<TagList> {
    public:
-    template <typename... Parameters>
-    std::shared_ptr<TagList> create(Parameters... namedArgs) {
-      return std::make_shared<TagList>(
-          std::forward<Parameters...>(namedArgs...));
-    }
     using tag = TagListTag;
     using detail::TagListBase::set;
     using detail::AddWrapperMethods<TagList>::get;
