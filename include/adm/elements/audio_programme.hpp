@@ -285,6 +285,8 @@ namespace adm {
     ADM_EXPORT void disconnectReferences();
 
     void setParent(std::weak_ptr<Document> document);
+    ADM_EXPORT void setAuthoringInformationParent(
+        std::weak_ptr<Document> document);
     ADM_EXPORT void setLoudnessMetadataParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;

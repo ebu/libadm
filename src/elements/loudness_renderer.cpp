@@ -22,11 +22,10 @@ namespace adm {
     if (renderer.has<CoordinateMode>()) {
       loudnessRenderer.set(renderer.get<CoordinateMode>());
     }
-    if (renderer.has<RendererPackFormatIdRefs>()) {
-      auto refs = renderer.get<RendererPackFormatIdRefs>();
-      if (!refs.empty()) {
-        loudnessRenderer.set(refs.front());
-      }
+    auto refs = renderer.getReferences<AudioPackFormat>();
+    if (!refs.empty()) {
+      loudnessRenderer.set(
+          std::const_pointer_cast<AudioPackFormat>(refs.front()));
     }
     return loudnessRenderer;
   }
@@ -122,7 +121,7 @@ namespace adm {
       renderer.set(get<CoordinateMode>());
     }
     if (has<RendererPackFormatIdRef>()) {
-      renderer.set(RendererPackFormatIdRefs{get<RendererPackFormatIdRef>()});
+      renderer.addReference(get<RendererPackFormatIdRef>());
     }
     return renderer;
   }

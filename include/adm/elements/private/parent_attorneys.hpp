@@ -24,6 +24,12 @@ namespace adm {
       programme->setParent(std::move(parent));
     }
 
+    static void setAuthoringInformationParent(
+        const std::shared_ptr<AudioProgramme>& programme,
+        std::weak_ptr<Document> parent) {
+      programme->setAuthoringInformationParent(std::move(parent));
+    }
+
     static void setLoudnessMetadataParent(
         const std::shared_ptr<AudioProgramme>& programme,
         std::weak_ptr<Document> parent) {

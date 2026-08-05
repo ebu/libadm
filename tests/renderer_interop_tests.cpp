@@ -17,8 +17,8 @@ TEST_CASE("renderer_interop/renderer_to_loudness_renderer") {
                                        TypeDefinition::OBJECTS);
   auto packB = AudioPackFormat::create(AudioPackFormatName("packB"),
                                        TypeDefinition::OBJECTS);
-  RendererPackFormatIdRefs packs{packA, packB};
-  renderer.set(packs);
+  renderer.addReference(packA);
+  renderer.addReference(packB);
 
   auto loudnessRenderer = renderer.toLoudnessRenderer();
 
@@ -56,7 +56,7 @@ TEST_CASE(
   REQUIRE(renderer.get<RendererName>() == std::string{"Rec. ITU-R BS.2127"});
   REQUIRE(renderer.get<RendererVersion>() == std::string{"1.0.0"});
   REQUIRE(renderer.get<CoordinateMode>() == std::string{"polar"});
-  REQUIRE(renderer.get<RendererPackFormatIdRefs>().size() == 1);
+  REQUIRE(renderer.getReferences<AudioPackFormat>().size() == 1);
 
   auto roundTrip = renderer.toLoudnessRenderer();
   REQUIRE(roundTrip.getReferences<AudioObject>().empty());
@@ -70,8 +70,7 @@ TEST_CASE("renderer_interop/loudness_metadata_accepts_renderer") {
                              CoordinateMode("polar")};
   auto pack = AudioPackFormat::create(AudioPackFormatName("pack"),
                                       TypeDefinition::OBJECTS);
-  RendererPackFormatIdRefs packs{pack};
-  renderer.set(packs);
+  renderer.addReference(pack);
 
   loudnessMetadata.set(renderer);
 

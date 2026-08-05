@@ -1,10 +1,8 @@
 /// @file renderer_common_types.hpp
 #pragma once
 
-#include <algorithm>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "adm/detail/auto_base.hpp"
 #include "adm/detail/named_type.hpp"
@@ -28,23 +26,8 @@ namespace adm {
   /// @brief NamedType for the renderer version attribute
   using RendererVersion = detail::NamedType<std::string, RendererVersionTag>;
 
-  /// @brief Vector of audioPackFormat references used by a renderer
-  using RendererPackFormatIdRefs =
-      std::vector<std::shared_ptr<AudioPackFormat>>;
-  ADD_TRAIT(RendererPackFormatIdRefs, RendererPackFormatIdRefsTag);
-
   /// @brief Single audioPackFormat reference used by a loudness renderer
   using RendererPackFormatIdRef = std::shared_ptr<AudioPackFormat>;
   ADD_TRAIT(RendererPackFormatIdRef, RendererPackFormatIdRefTag);
-
-  namespace detail {
-    template <>
-    struct ParameterCompare<RendererPackFormatIdRefs> {
-      static bool compare(RendererPackFormatIdRefs const& lhs,
-                          RendererPackFormatIdRefs const& rhs) {
-        return lhs == rhs;
-      }
-    };
-  }  // namespace detail
 
 }  // namespace adm

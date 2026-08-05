@@ -4,21 +4,6 @@
 namespace adm {
 
   namespace {
-    RendererPackFormatIdRefs remapPackFormatRefs(
-        RendererPackFormatIdRefs const& refs, ElementMapping const& mapping) {
-      RendererPackFormatIdRefs remapped;
-      remapped.reserve(refs.size());
-      for (auto const& ref : refs) {
-        auto it = mapping.audioPackFormat.find(ref);
-        if (it != mapping.audioPackFormat.end()) {
-          remapped.push_back(it->second);
-        } else {
-          remapped.push_back(ref);
-        }
-      }
-      return remapped;
-    }
-
     RendererPackFormatIdRef remapPackFormatRef(
         RendererPackFormatIdRef const& ref, ElementMapping const& mapping) {
       auto it = mapping.audioPackFormat.find(ref);
@@ -62,16 +47,24 @@ namespace adm {
       if (info.has<Renderers>()) {
         auto renderers = info.get<Renderers>();
         for (auto& renderer : renderers) {
-          if (!renderer.has<RendererPackFormatIdRefs>()) {
+          auto packRefs = renderer.getReferences<AudioPackFormat>();
+          if (packRefs.empty()) {
             continue;
           }
 
-          auto remapped = remapPackFormatRefs(
-              renderer.get<RendererPackFormatIdRefs>(), mapping);
-          if (remapped.empty()) {
-            renderer.unset<RendererPackFormatIdRefs>();
-          } else {
-            renderer.set(std::move(remapped));
+          std::vector<std::shared_ptr<AudioPackFormat>> remapped;
+          remapped.reserve(packRefs.size());
+          for (auto const& ref : packRefs) {
+            auto it = mapping.audioPackFormat.find(ref);
+            if (it != mapping.audioPackFormat.end()) {
+              remapped.push_back(it->second);
+            } else {
+              remapped.push_back(ref);
+            }
+          }
+          renderer.clearReferences<AudioPackFormat>();
+          for (auto const& ref : remapped) {
+            renderer.addReference(ref);
           }
           changed = true;
         }

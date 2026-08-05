@@ -76,32 +76,6 @@ namespace adm {
       AddRecursionGuard& operator=(const AddRecursionGuard&) = delete;
     };
 
-    template <typename RendererType, typename RefsParameter, typename Element>
-    bool pruneRendererRefs(
-        RendererType& renderer,
-        std::shared_ptr<Element> const& removedElement) {
-      if (!renderer.template has<RefsParameter>()) {
-        return false;
-      }
-      auto const removedId = removedElement->template get<typename Element::id_type>();
-      auto refs = renderer.template get<RefsParameter>();
-      pruneIf(refs, [&removedId, &removedElement](auto const& ref) {
-        if (ref == removedElement) {
-          return true;
-        }
-        bool removed = ref->template get<typename Element::id_type>() ==
-                       removedId;
-        return removed;
-      });
-
-      if (refs.empty()) {
-        renderer.template unset<RefsParameter>();
-      } else {
-        renderer.set(std::move(refs));
-      }
-      return true;
-    }
-
     template <typename T>
     bool pruneLoudnessMetadataObjectRefs(
       LoudnessMetadatas& data,
@@ -192,10 +166,20 @@ namespace adm {
         auto renderers = info.get<Renderers>();
         bool renderersChanged = false;
         for (auto& renderer : renderers) {
-          renderersChanged |=
-              pruneRendererRefs<AuthoringRenderer, RendererPackFormatIdRefs>(
-                  renderer,
-                  removedPackFormat);
+          auto const removedId =
+              removedPackFormat->get<AudioPackFormatId>();
+          std::vector<std::shared_ptr<AudioPackFormat>> refsToRemove;
+          for (auto const& ref :
+               renderer.getReferences<AudioPackFormat>()) {
+            if (ref == removedPackFormat ||
+                ref->get<AudioPackFormatId>() == removedId) {
+              refsToRemove.push_back(ref);
+            }
+          }
+          for (auto const& ref : refsToRemove) {
+            renderer.removeReference(ref);
+          }
+          renderersChanged |= !refsToRemove.empty();
         }
         if (renderersChanged) {
           if (renderers.empty()) {
@@ -311,6 +295,7 @@ namespace adm {
       }
     }
     for (auto const& programme : copy->getElements<AudioProgramme>()) {
+      AudioProgrammeAttorney::setAuthoringInformationParent(programme, copy);
       AudioProgrammeAttorney::setLoudnessMetadataParent(programme, copy);
     }
     for (auto const& content : copy->getElements<AudioContent>()) {
@@ -327,6 +312,8 @@ namespace adm {
       idAssigner_.assignId(*programme);
       AudioProgrammeAttorney::setParent(programme, shared_from_this());
       audioProgrammes_.push_back(programme);
+      AudioProgrammeAttorney::setAuthoringInformationParent(
+          programme, shared_from_this());
       AudioProgrammeAttorney::setLoudnessMetadataParent(
           programme, shared_from_this());
       for (auto& reference : programme->getReferences<AudioContent>()) {
@@ -491,6 +478,7 @@ namespace adm {
     if (it != audioProgrammes_.end()) {
       audioProgrammes_.erase(it);
       AudioProgrammeAttorney::setParent(programme, {});
+      AudioProgrammeAttorney::setAuthoringInformationParent(programme, {});
       AudioProgrammeAttorney::setLoudnessMetadataParent(programme, {});
       pruneTagGroupsReferencing(*this, programme);
       return true;

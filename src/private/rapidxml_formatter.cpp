@@ -94,7 +94,7 @@ namespace adm {
     void formatAuthoringRenderer(XmlNode &node,
                                  const AuthoringRenderer &renderer) {
       formatRendererCommon(node, renderer);
-      for (auto const &packRef : renderer.get<RendererPackFormatIdRefs>()) {
+      for (auto const &packRef : renderer.getReferences<AudioPackFormat>()) {
         node.addElement("audioPackFormatIDRef",
                         formatId(packRef->template get<AudioPackFormatId>()));
       }

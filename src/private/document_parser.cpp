@@ -555,17 +555,12 @@ namespace adm {
               continue;
             }
 
-            RendererPackFormatIdRefs refs;
-            refs.reserve(ids.size());
             for (auto const& id : ids) {
               if (auto element = idMap_.lookup(id)) {
-                refs.push_back(element);
+                renderer.addReference(element);
               } else {
                 throw error::XmlParsingUnresolvedReference(formatId(id));
               }
-            }
-            if (!refs.empty()) {
-              renderer.set(std::move(refs));
             }
           }
           info.unset<Renderers>();

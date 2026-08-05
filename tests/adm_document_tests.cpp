@@ -382,7 +382,8 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   AuthoringInformation info;
   AuthoringRenderer authoringRenderer{
       RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
-  authoringRenderer.set(RendererPackFormatIdRefs{packA, packB});
+  authoringRenderer.addReference(packA);
+  authoringRenderer.addReference(packB);
   info.add(authoringRenderer);
   info.add(ReferenceLayout{packA});
   info.add(ReferenceLayout{packB});
@@ -411,9 +412,8 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   REQUIRE(copiedInfo.has<Renderers>());
   auto copiedRenderers = copiedInfo.get<Renderers>();
   REQUIRE(copiedRenderers.size() == 1);
-  REQUIRE(copiedRenderers.at(0).has<RendererPackFormatIdRefs>());
   auto copiedAuthoringRefs =
-      copiedRenderers.at(0).get<RendererPackFormatIdRefs>();
+      copiedRenderers.at(0).getReferences<AudioPackFormat>();
   REQUIRE(copiedAuthoringRefs.size() == 2);
   bool sawPackAInAuthoring = false;
   bool sawPackBInAuthoring = false;
@@ -724,7 +724,7 @@ TEST_CASE("remove_elements") {
     AuthoringInformation info;
     AuthoringRenderer authoringRenderer{
         RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
-    authoringRenderer.set(RendererPackFormatIdRefs{packFormat});
+    authoringRenderer.addReference(packFormat);
     info.add(authoringRenderer);
     info.add(ReferenceLayout{packFormat});
     programme->set(info);
@@ -752,7 +752,7 @@ TEST_CASE("remove_elements") {
     REQUIRE(updatedInfo.has<Renderers>());
     auto renderers = updatedInfo.get<Renderers>();
     REQUIRE(renderers.size() == 1);
-    REQUIRE(renderers.at(0).has<RendererPackFormatIdRefs>() == false);
+    REQUIRE(renderers.at(0).getReferences<AudioPackFormat>().empty());
     REQUIRE(updatedInfo.has<ReferenceLayouts>() == false);
 
     auto programmeLms = programme->get<LoudnessMetadatas>();
@@ -785,8 +785,8 @@ TEST_CASE("remove_elements") {
     AuthoringInformation info;
     AuthoringRenderer authoringRenderer{
         RendererUri{"urn:itu:bs:2127:0:itu_adm_renderer"}};
-    authoringRenderer.set(
-        RendererPackFormatIdRefs{removedPackFormat, keptPackFormat});
+    authoringRenderer.addReference(removedPackFormat);
+    authoringRenderer.addReference(keptPackFormat);
     info.add(authoringRenderer);
     info.add(ReferenceLayout{removedPackFormat});
     info.add(ReferenceLayout{keptPackFormat});
@@ -813,10 +813,9 @@ TEST_CASE("remove_elements") {
     REQUIRE(updatedInfo.has<Renderers>());
     auto renderers = updatedInfo.get<Renderers>();
     REQUIRE(renderers.size() == 1);
-    REQUIRE(renderers.at(0).has<RendererPackFormatIdRefs>());
-    auto authoringRefs = renderers.at(0).get<RendererPackFormatIdRefs>();
+    auto authoringRefs = renderers.at(0).getReferences<AudioPackFormat>();
     REQUIRE(authoringRefs.size() == 1);
-    REQUIRE(authoringRefs.at(0) == keptPackFormat);
+    REQUIRE(authoringRefs[0] == keptPackFormat);
 
     REQUIRE(updatedInfo.has<ReferenceLayouts>());
     auto layouts = updatedInfo.get<ReferenceLayouts>();

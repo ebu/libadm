@@ -29,7 +29,7 @@ TEST_CASE("xml/authoring_information") {
   REQUIRE(r.get<RendererUri>() ==
           std::string{"urn:itu:bs:2127:0:itu_adm_renderer"});
   REQUIRE(r.get<CoordinateMode>() == std::string{"polar"});
-  REQUIRE(r.get<RendererPackFormatIdRefs>().size() == 2);
+  REQUIRE(r.getReferences<AudioPackFormat>().size() == 2);
 
   REQUIRE(programme->has<AudioProgrammeReferenceScreen>());
   auto screen = programme->get<AudioProgrammeReferenceScreen>();
@@ -59,8 +59,7 @@ TEST_CASE("xml/authoring_information_forward_pack_refs") {
   REQUIRE(renderers.size() == 1);
 
   auto const& renderer = renderers.at(0);
-  REQUIRE(renderer.has<RendererPackFormatIdRefs>());
-  auto packRefs = renderer.get<RendererPackFormatIdRefs>();
+  auto packRefs = renderer.getReferences<AudioPackFormat>();
   REQUIRE(packRefs.size() == 2);
 
   auto packA = document->lookup(parseAudioPackFormatId("AP_00031001"));
@@ -68,8 +67,8 @@ TEST_CASE("xml/authoring_information_forward_pack_refs") {
   auto packB = document->lookup(parseAudioPackFormatId("AP_00031002"));
   REQUIRE(packB);
 
-  auto refA = packRefs.at(0);
-  auto refB = packRefs.at(1);
+  auto refA = packRefs[0];
+  auto refB = packRefs[1];
   REQUIRE(refA == packA);
   REQUIRE(refB == packB);
 
@@ -89,14 +88,14 @@ TEST_CASE("xml/authoring_information_multiple_renderers") {
   auto renderers = programme->get<AuthoringInformation>().get<Renderers>();
   REQUIRE(renderers.size() == 2);
 
-  auto firstPackRefs = renderers.at(0).get<RendererPackFormatIdRefs>();
+  auto firstPackRefs = renderers.at(0).getReferences<AudioPackFormat>();
   REQUIRE(firstPackRefs.size() == 1);
-  REQUIRE(firstPackRefs.at(0) ==
+  REQUIRE(firstPackRefs[0] ==
           document->lookup(parseAudioPackFormatId("AP_00010001")));
 
-  auto secondPackRefs = renderers.at(1).get<RendererPackFormatIdRefs>();
+  auto secondPackRefs = renderers.at(1).getReferences<AudioPackFormat>();
   REQUIRE(secondPackRefs.size() == 1);
-  REQUIRE(secondPackRefs.at(0) ==
+  REQUIRE(secondPackRefs[0] ==
           document->lookup(parseAudioPackFormatId("AP_00010002")));
 }
 
@@ -109,9 +108,9 @@ TEST_CASE("xml/authoring_information_identical_renderers") {
   auto renderers = programme->get<AuthoringInformation>().get<Renderers>();
   REQUIRE(renderers.size() == 1);
 
-  auto packRefs = renderers.at(0).get<RendererPackFormatIdRefs>();
+  auto packRefs = renderers.at(0).getReferences<AudioPackFormat>();
   REQUIRE(packRefs.size() == 1);
-  REQUIRE(packRefs.at(0) ==
+  REQUIRE(packRefs[0] ==
           document->lookup(parseAudioPackFormatId("AP_00010001")));
 }
 

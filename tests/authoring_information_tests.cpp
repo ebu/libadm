@@ -1,4 +1,5 @@
 #include <catch2/catch.hpp>
+#include "adm/document.hpp"
 #include "adm/elements/authoring_information.hpp"
 #include "adm/elements/audio_pack_format.hpp"
 
@@ -32,8 +33,8 @@ TEST_CASE("authoring_information/add_renderer") {
                                        TypeDefinition::OBJECTS);
   auto packB = AudioPackFormat::create(AudioPackFormatName("packB"),
                                        TypeDefinition::OBJECTS);
-  RendererPackFormatIdRefs packs{packA, packB};
-  renderer.set(packs);
+  renderer.addReference(packA);
+  renderer.addReference(packB);
   info.add(renderer);
   auto renderers = info.get<Renderers>();
   REQUIRE(renderers.size() == 1);
@@ -41,5 +42,76 @@ TEST_CASE("authoring_information/add_renderer") {
   REQUIRE(r.get<RendererUri>() ==
           std::string{"urn:itu:bs:2127:0:itu_adm_renderer"});
   REQUIRE(r.get<CoordinateMode>() == std::string{"polar"});
-  REQUIRE(r.get<RendererPackFormatIdRefs>().size() == 2);
+  REQUIRE(r.getReferences<AudioPackFormat>().size() == 2);
+}
+
+TEST_CASE("authoring_renderer/references") {
+  AuthoringRenderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer")};
+  auto packA = AudioPackFormat::create(AudioPackFormatName("packA"),
+                                       TypeDefinition::OBJECTS);
+  auto packB = AudioPackFormat::create(AudioPackFormatName("packB"),
+                                       TypeDefinition::OBJECTS);
+
+  REQUIRE(renderer.addReference(packA));
+  REQUIRE(renderer.addReference(packB));
+  REQUIRE(!renderer.addReference(packA));
+  REQUIRE(renderer.getReferences<AudioPackFormat>().size() == 2);
+
+  renderer.removeReference(packA);
+  REQUIRE(renderer.getReferences<AudioPackFormat>().size() == 1);
+  renderer.clearReferences<AudioPackFormat>();
+  REQUIRE(renderer.getReferences<AudioPackFormat>().empty());
+}
+
+TEST_CASE("authoring_renderer/adopts_unparented_reference") {
+  auto document = Document::create();
+  auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+  AuthoringInformation info;
+  programme->set(info);
+  document->add(programme);
+
+  auto pack = AudioPackFormat::create(AudioPackFormatName("pack"),
+                                      TypeDefinition::OBJECTS);
+  AuthoringRenderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer")};
+  renderer.addReference(pack);
+  auto attachedInfo = programme->get<AuthoringInformation>();
+
+  REQUIRE(attachedInfo.add(renderer));
+  REQUIRE(pack->getParent().lock() == document);
+  auto storedRenderer = attachedInfo.get<Renderers>().front();
+  REQUIRE(storedRenderer.getParent().lock() == document);
+}
+
+TEST_CASE("authoring_renderer/rejects_reference_from_another_document") {
+  auto document = Document::create();
+  auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+  AuthoringInformation info;
+  programme->set(info);
+  document->add(programme);
+
+  auto otherDocument = Document::create();
+  auto pack = AudioPackFormat::create(AudioPackFormatName("pack"),
+                                      TypeDefinition::OBJECTS);
+  otherDocument->add(pack);
+  AuthoringRenderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer")};
+  renderer.addReference(pack);
+  auto attachedInfo = programme->get<AuthoringInformation>();
+
+  REQUIRE_THROWS_AS(attachedInfo.add(renderer), std::runtime_error);
+}
+
+TEST_CASE("authoring_renderer/defers_reference_adoption_until_programme_add") {
+  auto document = Document::create();
+  auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+  auto pack = AudioPackFormat::create(AudioPackFormatName("pack"),
+                                      TypeDefinition::OBJECTS);
+  AuthoringRenderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer")};
+  renderer.addReference(pack);
+  AuthoringInformation info;
+  REQUIRE(info.add(renderer));
+  programme->set(info);
+
+  document->add(programme);
+
+  REQUIRE(pack->getParent().lock() == document);
 }
