@@ -118,6 +118,10 @@ namespace adm {
     }
     detail::AudioProgrammeBase::set(std::move(loudnessMetadatas));
   }
+  bool AudioProgramme::add(LoudnessMetadata loudnessMetadata) {
+    loudnessMetadata.setParent(parent_);
+    return detail::AudioProgrammeBase::add(std::move(loudnessMetadata));
+  }
 
   // ---- Unsetter ---- //
   void AudioProgramme::unset(

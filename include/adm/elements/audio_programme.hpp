@@ -163,6 +163,8 @@ namespace adm {
     ADM_EXPORT void set(AuthoringInformation authoringInformation);
     /// @brief LoudnessMetadatas setter
     ADM_EXPORT void set(LoudnessMetadatas loudnessMetadatas);
+    /// @brief Add a LoudnessMetadata
+    ADM_EXPORT bool add(LoudnessMetadata loudnessMetadata);
 
     /**
      * @brief ADM parameter unset template

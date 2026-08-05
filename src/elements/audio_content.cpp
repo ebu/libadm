@@ -139,6 +139,10 @@ namespace adm {
     }
     detail::AudioContentBase::set(std::move(loudnessMetadatas));
   }
+  bool AudioContent::add(LoudnessMetadata loudnessMetadata) {
+    loudnessMetadata.setParent(parent_);
+    return detail::AudioContentBase::add(std::move(loudnessMetadata));
+  }
 
   // ---- Unsetter ---- //
   void AudioContent::unset(detail::ParameterTraits<AudioContentLanguage>::tag) {

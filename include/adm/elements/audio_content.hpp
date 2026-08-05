@@ -153,6 +153,8 @@ namespace adm {
     ADM_EXPORT void set(MixedContentKind kind);
     /// @brief LoudnessMetadatas setter
     ADM_EXPORT void set(LoudnessMetadatas loudnessMetadatas);
+    /// @brief Add a LoudnessMetadata
+    ADM_EXPORT bool add(LoudnessMetadata loudnessMetadata);
     ///@}
 
     /**

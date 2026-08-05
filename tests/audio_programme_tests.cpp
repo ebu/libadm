@@ -1,6 +1,8 @@
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #include <catch2/catch.hpp>
+#include "adm/document.hpp"
 #include "adm/elements/audio_programme.hpp"
+#include "adm/elements/loudness_renderer.hpp"
 #include "helper/parameter_checks.hpp"
 #include "helper/ostream_operators.hpp"
 
@@ -76,4 +78,23 @@ TEST_CASE("audio_programme references") {
   audioProgramme->addReference(referencedAudioContent);
   audioProgramme->clearReferences<AudioContent>();
   REQUIRE(audioProgramme->getReferences<AudioContent>().size() == 0);
+}
+
+TEST_CASE("audio_programme_loudness_metadata_add_parentage") {
+  auto document = Document::create();
+  auto audioProgramme =
+      AudioProgramme::create(AudioProgrammeName("MyProgramme"));
+  document->add(audioProgramme);
+
+  auto object = AudioObject::create(AudioObjectName("MyObject"));
+  LoudnessRenderer renderer;
+  renderer.addReference(object);
+  LoudnessMetadata metadata;
+  metadata.set(renderer);
+
+  REQUIRE(audioProgramme->add(metadata));
+  auto storedMetadata = audioProgramme->get<LoudnessMetadatas>().front();
+  auto storedRenderer = storedMetadata.get<LoudnessRenderer>();
+  REQUIRE(storedRenderer.getParent().lock() == document);
+  REQUIRE(object->getParent().lock() == document);
 }
