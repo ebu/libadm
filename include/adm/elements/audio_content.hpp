@@ -151,6 +151,8 @@ namespace adm {
     ADM_EXPORT void set(NonDialogueContentKind kind);
     ADM_EXPORT void set(DialogueContentKind kind);
     ADM_EXPORT void set(MixedContentKind kind);
+    /// @brief LoudnessMetadatas setter
+    ADM_EXPORT void set(LoudnessMetadatas loudnessMetadatas);
     ///@}
 
     /**
@@ -279,6 +281,7 @@ namespace adm {
     ADM_EXPORT void disconnectReferences();
 
     void setParent(std::weak_ptr<Document> document);
+    ADM_EXPORT void setLoudnessMetadataParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
     AudioContentId id_;

@@ -37,23 +37,11 @@ namespace adm {
   using RendererPackFormatIdRef = std::shared_ptr<AudioPackFormat>;
   ADD_TRAIT(RendererPackFormatIdRef, RendererPackFormatIdRefTag);
 
-  /// @brief Vector of audioObject references used by a renderer
-  using RendererObjectIdRefs = std::vector<std::shared_ptr<AudioObject>>;
-  ADD_TRAIT(RendererObjectIdRefs, RendererObjectIdRefsTag);
-
   namespace detail {
     template <>
     struct ParameterCompare<RendererPackFormatIdRefs> {
       static bool compare(RendererPackFormatIdRefs const& lhs,
                           RendererPackFormatIdRefs const& rhs) {
-        return lhs == rhs;
-      }
-    };
-
-    template <>
-    struct ParameterCompare<RendererObjectIdRefs> {
-      static bool compare(RendererObjectIdRefs const& lhs,
-                          RendererObjectIdRefs const& rhs) {
         return lhs == rhs;
       }
     };

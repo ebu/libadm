@@ -187,6 +187,11 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<DialogueLoudness>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<LoudnessRenderer>::tag);
 
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
+
+    friend class AudioProgramme;
+    friend class AudioContent;
+
     boost::optional<LoudnessMethod> loudnessMethod_;
     boost::optional<LoudnessRecType> loudnessRecType_;
     boost::optional<LoudnessCorrectionType> loudnessCorrectionType_;
@@ -197,6 +202,7 @@ namespace adm {
     boost::optional<MaxShortTerm> maxShortTerm_;
     boost::optional<DialogueLoudness> dialogueLoudness_;
     boost::optional<LoudnessRenderer> renderer_;
+    std::weak_ptr<Document> parent_;
   };
 
   // ---- Implementation ---- //

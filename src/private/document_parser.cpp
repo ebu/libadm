@@ -610,17 +610,12 @@ namespace adm {
           }
 
           if (!ids.objectIds.empty()) {
-            RendererObjectIdRefs objectRefs;
-            objectRefs.reserve(ids.objectIds.size());
             for (auto const& id : ids.objectIds) {
               if (auto element = idMap_.lookup(id)) {
-                objectRefs.push_back(element);
+                renderer.addReference(element);
               } else {
                 throw error::XmlParsingUnresolvedReference(formatId(id));
               }
-            }
-            if (!objectRefs.empty()) {
-              renderer.set(std::move(objectRefs));
             }
           }
 
@@ -660,17 +655,12 @@ namespace adm {
           }
 
           if (!ids.objectIds.empty()) {
-            RendererObjectIdRefs objectRefs;
-            objectRefs.reserve(ids.objectIds.size());
             for (auto const& id : ids.objectIds) {
               if (auto element = idMap_.lookup(id)) {
-                objectRefs.push_back(element);
+                renderer.addReference(element);
               } else {
                 throw error::XmlParsingUnresolvedReference(formatId(id));
               }
-            }
-            if (!objectRefs.empty()) {
-              renderer.set(std::move(objectRefs));
             }
           }
 

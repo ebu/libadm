@@ -1,5 +1,9 @@
 #include "adm/elements/loudness_renderer.hpp"
 #include "adm/elements/authoring_information.hpp"
+#include "adm/document.hpp"
+
+#include <algorithm>
+#include <stdexcept>
 
 namespace adm {
 
@@ -25,6 +29,81 @@ namespace adm {
       }
     }
     return loudnessRenderer;
+  }
+
+  bool LoudnessRenderer::addReference(std::shared_ptr<AudioObject> object) {
+    auto rendererParent = parent_.lock();
+    auto objectParent = object->getParent().lock();
+    if (rendererParent) {
+      if (objectParent && objectParent != rendererParent) {
+        throw std::runtime_error(
+            "LoudnessRenderer cannot refer to an AudioObject in a different "
+            "document");
+      }
+      if (!objectParent) {
+        rendererParent->add(object);
+      }
+    }
+
+    auto it = std::find(audioObjects_.begin(), audioObjects_.end(), object);
+    if (it == audioObjects_.end()) {
+      audioObjects_.push_back(std::move(object));
+      return true;
+    }
+    return false;
+  }
+
+  void LoudnessRenderer::removeReference(std::shared_ptr<AudioObject> object) {
+    auto it = std::find(audioObjects_.begin(), audioObjects_.end(), object);
+    if (it != audioObjects_.end()) {
+      audioObjects_.erase(it);
+    }
+  }
+
+  ElementRange<AudioObject> LoudnessRenderer::getReferences(
+      detail::ParameterTraits<AudioObject>::tag) {
+    return detail::makeElementRange<AudioObject>(audioObjects_);
+  }
+
+  ElementRange<const AudioObject> LoudnessRenderer::getReferences(
+      detail::ParameterTraits<AudioObject>::tag) const {
+    return detail::makeElementRange<AudioObject>(audioObjects_);
+  }
+
+  void LoudnessRenderer::clearReferences(
+      detail::ParameterTraits<AudioObject>::tag) {
+    audioObjects_.clear();
+  }
+
+  void LoudnessRenderer::setParent(std::weak_ptr<Document> document) {
+    auto currentParent = parent_.lock();
+    auto newParent = document.lock();
+    if (currentParent && newParent && currentParent != newParent) {
+      throw std::runtime_error(
+          "LoudnessRenderer already belongs to another Document");
+    }
+
+    if (newParent) {
+      for (auto const& object : audioObjects_) {
+        auto objectParent = object->getParent().lock();
+        if (objectParent && objectParent != newParent) {
+          throw std::runtime_error(
+              "LoudnessRenderer cannot refer to an AudioObject in a "
+              "different document");
+        }
+      }
+      for (auto const& object : audioObjects_) {
+        if (!object->getParent().lock()) {
+          newParent->add(object);
+        }
+      }
+    }
+
+    parent_ = std::move(document);
+  }
+
+  const std::weak_ptr<Document>& LoudnessRenderer::getParent() const {
+    return parent_;
   }
 
   AuthoringRenderer LoudnessRenderer::toRendererDroppingObjectRefs(
@@ -80,7 +159,6 @@ namespace adm {
     template class OptionalParameter<RendererVersion>;
     template class OptionalParameter<CoordinateMode>;
     template class OptionalParameter<RendererPackFormatIdRef>;
-    template class VectorParameter<RendererObjectIdRefs>;
   }  // namespace detail
 
 }  // namespace adm

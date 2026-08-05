@@ -119,10 +119,11 @@ namespace adm {
     dialogueLoudness_ = dialogueLoudness;
   }
   void LoudnessMetadata::set(LoudnessRenderer renderer) {
+    renderer.setParent(parent_);
     renderer_ = std::move(renderer);
   }
   void LoudnessMetadata::set(AuthoringRenderer renderer) {
-    renderer_ = renderer.toLoudnessRenderer();
+    set(renderer.toLoudnessRenderer());
   }
 
   // ---- Unsetter ---- //
@@ -157,6 +158,13 @@ namespace adm {
   }
   void LoudnessMetadata::unset(detail::ParameterTraits<LoudnessRenderer>::tag) {
     renderer_ = boost::none;
+  }
+
+  void LoudnessMetadata::setParent(std::weak_ptr<Document> document) {
+    if (renderer_) {
+      renderer_->setParent(document);
+    }
+    parent_ = std::move(document);
   }
 
   void LoudnessMetadata::print(std::ostream& os) const {

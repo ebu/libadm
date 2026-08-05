@@ -390,14 +390,14 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
 
   LoudnessRenderer programmeRenderer;
   programmeRenderer.set(RendererPackFormatIdRef{packA});
-  programmeRenderer.set(RendererObjectIdRefs{object});
+  programmeRenderer.addReference(object);
   LoudnessMetadata programmeLm;
   programmeLm.set(programmeRenderer);
   programme->set(LoudnessMetadatas{programmeLm});
 
   LoudnessRenderer contentRenderer;
   contentRenderer.set(RendererPackFormatIdRef{packA});
-  contentRenderer.set(RendererObjectIdRefs{object});
+  contentRenderer.addReference(object);
   LoudnessMetadata contentLm;
   contentLm.set(contentRenderer);
   content->set(LoudnessMetadatas{contentLm});
@@ -448,7 +448,7 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   auto copiedProgrammeRenderer =
       copiedProgrammeLms.at(0).get<LoudnessRenderer>();
   REQUIRE(copiedProgrammeRenderer.has<RendererPackFormatIdRef>());
-  REQUIRE(copiedProgrammeRenderer.has<RendererObjectIdRefs>());
+  REQUIRE(copiedProgrammeRenderer.getReferences<AudioObject>().size() == 1);
 
   auto copiedProgrammePackRef =
       copiedProgrammeRenderer.get<RendererPackFormatIdRef>();
@@ -458,8 +458,7 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   REQUIRE(copiedProgrammePackRef->get<AudioPackFormatId>() == packAId);
 
   auto copiedProgrammeObjectRefs =
-      copiedProgrammeRenderer.get<RendererObjectIdRefs>();
-  REQUIRE(copiedProgrammeObjectRefs.size() == 1);
+      copiedProgrammeRenderer.getReferences<AudioObject>();
   auto copiedProgrammeObject = copiedProgrammeObjectRefs.front();
   REQUIRE(copiedProgrammeObject->getParent().lock() == copy);
   REQUIRE(copiedProgrammeObject != object);
@@ -469,7 +468,7 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   REQUIRE(copiedContentLms.size() == 1);
   auto copiedContentRenderer = copiedContentLms.at(0).get<LoudnessRenderer>();
   REQUIRE(copiedContentRenderer.has<RendererPackFormatIdRef>());
-  REQUIRE(copiedContentRenderer.has<RendererObjectIdRefs>());
+  REQUIRE(copiedContentRenderer.getReferences<AudioObject>().size() == 1);
 
   auto copiedContentPackRef =
       copiedContentRenderer.get<RendererPackFormatIdRef>();
@@ -479,8 +478,7 @@ TEST_CASE("copy_document_remaps_2076_3_renderer_references") {
   REQUIRE(copiedContentPackRef->get<AudioPackFormatId>() == packAId);
 
   auto copiedContentObjectRefs =
-      copiedContentRenderer.get<RendererObjectIdRefs>();
-  REQUIRE(copiedContentObjectRefs.size() == 1);
+      copiedContentRenderer.getReferences<AudioObject>();
   auto copiedContentObject = copiedContentObjectRefs.front();
   REQUIRE(copiedContentObject->getParent().lock() == copy);
   REQUIRE(copiedContentObject != object);
@@ -897,13 +895,13 @@ TEST_CASE("remove_elements") {
     auto content = AudioContent::create(AudioContentName("Content"));
 
     LoudnessRenderer programmeRenderer;
-    programmeRenderer.set(RendererObjectIdRefs{object});
+    programmeRenderer.addReference(object);
     LoudnessMetadata programmeLm;
     programmeLm.set(programmeRenderer);
     programme->set(LoudnessMetadatas{programmeLm});
 
     LoudnessRenderer contentRenderer;
-    contentRenderer.set(RendererObjectIdRefs{object});
+    contentRenderer.addReference(object);
     LoudnessMetadata contentLm;
     contentLm.set(contentRenderer);
     content->set(LoudnessMetadatas{contentLm});
@@ -916,12 +914,12 @@ TEST_CASE("remove_elements") {
     auto programmeLms = programme->get<LoudnessMetadatas>();
     REQUIRE(programmeLms.size() == 1);
     auto updatedProgrammeRenderer = programmeLms.at(0).get<LoudnessRenderer>();
-    REQUIRE(updatedProgrammeRenderer.has<RendererObjectIdRefs>() == false);
+    REQUIRE(updatedProgrammeRenderer.getReferences<AudioObject>().empty());
 
     auto contentLms = content->get<LoudnessMetadatas>();
     REQUIRE(contentLms.size() == 1);
     auto updatedContentRenderer = contentLms.at(0).get<LoudnessRenderer>();
-    REQUIRE(updatedContentRenderer.has<RendererObjectIdRefs>() == false);
+    REQUIRE(updatedContentRenderer.getReferences<AudioObject>().empty());
   }
 
   SECTION(
@@ -938,13 +936,15 @@ TEST_CASE("remove_elements") {
     auto content = AudioContent::create(AudioContentName("Content"));
 
     LoudnessRenderer programmeRenderer;
-    programmeRenderer.set(RendererObjectIdRefs{removedObject, keptObject});
+    programmeRenderer.addReference(removedObject);
+    programmeRenderer.addReference(keptObject);
     LoudnessMetadata programmeLm;
     programmeLm.set(programmeRenderer);
     programme->set(LoudnessMetadatas{programmeLm});
 
     LoudnessRenderer contentRenderer;
-    contentRenderer.set(RendererObjectIdRefs{removedObject, keptObject});
+    contentRenderer.addReference(removedObject);
+    contentRenderer.addReference(keptObject);
     LoudnessMetadata contentLm;
     contentLm.set(contentRenderer);
     content->set(LoudnessMetadatas{contentLm});
@@ -957,18 +957,16 @@ TEST_CASE("remove_elements") {
     auto programmeLms = programme->get<LoudnessMetadatas>();
     REQUIRE(programmeLms.size() == 1);
     auto updatedProgrammeRenderer = programmeLms.at(0).get<LoudnessRenderer>();
-    REQUIRE(updatedProgrammeRenderer.has<RendererObjectIdRefs>());
-    auto programmeRefs = updatedProgrammeRenderer.get<RendererObjectIdRefs>();
+    auto programmeRefs = updatedProgrammeRenderer.getReferences<AudioObject>();
     REQUIRE(programmeRefs.size() == 1);
-    REQUIRE(programmeRefs.at(0) == keptObject);
+    REQUIRE(programmeRefs[0] == keptObject);
 
     auto contentLms = content->get<LoudnessMetadatas>();
     REQUIRE(contentLms.size() == 1);
     auto updatedContentRenderer = contentLms.at(0).get<LoudnessRenderer>();
-    REQUIRE(updatedContentRenderer.has<RendererObjectIdRefs>());
-    auto contentRefs = updatedContentRenderer.get<RendererObjectIdRefs>();
+    auto contentRefs = updatedContentRenderer.getReferences<AudioObject>();
     REQUIRE(contentRefs.size() == 1);
-    REQUIRE(contentRefs.at(0) == keptObject);
+    REQUIRE(contentRefs[0] == keptObject);
   }
 }
 

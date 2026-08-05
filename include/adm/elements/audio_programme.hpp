@@ -161,6 +161,8 @@ namespace adm {
     ADM_EXPORT void set(AudioProgrammeReferenceScreen refScreen);
     /// @brief AuthoringInformation setter
     ADM_EXPORT void set(AuthoringInformation authoringInformation);
+    /// @brief LoudnessMetadatas setter
+    ADM_EXPORT void set(LoudnessMetadatas loudnessMetadatas);
 
     /**
      * @brief ADM parameter unset template
@@ -281,6 +283,7 @@ namespace adm {
     ADM_EXPORT void disconnectReferences();
 
     void setParent(std::weak_ptr<Document> document);
+    ADM_EXPORT void setLoudnessMetadataParent(std::weak_ptr<Document> document);
 
     std::weak_ptr<Document> parent_;
     AudioProgrammeId id_;

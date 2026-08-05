@@ -112,13 +112,21 @@ namespace adm {
           continue;
         }
         auto renderer = loudnessMetadata.get<LoudnessRenderer>();
-        if (!pruneRendererRefs<LoudnessRenderer, std::vector<std::shared_ptr<T>>>(
-                renderer,
-                removedElement)) {
-          continue;
-                }
-        loudnessMetadata.set(std::move(renderer));
-        changed = true;
+        std::vector<std::shared_ptr<T>> refsToRemove;
+        auto const removedId = removedElement->template get<typename T::id_type>();
+        for (auto const& ref : renderer.template getReferences<T>()) {
+          if (ref == removedElement ||
+              ref->template get<typename T::id_type>() == removedId) {
+            refsToRemove.push_back(ref);
+          }
+        }
+        for (auto const& ref : refsToRemove) {
+          renderer.removeReference(ref);
+        }
+        if (!refsToRemove.empty()) {
+          loudnessMetadata.set(std::move(renderer));
+          changed = true;
+        }
       }
       return changed;
     }
@@ -302,6 +310,12 @@ namespace adm {
         copy->audioTrackUids_.push_back(*v);
       }
     }
+    for (auto const& programme : copy->getElements<AudioProgramme>()) {
+      AudioProgrammeAttorney::setLoudnessMetadataParent(programme, copy);
+    }
+    for (auto const& content : copy->getElements<AudioContent>()) {
+      AudioContentAttorney::setLoudnessMetadataParent(content, copy);
+    }
     copyAuxiliary(shared_from_this(), copy, mapping);
     return copy;
   }
@@ -313,6 +327,8 @@ namespace adm {
       idAssigner_.assignId(*programme);
       AudioProgrammeAttorney::setParent(programme, shared_from_this());
       audioProgrammes_.push_back(programme);
+      AudioProgrammeAttorney::setLoudnessMetadataParent(
+          programme, shared_from_this());
       for (auto& reference : programme->getReferences<AudioContent>()) {
         add(reference);
       }
@@ -328,6 +344,8 @@ namespace adm {
       idAssigner_.assignId(*content);
       AudioContentAttorney::setParent(content, shared_from_this());
       audioContents_.push_back(content);
+      AudioContentAttorney::setLoudnessMetadataParent(
+          content, shared_from_this());
       for (auto& reference : content->getReferences<AudioObject>()) {
         add(reference);
       }
@@ -473,6 +491,7 @@ namespace adm {
     if (it != audioProgrammes_.end()) {
       audioProgrammes_.erase(it);
       AudioProgrammeAttorney::setParent(programme, {});
+      AudioProgrammeAttorney::setLoudnessMetadataParent(programme, {});
       pruneTagGroupsReferencing(*this, programme);
       return true;
     }
@@ -484,6 +503,7 @@ namespace adm {
     if (it != audioContents_.end()) {
       audioContents_.erase(it);
       AudioContentAttorney::setParent(content, {});
+      AudioContentAttorney::setLoudnessMetadataParent(content, {});
       for (auto& audioProgramme : audioProgrammes_) {
         audioProgramme->removeReference(content);
       }

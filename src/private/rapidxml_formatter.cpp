@@ -142,7 +142,7 @@ namespace adm {
         node.addElement("audioPackFormatIDRef",
                         formatId(packRef->get<AudioPackFormatId>()));
       }
-      for (auto const &objectRef : renderer.get<RendererObjectIdRefs>()) {
+      for (auto const &objectRef : renderer.getReferences<AudioObject>()) {
         node.addElement("audioObjectIDRef",
                         formatId(objectRef->get<AudioObjectId>()));
       }

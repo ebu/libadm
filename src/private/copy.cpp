@@ -28,21 +28,6 @@ namespace adm {
       return ref;
     }
 
-    RendererObjectIdRefs remapObjectRefs(RendererObjectIdRefs const& refs,
-                                         ElementMapping const& mapping) {
-      RendererObjectIdRefs remapped;
-      remapped.reserve(refs.size());
-      for (auto const& ref : refs) {
-        auto it = mapping.audioObject.find(ref);
-        if (it != mapping.audioObject.end()) {
-          remapped.push_back(it->second);
-        } else {
-          remapped.push_back(ref);
-        }
-      }
-      return remapped;
-    }
-
     void remapAuthoringInformationReferences(
         std::shared_ptr<AudioProgramme> const& programme,
         ElementMapping const& mapping) {
@@ -121,13 +106,21 @@ namespace adm {
           changed = true;
         }
 
-        if (renderer.template has<RendererObjectIdRefs>()) {
-          auto remapped = remapObjectRefs(
-              renderer.template get<RendererObjectIdRefs>(), mapping);
-          if (remapped.empty()) {
-            renderer.template unset<RendererObjectIdRefs>();
-          } else {
-            renderer.set(std::move(remapped));
+        auto objectRefs = renderer.template getReferences<AudioObject>();
+        if (!objectRefs.empty()) {
+          std::vector<std::shared_ptr<AudioObject>> remapped;
+          remapped.reserve(objectRefs.size());
+          for (auto const& ref : objectRefs) {
+            auto it = mapping.audioObject.find(ref);
+            if (it != mapping.audioObject.end()) {
+              remapped.push_back(it->second);
+            } else {
+              remapped.push_back(ref);
+            }
+          }
+          renderer.template clearReferences<AudioObject>();
+          for (auto const& ref : remapped) {
+            renderer.addReference(ref);
           }
           changed = true;
         }

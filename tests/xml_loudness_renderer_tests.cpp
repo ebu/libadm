@@ -30,7 +30,7 @@ TEST_CASE("xml/loudness_renderer") {
   REQUIRE(renderer.has<RendererPackFormatIdRef>());
   REQUIRE(renderer.get<RendererPackFormatIdRef>()->get<AudioPackFormatId>() ==
           parseAudioPackFormatId("AP_00010002"));
-  REQUIRE(renderer.get<RendererObjectIdRefs>().size() == 2);
+  REQUIRE(renderer.getReferences<AudioObject>().size() == 2);
 
   std::stringstream xml;
   writeXml(xml, document);
@@ -48,11 +48,10 @@ TEST_CASE("xml/loudness_renderer_forward_refs") {
     REQUIRE(renderer.has<RendererPackFormatIdRef>());
     REQUIRE(renderer.get<RendererPackFormatIdRef>() == packA);
 
-    REQUIRE(renderer.has<RendererObjectIdRefs>());
-    auto objectRefs = renderer.get<RendererObjectIdRefs>();
+    auto objectRefs = renderer.getReferences<AudioObject>();
     REQUIRE(objectRefs.size() == 2);
-    REQUIRE(objectRefs.at(0) == objectA);
-    REQUIRE(objectRefs.at(1) == objectB);
+    REQUIRE(objectRefs[0] == objectA);
+    REQUIRE(objectRefs[1] == objectB);
   };
 
   auto programme = document->lookup(parseAudioProgrammeId("APR_1001"));

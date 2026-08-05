@@ -112,6 +112,12 @@ namespace adm {
   void AudioProgramme::set(AuthoringInformation authoringInformation) {
     authoringInformation_ = std::move(authoringInformation);
   }
+  void AudioProgramme::set(LoudnessMetadatas loudnessMetadatas) {
+    for (auto& loudnessMetadata : loudnessMetadatas) {
+      loudnessMetadata.setParent(parent_);
+    }
+    detail::AudioProgrammeBase::set(std::move(loudnessMetadatas));
+  }
 
   // ---- Unsetter ---- //
   void AudioProgramme::unset(
@@ -198,6 +204,17 @@ namespace adm {
   void AudioProgramme::setParent(std::weak_ptr<Document> document) {
     parent_ = std::move(document);
   }
+  void AudioProgramme::setLoudnessMetadataParent(
+      std::weak_ptr<Document> document) {
+    if (!has<LoudnessMetadatas>()) {
+      return;
+    }
+    auto loudnessMetadatas = get<LoudnessMetadatas>();
+    for (auto& loudnessMetadata : loudnessMetadatas) {
+      loudnessMetadata.setParent(document);
+    }
+    detail::AudioProgrammeBase::set(std::move(loudnessMetadatas));
+  }
   const std::weak_ptr<Document>& AudioProgramme::getParent() const {
     return parent_;
   };
@@ -206,6 +223,7 @@ namespace adm {
     auto audioProgrammeCopy =
         std::shared_ptr<AudioProgramme>(new AudioProgramme(*this));
     audioProgrammeCopy->setParent(std::weak_ptr<Document>());
+    audioProgrammeCopy->setLoudnessMetadataParent(std::weak_ptr<Document>());
     audioProgrammeCopy->disconnectReferences();
     return audioProgrammeCopy;
   }
