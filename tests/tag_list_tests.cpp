@@ -234,6 +234,58 @@ TEST_CASE(
   REQUIRE(std::find(objects.begin(), objects.end(), object) != objects.end());
 }
 
+TEST_CASE("TagList parent-aware reference additions") {
+  auto doc = Document::create();
+  auto programme = AudioProgramme::create(AudioProgrammeName{"Programme"});
+  doc->add(programme);
+
+  TagList tagList;
+  tagList.add(TagGroup{programme});
+  REQUIRE(doc->set(tagList));
+  auto attachedTagList = doc->get<TagList>();
+
+  SECTION("adopts unparented references") {
+    auto object = AudioObject::create(AudioObjectName{"Object"});
+    TagGroup group{object};
+
+    REQUIRE(attachedTagList.add(group));
+    REQUIRE(object->getParent().lock() == doc);
+  }
+
+  SECTION("rejects references from another document") {
+    auto otherDoc = Document::create();
+    auto object = AudioObject::create(AudioObjectName{"Object"});
+    otherDoc->add(object);
+    TagGroup group{object};
+
+    REQUIRE_THROWS_AS(attachedTagList.add(group), std::runtime_error);
+  }
+
+  SECTION("checks references added to an attached group") {
+    auto groups = attachedTagList.get<TagGroups>();
+    auto attachedGroup = groups.front();
+    auto otherDoc = Document::create();
+    auto object = AudioObject::create(AudioObjectName{"Object"});
+    otherDoc->add(object);
+
+    REQUIRE_THROWS_AS(attachedGroup.addReference(object), std::runtime_error);
+  }
+
+  SECTION("checks groups set on an attached list") {
+    auto object = AudioObject::create(AudioObjectName{"Object"});
+    TagGroup group{object};
+
+    attachedTagList.set(TagGroups{group});
+    REQUIRE(object->getParent().lock() == doc);
+
+    auto otherDoc = Document::create();
+    auto otherObject = AudioObject::create(AudioObjectName{"OtherObject"});
+    otherDoc->add(otherObject);
+    REQUIRE_THROWS_AS(attachedTagList.set(TagGroups{TagGroup{otherObject}}),
+                      std::runtime_error);
+  }
+}
+
 TEST_CASE(
     "TagGroups with same tag are only equal if references are also equal") {
   auto object = adm::AudioObject::create(AudioObjectName("First"));

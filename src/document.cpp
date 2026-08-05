@@ -535,7 +535,16 @@ namespace adm {
   bool Document::set(TagList tagList) {
     // Validate every TagGroup reference against this document up-front so a
     // failure leaves the document unmodified.
+    auto document = shared_from_this();
+    auto tagListParent = tagList.getParent().lock();
+    if (tagListParent && tagListParent != document) {
+      return false;
+    }
     for (auto const& group : tagList.get<TagGroups>()) {
+      auto groupParent = group.getParent().lock();
+      if (groupParent && groupParent != document) {
+        return false;
+      }
       if (tagGroupRefsBelongToOtherDoc(*this, group.audioProgrammes_) ||
           tagGroupRefsBelongToOtherDoc(*this, group.audioContents_) ||
           tagGroupRefsBelongToOtherDoc(*this, group.audioObjects_)) {
@@ -550,6 +559,7 @@ namespace adm {
       for (auto const& c : group.audioContents_) add(c);
       for (auto const& o : group.audioObjects_) add(o);
     }
+    tagList.setParent(document);
     detail::DocumentBase::set(std::move(tagList));
     return true;
   }

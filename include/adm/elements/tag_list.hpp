@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <vector>
 #include "adm/detail/auto_base.hpp"
 #include "adm/elements/audio_programme.hpp"
@@ -116,6 +117,9 @@ namespace adm {
     /// @brief Add reference to an AudioObject
     ADM_EXPORT bool addReference(std::shared_ptr<AudioObject> object);
 
+    /// Get adm::Document this element belongs to
+    ADM_EXPORT const std::weak_ptr<Document> &getParent() const;
+
     template <typename Element>
     ElementRange<Element> getReferences();
 
@@ -161,6 +165,7 @@ namespace adm {
     friend class TagList;
 
     bool invalid() const;
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
 
     ADM_EXPORT ElementRange<const AudioProgramme> getReferences(
         detail::ParameterTraits<AudioProgramme>::tag) const;
@@ -178,6 +183,7 @@ namespace adm {
     std::vector<std::shared_ptr<AudioProgramme>> audioProgrammes_;
     std::vector<std::shared_ptr<AudioContent>> audioContents_;
     std::vector<std::shared_ptr<AudioObject>> audioObjects_;
+    std::weak_ptr<Document> parent_;
   };
 
   inline bool operator==(const TagGroup &a, const TagGroup &b) {
@@ -277,6 +283,11 @@ namespace adm {
     using detail::TagListBase::remove;
 
     ADM_EXPORT bool add(TagGroup group);
+    /// @brief Set TagGroups
+    ADM_EXPORT void set(TagGroups groups);
+
+    /// Get adm::Document this element belongs to
+    ADM_EXPORT const std::weak_ptr<Document> &getParent() const;
 
     template <typename... Parameters>
     explicit TagList(Parameters... namedArgs) {
@@ -289,6 +300,11 @@ namespace adm {
     using detail::TagListBase::isDefault;
     using detail::TagListBase::unset;
 
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
+
+    friend class Document;
     friend class detail::AddWrapperMethods<TagList>;
+
+    std::weak_ptr<Document> parent_;
   };
 }  // namespace adm
