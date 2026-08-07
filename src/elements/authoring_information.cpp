@@ -7,6 +7,33 @@
 
 namespace adm {
 
+  void ReferenceLayout::setParent(std::weak_ptr<Document> document) {
+    auto currentParent = parent_.lock();
+    auto newParent = document.lock();
+    if (currentParent && newParent && currentParent != newParent) {
+      throw std::runtime_error(
+          "ReferenceLayout already belongs to another Document");
+    }
+
+    if (newParent && packFormat_) {
+      auto packFormatParent = packFormat_->getParent().lock();
+      if (packFormatParent && packFormatParent != newParent) {
+        throw std::runtime_error(
+            "ReferenceLayout cannot refer to an AudioPackFormat in a "
+            "different document");
+      }
+      if (!packFormatParent) {
+        newParent->add(packFormat_);
+      }
+    }
+
+    parent_ = std::move(document);
+  }
+
+  const std::weak_ptr<Document>& ReferenceLayout::getParent() const {
+    return parent_;
+  }
+
   bool AuthoringRenderer::addReference(
       std::shared_ptr<AudioPackFormat> packFormat) {
     auto rendererParent = parent_.lock();
@@ -114,6 +141,29 @@ namespace adm {
     os << ")";
   }
 
+  bool AuthoringInformation::add(ReferenceLayout layout) {
+    auto layouts =
+        has<ReferenceLayouts>() ? get<ReferenceLayouts>() : ReferenceLayouts{};
+    if (std::find(layouts.begin(), layouts.end(), layout) == layouts.end()) {
+      if (auto parent = parent_.lock()) {
+        layout.setParent(parent);
+      }
+      layouts.push_back(std::move(layout));
+      set(std::move(layouts));
+      return true;
+    }
+    return false;
+  }
+
+  void AuthoringInformation::set(ReferenceLayouts layouts) {
+    if (auto parent = parent_.lock()) {
+      for (auto& layout : layouts) {
+        layout.setParent(parent);
+      }
+    }
+    detail::AuthoringInformationBase::set(std::move(layouts));
+  }
+
   bool AuthoringInformation::add(AuthoringRenderer renderer) {
     auto renderers = has<Renderers>() ? get<Renderers>() : Renderers{};
     if (std::find(renderers.begin(), renderers.end(), renderer) ==
@@ -145,10 +195,16 @@ namespace adm {
           "AuthoringInformation already belongs to another Document");
     }
 
+    auto layouts =
+        has<ReferenceLayouts>() ? get<ReferenceLayouts>() : ReferenceLayouts{};
     auto renderers = has<Renderers>() ? get<Renderers>() : Renderers{};
+    for (auto& layout : layouts) {
+      layout.setParent(document);
+    }
     for (auto& renderer : renderers) {
       renderer.setParent(document);
     }
+    detail::AuthoringInformationBase::set(std::move(layouts));
     detail::AuthoringInformationBase::set(std::move(renderers));
     parent_ = std::move(document);
   }

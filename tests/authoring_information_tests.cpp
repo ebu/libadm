@@ -25,6 +25,56 @@ TEST_CASE("authoring_information/add_reference_layout") {
   REQUIRE(layouts.at(1).get() == packB);
 }
 
+TEST_CASE(
+    "authoring_information/reference_layout_adopts_unparented_reference") {
+  auto document = Document::create();
+  auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+  programme->set(AuthoringInformation{});
+  document->add(programme);
+
+  auto pack = AudioPackFormat::create(AudioPackFormatName("pack"),
+                                      TypeDefinition::OBJECTS);
+  auto attachedInfo = programme->get<AuthoringInformation>();
+
+  REQUIRE(attachedInfo.add(ReferenceLayout{pack}));
+  REQUIRE(pack->getParent().lock() == document);
+  REQUIRE(attachedInfo.get<ReferenceLayouts>().front().get() == pack);
+}
+
+TEST_CASE(
+    "authoring_information/"
+    "reference_layout_rejects_reference_from_another_document") {
+  auto document = Document::create();
+  auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+  programme->set(AuthoringInformation{});
+  document->add(programme);
+
+  auto otherDocument = Document::create();
+  auto pack = AudioPackFormat::create(AudioPackFormatName("pack"),
+                                      TypeDefinition::OBJECTS);
+  otherDocument->add(pack);
+  auto attachedInfo = programme->get<AuthoringInformation>();
+
+  REQUIRE_THROWS_AS(attachedInfo.add(ReferenceLayout{pack}),
+                    std::runtime_error);
+}
+
+TEST_CASE(
+    "authoring_information/"
+    "reference_layout_defers_reference_adoption_until_programme_add") {
+  auto document = Document::create();
+  auto programme = AudioProgramme::create(AudioProgrammeName("Programme"));
+  auto pack = AudioPackFormat::create(AudioPackFormatName("pack"),
+                                      TypeDefinition::OBJECTS);
+  AuthoringInformation info;
+
+  REQUIRE(info.add(ReferenceLayout{pack}));
+  programme->set(info);
+  document->add(programme);
+
+  REQUIRE(pack->getParent().lock() == document);
+}
+
 TEST_CASE("authoring_information/add_renderer") {
   AuthoringInformation info;
   AuthoringRenderer renderer{RendererUri("urn:itu:bs:2127:0:itu_adm_renderer"),

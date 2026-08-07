@@ -19,6 +19,7 @@ namespace adm {
 
   class Document;
   class LoudnessRenderer;
+  class AuthoringInformation;
 
   /// @brief Tag for ::ReferenceLayout named-type
   struct ReferenceLayoutTag {};
@@ -35,9 +36,16 @@ namespace adm {
         : packFormat_(std::move(packFormat)) {}
 
     std::shared_ptr<AudioPackFormat> const &get() const { return packFormat_; }
+    /// Get adm::Document this element belongs to
+    ADM_EXPORT const std::weak_ptr<Document> &getParent() const;
 
    private:
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
+
+    friend class AuthoringInformation;
+
     std::shared_ptr<AudioPackFormat> packFormat_;
+    std::weak_ptr<Document> parent_;
   };
 
   ADD_TRAIT(ReferenceLayout, ReferenceLayoutTag);
@@ -207,6 +215,10 @@ namespace adm {
     using detail::AddWrapperMethods<AuthoringInformation>::isDefault;
     using detail::AddWrapperMethods<AuthoringInformation>::unset;
 
+    /// @brief Add a ReferenceLayout
+    ADM_EXPORT bool add(ReferenceLayout layout);
+    /// @brief Set ReferenceLayouts
+    ADM_EXPORT void set(ReferenceLayouts layouts);
     /// @brief Add an AuthoringRenderer
     ADM_EXPORT bool add(AuthoringRenderer renderer);
     /// @brief Set AuthoringRenderers
