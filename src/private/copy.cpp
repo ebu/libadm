@@ -3,22 +3,132 @@
 
 namespace adm {
 
-  struct ElementMapping {
-    // clang-format off
-    std::unordered_map<std::shared_ptr<const AudioProgramme>, std::shared_ptr<AudioProgramme>> audioProgramme;
-    std::unordered_map<std::shared_ptr<const AudioContent>, std::shared_ptr<AudioContent>> audioContent;
-    std::unordered_map<std::shared_ptr<const AudioObject>, std::shared_ptr<AudioObject>> audioObject;
-    std::unordered_map<std::shared_ptr<const AudioPackFormat>, std::shared_ptr<AudioPackFormat>> audioPackFormat;
-    std::unordered_map<std::shared_ptr<const AudioChannelFormat>, std::shared_ptr<AudioChannelFormat>> audioChannelFormat;
-    std::unordered_map<std::shared_ptr<const AudioStreamFormat>, std::shared_ptr<AudioStreamFormat>> audioStreamFormat;
-    std::unordered_map<std::shared_ptr<const AudioTrackFormat>, std::shared_ptr<AudioTrackFormat>> audioTrackFormat;
-    std::unordered_map<std::shared_ptr<const AudioTrackUid>, std::shared_ptr<AudioTrackUid>> audioTrackUid;
-    // clang-format on
-  };
+  namespace {
+    RendererPackFormatIdRef remapPackFormatRef(
+        RendererPackFormatIdRef const& ref, ElementMapping const& mapping) {
+      auto it = mapping.audioPackFormat.find(ref);
+      if (it != mapping.audioPackFormat.end()) {
+        return it->second;
+      }
+      return ref;
+    }
+
+    void remapAuthoringInformationReferences(
+        std::shared_ptr<AudioProgramme> const& programme,
+        ElementMapping const& mapping) {
+      if (!programme->has<AuthoringInformation>()) {
+        return;
+      }
+
+      auto info = programme->get<AuthoringInformation>();
+      bool changed = false;
+      if (info.has<ReferenceLayouts>()) {
+        auto layouts = info.get<ReferenceLayouts>();
+        ReferenceLayouts remappedLayouts;
+        remappedLayouts.reserve(layouts.size());
+        for (auto const& refLayout : layouts) {
+          auto const& ref = refLayout.get();
+          auto it = mapping.audioPackFormat.find(ref);
+          if (it != mapping.audioPackFormat.end()) {
+            remappedLayouts.push_back(ReferenceLayout{it->second});
+          } else {
+            remappedLayouts.push_back(ReferenceLayout{ref});
+          }
+        }
+
+        if (remappedLayouts.empty()) {
+          info.unset<ReferenceLayouts>();
+        } else {
+          info.set(std::move(remappedLayouts));
+        }
+        changed = true;
+      }
+
+      if (info.has<Renderers>()) {
+        auto renderers = info.get<Renderers>();
+        for (auto& renderer : renderers) {
+          auto packRefs = renderer.getReferences<AudioPackFormat>();
+          if (packRefs.empty()) {
+            continue;
+          }
+
+          std::vector<std::shared_ptr<AudioPackFormat>> remapped;
+          remapped.reserve(packRefs.size());
+          for (auto const& ref : packRefs) {
+            auto it = mapping.audioPackFormat.find(ref);
+            if (it != mapping.audioPackFormat.end()) {
+              remapped.push_back(it->second);
+            } else {
+              remapped.push_back(ref);
+            }
+          }
+          renderer.clearReferences<AudioPackFormat>();
+          for (auto const& ref : remapped) {
+            renderer.addReference(ref);
+          }
+          changed = true;
+        }
+
+        if (changed) {
+          info.set(std::move(renderers));
+        }
+      }
+
+      if (changed) programme->set(std::move(info));
+    }
+
+    template <typename Owner>
+    void remapLoudnessRendererReferences(std::shared_ptr<Owner> const& owner,
+                                         ElementMapping const& mapping) {
+      if (!owner->template has<LoudnessMetadatas>()) {
+        return;
+      }
+
+      auto loudnessMetadatas = owner->template get<LoudnessMetadatas>();
+      bool changed = false;
+      for (auto& loudnessMetadata : loudnessMetadatas) {
+        if (!loudnessMetadata.template has<LoudnessRenderer>()) {
+          continue;
+        }
+
+        auto renderer = loudnessMetadata.template get<LoudnessRenderer>();
+
+        if (renderer.template has<RendererPackFormatIdRef>()) {
+          renderer.set(remapPackFormatRef(
+              renderer.template get<RendererPackFormatIdRef>(), mapping));
+          changed = true;
+        }
+
+        auto objectRefs = renderer.template getReferences<AudioObject>();
+        if (!objectRefs.empty()) {
+          std::vector<std::shared_ptr<AudioObject>> remapped;
+          remapped.reserve(objectRefs.size());
+          for (auto const& ref : objectRefs) {
+            auto it = mapping.audioObject.find(ref);
+            if (it != mapping.audioObject.end()) {
+              remapped.push_back(it->second);
+            } else {
+              remapped.push_back(ref);
+            }
+          }
+          renderer.template clearReferences<AudioObject>();
+          for (auto const& ref : remapped) {
+            renderer.addReference(ref);
+          }
+          changed = true;
+        }
+
+        loudnessMetadata.set(std::move(renderer));
+      }
+
+      if (changed) {
+        owner->set(std::move(loudnessMetadatas));
+      }
+    }
+  }  // namespace
 
   std::vector<ElementVariant> copyAllElements(
-      std::shared_ptr<const Document> document) {
-    ElementMapping mapping;
+      std::shared_ptr<const Document> document, ElementMapping& mapping) {
     std::vector<ElementVariant> copiedElements;
     // copy
     for (const auto& element : document->getElements<AudioProgramme>()) {
@@ -92,7 +202,62 @@ namespace adm {
       resolveReference(element, mapping.audioTrackUid,
                        mapping.audioChannelFormat);
     }
+
+    for (const auto& element : document->getElements<AudioProgramme>()) {
+      auto copiedProgramme = mapping.audioProgramme.at(element);
+      remapAuthoringInformationReferences(copiedProgramme, mapping);
+      remapLoudnessRendererReferences(copiedProgramme, mapping);
+    }
+
+    for (const auto& element : document->getElements<AudioContent>()) {
+      auto copiedContent = mapping.audioContent.at(element);
+      remapLoudnessRendererReferences(copiedContent, mapping);
+    }
+
     return copiedElements;
+  }
+
+  std::vector<ElementVariant> copyAllElements(
+      std::shared_ptr<const Document> document) {
+    ElementMapping mapping;
+    return copyAllElements(std::move(document), mapping);
+  }
+
+  void copyAuxiliary(std::shared_ptr<const Document> src,
+                     std::shared_ptr<Document> dest,
+                     ElementMapping const& mapping) {
+    if (src->has<Version>()) dest->set(src->get<Version>());
+    if (src->has<ProfileList>()) dest->set(src->get<ProfileList>());
+    if (!src->has<TagList>()) return;
+
+    auto srcTagList = src->get<TagList>();
+    TagList newTagList;
+    for (auto const& srcGroup : srcTagList.get<TagGroups>()) {
+      // Translate each ref through the mapping. The source document is
+      // assumed valid: Document::set(TagList) and Document::remove() keep
+      // every TagGroup ref attached to the document, so it is guaranteed
+      // to be in the mapping (mirrors the assumption used by
+      // resolveReferences for ordinary cross-references). TagGroup has no
+      // default ctor, so the first translated ref seeds the new group.
+      std::unique_ptr<TagGroup> newGroup;
+      auto translate = [&](auto const& srcRefs, auto const& mappingMap) {
+        for (auto const& r : srcRefs) {
+          auto const& mapped = mappingMap.at(r);
+          if (!newGroup)
+            newGroup.reset(new TagGroup(mapped));
+          else
+            newGroup->addReference(mapped);
+        }
+      };
+      translate(srcGroup.getReferences<AudioObject>(), mapping.audioObject);
+      translate(srcGroup.getReferences<AudioContent>(), mapping.audioContent);
+      translate(srcGroup.getReferences<AudioProgramme>(),
+                mapping.audioProgramme);
+      if (!newGroup) continue;  // not possible for a valid source document
+      for (auto const& tag : srcGroup.get<Tags>()) newGroup->add(tag);
+      newTagList.add(*newGroup);
+    }
+    dest->set(std::move(newTagList));
   }
 
 }  // namespace adm

@@ -1,7 +1,9 @@
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #include <catch2/catch.hpp>
+#include "adm/document.hpp"
 #include "adm/elements/audio_content.hpp"
 #include "adm/elements/audio_object.hpp"
+#include "adm/elements/loudness_renderer.hpp"
 #include "helper/parameter_checks.hpp"
 #include "adm/utilities/element_io.hpp"
 
@@ -40,10 +42,15 @@ TEST_CASE("audio_content parameters") {
     SECTION("NonDialog") {
       check_optional_param<NonDialogueContentKind>(
           audioContent, canBeSetTo(NonDialogueContent::EFFECT));
+      check_optional_param<NonDialogueContentKind>(
+          audioContent, canBeSetTo(NonDialogueContent::MUSIC_AND_EFFECTS));
     }
     SECTION("Mixed") {
       check_optional_param<MixedContentKind>(
           audioContent, canBeSetTo(MixedContent::HEARING_IMPAIRED));
+      check_optional_param<MixedContentKind>(
+          audioContent,
+          canBeSetTo(MixedContent::COMPLETE_MAIN_HEARING_IMPAIRED_AD));
     }
   }
   SECTION("LoudnessMetadatas") {
@@ -87,6 +94,40 @@ TEST_CASE("audio_content_references") {
   audioContent->addReference(referencedAudioObject);
   audioContent->clearReferences<AudioObject>();
   REQUIRE(audioContent->getReferences<AudioObject>().size() == 0);
+}
+
+TEST_CASE("audio_content_loudness_metadata_add_parentage") {
+  auto document = Document::create();
+  auto audioContent = AudioContent::create(AudioContentName("MyContent"));
+  document->add(audioContent);
+
+  SECTION("adopts unparented renderer references") {
+    auto object = AudioObject::create(AudioObjectName("MyObject"));
+    LoudnessRenderer renderer;
+    renderer.addReference(object);
+    LoudnessMetadata metadata;
+    metadata.set(renderer);
+
+    REQUIRE(audioContent->add(metadata));
+    auto storedMetadata = audioContent->get<LoudnessMetadatas>().front();
+    auto storedRenderer = storedMetadata.get<LoudnessRenderer>();
+    REQUIRE(storedRenderer.getParent().lock() == document);
+    REQUIRE(object->getParent().lock() == document);
+  }
+
+  SECTION("rejects references from another document") {
+    auto otherDocument = Document::create();
+    auto object = AudioObject::create(AudioObjectName("MyObject"));
+    otherDocument->add(object);
+
+    LoudnessRenderer renderer;
+    renderer.addReference(object);
+    LoudnessMetadata metadata;
+    metadata.set(renderer);
+
+    REQUIRE_THROWS_AS(audioContent->add(metadata), std::runtime_error);
+    REQUIRE(!audioContent->has<LoudnessMetadatas>());
+  }
 }
 
 TEST_CASE("audio_content_dialogue_interdependencies") {

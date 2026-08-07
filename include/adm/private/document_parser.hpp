@@ -45,6 +45,8 @@ namespace adm {
     LoudnessMetadatas parseLoudnessMetadatas(const std::vector<NodePtr>& nodes);
     AudioProgrammeReferenceScreen parseAudioProgrammeReferenceScreen(
         NodePtr node);
+    AuthoringRenderer parseAuthoringRenderer(NodePtr node);
+    AuthoringInformation parseAuthoringInformation(NodePtr node);
     Label parseLabel(NodePtr node);
     AudioBlockFormatObjects parseAudioBlockFormatObjects(
         NodePtr node, boost::optional<TimeReference> timeReference);
@@ -70,6 +72,7 @@ namespace adm {
         NodePtr node, boost::optional<TimeReference> timeReference);
     Profile parseProfile(NodePtr node);
     ProfileList parseProfileList(NodePtr node);
+    Tag parseTTag(NodePtr node);
 
     NodePtr findAudioFormatExtendedNodeEbuCore(NodePtr root);
     NodePtr findAudioFormatExtendedNodeFullRecursive(NodePtr root);
@@ -105,6 +108,8 @@ namespace adm {
       std::shared_ptr<AudioPackFormat> parseAudioPackFormat(NodePtr node);
       std::shared_ptr<AudioTrackUid> parseAudioTrackUid(NodePtr node);
       std::shared_ptr<AudioChannelFormat> parseAudioChannelFormat(NodePtr node);
+      std::shared_ptr<TagGroup> parseTagGroup(NodePtr node);
+      TagList parseTagList(NodePtr node);
 
       rapidxml::file<> xmlFile_;
       ParserOptions options_;
@@ -127,6 +132,9 @@ namespace adm {
       std::map<std::shared_ptr<AudioStreamFormat>, AudioChannelFormatId> streamFormatChannelFormatRef_;
       std::map<std::shared_ptr<AudioStreamFormat>, AudioPackFormatId> streamFormatPackFormatRef_;
       std::map<std::shared_ptr<AudioStreamFormat>, std::vector<AudioTrackFormatId>> streamFormatTrackFormatRefs_;
+      std::map<std::shared_ptr<TagGroup>, std::vector<AudioProgrammeId>> tagGroupProgrammeRefs_;
+      std::map<std::shared_ptr<TagGroup>, std::vector<AudioContentId>> tagGroupContentRefs_;
+      std::map<std::shared_ptr<TagGroup>, std::vector<AudioObjectId>> tagGroupObjectRefs_;
       // clang-format on
 
       /// used to keep track of element IDs ourselves to avoid having it
@@ -154,6 +162,10 @@ namespace adm {
           const std::map<std::shared_ptr<AudioObject>,
                          std::vector<AudioTrackUidId>>& map);
 
+      void resolveProgrammeAuthoringRendererReferences();
+      void resolveProgrammeLoudnessRendererReferences();
+      void resolveContentLoudnessRendererReferences();
+
       template <typename Src, typename Target>
       void resolveReference(const std::map<Src, Target>& map) {
         for (const auto& entry : map) {
@@ -167,6 +179,21 @@ namespace adm {
       }
       void setCommonProperties(std::shared_ptr<AudioPackFormat> audioPackFormat,
                                NodePtr node);
+
+      struct RendererNestedIds {
+        std::vector<AudioPackFormatId> packFormatIds;
+        std::vector<AudioObjectId> objectIds;
+      };
+
+      std::map<std::shared_ptr<AudioProgramme>, std::vector<AudioPackFormatId>>
+          programmeAuthoringReferenceLayoutPackFormatRefs_;
+      std::map<std::shared_ptr<AudioProgramme>,
+               std::vector<std::vector<AudioPackFormatId>>>
+          programmeAuthoringRendererPackFormatRefs_;
+      std::map<std::shared_ptr<AudioProgramme>, std::vector<RendererNestedIds>>
+          programmeLoudnessRendererRefs_;
+      std::map<std::shared_ptr<AudioContent>, std::vector<RendererNestedIds>>
+          contentLoudnessRendererRefs_;
     };
 
   }  // namespace xml

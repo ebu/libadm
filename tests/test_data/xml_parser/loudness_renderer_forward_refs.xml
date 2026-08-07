@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme">
+          <loudnessMetadata loudnessMethod="ITU-R BS.1770">
+            <renderer uri="urn:itu:bs:2127:0:itu_adm_renderer" name="Forward Renderer" version="1.0.0" coordinateMode="polar">
+              <audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+              <audioObjectIDRef>AO_1001</audioObjectIDRef>
+              <audioObjectIDRef>AO_1002</audioObjectIDRef>
+            </renderer>
+          </loudnessMetadata>
+        </audioProgramme>
+
+        <audioContent audioContentID="ACO_1001" audioContentName="MyContent">
+          <loudnessMetadata loudnessMethod="ITU-R BS.1770">
+            <renderer uri="urn:itu:bs:2127:0:itu_adm_renderer" name="Forward Renderer" version="1.0.0" coordinateMode="polar">
+              <audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+              <audioObjectIDRef>AO_1001</audioObjectIDRef>
+              <audioObjectIDRef>AO_1002</audioObjectIDRef>
+            </renderer>
+          </loudnessMetadata>
+        </audioContent>
+
+        <audioObject audioObjectID="AO_1001" audioObjectName="Object A"/>
+        <audioObject audioObjectID="AO_1002" audioObjectName="Object B"/>
+        <audioPackFormat audioPackFormatID="AP_00031001" audioPackFormatName="Pack A"/>
+        <audioPackFormat audioPackFormatID="AP_00031002" audioPackFormatName="Pack B"/>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

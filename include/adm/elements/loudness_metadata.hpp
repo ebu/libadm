@@ -3,6 +3,7 @@
 #include "adm/detail/named_type.hpp"
 #include "adm/detail/auto_base.hpp"
 #include "adm/detail/optional_comparison.hpp"
+#include "adm/elements/loudness_renderer.hpp"
 #include "adm/export.h"
 #include <boost/optional.hpp>
 #include <string>
@@ -10,6 +11,8 @@
 #include <vector>
 
 namespace adm {
+
+  class AuthoringRenderer;
 
   /// @brief Tag for NamedType ::LoudnessMethod
   struct loudnessMethodTag {};
@@ -115,6 +118,10 @@ namespace adm {
     ADM_EXPORT void set(MaxShortTerm maxShortTerm);
     /// @brief DialogueLoudness setter
     ADM_EXPORT void set(DialogueLoudness dialogueLoudness);
+    /// @brief LoudnessRenderer setter
+    ADM_EXPORT void set(LoudnessRenderer renderer);
+    /// @brief Renderer setter (converted to LoudnessRenderer)
+    ADM_EXPORT void set(AuthoringRenderer renderer);
 
     /**
      * @brief ADM parameter unset template
@@ -149,6 +156,8 @@ namespace adm {
         get(detail::ParameterTraits<MaxShortTerm>::tag) const;
     ADM_EXPORT DialogueLoudness
         get(detail::ParameterTraits<DialogueLoudness>::tag) const;
+    ADM_EXPORT LoudnessRenderer
+        get(detail::ParameterTraits<LoudnessRenderer>::tag) const;
 
     ADM_EXPORT bool has(detail::ParameterTraits<LoudnessMethod>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<LoudnessRecType>::tag) const;
@@ -160,6 +169,7 @@ namespace adm {
     ADM_EXPORT bool has(detail::ParameterTraits<MaxMomentary>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<MaxShortTerm>::tag) const;
     ADM_EXPORT bool has(detail::ParameterTraits<DialogueLoudness>::tag) const;
+    ADM_EXPORT bool has(detail::ParameterTraits<LoudnessRenderer>::tag) const;
 
     template <typename Tag>
     bool isDefault(Tag) const {
@@ -175,6 +185,12 @@ namespace adm {
     ADM_EXPORT void unset(detail::ParameterTraits<MaxMomentary>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<MaxShortTerm>::tag);
     ADM_EXPORT void unset(detail::ParameterTraits<DialogueLoudness>::tag);
+    ADM_EXPORT void unset(detail::ParameterTraits<LoudnessRenderer>::tag);
+
+    ADM_EXPORT void setParent(std::weak_ptr<Document> document);
+
+    friend class AudioProgramme;
+    friend class AudioContent;
 
     boost::optional<LoudnessMethod> loudnessMethod_;
     boost::optional<LoudnessRecType> loudnessRecType_;
@@ -185,6 +201,8 @@ namespace adm {
     boost::optional<MaxMomentary> maxMomentary_;
     boost::optional<MaxShortTerm> maxShortTerm_;
     boost::optional<DialogueLoudness> dialogueLoudness_;
+    boost::optional<LoudnessRenderer> renderer_;
+    std::weak_ptr<Document> parent_;
   };
 
   // ---- Implementation ---- //

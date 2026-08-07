@@ -24,6 +24,18 @@ namespace adm {
       detail::ParameterTraits<SpeakerLabels>::tag) const {
     return speakerLabels_;
   }
+  Cartesian AudioBlockFormatDirectSpeakers::get(
+      detail::ParameterTraits<Cartesian>::tag) const {
+    if (cartesian_ != boost::none) {
+      return cartesian_.get();
+    } else {
+      if (has<SphericalSpeakerPosition>()) {
+        return Cartesian(false);
+      } else {
+        return Cartesian(true);
+      }
+    }
+  }
   CartesianSpeakerPosition AudioBlockFormatDirectSpeakers::get(
       detail::ParameterTraits<CartesianSpeakerPosition>::tag) const {
     return boost::get<CartesianSpeakerPosition>(speakerPosition_);
@@ -51,6 +63,10 @@ namespace adm {
     return speakerLabels_.size() > 0;
   }
   bool AudioBlockFormatDirectSpeakers::has(
+      detail::ParameterTraits<Cartesian>::tag) const {
+    return true;
+  }
+  bool AudioBlockFormatDirectSpeakers::has(
       detail::ParameterTraits<CartesianSpeakerPosition>::tag) const {
     return (boost::get<CartesianSpeakerPosition>(&speakerPosition_));
   }
@@ -64,6 +80,10 @@ namespace adm {
       detail::ParameterTraits<Rtime>::tag) const {
     return duration_ == boost::none;
   }
+  bool AudioBlockFormatDirectSpeakers::isDefault(
+      detail::ParameterTraits<Cartesian>::tag) const {
+    return cartesian_ == boost::none;
+  }
 
   // ---- Setter ---- //
   void AudioBlockFormatDirectSpeakers::set(AudioBlockFormatId id) { id_ = id; }
@@ -71,16 +91,37 @@ namespace adm {
   void AudioBlockFormatDirectSpeakers::set(Duration duration) {
     duration_ = duration;
   }
+  void AudioBlockFormatDirectSpeakers::set(Cartesian cartesian) {
+    cartesian_ = cartesian;
+
+    if (cartesian.get()) {
+      if (has<SphericalSpeakerPosition>()) {
+        speakerPosition_ = CartesianSpeakerPosition{};
+      }
+    } else {
+      if (has<CartesianSpeakerPosition>()) {
+        speakerPosition_ = SphericalSpeakerPosition{};
+      }
+    }
+  }
   void AudioBlockFormatDirectSpeakers::set(
       CartesianSpeakerPosition speakerPosition) {
     speakerPosition_ = speakerPosition;
+    cartesian_ = Cartesian(true);
   }
   void AudioBlockFormatDirectSpeakers::set(
       SphericalSpeakerPosition speakerPosition) {
     speakerPosition_ = speakerPosition;
+    if (cartesian_ != boost::none) {
+      cartesian_ = Cartesian(false);
+    }
   }
   void AudioBlockFormatDirectSpeakers::set(SpeakerPosition speakerPosition) {
-    speakerPosition_ = speakerPosition;
+    if (speakerPosition.which() == 0) {
+      set(boost::get<SphericalSpeakerPosition>(speakerPosition));
+    } else if (speakerPosition.which() == 1) {
+      set(boost::get<CartesianSpeakerPosition>(speakerPosition));
+    }
   }
 
   // ---- Unsetter ---- //
@@ -95,6 +136,13 @@ namespace adm {
   void AudioBlockFormatDirectSpeakers::unset(
       detail::ParameterTraits<SpeakerLabels>::tag) {
     speakerLabels_.clear();
+  }
+  void AudioBlockFormatDirectSpeakers::unset(
+      detail::ParameterTraits<Cartesian>::tag) {
+    cartesian_ = boost::none;
+    if (!has<SphericalSpeakerPosition>()) {
+      set(SphericalSpeakerPosition{});
+    }
   }
 
   // ---- Add ---- //

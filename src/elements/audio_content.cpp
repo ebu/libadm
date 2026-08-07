@@ -133,6 +133,16 @@ namespace adm {
     mixedContentKind_ = kind;
     dialogueId_ = Dialogue::MIXED;
   }
+  void AudioContent::set(LoudnessMetadatas loudnessMetadatas) {
+    for (auto& loudnessMetadata : loudnessMetadatas) {
+      loudnessMetadata.setParent(parent_);
+    }
+    detail::AudioContentBase::set(std::move(loudnessMetadatas));
+  }
+  bool AudioContent::add(LoudnessMetadata loudnessMetadata) {
+    loudnessMetadata.setParent(parent_);
+    return detail::AudioContentBase::add(std::move(loudnessMetadata));
+  }
 
   // ---- Unsetter ---- //
   void AudioContent::unset(detail::ParameterTraits<AudioContentLanguage>::tag) {
@@ -230,6 +240,17 @@ namespace adm {
   void AudioContent::setParent(std::weak_ptr<Document> document) {
     parent_ = std::move(document);
   }
+  void AudioContent::setLoudnessMetadataParent(
+      std::weak_ptr<Document> document) {
+    if (!has<LoudnessMetadatas>()) {
+      return;
+    }
+    auto loudnessMetadatas = get<LoudnessMetadatas>();
+    for (auto& loudnessMetadata : loudnessMetadatas) {
+      loudnessMetadata.setParent(document);
+    }
+    detail::AudioContentBase::set(std::move(loudnessMetadatas));
+  }
   const std::weak_ptr<Document>& AudioContent::getParent() const {
     return parent_;
   }
@@ -238,6 +259,7 @@ namespace adm {
     auto audioContentCopy =
         std::shared_ptr<AudioContent>(new AudioContent(*this));
     audioContentCopy->setParent(std::weak_ptr<Document>());
+    audioContentCopy->setLoudnessMetadataParent(std::weak_ptr<Document>());
     audioContentCopy->disconnectReferences();
     return audioContentCopy;
   }

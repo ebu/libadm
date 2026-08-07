@@ -36,7 +36,7 @@ namespace adm {
    */
   using NonDialogueContentKind =
       detail::NamedType<unsigned int, NonDialogueContentKindTag,
-                        detail::RangeValidator<0, 2>>;
+                        detail::RangeValidator<0, 3>>;
 
   /// NonDialogueContentKind definitions
   namespace NonDialogueContent {
@@ -45,6 +45,8 @@ namespace adm {
     const NonDialogueContentKind MUSIC = NonDialogueContentKind(1);
     /// NonDialogueContentKind for effects
     const NonDialogueContentKind EFFECT = NonDialogueContentKind(2);
+    /// NonDialogueContentKind for music and effects
+    const NonDialogueContentKind MUSIC_AND_EFFECTS = NonDialogueContentKind(3);
   }  // namespace NonDialogueContent
 
   /// @brief Tag for NamedType ::DialogueContentKind
@@ -80,10 +82,10 @@ namespace adm {
   /**
    * @brief NamedType for the mixedContentKind type
    *
-   * Valid values are in the range [0, 3]
+   * Valid values are in the range [0, 4]
    */
   using MixedContentKind = detail::NamedType<unsigned int, MixedContentKindTag,
-                                             detail::RangeValidator<0, 3>>;
+                                             detail::RangeValidator<0, 4>>;
 
   /// MixedContent definitions
   namespace MixedContent {
@@ -94,6 +96,9 @@ namespace adm {
     const MixedContentKind MIXED = MixedContentKind(2);
     /// MixedContentKind for hearing impaired
     const MixedContentKind HEARING_IMPAIRED = MixedContentKind(3);
+    /// MixedContentKind for complete main with audio description/hearing impaired
+    const MixedContentKind COMPLETE_MAIN_HEARING_IMPAIRED_AD =
+        MixedContentKind(4);
   }  // namespace MixedContent
 
   ///@brief Type to hold a NonDialogueContentKind, DialogueContentKind or

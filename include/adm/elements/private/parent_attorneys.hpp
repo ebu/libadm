@@ -23,6 +23,18 @@ namespace adm {
                           std::weak_ptr<Document> parent) {
       programme->setParent(std::move(parent));
     }
+
+    static void setAuthoringInformationParent(
+        const std::shared_ptr<AudioProgramme>& programme,
+        std::weak_ptr<Document> parent) {
+      programme->setAuthoringInformationParent(std::move(parent));
+    }
+
+    static void setLoudnessMetadataParent(
+        const std::shared_ptr<AudioProgramme>& programme,
+        std::weak_ptr<Document> parent) {
+      programme->setLoudnessMetadataParent(std::move(parent));
+    }
   };
 
   class AudioContentAttorney {
@@ -33,6 +45,12 @@ namespace adm {
     static void setParent(const std::shared_ptr<AudioContent>& content,
                           std::weak_ptr<Document> parent) {
       content->setParent(std::move(parent));
+    }
+
+    static void setLoudnessMetadataParent(
+        const std::shared_ptr<AudioContent>& content,
+        std::weak_ptr<Document> parent) {
+      content->setLoudnessMetadataParent(std::move(parent));
     }
   };
 

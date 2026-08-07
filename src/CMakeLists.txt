@@ -36,6 +36,7 @@ add_library(adm
   elements/audio_block_format_binaural.cpp
   elements/audio_object_interaction.cpp
   elements/audio_pack_format_hoa.cpp
+  elements/authoring_information.cpp
   elements/common_parameters.cpp
   elements/time.cpp
   elements/channel_lock.cpp
@@ -44,6 +45,7 @@ add_library(adm
   elements/jump_position.cpp
   elements/label.cpp
   elements/loudness_metadata.cpp
+  elements/loudness_renderer.cpp
   elements/object_divergence.cpp
   elements/position.cpp
   elements/position_offset.cpp
@@ -54,6 +56,7 @@ add_library(adm
   elements/type_descriptor.cpp
   elements/format_descriptor.cpp
   elements/headphone_virtualise.cpp
+  elements/tag_list.cpp
   utilities/block_duration_assignment.cpp
   utilities/copy.cpp
   utilities/id_assignment.cpp

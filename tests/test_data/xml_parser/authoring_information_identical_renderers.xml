@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended version="ITU-R_BS.2076-3">
+        <audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme">
+          <authoringInformation>
+            <renderer uri="urn:itu:bs:2127:0:itu_adm_renderer">
+              <audioPackFormatIDRef>AP_00010001</audioPackFormatIDRef>
+            </renderer>
+            <renderer uri="urn:itu:bs:2127:0:itu_adm_renderer">
+              <audioPackFormatIDRef>AP_00010001</audioPackFormatIDRef>
+            </renderer>
+          </authoringInformation>
+        </audioProgramme>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

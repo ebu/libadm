@@ -8,11 +8,245 @@
 #include "adm/private/copy.hpp"
 
 #include <algorithm>
+#include <stdexcept>
 
 namespace adm {
+  namespace {
+    template <typename ContainerT, typename Predicate>
+    bool pruneIf(ContainerT& container, Predicate predicate) {
+      auto end = std::remove_if(container.begin(), container.end(), predicate);
+      if (end == container.end()) {
+        return false;
+      }
+      container.erase(end, container.end());
+      return true;
+    }
+
+    template <typename Element>
+    void pruneTagGroupsReferencing(
+        Document& document,
+        std::shared_ptr<Element> const& removedElement) {
+      if (!document.has<TagList>()) return;
+      auto list = document.get<TagList>();
+      auto groups = list.get<TagGroups>();
+      auto pruned = pruneIf(groups, [&](TagGroup const& group) {
+        auto refs = group.template getReferences<Element>();
+        return std::find(refs.begin(), refs.end(), removedElement) !=
+               refs.end();
+      });
+      if (!pruned) return;
+      if (groups.empty()) {
+        document.unset<TagList>();
+        return;
+      }
+      TagList newList;
+      for (auto& group : groups) newList.add(group);
+      document.set(newList);
+    }
+  }  // namespace
+
   namespace detail {
     template class OptionalParameter<Version>;
+    template class OptionalParameter<TagList>;
+    template class OptionalParameter<ProfileList>;
   }  // namespace detail
+
+  namespace {
+    // Bound the recursion depth of Document::add() to prevent a stack
+    // overflow when the cross-reference graph is pathologically deep
+    // (e.g. an adversarial XML with thousands of nested
+    // audioPackFormatIDRefs). Re-entering an already-added element is
+    // already short-circuited by checkParent(), so this only fires on
+    // genuinely deep, unique chains. The limit is far above any realistic
+    // ADM document.
+    constexpr int kMaxAddRecursionDepth = 1000;
+    thread_local int g_addRecursionDepth = 0;
+
+    struct AddRecursionGuard {
+      AddRecursionGuard() {
+        if (g_addRecursionDepth >= kMaxAddRecursionDepth) {
+          throw std::runtime_error(
+              "Document::add: cross-reference recursion depth exceeded "
+              "(possible deeply-nested or malformed input)");
+        }
+        ++g_addRecursionDepth;
+      }
+      ~AddRecursionGuard() { --g_addRecursionDepth; }
+      AddRecursionGuard(const AddRecursionGuard&) = delete;
+      AddRecursionGuard& operator=(const AddRecursionGuard&) = delete;
+    };
+
+    template <typename T>
+    bool pruneLoudnessMetadataObjectRefs(
+      LoudnessMetadatas& data,
+      std::shared_ptr<T> removedElement) {
+      bool changed = false;
+      for (auto& loudnessMetadata : data) {
+        if (!loudnessMetadata.has<LoudnessRenderer>()) {
+          continue;
+        }
+        auto renderer = loudnessMetadata.get<LoudnessRenderer>();
+        std::vector<std::shared_ptr<T>> refsToRemove;
+        auto const removedId = removedElement->template get<typename T::id_type>();
+        for (auto const& ref : renderer.template getReferences<T>()) {
+          if (ref == removedElement ||
+              ref->template get<typename T::id_type>() == removedId) {
+            refsToRemove.push_back(ref);
+          }
+        }
+        for (auto const& ref : refsToRemove) {
+          renderer.removeReference(ref);
+        }
+        if (!refsToRemove.empty()) {
+          loudnessMetadata.set(std::move(renderer));
+          changed = true;
+        }
+      }
+      return changed;
+    }
+
+    bool pruneLoudnessMetadataPackFormatRefs(
+      LoudnessMetadatas& data,
+      std::shared_ptr<AudioPackFormat> const& removedPackFormat) {
+      bool changed = false;
+      auto const removedId = removedPackFormat->get<AudioPackFormatId>();
+      for (auto& loudnessMetadata : data) {
+        if (!loudnessMetadata.has<LoudnessRenderer>()) {
+          continue;
+        }
+        auto renderer = loudnessMetadata.get<LoudnessRenderer>();
+        if (!renderer.has<RendererPackFormatIdRef>()) {
+          continue;
+        }
+        auto const& ref = renderer.get<RendererPackFormatIdRef>();
+        if (ref == removedPackFormat || ref->get<AudioPackFormatId>() == removedId) {
+          renderer.unset<RendererPackFormatIdRef>();
+          loudnessMetadata.set(std::move(renderer));
+          changed = true;
+        }
+      }
+      return changed;
+    }
+
+    template<typename Element>
+    void pruneElementLoudnessPackRefs(
+      std::shared_ptr<Element> const& element,
+      std::shared_ptr<AudioPackFormat> const& removedElement) {
+      if (!element->template has<LoudnessMetadatas>()) {
+        return;
+      }
+      auto loudnessMetadatas = element->template get<LoudnessMetadatas>();
+      if (!pruneLoudnessMetadataPackFormatRefs(loudnessMetadatas, removedElement)) {
+        return;
+      }
+      element->set(std::move(loudnessMetadatas));
+    }
+
+    template<typename Element, typename RemovedElement>
+    void pruneElementLoudnessObjectRefs(
+      std::shared_ptr<Element> const& element,
+      std::shared_ptr<RemovedElement> const& removedElement) {
+      if (!element->template has<LoudnessMetadatas>()) {
+        return;
+      }
+      auto loudnessMetadatas = element->template get<LoudnessMetadatas>();
+      if (!pruneLoudnessMetadataObjectRefs(loudnessMetadatas, removedElement)) {
+        return;
+      }
+      element->set(std::move(loudnessMetadatas));
+    }
+
+    bool pruneAuthoringInformationPackFormatIdRefs(
+        AuthoringInformation& info,
+        AudioPackFormatId const& removedId,
+        std::shared_ptr<AudioPackFormat> const& removedPackFormat) {
+      bool changed = false;
+
+      if (info.has<Renderers>()) {
+        auto renderers = info.get<Renderers>();
+        bool renderersChanged = false;
+        for (auto& renderer : renderers) {
+          auto const removedId =
+              removedPackFormat->get<AudioPackFormatId>();
+          std::vector<std::shared_ptr<AudioPackFormat>> refsToRemove;
+          for (auto const& ref :
+               renderer.getReferences<AudioPackFormat>()) {
+            if (ref == removedPackFormat ||
+                ref->get<AudioPackFormatId>() == removedId) {
+              refsToRemove.push_back(ref);
+            }
+          }
+          for (auto const& ref : refsToRemove) {
+            renderer.removeReference(ref);
+          }
+          renderersChanged |= !refsToRemove.empty();
+        }
+        if (renderersChanged) {
+          if (renderers.empty()) {
+            info.unset<Renderers>();
+          } else {
+            info.set(std::move(renderers));
+          }
+          changed = true;
+        }
+      }
+
+      if (info.has<ReferenceLayouts>()) {
+        auto referenceLayouts = info.get<ReferenceLayouts>();
+        auto pruned = pruneIf(referenceLayouts, [&](ReferenceLayout const& layout) {
+          auto const& ref = layout.get();
+          if (ref == removedPackFormat) {
+            return true;
+          }
+          return ref->get<AudioPackFormatId>() == removedId;
+        });
+        if (pruned) {
+          if (referenceLayouts.empty()) {
+            info.unset<ReferenceLayouts>();
+          } else {
+            info.set(std::move(referenceLayouts));
+          }
+          changed = true;
+        }
+      }
+
+      return changed;
+    }
+
+    void prunePackFormatIdRefs(
+        Document& document,
+        AudioPackFormatId const& removedId,
+        std::shared_ptr<AudioPackFormat> const& removedPackFormat) {
+      for (auto const& programme : document.getElements<AudioProgramme>()) {
+        if (programme->has<AuthoringInformation>()) {
+          auto info = programme->get<AuthoringInformation>();
+          if (pruneAuthoringInformationPackFormatIdRefs(
+                  info,
+                  removedId,
+                  removedPackFormat)) {
+            programme->set(std::move(info));
+          }
+        }
+        pruneElementLoudnessPackRefs(programme, removedPackFormat);
+      }
+
+      for (auto const& content : document.getElements<AudioContent>()) {
+        pruneElementLoudnessPackRefs(content, removedPackFormat);
+      }
+    }
+
+    void pruneObjectIdRefs(
+        Document& document,
+        std::shared_ptr<AudioObject> const& removedObject) {
+      for (auto const& programme : document.getElements<AudioProgramme>()) {
+        pruneElementLoudnessObjectRefs(programme, removedObject);
+      }
+
+      for (auto const& content : document.getElements<AudioContent>()) {
+        pruneElementLoudnessObjectRefs(content, removedObject);
+      }
+    }
+  }  // namespace
 
   Document::Document() { idAssigner_.document(this); }
 
@@ -31,8 +265,8 @@ namespace adm {
     copy->audioTrackFormats_.reserve(audioTrackFormats_.size());
     copy->audioTrackUids_.reserve(audioTrackUids_.size());
 
-    auto elements = copyAllElements(shared_from_this());
-    if (has<Version>()) copy->set(get<Version>());
+    ElementMapping mapping;
+    auto elements = copyAllElements(shared_from_this(), mapping);
     for (auto& e : elements) {
       if (auto v = boost::get<std::shared_ptr<AudioProgramme>>(&e)) {
         AudioProgrammeAttorney::setParent(*v, copy);
@@ -60,15 +294,28 @@ namespace adm {
         copy->audioTrackUids_.push_back(*v);
       }
     }
+    for (auto const& programme : copy->getElements<AudioProgramme>()) {
+      AudioProgrammeAttorney::setAuthoringInformationParent(programme, copy);
+      AudioProgrammeAttorney::setLoudnessMetadataParent(programme, copy);
+    }
+    for (auto const& content : copy->getElements<AudioContent>()) {
+      AudioContentAttorney::setLoudnessMetadataParent(content, copy);
+    }
+    copyAuxiliary(shared_from_this(), copy, mapping);
     return copy;
   }
 
   // ---- add elements ---- //
   bool Document::add(std::shared_ptr<AudioProgramme> programme) {
+    AddRecursionGuard guard;
     if (!checkParent(programme, "AudioProgramme")) {
       idAssigner_.assignId(*programme);
       AudioProgrammeAttorney::setParent(programme, shared_from_this());
       audioProgrammes_.push_back(programme);
+      AudioProgrammeAttorney::setAuthoringInformationParent(
+          programme, shared_from_this());
+      AudioProgrammeAttorney::setLoudnessMetadataParent(
+          programme, shared_from_this());
       for (auto& reference : programme->getReferences<AudioContent>()) {
         add(reference);
       }
@@ -79,10 +326,13 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioContent> content) {
+    AddRecursionGuard guard;
     if (!checkParent(content, "AudioContent")) {
       idAssigner_.assignId(*content);
       AudioContentAttorney::setParent(content, shared_from_this());
       audioContents_.push_back(content);
+      AudioContentAttorney::setLoudnessMetadataParent(
+          content, shared_from_this());
       for (auto& reference : content->getReferences<AudioObject>()) {
         add(reference);
       }
@@ -93,6 +343,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioObject> object) {
+    AddRecursionGuard guard;
     if (!checkParent(object, "AudioObject")) {
       idAssigner_.assignId(*object);
       AudioObjectAttorney::setParent(object, shared_from_this());
@@ -115,6 +366,7 @@ namespace adm {
     }
   }
   bool Document::add(std::shared_ptr<AudioPackFormat> packFormat) {
+    AddRecursionGuard guard;
     if (!checkParent(packFormat, "AudioPackFormat")) {
       idAssigner_.assignId(*packFormat);
       AudioPackFormatAttorney::setParent(packFormat, shared_from_this());
@@ -132,6 +384,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioChannelFormat> channelFormat) {
+    AddRecursionGuard guard;
     if (!checkParent(channelFormat, "AudioChannelFormat")) {
       idAssigner_.assignId(*channelFormat);
       AudioChannelFormatAttorney::setParent(channelFormat, shared_from_this());
@@ -143,6 +396,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioStreamFormat> streamFormat) {
+    AddRecursionGuard guard;
     if (!checkParent(streamFormat, "AudioStreamFormat")) {
       idAssigner_.assignId(*streamFormat);
       AudioStreamFormatAttorney::setParent(streamFormat, shared_from_this());
@@ -170,6 +424,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioTrackFormat> trackFormat) {
+    AddRecursionGuard guard;
     if (!checkParent(trackFormat, "AudioTrackFormat")) {
       // NOTE: That the id assignment works properly the AudioStreamFormats
       // have to be added before the AudioTrackFormat.
@@ -192,6 +447,7 @@ namespace adm {
   }
 
   bool Document::add(std::shared_ptr<AudioTrackUid> trackUid) {
+    AddRecursionGuard guard;
     if (!checkParent(trackUid, "AudioTrackUid")) {
       idAssigner_.assignId(*trackUid);
       AudioTrackUidAttorney::setParent(trackUid, shared_from_this());
@@ -222,6 +478,9 @@ namespace adm {
     if (it != audioProgrammes_.end()) {
       audioProgrammes_.erase(it);
       AudioProgrammeAttorney::setParent(programme, {});
+      AudioProgrammeAttorney::setAuthoringInformationParent(programme, {});
+      AudioProgrammeAttorney::setLoudnessMetadataParent(programme, {});
+      pruneTagGroupsReferencing(*this, programme);
       return true;
     }
     return false;
@@ -232,9 +491,11 @@ namespace adm {
     if (it != audioContents_.end()) {
       audioContents_.erase(it);
       AudioContentAttorney::setParent(content, {});
+      AudioContentAttorney::setLoudnessMetadataParent(content, {});
       for (auto& audioProgramme : audioProgrammes_) {
         audioProgramme->removeReference(content);
       }
+      pruneTagGroupsReferencing(*this, content);
       return true;
     }
     return false;
@@ -251,15 +512,65 @@ namespace adm {
       for (auto& audioContent : audioContents_) {
         audioContent->removeReference(object);
       }
+      pruneTagGroupsReferencing(*this, object);
+      pruneObjectIdRefs(*this, object);
       return true;
     }
     return false;
+  }
+
+  namespace {
+    template <typename Element>
+    void validateTagGroupReferences(
+        Document const& doc,
+        std::vector<std::shared_ptr<Element>> const& refs,
+        const char* elementType) {
+      for (auto const& ref : refs) {
+        auto parent = ref->getParent().lock();
+        if (parent && parent.get() != &doc) {
+          throw std::runtime_error(
+              std::string{"TagGroup cannot refer to an "} + elementType +
+              " in a different document");
+        }
+      }
+    }
+  }  // namespace
+
+  void Document::set(TagList tagList) {
+    // Validate every TagGroup reference against this document up-front so a
+    // failure leaves the document unmodified.
+    auto document = shared_from_this();
+    auto tagListParent = tagList.getParent().lock();
+    if (tagListParent && tagListParent != document) {
+      throw std::runtime_error("TagList already belongs to another Document");
+    }
+    for (auto const& group : tagList.get<TagGroups>()) {
+      auto groupParent = group.getParent().lock();
+      if (groupParent && groupParent != document) {
+        throw std::runtime_error("TagGroup already belongs to another Document");
+      }
+      validateTagGroupReferences(*this, group.audioProgrammes_,
+                                 "AudioProgramme");
+      validateTagGroupReferences(*this, group.audioContents_, "AudioContent");
+      validateTagGroupReferences(*this, group.audioObjects_, "AudioObject");
+    }
+    // Adopt any unparented references into this document. Elements already
+    // belonging to this document are short-circuited by checkParent() inside
+    // add().
+    for (auto const& group : tagList.get<TagGroups>()) {
+      for (auto const& p : group.audioProgrammes_) add(p);
+      for (auto const& c : group.audioContents_) add(c);
+      for (auto const& o : group.audioObjects_) add(o);
+    }
+    tagList.setParent(document);
+    detail::DocumentBase::set(std::move(tagList));
   }
 
   bool Document::remove(std::shared_ptr<AudioPackFormat> packFormat) {
     auto it = std::find(audioPackFormats_.begin(), audioPackFormats_.end(),
                         packFormat);
     if (it != audioPackFormats_.end()) {
+      auto removedPackId = packFormat->get<AudioPackFormatId>();
       audioPackFormats_.erase(it);
       AudioPackFormatAttorney::setParent(packFormat, {});
       for (auto& audioPackFormat : audioPackFormats_) {
@@ -278,6 +589,7 @@ namespace adm {
           audioTrackUid->removeReference<AudioPackFormat>();
         }
       }
+      prunePackFormatIdRefs(*this, removedPackId, packFormat);
       return true;
     }
     return false;

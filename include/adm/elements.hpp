@@ -27,6 +27,7 @@
 #include "adm/elements/audio_stream_format.hpp"
 #include "adm/elements/audio_track_uid.hpp"
 #include "adm/elements/profile_list.hpp"
+#include "adm/elements/tag_list.hpp"
 
 #include "adm/elements/audio_block_format_direct_speakers.hpp"
 #include "adm/elements/audio_block_format_matrix.hpp"
@@ -48,6 +49,8 @@
 
 #include "adm/elements/time.hpp"
 #include "adm/elements/audio_programme_ref_screen.hpp"
+#include "adm/elements/authoring_information.hpp"
+#include "adm/elements/cartesian.hpp"
 #include "adm/elements/channel_lock.hpp"
 #include "adm/elements/dialogue.hpp"
 #include "adm/elements/format_descriptor.hpp"

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ebuCoreMain>
+  <coreMetadata>
+    <format>
+      <audioFormatExtended>
+        <audioProgramme audioProgrammeID="APR_1001" audioProgrammeName="MyProgramme">
+          <authoringInformation>
+            <referenceLayout>
+              <audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+            </referenceLayout>
+            <renderer uri="urn:itu:bs:2127:0:itu_adm_renderer" name="Forward Renderer" version="1.0.0">
+              <audioPackFormatIDRef>AP_00031001</audioPackFormatIDRef>
+              <audioPackFormatIDRef>AP_00031002</audioPackFormatIDRef>
+            </renderer>
+          </authoringInformation>
+        </audioProgramme>
+
+        <audioPackFormat audioPackFormatID="AP_00031001" audioPackFormatName="Pack A"/>
+        <audioPackFormat audioPackFormatID="AP_00031002" audioPackFormatName="Pack B"/>
+      </audioFormatExtended>
+    </format>
+  </coreMetadata>
+</ebuCoreMain>

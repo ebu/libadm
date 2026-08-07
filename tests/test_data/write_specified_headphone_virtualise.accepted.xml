@@ -16,6 +16,7 @@
 					<audioBlockFormat audioBlockFormatID="AB_00011001_00000001">
 						<position coordinate="X">0.000000</position>
 						<position coordinate="Y">0.000000</position>
+						<cartesian>1</cartesian>
 						<headphoneVirtualise bypass="0" DRR="30.000000"/>
 					</audioBlockFormat>
 				</audioChannelFormat>
