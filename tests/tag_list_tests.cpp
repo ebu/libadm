@@ -199,7 +199,9 @@ TEST_CASE(
   tagList.add(tagGroup);
 
   auto doc = Document::create();
-  REQUIRE(doc->set(tagList) == false);
+  REQUIRE_THROWS_WITH(
+      doc->set(tagList),
+      "TagGroup cannot refer to an AudioObject in a different document");
   REQUIRE(!doc->has<TagList>());
 }
 
@@ -241,7 +243,7 @@ TEST_CASE("TagList parent-aware reference additions") {
 
   TagList tagList;
   tagList.add(TagGroup{programme});
-  REQUIRE(doc->set(tagList));
+  doc->set(tagList);
   auto attachedTagList = doc->get<TagList>();
 
   SECTION("adopts unparented references") {

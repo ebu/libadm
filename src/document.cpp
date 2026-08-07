@@ -521,35 +521,38 @@ namespace adm {
 
   namespace {
     template <typename Element>
-    bool tagGroupRefsBelongToOtherDoc(
+    void validateTagGroupReferences(
         Document const& doc,
-        std::vector<std::shared_ptr<Element>> const& refs) {
+        std::vector<std::shared_ptr<Element>> const& refs,
+        const char* elementType) {
       for (auto const& ref : refs) {
         auto parent = ref->getParent().lock();
-        if (parent && parent.get() != &doc) return true;
+        if (parent && parent.get() != &doc) {
+          throw std::runtime_error(
+              std::string{"TagGroup cannot refer to an "} + elementType +
+              " in a different document");
+        }
       }
-      return false;
     }
   }  // namespace
 
-  bool Document::set(TagList tagList) {
+  void Document::set(TagList tagList) {
     // Validate every TagGroup reference against this document up-front so a
     // failure leaves the document unmodified.
     auto document = shared_from_this();
     auto tagListParent = tagList.getParent().lock();
     if (tagListParent && tagListParent != document) {
-      return false;
+      throw std::runtime_error("TagList already belongs to another Document");
     }
     for (auto const& group : tagList.get<TagGroups>()) {
       auto groupParent = group.getParent().lock();
       if (groupParent && groupParent != document) {
-        return false;
+        throw std::runtime_error("TagGroup already belongs to another Document");
       }
-      if (tagGroupRefsBelongToOtherDoc(*this, group.audioProgrammes_) ||
-          tagGroupRefsBelongToOtherDoc(*this, group.audioContents_) ||
-          tagGroupRefsBelongToOtherDoc(*this, group.audioObjects_)) {
-        return false;
-      }
+      validateTagGroupReferences(*this, group.audioProgrammes_,
+                                 "AudioProgramme");
+      validateTagGroupReferences(*this, group.audioContents_, "AudioContent");
+      validateTagGroupReferences(*this, group.audioObjects_, "AudioObject");
     }
     // Adopt any unparented references into this document. Elements already
     // belonging to this document are short-circuited by checkParent() inside
@@ -561,7 +564,6 @@ namespace adm {
     }
     tagList.setParent(document);
     detail::DocumentBase::set(std::move(tagList));
-    return true;
   }
 
   bool Document::remove(std::shared_ptr<AudioPackFormat> packFormat) {

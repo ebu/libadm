@@ -261,16 +261,16 @@ namespace adm {
      * Each TagGroup's audioProgramme/audioContent/audioObject references are
      * validated against the document:
      *   * if a referenced element already belongs to a *different* document,
-     *     the document is left unmodified and `false` is returned;
+     *     the document is left unmodified and an exception is thrown;
      *   * if a referenced element is not yet attached to any document, it is
      *     added to this document (mirroring the auto-add behaviour of
      *     `Document::add(...)` for nested references);
      *   * elements already belonging to this document are left untouched.
      *
-     * @return `true` on success, `false` if any reference belongs to another
-     * document.
+     * @throws std::runtime_error if the TagList, a TagGroup, or a referenced
+     * element belongs to another document.
      */
-    ADM_EXPORT bool set(TagList tagList);
+    ADM_EXPORT void set(TagList tagList);
 
    private:
     ADM_EXPORT Document();
